@@ -1,5 +1,3 @@
-; NOTE: is association a Linux object class?
-
 (class security (compute_av compute_create compute_member check_context load_policy compute_relabel compute_user
 	setenforce setbool setsecparam setcheckreqprot read_policy))
 
