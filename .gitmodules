@@ -1,0 +1,3 @@
+[submodule "sources/modules/contrib"]
+	path = sources/modules/contrib
+	url = https://github.com/DefenSec/dssp-contrib
