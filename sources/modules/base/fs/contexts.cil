@@ -32,7 +32,6 @@
 (filecon "/sys" dir sysfs)
 (filecon "/tmp(/.*)?" any ())
 (filecon "/tmp" dir tmpfs)
-(filecon "/var/run/initramfs/\.need_shutdown" file ())
 (filecon "/var/run/user(/.*)?" any ())
 (fsuse task "nsfs" fs)
 (fsuse task "pipefs" fs)
