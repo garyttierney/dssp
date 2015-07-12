@@ -1,0 +1,270 @@
+(boolean sys_load_kernel_module true)
+
+(defaultrole file source)
+(defaultrole dir source)
+(defaultrole lnk_file source)
+(defaultrole chr_file source)
+(defaultrole blk_file source)
+(defaultrole sock_file source)
+(defaultrole fifo_file source)
+
+(sid kernel)
+(sid sysctl)
+(sid unlabeled)
+(sid file)
+
+(typeattribute sys_mountpoint_obj_type)
+(typeattribute sys_obj_type)
+
+(typeattribute sys_proc_obj_type)
+(typeattribute sys_sysctl_obj_type)
+(typeattribute sys_sysfs_obj_type)
+
+(typeattribute sys_subj_type)
+(typeattribute sys_audit_client_subj_type)
+(typeattribute sys_unconfined_subj_type)
+
+(roleattribute sys_role)
+(roleattribute sys_roleallow_role)
+
+(block sys
+	(user id)
+	(role role)
+
+	(blockinherit subj_common_blk)
+
+	(context sys (id role subj (systemhigh systemhigh)))
+
+	(roletype role subj)
+
+	(call sys_role (role))
+	(call sys_userrole (id))
+
+	(userlevel id systemlow)
+	(userrange id (systemlow systemhigh))
+
+	(roleallow role sys_roleallow_role)
+
+	(blockinherit file_var_log_obj_blk)
+
+	(allow subj self (capability (sys_tty_config sys_admin sys_nice net_admin net_bind_service)))
+	(allow subj self (capability2 (block_suspend)))
+	(allow subj self (process (setsched)))
+	(allow subj self create_unix_stream_socket_perms)
+
+	(allow subj var_log_file manage_file_perms)
+	(call file_var_log_obj_type_transition (subj var_log_file file "boot.log"))
+
+	(call sys_change_ring_buffer_level (subj))
+	(call sys_request_load_module (subj))
+
+	(call dev_manage_all (subj))
+
+	(call dev_devtmpfs_obj_type_transition_event (subj))
+	(call dev_devtmpfs_obj_type_transition_sound (subj))
+	(call dev_devtmpfs_obj_type_transition_usb (subj))
+	(call dev_devtmpfs_obj_type_transition_v4l (subj))
+	(call dev_devtmpfs_obj_type_transition_watchdog (subj))
+
+	(call fs_mounton_rootfs_dirs (subj))
+	(call fs_read_debugfs (subj))
+
+	(call mls_file_read_subj_type (subj))
+	(call mls_file_write_subj_type (subj))
+	(call mls_proc_read_subj_type (subj))
+	(call mls_proc_write_subj_type (subj))
+	(call mls_range_trans_subj_type (subj))
+
+	(call sec_compute_create_context (subj))
+	(call sec_list_fs (subj))
+
+	(optional sys_optional_storage
+		(call storage_devtmpfs_obj_type_transition_fixed_disk (subj))
+		(call storage_devtmpfs_obj_type_transition_removable (subj))))
+
+(block invalid
+	(blockinherit sys_isid_blk)
+
+	(roletype sys.role isid)
+
+	(allow isid self (process (sigchld)))
+
+	(allow isid self rw_file_perms)
+	(allow isid self list_dir_perms)
+	(allow isid self read_lnk_file_perms)
+
+	(call sys_mountpoint_obj_type (isid))
+
+	(call fs_associate_fs (isid))
+	(call fs_associate_tmpfs (isid))
+	(call fs_search_proc (isid)))
+
+(block unlabeled
+	(blockinherit sys_isid_blk)
+
+	(call sys_obj_type (isid))
+
+	(call fs_associate_devtmpfs (isid))
+	(call fs_associate_fs (isid))
+	(call fs_associate_tmpfs (isid)))
+
+(block kallsyms
+	(blockinherit sys_proc_obj_blk))
+
+(block kcore
+	(blockinherit sys_proc_obj_blk))
+
+(block kmsg_proc
+	(blockinherit sys_proc_obj_blk))
+
+(block mdstat
+	(blockinherit sys_proc_obj_blk))
+
+(block mtrr
+	(blockinherit sys_proc_obj_blk))
+
+(block net_proc
+	(blockinherit sys_proc_obj_blk))
+
+(block sysrq
+	(blockinherit sys_proc_obj_blk))
+
+(block sysctl
+	(blockinherit sys_sysctl_obj_blk))
+
+(block crypto
+	(blockinherit sys_sysctl_obj_blk))
+
+(block dev
+	(blockinherit sys_sysctl_obj_blk))
+
+(block fs_sysctl
+	(blockinherit sys_sysctl_obj_blk)
+
+	(call sys_mountpoint_obj_type (sysctl)))
+
+(block irq
+	(blockinherit sys_sysctl_obj_blk))
+
+(block kernel
+	(blockinherit sys_sysctl_obj_blk))
+
+(block net_sysctl
+	(blockinherit sys_sysctl_obj_blk))
+
+(block net_unix
+	(blockinherit sys_sysctl_obj_blk))
+
+(block security
+	(blockinherit sys_sysctl_obj_blk)
+
+	(typeattributeset sys_security_or_usermodehelper_sysctl_obj_type sysctl))
+
+(block usermodehelper
+	(blockinherit sys_sysctl_obj_blk)
+
+	(typeattributeset sys_security_or_usermodehelper_sysctl_obj_type sysctl))
+
+(block vm
+	(blockinherit sys_sysctl_obj_blk))
+
+(block vm_overcommit
+	(blockinherit sys_sysctl_obj_blk))
+
+(block cpu_sysfs
+        (blockinherit sys_sysfs_obj_blk))
+
+(block sys_load_kernel_module
+	(blockinherit sec_bool_obj_blk))
+
+(typeattribute sys_load_kernel_module_subj_type)
+(typeattribute sys_not_load_kernel_module_subj_type)
+
+(typeattributeset sys_not_load_kernel_module_subj_type (not sys_load_kernel_module_subj_type))
+(neverallow sys_not_load_kernel_module_subj_type self (capability (sys_module)))
+
+(typeattribute sys_read_kernel_message_subj_type)
+(typeattribute sys_not_read_kernel_message_subj_type_or_sys_unconfined_subj_type)
+
+(typeattributeset sys_not_read_kernel_message_subj_type_or_sys_unconfined_subj_type
+	(not (sys_read_kernel_message_subj_type sys_unconfined_subj_type)))
+
+(neverallow sys_not_read_kernel_message_subj_type_or_sys_unconfined_subj_type kmsg_proc.proc all_file_perms_except_getattr)
+
+(typeattribute sys_dump_kernel_subj_type)
+(typeattribute sys_not_dump_kernel_subj_type_or_sys_unconfined_subj_type)
+
+(typeattributeset sys_not_dump_kernel_subj_type_or_sys_unconfined_subj_type
+	(not (sys_dump_kernel_subj_type sys_unconfined_subj_type)))
+
+(neverallow sys_not_dump_kernel_subj_type_or_sys_unconfined_subj_type kcore.proc all_file_perms_except_getattr)
+
+(typeattribute sys_security_or_usermodehelper_sysctl_obj_type)
+(typeattribute sys_not_security_or_usermodehelper_sysctl_obj_type)
+
+(typeattribute sys_write_security_and_usermodehelper_sysctl_subj_type)
+(typeattribute sys_not_write_security_and_usermodehelper_sysctl_subj_type)
+
+(typeattributeset sys_not_write_security_and_usermodehelper_sysctl_subj_type
+	(not (sys_write_security_and_usermodehelper_sysctl_subj_type)))
+
+(neverallow sys_not_write_security_and_usermodehelper_sysctl_subj_type
+	sys_security_or_usermodehelper_sysctl_obj_type (file (append write)))
+
+(typeattributeset sys_not_security_or_usermodehelper_sysctl_obj_type
+	(and (sys_sysctl_obj_type) (not (sys_security_or_usermodehelper_sysctl_obj_type))))
+
+(roletype sys_role sys_obj_type)
+
+(allow sys_unconfined_subj_type sys_not_security_or_usermodehelper_sysctl_obj_type rw_file_perms)
+
+(allow sys_unconfined_subj_type sys_security_or_usermodehelper_sysctl_obj_type read_file_perms)
+
+(allow sys_unconfined_subj_type invalid.isid signal_perms)
+
+(allow sys_unconfined_subj_type invalid.isid all_file_perms_except_mounton_execmod_and_entrypoint)
+(allow sys_unconfined_subj_type invalid.isid all_dir_perms_except_mounton_and_execmod)
+(allow sys_unconfined_subj_type invalid.isid all_fifo_file_perms_except_mounton_and_execmod)
+(allow sys_unconfined_subj_type invalid.isid all_lnk_file_perms_except_mounton_and_execmod)
+(allow sys_unconfined_subj_type invalid.isid all_sock_file_perms_except_mounton_and_execmod)
+(allow sys_unconfined_subj_type invalid.isid all_chr_file_perms_except_mounton_and_execmod)
+(allow sys_unconfined_subj_type invalid.isid all_blk_file_perms_except_mounton_and_execmod)
+
+(allow sys_unconfined_subj_type invalid.isid (filesystem (all)))
+
+(allow sys_unconfined_subj_type sys_mountpoint_obj_type (dir (mounton)))
+
+(allow sys_unconfined_subj_type unlabeled.isid all_file_perms_except_mounton_execmod_and_entrypoint)
+(allow sys_unconfined_subj_type unlabeled.isid all_dir_perms_except_mounton_and_execmod)
+(allow sys_unconfined_subj_type unlabeled.isid all_fifo_file_perms_except_mounton_and_execmod)
+(allow sys_unconfined_subj_type unlabeled.isid all_lnk_file_perms_except_mounton_and_execmod)
+(allow sys_unconfined_subj_type unlabeled.isid all_sock_file_perms_except_mounton_and_execmod)
+(allow sys_unconfined_subj_type unlabeled.isid all_chr_file_perms_except_mounton_and_execmod)
+(allow sys_unconfined_subj_type unlabeled.isid all_blk_file_perms_except_mounton_and_execmod)
+
+(allow sys_unconfined_subj_type sys.subj (system (ipc_info syslog_read syslog_mod syslog_console module_request)))
+
+(allow sys_unconfined_subj_type sys_proc_obj_type rw_file_perms)
+(allow sys_unconfined_subj_type sys_proc_obj_type list_dir_perms)
+(allow sys_unconfined_subj_type sys_proc_obj_type read_lnk_file_perms)
+
+(allow sys_unconfined_subj_type sys_sysctl_obj_type list_dir_perms)
+(allow sys_unconfined_subj_type sys_sysctl_obj_type read_lnk_file_perms)
+
+(allow sys_unconfined_subj_type sys_sysfs_obj_type rw_file_perms)
+(allow sys_unconfined_subj_type sys_sysfs_obj_type list_dir_perms)
+(allow sys_unconfined_subj_type sys_sysfs_obj_type read_lnk_file_perms)
+
+(call sys_load_kernel_module_subj_type (sys_unconfined_subj_type))
+
+(call sys_obj_type (sys_proc_obj_type))
+(call sys_obj_type (sys_sysctl_obj_type))
+(call sys_obj_type (sys_sysfs_obj_type))
+
+(allow sys_audit_client_subj_type self (capability (audit_write)))
+(allow sys_audit_client_subj_type self r_netlink_audit_socket_perms)
+(allow sys_audit_client_subj_type self (netlink_audit_socket (nlmsg_relay)))
+
+(booleanif (sys_load_kernel_module) (true (allow sys_load_kernel_module_subj_type self
+	(capability (sys_nice sys_module)))
+	(allow sys_load_kernel_module_subj_type sys.subj (process (setsched)))))

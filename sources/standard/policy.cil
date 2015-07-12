@@ -1,0 +1,14 @@
+(tunableif (and (not enable_mls) (not enable_mcs))
+	(true
+		(mls false)
+
+                (sensitivity s0)
+                (sensitivityorder (s0))
+
+                (category c0)
+                (categoryorder (c0))
+
+                (sensitivitycategory s0 (c0))
+
+                (level systemlow (s0))
+                (level systemhigh (s0 (c0)))))

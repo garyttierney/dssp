@@ -1,0 +1,71 @@
+(sid port)
+(sid netif)
+(sid netmsg)
+(sid node)
+
+(typeattribute net_if_obj_type)
+(typeattribute net_node_obj_type)
+(typeattribute net_packet_obj_type)
+(typeattribute net_peer_obj_type)
+(typeattribute net_port_obj_type)
+
+(typeattribute net_ephemeral_port_obj_type)
+(typeattribute net_reserved_port_obj_type)
+(typeattribute net_rpc_port_obj_type)
+(typeattribute net_unreserved_port_obj_type)
+
+(typeattribute net_unconfined_subj_type)
+
+(block port
+	(blockinherit net_port_obj_blk))
+
+(block ephemeral
+	(blockinherit net_ephemeral_port_obj_blk))
+
+(block hi_reserved
+	(blockinherit net_hi_reserved_port_obj_blk))
+
+(block reserved
+	(blockinherit net_reserved_port_obj_blk))
+
+(block unreserved
+	(blockinherit net_unreserved_port_obj_blk))
+
+(block node
+	(blockinherit net_node_obj_blk))
+
+(block if
+	(blockinherit net_if_obj_blk))
+
+(block packet
+	(blockinherit net_packet_obj_blk))
+
+(block peer
+	(blockinherit net_peer_obj_blk))
+
+(call sys_obj_type (net_if_obj_type))
+(call sys_obj_type (net_node_obj_type))
+(call sys_obj_type (net_packet_obj_type))
+(call sys_obj_type (net_peer_obj_type))
+(call sys_obj_type (net_port_obj_type))
+
+(allow net_unconfined_subj_type net_node_obj_type (node (all)))
+(allow net_unconfined_subj_type net_if_obj_type (netif (all)))
+(allow net_unconfined_subj_type net_packet_obj_type (packet (all)))
+
+(allow net_unconfined_subj_type net_port_obj_type (tcp_socket (name_bind name_connect)))
+(allow net_unconfined_subj_type net_port_obj_type (udp_socket (name_bind)))
+(allow net_unconfined_subj_type net_port_obj_type (rawip_socket (name_bind)))
+(allow net_unconfined_subj_type net_port_obj_type (dccp_socket (name_bind name_connect)))
+
+(allow net_unconfined_subj_type net_node_obj_type (tcp_socket (node_bind)))
+(allow net_unconfined_subj_type net_node_obj_type (udp_socket (node_bind)))
+(allow net_unconfined_subj_type net_node_obj_type (rawip_socket (node_bind)))
+(allow net_unconfined_subj_type net_node_obj_type (dccp_socket (node_bind)))
+
+(call sys_recvfrom_unlabeled_tcp_sockets (net_unconfined_subj_type))
+(call sys_recvfrom_unlabeled_udp_sockets (net_unconfined_subj_type))
+(call sys_recvfrom_unlabeled_rawip_sockets (net_unconfined_subj_type))
+(call sys_recvfrom_unlabeled_dccp_sockets (net_unconfined_subj_type))
+
+(call sys_recv_unlabeled_peers (net_unconfined_subj_type))

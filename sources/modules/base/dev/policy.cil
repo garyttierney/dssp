@@ -1,0 +1,156 @@
+(sid devnull)
+
+(typeattribute dev_obj_type)
+(typeattribute dev_storage_obj_type)
+
+(typeattribute dev_unconfined_subj_type)
+
+(block apm
+	(blockinherit dev_obj_blk))
+
+(block autofs_dev
+	(blockinherit dev_obj_blk))
+
+(block clock
+	(blockinherit dev_obj_blk))
+
+(block cpu
+	(blockinherit dev_obj_blk))
+
+(block devtty
+	(blockinherit dev_obj_blk)
+
+	(call fs_associate_tmpfs (dev)))
+
+(block dri
+	(blockinherit dev_obj_blk))
+
+(block event
+	(blockinherit dev_obj_blk))
+
+(block framebuf
+	(blockinherit dev_obj_blk))
+
+(block kmsg_dev
+	(blockinherit dev_obj_blk))
+
+(block kvm
+	(blockinherit dev_obj_blk))
+
+(block loop_control
+	(blockinherit dev_obj_blk))
+
+(block lvm_control
+	(blockinherit dev_obj_blk))
+
+(block mei_misc
+	(blockinherit dev_obj_blk))
+
+(block memory
+	(blockinherit dev_obj_blk))
+
+(block mouse
+	(blockinherit dev_obj_blk))
+
+(block null
+	(blockinherit dev_obj_blk)
+
+	(call fs_associate_tmpfs (dev)))
+
+(block nvram
+	(blockinherit dev_obj_blk))
+
+(block printer
+	(blockinherit dev_obj_blk))
+
+(block pm_qos_misc
+	(blockinherit dev_obj_blk))
+
+(block ppp
+	(blockinherit dev_obj_blk))
+
+(block ptmx
+	(blockinherit dev_obj_blk))
+
+(block random
+	(blockinherit dev_obj_blk)
+
+	(call fs_associate_tmpfs (dev)))
+
+(block sound
+	(blockinherit dev_obj_blk))
+
+(block tpm
+	(blockinherit dev_obj_blk))
+
+(block tun_tap
+	(blockinherit dev_obj_blk))
+
+(block uhid
+	(blockinherit dev_obj_blk))
+
+(block urandom
+	(blockinherit dev_obj_blk)
+
+	(call fs_associate_tmpfs (dev)))
+
+(block usb
+	(blockinherit dev_obj_blk))
+
+(block usbmon
+	(blockinherit dev_obj_blk))
+
+(block v4l
+	(blockinherit dev_obj_blk))
+
+(block vfio
+	(blockinherit dev_obj_blk))
+
+(block vhci
+	(blockinherit dev_obj_blk))
+
+(block vhost
+	(blockinherit dev_obj_blk))
+
+(block watchdog
+	(blockinherit dev_obj_blk))
+
+(block wireless
+	(blockinherit dev_obj_blk))
+
+(block xserver_misc
+	(blockinherit dev_obj_blk))
+
+(block zero
+	(blockinherit dev_obj_blk)
+
+	(call fs_associate_tmpfs (dev)))
+
+(call sys_obj_type (dev_obj_type))
+(call fs_associate_devtmpfs (dev_obj_type))
+
+(typeattribute dev_read_memory_subj_type)
+(typeattribute dev_not_read_memory_subj_type_or_dev_unconfined_subj_type)
+
+(typeattributeset dev_not_read_memory_subj_type_or_dev_unconfined_subj_type
+	(not (dev_read_memory_subj_type dev_unconfined_subj_type)))
+
+(neverallow dev_not_read_memory_subj_type_or_dev_unconfined_subj_type
+	memory.dev (chr_file (read)))
+
+(typeattribute dev_write_memory_subj_type)
+(typeattribute dev_not_write_memory_subj_type_or_dev_unconfined_subj_type)
+
+(typeattributeset dev_not_write_memory_subj_type_or_dev_unconfined_subj_type
+	(not (dev_write_memory_subj_type dev_unconfined_subj_type)))
+
+(neverallow dev_not_write_memory_subj_type_or_dev_unconfined_subj_type
+	memory.dev (chr_file (append write)))
+
+(allow dev_unconfined_subj_type self (capability (sys_rawio)))
+
+(typeattribute dev_except_storage_obj_type)
+
+(typeattributeset dev_except_storage_obj_type (and (dev_obj_type) (not (dev_storage_obj_type))))
+
+(allow dev_unconfined_subj_type dev_except_storage_obj_type all_chr_file_perms_except_mounton_and_execmod)

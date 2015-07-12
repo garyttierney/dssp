@@ -1,0 +1,7 @@
+(context sec_load_policy (sys.id sys.role sec_load_policy.bool (systemlow systemlow)))
+(context securityfs (sys.id sys.role securityfs.fs (systemlow systemlow)))
+
+(genfscon "securityfs" "/" securityfs)
+(genfscon "selinuxfs" "/booleans/sec_load_policy" sec_load_policy)
+(genfscon "selinuxfs" "/" securityfs)
+(sidcontext security (sys.id sys.role securityfs.fs (systemhigh systemhigh)))

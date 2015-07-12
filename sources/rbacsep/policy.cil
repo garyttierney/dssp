@@ -1,0 +1,9 @@
+; NOTE: This is just a placeholder until i get to it 
+
+(tunable enable_rbacsep false)
+
+(tunableif enable_rbacsep
+	(true
+		(constrain (process (sigchld sigkill sigstop signull signal ptrace getsched setsched getsession getpgid
+		setpgid getcap setcap share getattr setrlimit))
+		(eq r1 r2))))

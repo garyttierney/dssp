@@ -1,0 +1,21 @@
+/usr/local/etc /etc
+
+/bin /usr/bin
+/sbin /usr/sbin
+
+/usr/local/bin /usr/bin
+/usr/local/sbin /usr/sbin
+
+/lib /usr/lib
+/lib64 /usr/lib
+
+/usr/lib64 /usr/lib
+
+/usr/local/lib /usr/lib
+/usr/local/lib64 /usr/lib
+
+/usr/local/share /usr/share
+
+/run /var/run
+
+/var/lib/container /var/lib/machines

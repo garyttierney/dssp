@@ -1,0 +1,109 @@
+(block net_if_obj_blk
+	(blockabstract net_if_obj_blk)
+
+	(type if)
+	(call net_if_obj_type (if)))
+
+(block net_node_obj_blk
+	(blockabstract net_node_obj_blk)
+
+	(type node)
+	(call net_node_obj_type (node)))
+
+(block net_packet_obj_blk
+	(blockabstract net_packet_obj_blk)
+
+	(type packet)
+	(call net_packet_obj_type (packet)))
+
+(block net_peer_obj_blk
+	(blockabstract net_peer_obj_blk)
+
+	(type peer)
+	(call net_peer_obj_type (peer)))
+
+(block net_port_obj_blk
+	(blockabstract net_port_obj_blk)
+
+	(type port)
+	(call net_port_obj_type (port)))
+
+(block net_ephemeral_port_obj_blk
+	(blockabstract net_ephemeral_port_obj_blk)
+
+	(type port)
+	(call net_ephemeral_port_obj_type (port)))
+
+(block net_hi_reserved_port_obj_blk
+	(blockabstract net_hi_reserved_port_obj_blk)
+
+	(type port)
+	(call net_hi_reserved_port_obj_type (port)))
+
+(block net_reserved_port_obj_blk
+	(blockabstract net_reserved_port_obj_blk)
+
+	(type port)
+	(call net_reserved_port_obj_type (port)))
+
+(block net_unreserved_port_obj_blk
+	(blockabstract net_unreserved_port_obj_blk)
+
+	(type port)
+	(call net_unreserved_port_obj_type (port)))
+
+(macro net_if_obj_type ((type ARG1))
+	(typeattributeset net_if_obj_type ARG1))
+
+(macro net_node_obj_type ((type ARG1))
+	(typeattributeset net_node_obj_type ARG1))
+
+(macro net_packet_obj_type ((type ARG1))
+	(typeattributeset net_packet_obj_type ARG1))
+
+(macro net_peer_obj_type ((type ARG1))
+	(typeattributeset net_peer_obj_type ARG1))
+
+(macro net_port_obj_type ((type ARG1))
+	(typeattributeset net_port_obj_type ARG1))
+
+(macro net_ephemeral_port_obj_type ((type ARG1))
+	(call net_port_obj_type (ARG1))
+	(typeattributeset net_ephemeral_port_obj_type ARG1))
+
+(macro net_hi_reserved_port_obj_type ((type ARG1))
+	(call net_port_obj_type (ARG1))
+	(typeattributeset net_reserved_port_obj_type ARG1)
+	(typeattributeset net_rpc_port_obj_type ARG1))
+
+(macro net_reserved_port_obj_type ((type ARG1))
+	(call net_port_obj_type (ARG1))
+	(typeattributeset net_reserved_port_obj_type ARG1))
+
+(macro net_unreserved_port_obj_type ((type ARG1))
+	(call net_port_obj_type (ARG1))
+	(typeattributeset net_unreserved_port_obj_type ARG1))
+
+(macro net_tcp_bind_all_unreserved_ports ((type ARG1))
+	(allow ARG1 net_unreserved_port_obj_type (tcp_socket (name_bind))))
+
+(macro net_udp_bind_all_unreserved_ports ((type ARG1))
+	(allow ARG1 net_unreserved_port_obj_type (udp_socket (name_bind))))
+
+(macro net_udp_bind_unreserved_port ((type ARG1))
+	(allow ARG1 unreserved.port (udp_socket (name_bind))))
+
+(macro net_tcp_connect_all_unreserved_ports ((type ARG1))
+	(allow ARG1 net_unreserved_port_obj_type (tcp_socket (name_connect))))
+
+(macro net_tcp_connect_all_ephemeral_ports ((type ARG1))
+	(allow ARG1 net_ephemeral_port_obj_type (tcp_socket (name_connect))))
+
+(macro net_tcp_bind_generic_node ((type ARG1))
+	(allow ARG1 node.node (tcp_socket (node_bind))))
+
+(macro net_udp_bind_generic_node ((type ARG1))
+	(allow ARG1 node.node (udp_socket (node_bind))))
+
+(macro net_unconfined_subj_type ((type ARG1))
+	(typeattributeset net_unconfined_subj_type ARG1))

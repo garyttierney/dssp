@@ -1,0 +1,15 @@
+(typeattribute lib_obj_type)
+
+(block lib
+	(blockinherit lib_obj_blk))
+
+(block textrel
+	(blockinherit lib_obj_blk))
+
+(block ld_so
+	(blockinherit file_obj_blk))
+
+(block ld_so_cache
+	(blockinherit file_obj_blk))
+
+(call file_obj_type (lib_obj_type))

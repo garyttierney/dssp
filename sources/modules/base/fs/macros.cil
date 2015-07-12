@@ -1,0 +1,632 @@
+(block fs_obj_blk
+	(blockabstract fs_obj_blk)
+
+	(type fs)
+	(call fs_obj_type (fs)))
+
+(macro fs_obj_type ((type ARG1))
+	(typeattributeset fs_obj_type ARG1))
+
+(macro fs_associate_fs ((type ARG1))
+	(allow ARG1 fs.fs (filesystem (associate))))
+
+(macro fs_associate_devtmpfs ((type ARG1))
+	(allow ARG1 devtmpfs.fs (filesystem (associate))))
+
+(macro fs_associate_devpts ((type ARG1))
+	(allow ARG1 devpts.fs (filesystem (associate))))
+
+(macro fs_associate_tmpfs ((type ARG1))
+	(allow ARG1 tmpfs.fs (filesystem (associate))))
+
+(macro fs_getattr_fs ((type ARG1))
+	(allow ARG1 fs.fs (filesystem (getattr))))
+
+(macro fs_mount_fs ((type ARG1))
+	(allow ARG1 fs.fs (filesystem (mount))))
+
+(macro fs_remount_fs ((type ARG1))
+	(allow ARG1 fs.fs (filesystem (remount))))
+
+(macro fs_unmount_fs ((type ARG1))
+	(allow ARG1 fs.fs (filesystem (unmount))))
+
+(macro fs_get_fs_quotas ((type ARG1))
+	(allow ARG1 fs.fs (filesystem (quotaget))))
+
+(macro fs_mod_fs_quotas ((type ARG1))
+	(allow ARG1 fs.fs (filesystem (quotamod))))
+
+(macro fs_search_autofs ((type ARG1))
+	(call fs_search_proc (ARG1))
+	(allow ARG1 autofs_fs.fs search_dir_perms))
+
+(macro fs_list_autofs ((type ARG1))
+	(call fs_search_proc (ARG1))
+	(allow ARG1 autofs_fs.fs list_dir_perms))
+
+(macro fs_mount_autofs_fs ((type ARG1))
+	(allow ARG1 autofs_fs.fs (filesystem (mount))))
+
+(macro fs_search_binfmt_misc ((type ARG1))
+	(call fs_search_autofs (ARG1))
+	(allow ARG1 binfmt_misc.fs search_dir_perms))
+
+(macro fs_list_binfmt_misc ((type ARG1))
+	(call fs_list_autofs (ARG1))
+	(allow ARG1 binfmt_misc.fs list_dir_perms))
+
+(macro fs_read_binfmt_misc_files ((type ARG1))
+	(call fs_search_autofs (ARG1))
+	(call read_files_pattern (ARG1 binfmt_misc.fs binfmt_misc.fs)))
+
+(macro fs_read_binfmt_misc_lnk_files ((type ARG1))
+	(call fs_search_autofs (ARG1))
+	(call read_lnk_files_pattern (ARG1 binfmt_misc.fs binfmt_misc.fs)))
+
+(macro fs_read_binfmt_misc ((type ARG1))
+	(call fs_search_autofs (ARG1))
+	(allow ARG1 binfmt_misc.fs read_file_perms)
+	(allow ARG1 binfmt_misc.fs list_dir_perms)
+	(allow ARG1 binfmt_misc.fs read_lnk_file_perms))
+
+(macro fs_search_cgroup ((type ARG1))
+	(call fs_search_sysfs (ARG1))
+	(call fs_read_tmpfs_lnk_files (ARG1))
+	(allow ARG1 cgroup.fs search_dir_perms))
+
+(macro fs_list_cgroup ((type ARG1))
+	(call fs_search_sysfs (ARG1))
+	(call fs_read_tmpfs_lnk_files (ARG1))
+	(allow ARG1 cgroup.fs list_dir_perms))
+
+(macro fs_getattr_cgroup_fs ((type ARG1))
+	(allow ARG1 cgroup.fs (filesystem (getattr))))
+
+(macro fs_read_cgroup_files ((type ARG1))
+	(call fs_search_cgroup (ARG1))
+	(allow ARG1 cgroup.fs read_file_perms))
+
+(macro fs_setattr_cgroup_dirs ((type ARG1))
+	(call fs_search_cgroup (ARG1))
+	(allow ARG1 cgroup.fs (dir (setattr))))
+
+(macro fs_setattr_cgroup_files ((type ARG1))
+	(call fs_search_cgroup (ARG1))
+	(allow ARG1 cgroup.fs (file (setattr))))
+
+(macro fs_rw_cgroup_files ((type ARG1))
+	(call fs_search_cgroup (ARG1))
+	(allow ARG1 cgroup.fs rw_file_perms))
+
+(macro fs_add_entry_cgroup ((type ARG1))
+	(call fs_search_cgroup (ARG1))
+	(allow ARG1 cgroup.fs add_entry_dir_perms))
+
+(macro fs_del_entry_cgroup ((type ARG1))
+	(call fs_search_cgroup (ARG1))
+	(allow ARG1 cgroup.fs del_entry_dir_perms))
+
+(macro fs_delete_cgroup_dirs ((type ARG1))
+	(call fs_del_entry_cgroup (ARG1))
+	(allow ARG1 cgroup.fs delete_dir_perms))
+
+(macro fs_manage_cgroup_dirs ((type ARG1))
+	(call fs_search_cgroup (ARG1))
+	(allow ARG1 cgroup.fs manage_dir_perms))
+
+(macro fs_read_cgroup_lnk_files ((type ARG1))
+	(call fs_search_cgroup (ARG1))
+	(allow ARG1 cgroup.fs read_lnk_file_perms))
+
+(macro fs_read_cgroup ((type ARG1))
+	(call fs_search_sysfs (ARG1))
+	(call fs_read_tmpfs_lnk_files (ARG1))
+	(allow ARG1 cgroup.fs read_file_perms)
+	(allow ARG1 cgroup.fs list_dir_perms)
+	(allow ARG1 cgroup.fs read_lnk_file_perms))
+
+(macro fs_mounton_cgroup_dirs ((type ARG1))
+	(allow ARG1 cgroup.fs (dir (mounton))))
+
+(macro fs_mount_cgroup_fs ((type ARG1))
+	(allow ARG1 cgroup.fs (filesystem (mount))))
+
+(macro fs_remount_cgroup_fs ((type ARG1))
+	(allow ARG1 cgroup.fs (filesystem (remount))))
+
+(macro fs_search_debugfs ((type ARG1))
+	(call fs_search_proc (ARG1))
+	(allow ARG1 debugfs.fs search_dir_perms))
+
+(macro fs_list_debugfs ((type ARG1))
+	(call fs_search_proc (ARG1))
+	(allow ARG1 debugfs.fs list_dir_perms))
+
+(macro fs_read_debugfs_files ((type ARG1))
+	(call fs_search_proc (ARG1))
+	(call read_files_pattern (ARG1 debugfs.fs debugfs.fs)))
+
+(macro fs_read_debugfs ((type ARG1))
+	(call fs_search_proc (ARG1))
+	(allow ARG1 debugfs.fs list_dir_perms)
+	(allow ARG1 debugfs.fs read_file_perms)
+	(allow ARG1 debugfs.fs read_lnk_file_perms))
+
+(macro fs_getattr_debugfs_fs ((type ARG1))
+	(allow ARG1 debugfs.fs (filesystem (getattr))))
+
+(macro fs_search_devpts ((type ARG1))
+	(call fs_search_devtmpfs (ARG1))
+	(allow ARG1 devpts.fs search_dir_perms))
+
+(macro fs_list_devpts ((type ARG1))
+	(call fs_search_devtmpfs (ARG1))
+	(allow ARG1 devpts.fs list_dir_perms))
+
+(macro fs_getattr_devpts_fs ((type ARG1))
+	(allow ARG1 devpts.fs (filesystem (getattr))))
+
+(macro fs_getattr_devpts_chr_files ((type ARG1))
+	(call fs_search_devtmpfs (ARG1))
+	(call getattr_chr_files_pattern (ARG1 devpts.fs devpts.fs)))
+
+(macro fs_relabel_devpts_chr_files ((type ARG1))
+	(call fs_search_devtmpfs (ARG1))
+	(allow ARG1 devpts.fs relabel_chr_file_perms))
+
+(macro fs_rw_devpts_chr_files ((type ARG1))
+	(call fs_search_devtmpfs (ARG1))
+	(call rw_chr_files_pattern (ARG1 devpts.fs devpts.fs)))
+
+(macro fs_write_inherited_devpts_chr_files ((type ARG1))
+	(allow ARG1 devpts.fs write_inherited_chr_file_perms))
+
+(macro fs_relabelfrom_devpts_filesystems ((type ARG1))
+	(allow ARG1 devpts.fs (filesystem (relabelfrom))))
+
+(macro fs_devpts_obj_type_transition ((type ARG1)(type ARG2) (class ARG3)(name ARG4))
+	(call fs_search_devtmpfs (ARG1))
+	(call obj_type_transition_pattern (ARG1 devpts.fs ARG2 ARG3 ARG4)))
+
+(macro fs_mount_devpts_fs ((type ARG1))
+	(allow ARG1 devpts.fs (filesystem (mount))))
+
+(macro fs_remount_devpts_fs ((type ARG1))
+	(allow ARG1 devpts.fs (filesystem (remount))))
+
+(macro fs_list_devtmpfs ((type ARG1))
+	(allow ARG1 devtmpfs.fs list_dir_perms))
+
+(macro fs_getattr_devtmpfs_fs ((type ARG1))
+	(allow ARG1 devtmpfs.fs (filesystem (getattr))))
+
+(macro fs_read_devtmpfs_files ((type ARG1))
+	(call read_files_pattern (ARG1 devtmpfs.fs devtmpfs.fs)))
+
+(macro fs_read_devtmpfs_chr_files ((type ARG1))
+	(call read_chr_files_pattern (ARG1 devtmpfs.fs devtmpfs.fs)))
+
+(macro fs_read_devtmpfs_lnk_files ((type ARG1))
+	(call read_lnk_files_pattern (ARG1 devtmpfs.fs devtmpfs.fs)))
+
+(macro fs_read_devtmpfs ((type ARG1))
+	(allow ARG1 devtmpfs.fs read_file_perms)
+	(allow ARG1 devtmpfs.fs list_dir_perms)
+	(allow ARG1 devtmpfs.fs read_lnk_file_perms))
+
+(macro fs_manage_devtmpfs_dirs ((type ARG1))
+	(call manage_dirs_pattern (ARG1 devtmpfs.fs devtmpfs.fs)))
+
+(macro fs_write_inherited_devtmpfs_dirs ((type ARG1))
+	(allow ARG1 devtmpfs.fs write_inherited_dir_perms))
+
+(macro fs_setattr_devtmpfs_dirs ((type ARG1))
+	(allow ARG1 devtmpfs.fs (dir (setattr))))
+
+(macro fs_manage_devtmpfs_files ((type ARG1))
+	(call manage_files_pattern (ARG1 devtmpfs.fs devtmpfs.fs)))
+
+(macro fs_manage_devtmpfs_chr_files ((type ARG1))
+	(call manage_chr_files_pattern (ARG1 devtmpfs.fs devtmpfs.fs)))
+
+(macro fs_add_entry_devtmpfs ((type ARG1))
+	(allow ARG1 devtmpfs.fs add_entry_dir_perms))
+
+(macro fs_del_entry_devtmpfs ((type ARG1))
+	(allow ARG1 devtmpfs.fs del_entry_dir_perms))
+
+(macro fs_create_devtmpfs_chr_files ((type ARG1))
+	(allow ARG1 self (capability (mknod)))
+	(call fs_add_entry_devtmpfs (ARG1))
+	(allow ARG1 devtmpfs.fs create_chr_file_perms))
+
+(macro fs_setattr_devtmpfs_chr_files ((type ARG1))
+	(allow ARG1 devtmpfs.fs (file (setattr))))
+
+(macro fs_relabel_devtmpfs_dirs ((type ARG1))
+	(call relabel_dirs_pattern (ARG1 devtmpfs.fs devtmpfs.fs)))
+
+(macro fs_relabelfrom_devtmpfs_dirs ((type ARG1))
+	(call relabelfrom_dirs_pattern (ARG1 devtmpfs.fs devtmpfs.fs)))
+
+(macro fs_relabelfrom_devtmpfs_chr_files ((type ARG1))
+	(call relabelfrom_chr_files_pattern (ARG1 devtmpfs.fs devtmpfs.fs)))
+
+(macro fs_relabelfrom_devtmpfs_blk_files ((type ARG1))
+	(call relabelfrom_blk_files_pattern (ARG1 devtmpfs.fs devtmpfs.fs)))
+
+(macro fs_dontaudit_getattr_devtmpfs_chr_files ((type ARG1))
+	(dontaudit ARG1 devtmpfs.fs (chr_file (getattr))))
+
+(macro fs_dontaudit_getattr_devtmpfs_blk_files ((type ARG1))
+	(dontaudit ARG1 devtmpfs.fs (blk_file (getattr))))
+
+(macro fs_manage_devtmpfs_blk_files ((type ARG1))
+	(call manage_blk_files_pattern (ARG1 devtmpfs.fs devtmpfs.fs)))
+
+(macro fs_manage_devtmpfs_lnk_files ((type ARG1))
+	(call manage_lnk_files_pattern (ARG1 devtmpfs.fs devtmpfs.fs)))
+
+(macro filesystems_mounton_devtmpfs_dirs ((type ARG1))
+	(allow ARG1 devtmpfs.fs (dir (mounton))))
+
+(macro fs_search_devtmpfs ((type ARG1))
+	(allow ARG1 devtmpfs.fs search_dir_perms))
+
+(macro fs_rw_devtmpfs_dirs ((type ARG1))
+	(allow ARG1 devtmpfs.fs rw_dir_perms))
+
+(macro fs_devtmpfs_obj_type_transition ((type ARG1)(type ARG2)(class ARG3)(name ARG4))
+	(call obj_type_transition_pattern (ARG1 devtmpfs.fs ARG2 ARG3 ARG4)))
+
+(macro fs_search_dosfs ((type ARG1))
+	(allow ARG1 dosfs.fs search_dir_perms))
+
+(macro fs_list_dosfs ((type ARG1))
+	(allow ARG1 dosfs.fs list_dir_perms))
+
+(macro fs_getattr_dosfs_fs ((type ARG1))
+	(allow ARG1 dosfs.fs (filesystem (getattr))))
+
+(macro fs_read_dosfs_files ((type ARG1))
+	(call read_files_pattern (ARG1 dosfs.fs dosfs.fs)))
+
+(macro fs_manage_dosfs_files ((type ARG1))
+	(call manage_files_pattern (ARG1 dosfs.fs dosfs.fs)))
+
+(macro fs_read_dosfs_lnk_files ((type ARG1))
+	(call read_lnk_files_pattern (ARG1 dosfs.fs dosfs.fs)))
+
+(macro fs_read_dosfs ((type ARG1))
+	(allow ARG1 dosfs.fs read_file_perms)
+	(allow ARG1 dosfs.fs list_dir_perms)
+	(allow ARG1 dosfs.fs read_lnk_file_perms))
+
+(macro fs_remount_dosfs_fs ((type ARG1))
+	(allow ARG1 dosfs.fs (filesystem (remount))))
+
+(macro fs_search_efivarfs ((type ARG1))
+	(call fs_search_proc (ARG1))
+	(allow ARG1 efivarfs.fs search_dir_perms))
+
+(macro fs_list_efivarfs ((type ARG1))
+	(call fs_search_proc (ARG1))
+	(allow ARG1 efivarfs.fs list_dir_perms))
+
+(macro fs_getattr_fuse_fs ((type ARG1))
+	(allow ARG1 fuse_fs.fs (filesystem (getattr))))
+
+(macro fs_mount_fuse_fs ((type ARG1))
+	(allow ARG1 fuse_fs.fs (filesystem (mount))))
+
+(macro fs_manage_fuse_dirs ((type ARG1))
+	(allow ARG1 fuse_fs.fs manage_dir_perms))
+
+(macro fs_manage_fuse_files ((type ARG1))
+	(call manage_files_pattern (ARG1 fuse_fs.fs fuse_fs.fs)))
+
+(macro fs_manage_fuse_lnk_files ((type ARG1))
+	(call manage_lnk_files_pattern (ARG1 fuse_fs.fs fuse_fs.fs)))
+
+(macro fs_list_fuse ((type ARG1))
+	(allow ARG1 fuse_fs.fs list_dir_perms))
+
+(macro fs_read_fuse_files ((type ARG1))
+	(call read_files_pattern (ARG1 fuse_fs.fs fuse_fs.fs)))
+
+(macro fs_read_fuse_lnk_files ((type ARG1))
+	(call read_lnk_files_pattern (ARG1 fuse_fs.fs fuse_fs.fs)))
+
+(macro fs_read_fuse ((type ARG1))
+	(allow ARG1 fuse_fs.fs list_dir_perms)
+	(allow ARG1 fuse_fs.fs read_file_perms)
+	(allow ARG1 fuse_fs.fs read_lnk_file_perms))
+
+(macro fs_manage_fuse ((type ARG1))
+	(allow ARG1 fuse_fs.fs manage_dir_perms)
+	(allow ARG1 fuse_fs.fs manage_file_perms)
+	(allow ARG1 fuse_fs.fs manage_lnk_file_perms))
+
+(macro fs_unmount_fuse_fs ((type ARG1))
+	(allow ARG1 fuse_fs.fs (filesystem (unmount))))
+
+(macro fs_search_hugetlbfs ((type ARG1))
+	(call fs_search_devtmpfs (ARG1))
+	(allow ARG1 hugetlbfs.fs search_dir_perms))
+
+(macro fs_list_hugetlbfs ((type ARG1))
+	(call fs_search_devtmpfs (ARG1))
+	(allow ARG1 hugetlbfs.fs list_dir_perms))
+
+(macro fs_getattr_hugetlbfs_fs ((type ARG1))
+	(allow ARG1 hugetlbfs.fs (filesystem (getattr))))
+
+(macro fs_dontaudit_audit_access_hugetlbfs_dirs ((type ARG1))
+	(dontaudit ARG1 hugetlbfs.fs (dir (audit_access))))
+
+(macro fs_setattr_hugetlbfs_dirs ((type ARG1))
+	(allow ARG1 hugetlbfs.fs (dir (setattr))))
+
+(macro fs_manage_hugetlbfs_files ((type ARG1))
+	(call fs_search_devtmpfs (ARG1))
+	(call manage_files_pattern (ARG1 hugetlbfs.fs hugetlbfs.fs)))
+
+(macro fs_mount_hugetlbfs_fs ((type ARG1))
+	(allow ARG1 hugetlbfs.fs (filesystem (mount))))
+
+(macro fs_remount_hugetlbfs_fs ((type ARG1))
+	(allow ARG1 hugetlbfs.fs (filesystem (remount))))
+
+(macro fs_search_proc ((type ARG1))
+	(allow ARG1 proc.fs search_dir_perms))
+
+(macro fs_getattr_proc_fs ((type ARG1))
+	(allow ARG1 proc.fs (filesystem (getattr))))
+
+(macro fs_mount_proc_fs ((type ARG1))
+	(allow ARG1 proc.fs (filesystem (mount))))
+
+(macro fs_remount_proc_fs ((type ARG1))
+	(allow ARG1 proc.fs (filesystem (remount))))
+
+(macro fs_read_proc_files ((type ARG1))
+	(call read_files_pattern (ARG1 proc.fs proc.fs)))
+
+(macro fs_write_proc_files ((type ARG1))
+	(call write_files_pattern (ARG1 proc.fs proc.fs)))
+
+(macro fs_read_proc_lnk_files ((type ARG1))
+	(call read_lnk_files_pattern (ARG1 proc.fs proc.fs)))
+
+(macro fs_read_proc ((type ARG1))
+	(allow ARG1 proc.fs list_dir_perms)
+	(allow ARG1 proc.fs read_file_perms)
+	(allow ARG1 proc.fs read_lnk_file_perms))
+
+(macro fs_list_proc ((type ARG1))
+	(allow ARG1 proc.fs list_dir_perms))
+
+(macro fs_rw_proc_dirs ((type ARG1))
+	(allow ARG1 proc.fs rw_dir_perms))
+
+(macro fs_mounton_proc_dirs ((type ARG1))
+	(allow ARG1 proc.fs (dir (mounton))))
+
+(macro fs_search_pstore ((type ARG1))
+	(call fs_search_sysfs (ARG1))
+	(allow ARG1 pstore.fs search_dir_perms))
+
+(macro fs_list_pstore ((type ARG1))
+	(call fs_search_sysfs (ARG1))
+	(allow ARG1 pstore.fs list_dir_perms))
+
+(macro fs_tmpfs_obj_type_transition ((type ARG1)(type ARG2)(class ARG3)(name ARG4))
+	(call fs_search_devtmpfs (ARG1))
+	(call obj_type_transition_pattern (ARG1 tmpfs.fs ARG2 ARG3 ARG4)))
+
+(macro fs_getattr_rootfs_fs ((type ARG1))
+	(allow ARG1 rootfs.fs (filesystem (getattr))))
+
+(macro fs_setattr_rootfs_dirs ((type ARG1))
+	(allow ARG1 rootfs.fs (dir (setattr))))
+
+(macro fs_rw_rootfs_dirs ((type ARG1))
+	(allow ARG1 rootfs.fs rw_dir_perms))
+
+(macro fs_write_inherited_rootfs_dirs ((type ARG1))
+	(allow ARG1 rootfs,fs write_inherited_dir_perms))
+
+(macro fs_search_rootfs ((type ARG1))
+	(allow ARG1 rootfs.fs search_dir_perms))
+
+(macro fs_list_rootfs ((type ARG1))
+	(allow ARG1 rootfs.fs list_dir_perms))
+
+(macro fs_mounton_rootfs_dirs ((type ARG1))
+	(allow ARG1 rootfs.fs (dir (mounton))))
+
+(macro fs_rootfs_obj_type_transition ((type ARG1)(type ARG2)(class ARG3)(name ARG4))
+	(call obj_type_transition_pattern (ARG1 rootfs.fs ARG2 ARG3 ARG4)))
+
+(macro fs_search_sysfs ((type ARG1))
+	(allow ARG1 sysfs.fs search_dir_perms))
+
+(macro fs_dontaudit_audit_access_sysfs_dirs ((type ARG1))
+	(dontaudit ARG1 sysfs.fs (dir (audit_access))))
+
+(macro fs_relabel_sysfs_dirs ((type ARG1))
+	(call relabel_dirs_pattern (ARG1 sysfs.fs sysfs.fs)))
+
+(macro fs_relabelfrom_sysfs_dirs ((type ARG1))
+	(call relabelfrom_dirs_pattern (ARG1 sysfs.fs sysfs.fs)))
+
+(macro fs_setattr_sysfs_dirs ((type ARG1))
+	(allow ARG1 sysfs.fs (dir (setattr))))
+
+(macro fs_list_sysfs ((type ARG1))
+	(allow ARG1 sysfs.fs list_dir_perms))
+
+(macro fs_getattr_sysfs_fs ((type ARG1))
+	(allow ARG1 sysfs.fs (filesystem (getattr))))
+
+(macro fs_read_sysfs_files ((type ARG1))
+	(call read_files_pattern (ARG1 sysfs.fs sysfs.fs)))
+
+(macro fs_rw_sysfs_files ((type ARG1))
+	(call rw_files_pattern (ARG1 sysfs.fs sysfs.fs)))
+
+(macro fs_read_sysfs_lnk_files ((type ARG1))
+	(call read_lnk_files_pattern (ARG1 sysfs.fs sysfs.fs)))
+
+(macro fs_manage_sysfs_dirs ((type ARG1))
+	(call manage_dirs_pattern (ARG1 sysfs.fs sysfs.fs)))
+
+(macro fs_read_sysfs ((type ARG1))
+	(allow ARG1 sysfs.fs read_file_perms)
+	(allow ARG1 sysfs.fs list_dir_perms)
+	(allow ARG1 sysfs.fs read_lnk_file_perms))
+
+(macro fs_mounton_sysfs_dirs ((type ARG1))
+	(allow ARG1 sysfs.fs (dir (mounton))))
+
+(macro fs_mount_sysfs_fs ((type ARG1))
+	(allow ARG1 sysfs.fs (filesystem (mount))))
+
+(macro fs_remount_sysfs_fs ((type ARG1))
+	(allow ARG1 sysfs.fs (filesystem (remount))))
+
+(macro fs_search_tmpfs ((type ARG1))
+	(call fs_search_devtmpfs (ARG1))
+	(allow ARG1 tmpfs.fs search_dir_perms))
+
+(macro fs_list_tmpfs ((type ARG1))
+	(call fs_search_devtmpfs (ARG1))
+	(allow ARG1 tmpfs.fs list_dir_perms))
+
+(macro fs_getattr_tmpfs_fs ((type ARG1))
+	(allow ARG1 tmpfs.fs (filesystem (getattr))))
+
+(macro fs_read_tmpfs_files ((type ARG1))
+	(call fs_search_devtmpfs (ARG1))
+	(call read_files_pattern (ARG1 tmpfs.fs tmpfs.fs)))
+
+(macro fs_rw_tmpfs_files ((type ARG1))
+	(call fs_search_devtmpfs (ARG1))
+	(call rw_files_pattern (ARG1 tmpfs.fs tmpfs.fs)))
+
+(macro fs_rw_inherited_tmpfs_files ((type ARG1))
+	(allow ARG1 tmpfs.fs rw_inherited_file_perms))
+
+(macro fs_manage_tmpfs_files ((type ARG1))
+	(call fs_search_devtmpfs (ARG1))
+	(call manage_files_pattern (ARG1 tmpfs.fs tmpfs.fs)))
+
+(macro fs_read_tmpfs_lnk_files ((type ARG1))
+	(call fs_search_devtmpfs (ARG1))
+	(call read_lnk_files_pattern (ARG1 tmpfs.fs tmpfs.fs)))
+
+(macro fs_manage_tmpfs_lnk_files ((type ARG1))
+	(call fs_search_devtmpfs (ARG1))
+	(call manage_lnk_files_pattern (ARG1 tmpfs.fs tmpfs.fs)))
+
+(macro fs_read_tmpfs ((type ARG1))
+	(call fs_search_devtmpfs (ARG1))
+	(allow ARG1 tmpfs.fs read_file_perms)
+	(allow ARG1 tmpfs.fs list_dir_perms)
+	(allow ARG1 tmpfs.fs read_lnk_file_perms))
+
+(macro fs_relabelfrom_tmpfs_fs ((type ARG1))
+	(allow ARG1 tmpfs.fs (filesystem (relabelfrom))))
+
+(macro fs_relabel_tmpfs_dirs ((type ARG1))
+	(call fs_search_devtmpfs (ARG1))
+	(call relabel_dirs_pattern (ARG1 tmpfs.fs tmpfs.fs)))
+
+(macro fs_relabelfrom_tmpfs_dirs ((type ARG1))
+	(call fs_search_devtmpfs (ARG1))
+	(call relabelfrom_dirs_pattern (ARG1 tmpfs.fs tmpfs.fs)))
+
+(macro fs_relabelfrom_tmpfs ((type ARG1))
+	(call fs_search_devtmpfs (ARG1))
+	(allow ARG1 tmpfs.fs relabelfrom_file_perms)
+	(allow ARG1 tmpfs.fs relabelfrom_dir_perms)
+	(allow ARG1 tmpfs.fs relabelfrom_fifo_file_perms)
+	(allow ARG1 tmpfs.fs relabelfrom_lnk_file_perms)
+	(allow ARG1 tmpfs.fs relabelfrom_sock_file_perms)
+	(allow ARG1 tmpfs.fs relabelfrom_blk_file_perms)
+	(allow ARG1 tmpfs.fs relabelfrom_chr_file_perms))
+
+(macro fs_del_entry_tmpfs ((type ARG1))
+	(allow ARG1 tmpfs.fs del_entry_dir_perms))
+
+(macro fs_dontaudit_audit_access_tmpfs_dirs ((type ARG1))
+	(dontaudit ARG1 tmpfs.fs (dir (audit_access))))
+
+(macro fs_rw_tmpfs_dirs ((type ARG1))
+	(call fs_search_devtmpfs (ARG1))
+	(allow ARG1 tmpfs.fs rw_dir_perms))
+
+(macro fs_setattr_tmpfs_dirs ((type ARG1))
+	(allow ARG1 tmpfs.fs (dir (setattr))))
+
+(macro fs_manage_tmpfs_dirs ((type ARG1))
+	(call fs_search_devtmpfs (ARG1))
+	(call manage_dirs_pattern (ARG1 tmpfs.fs tmpfs.fs)))
+
+(macro fs_mounton_tmpfs_dirs ((type ARG1))
+	(allow ARG1 tmpfs.fs (dir (mounton))))
+
+(macro fs_mount_tmpfs_fs ((type ARG1))
+	(allow ARG1 tmpfs.fs (filesystem (mount))))
+
+(macro fs_remount_tmpfs_fs ((type ARG1))
+	(allow ARG1 tmpfs.fs (filesystem (remount))))
+
+(macro fs_unmount_tmpfs_fs ((type ARG1))
+	(allow ARG1 tmpfs.fs (filesystem (unmount))))
+
+(macro fs_mount_tracefs_fs ((type ARG1))
+	(allow ARG1 tracefs.fs (filesystem (mount))))
+
+(macro fs_search_tracefs ((type ARG1))
+	(call fs_search_debugfs (ARG1))
+	(allow ARG1 tracefs.fs search_dir_perms))
+
+(macro fs_list_tracefs ((type ARG1))
+	(call fs_search_debugfs (ARG1))
+	(allow ARG1 tracefs.fs list_dir_perms))
+
+(macro fs_read_tracefs_files ((type ARG1))
+	(call fs_search_debugfs (ARG1))
+	(call read_files_pattern (ARG1 tracefs.fs tracefs.fs)))
+
+(macro fs_read_tracefs ((type ARG1))
+	(call fs_search_debugfs (ARG1))
+	(allow ARG1 tracefs.fs read_file_perms)
+	(allow ARG1 tracefs.fs list_dir_perms)
+	(allow ARG1 tracefs.fs read_lnk_file_perms))
+
+(macro fs_getattr_tracefs_fs ((type ARG1))
+	(allow ARG1 tracefs.fs (filesystem (getattr))))
+
+(macro fs_list_all ((type ARG1))
+	(allow ARG1 fs_obj_type list_dir_perms))
+
+(macro fs_dontaudit_getattr_all_fs ((type ARG1))
+	(dontaudit ARG1 fs_obj_type (filesystem (getattr))))
+
+(macro fs_getattr_all_fs ((type ARG1))
+	(allow ARG1 fs_obj_type (filesystem (getattr))))
+
+(macro fs_mount_all_fs ((type ARG1))
+	(allow ARG1 fs_obj_type (filesystem (mount))))
+
+(macro fs_remount_all_fs ((type ARG1))
+	(allow ARG1 fs_obj_type (filesystem (remount))))
+
+(macro fs_unmount_all_fs ((type ARG1))
+	(allow ARG1 fs_obj_type (filesystem (unmount))))
+
+(macro fs_unconfined_subj_type ((type ARG1))
+	(typeattributeset fs_unconfined_subj_type ARG1))

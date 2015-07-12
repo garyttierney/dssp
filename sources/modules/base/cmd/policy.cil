@@ -1,0 +1,9 @@
+(typeattribute cmd_obj_type)
+
+(block cmd
+	(blockinherit cmd_obj_blk))
+
+(block shell
+	(blockinherit cmd_obj_blk))
+
+(call file_obj_type (cmd_obj_type))

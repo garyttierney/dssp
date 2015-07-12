@@ -1,0 +1,94 @@
+(block cmd_obj_blk
+	(blockabstract cmd_obj_blk)
+
+	(type cmd_file)
+	(call cmd_obj_type (cmd_file)))
+
+(macro cmd_obj_type ((type ARG1))
+	(typeattributeset cmd_obj_type ARG1))
+
+(macro cmd_read_cmd ((type ARG1))
+	(call file_search_data (ARG1))
+	(allow ARG1 cmd.cmd_file list_dir_perms)
+	(allow ARG1 cmd.cmd_file read_file_perms)
+	(allow ARG1 cmd.cmd_file read_lnk_file_perms))
+
+(macro cmd_read_cmd_files ((type ARG1))
+	(call cmd_search_cmd (ARG1))
+	(allow ARG1 cmd.cmd_file read_file_perms))
+
+(macro cmd_read_cmd_lnk_files ((type ARG1))
+	(call file_search_data (ARG1))
+	(call read_lnk_files_pattern (ARG1 cmd.cmd_file cmd.cmd_file)))
+
+(macro cmd_search_cmd ((type ARG1))
+	(call file_search_data (ARG1))
+	(allow ARG1 cmd.cmd_file read_lnk_file_perms)
+	(allow ARG1 cmd.cmd_file search_dir_perms))
+
+(macro cmd_list_cmd ((type ARG1))
+	(call file_search_data (ARG1))
+	(allow ARG1 cmd.cmd_file read_lnk_file_perms)
+	(allow ARG1 cmd.cmd_file list_dir_perms))
+
+(macro cmd_obj_entry_subj ((type ARG1))
+	(call subj_entry (ARG1 cmd.cmd_file)))
+
+(macro cmd_auto_subj_type_transition ((type ARG1)(type ARG2))
+	(call cmd_manual_subj_type_transition (ARG1 ARG2))
+	(typetransition ARG1 cmd.cmd_file process "*" ARG2))
+
+(macro cmd_manual_subj_type_transition ((type ARG1)(type ARG2))
+	(call manual_subj_type_transition_pattern (ARG1 cmd.cmd_file ARG2)))
+
+(macro cmd_exec_cmd_files ((type ARG1))
+	(call cmd_search_cmd (ARG1))
+	(allow ARG1 cmd.cmd_file exec_file_perms))
+
+(macro cmd_exec_all_cmd_files ((type ARG1))
+	(call cmd_search_cmd (ARG1))
+	(allow ARG1 cmd_obj_type exec_file_perms))
+
+(macro cmd_mmap_all_cmd_files ((type ARG1))
+	(call cmd_search_cmd (ARG1))
+	(allow ARG1 cmd_obj_type mmap_file_perms))
+
+(macro cmd_read_all_cmd_files ((type ARG1))
+	(call cmd_search_cmd (ARG1))
+	(allow ARG1 cmd_obj_type read_file_perms))
+
+(macro cmd_getattr_cmd_files ((type ARG1))
+	(call cmd_search_cmd (ARG1))
+	(allow ARG1 cmd.cmd_file (file (getattr))))
+
+(macro cmd_getattr_all_cmd_files ((type ARG1))
+	(call cmd_search_cmd (ARG1))
+	(allow ARG1 cmd_obj_type (file (getattr))))
+
+(macro cmd_shell_obj_entry_subj ((type ARG1))
+	(call subj_entry (ARG1 shell.cmd_file)))
+
+(macro cmd_shell_auto_subj_type_transition ((type ARG1)(type ARG2))
+	(call cmd_shell_manual_subj_type_transition (ARG1 ARG2))
+	(typetransition ARG1 shell.cmd_file process "*" ARG2))
+
+(macro cmd_shell_manual_subj_type_transition ((type ARG1)(type ARG2))
+	(call manual_subj_type_transition_pattern (ARG1 shell.cmd_file ARG2)))
+
+(macro cmd_getattr_shell_files ((type ARG1))
+	(call cmd_search_cmd (ARG1))
+	(allow ARG1 shell.cmd_file (file (getattr))))
+
+(macro cmd_exec_shell_files ((type ARG1))
+	(call cmd_search_cmd (ARG1))
+	(allow ARG1 shell.cmd_file exec_file_perms))
+
+(macro cmd_mmap_shell_files ((type ARG1))
+	(call cmd_search_cmd (ARG1))
+	(allow ARG1 shell.cmd_file mmap_file_perms))
+
+(macro cmd_read_inherited_cmd_files ((type ARG1))
+	(allow ARG1 cmd.cmd_file read_inherited_file_perms))
+
+(macro cmd_read_inherited_shell_files ((type ARG1))
+	(allow ARG1 shell.cmd_file read_inherited_file_perms))
