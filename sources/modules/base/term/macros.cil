@@ -43,6 +43,9 @@
 	(call fs_getattr_devpts_fs (ARG1))
 	(call fs_devpts_obj_type_transition (ARG1 ARG2 chr_file "*")))
 
+(macro term_dontaudit_use_console ((type ARG1))
+	(dontaudit ARG1 console.dev rw_term_perms))
+
 (macro term_use_console ((type ARG1))
 	(call fs_search_devtmpfs (ARG1))
 	(allow ARG1 console.dev rw_term_perms))
