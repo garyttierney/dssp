@@ -1013,6 +1013,7 @@
 	(allow ARG1 file_var_lib_obj_type manage_lnk_file_perms))
 
 (macro file_var_lib_obj_type_transition ((type ARG1)(type ARG2)(class ARG3)(name ARG4))
+	(call file_search_var (ARG1))
 	(call obj_type_transition_pattern (ARG1 var_lib.var_lib_file ARG2 ARG3 ARG4)))
 
 (macro file_search_var_log ((type ARG1))
