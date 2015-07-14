@@ -78,6 +78,12 @@
 	(call sec_compute_create_context (subj))
 	(call sec_list_fs (subj))
 
+	(optional sys_optional_mount
+		(call mount_use_fd (subj))
+
+		(booleanif (mount_any_file) (true
+			(call file_read_all_inherited_files_except (subj)))))
+
 	(optional sys_optional_storage
 		(call storage_devtmpfs_obj_type_transition_fixed_disk (subj))
 		(call storage_devtmpfs_obj_type_transition_removable (subj))))
