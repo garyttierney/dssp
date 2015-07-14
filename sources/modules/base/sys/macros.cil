@@ -32,7 +32,7 @@
 (macro sys_roleallow_role ((role ARG1))
 	(roleattributeset sys_roleallow_role ARG1))
 
-(macro sys_userrole ((user ARG1))
+(macro sys_userrole_user ((user ARG1))
 	(userrole ARG1 sys.role))
 
 (macro sys_audit_client_subj_type ((type ARG1))

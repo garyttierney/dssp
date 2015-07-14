@@ -38,7 +38,7 @@
 	(roletype role subj)
 
 	(call sys_role (role))
-	(call sys_userrole (id))
+	(call sys_userrole_user (id))
 
 	(userlevel id systemlow)
 	(userrange id (systemlow systemhigh))
