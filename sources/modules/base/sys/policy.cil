@@ -78,11 +78,23 @@
 	(call sec_compute_create_context (subj))
 	(call sec_list_fs (subj))
 
+	(optional sys_optional_fstools
+		(call fstools_use_fd (subj)))
+
+	(optional sys_optional_kmod
+		(call kmod_auto_subj_type_transition (subj)))
+
 	(optional sys_optional_mount
 		(call mount_use_fd (subj))
 
 		(booleanif (mount_any_file) (true
 			(call file_read_all_inherited_files_except (subj)))))
+
+	(optional sys_optional_sd
+		(call subj_dynamic_subj_type_transition_type (subj))
+		(call sd_dynamic_subj_type_transition (subj))
+		(call sd_getattr_cmd_files (subj))
+		(call sd_send_signal (subj)))
 
 	(optional sys_optional_storage
 		(call storage_devtmpfs_obj_type_transition_fixed_disk (subj))
