@@ -409,7 +409,7 @@
 	(allow ARG1 lost_found.file manage_dir_perms)
 	(allow ARG1 lost_found.file manage_lnk_file_perms))
 
-(macro file_mountpoint_obj_type_transition_lost_found_dirs ((type ARG1))
+(macro file_mountpoint_obj_type_transition_lost_found ((type ARG1))
 	(call sys_mountpoint_obj_type_transition (ARG1 lost_found.file dir "lost+found")))
 
 (macro file_search_mnt ((type ARG1))
@@ -624,7 +624,7 @@
 	(allow ARG1 file_runtime_config_obj_type manage_lnk_file_perms)
 	(allow ARG1 file_runtime_config_obj_type manage_sock_file_perms))
 
-(macro file_runtime_config_obj_type_transition_runtime_config_dirs ((type ARG1))
+(macro file_runtime_obj_type_transition_runtime_config ((type ARG1))
 	(call file_search_runtime (ARG1))
 	(call file_runtime_obj_type_transition (ARG1 runtime_config.runtime_config_file dir "sysconfig")))
 
