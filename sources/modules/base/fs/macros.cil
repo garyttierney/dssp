@@ -613,6 +613,27 @@
 (macro fs_list_all ((type ARG1))
 	(allow ARG1 fs_obj_type list_dir_perms))
 
+(macro fs_getattr_all ((type ARG1))
+	(allow ARG1 fs_obj_type (file (getattr)))
+	(allow ARG1 fs_obj_type (dir (getattr)))
+	(allow ARG1 fs_obj_type (fifo_file (getattr)))
+	(allow ARG1 fs_obj_type (lnk_file (getattr)))
+	(allow ARG1 fs_obj_type (sock_file (getattr)))
+	(allow ARG1 fs_obj_type (blk_file (getattr)))
+	(allow ARG1 fs_obj_type (chr_file (getattr))))
+
+(macro fs_relabel_all ((type ARG1))
+	(allow ARG1 fs_obj_type relabel_file_perms)
+	(allow ARG1 fs_obj_type relabel_dir_perms)
+	(allow ARG1 fs_obj_type relabel_fifo_file_perms)
+	(allow ARG1 fs_obj_type relabel_lnk_file_perms)
+	(allow ARG1 fs_obj_type relabel_sock_file_perms)
+	(allow ARG1 fs_obj_type relabel_blk_file_perms)
+	(allow ARG1 fs_obj_type relabel_chr_file_perms))
+
+(macro fs_read_all_lnk_files ((type ARG1))
+	(call read_lnk_files_pattern (ARG1 fs_obj_type fs_obj_type)))
+
 (macro fs_dontaudit_getattr_all_fs ((type ARG1))
 	(dontaudit ARG1 fs_obj_type (filesystem (getattr))))
 

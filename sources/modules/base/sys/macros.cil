@@ -455,6 +455,12 @@
 (macro sys_list_invalid ((type ARG1))
 	(allow ARG1 invalid.isid list_dir_perms))
 
+(macro sys_read_invalid_files ((type ARG1))
+	(call read_files_pattern (ARG1 invalid.isid invalid.isid)))
+
+(macro sys_read_invalid_lnk_files ((type ARG1))
+	(call read_lnk_files_pattern (ARG1 invalid.isid invalid.isid)))
+
 (macro sys_manage_invalid_files ((type ARG1))
 	(call manage_files_pattern (ARG1 invalid.isid invalid.isid)))
 
@@ -476,11 +482,14 @@
 (macro sys_relabelfrom_invalid_dirs ((type ARG1))
 	(allow ARG1 invalid.isid relabelfrom_dir_perms))
 
-(macro sys_read_invalid_files ((type ARG1))
-	(call read_files_pattern (ARG1 invalid.isid invalid.isid)))
+(macro sys_search_unlabeled ((type ARG1))
+	(allow ARG1 unlabeled.isid search_dir_perms))
 
 (macro sys_list_unlabeled ((type ARG1))
 	(allow ARG1 unlabeled.isid list_dir_perms))
+
+(macro sys_read_unlabeled_lnk_files ((type ARG1))
+	(call read_lnk_files_pattern (ARG1 unlabeled.isid unlabeled.isid)))
 
 (macro sys_relabelfrom_unlabeled ((type ARG1))
 	(allow ARG1 unlabeled.isid relabelfrom_file_perms)

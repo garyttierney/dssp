@@ -1266,6 +1266,12 @@
 	(call file_search_var_tmp (ARG1))
 	(call obj_type_transition_pattern (ARG1 var_tmp.var_tmp_file ARG2 ARG3 ARG4)))
 
+(macro file_list_all ((type ARG1))
+	(allow ARG1 file_obj_type list_dir_perms))
+
+(macro file_read_all_lnk_files ((type ARG1))
+	(call read_lnk_files_pattern (ARG1 file_obj_type file_obj_type)))
+
 (macro file_getattr_all ((type ARG1))
 	(allow ARG1 file_obj_type (file (getattr)))
 	(allow ARG1 file_obj_type (dir (getattr)))
@@ -1274,6 +1280,24 @@
 	(allow ARG1 file_obj_type (sock_file (getattr)))
 	(allow ARG1 file_obj_type (blk_file (getattr)))
 	(allow ARG1 file_obj_type (chr_file (getattr))))
+
+(macro file_read_all_files_except ((type ARG1))
+	(call read_files_pattern (ARG1 file_except_obj_type file_except_obj_type)))
+
+(macro file_rw_all_files_except ((type ARG1))
+	(call rw_files_pattern (ARG1 file_except_obj_type file_except_obj_type)))
+
+(macro file_read_all_inherited_files_except ((type ARG1))
+	(allow ARG1 file_except_obj_type read_inherited_file_perms))
+
+(macro file_read_all_lnk_files_except ((type ARG1))
+	(allow ARG1 file_except_obj_type read_lnk_file_perms))
+
+(macro file_setattr_all_dirs_except ((type ARG1))
+	(allow ARG1 file_except_obj_type (dir (setattr))))
+
+(macro file_list_all_except ((type ARG1))
+	(allow ARG1 file_except_obj_type list_dir_perms))
 
 (macro file_getattr_all_except ((type ARG1))
 	(allow ARG1 file_except_obj_type (file (getattr)))
@@ -1292,42 +1316,6 @@
 	(dontaudit ARG1 file_except_obj_type (sock_file (audit_access)))
 	(dontaudit ARG1 file_except_obj_type (blk_file (audit_access)))
 	(dontaudit ARG1 file_except_obj_type (chr_file (audit_access))))
-
-(macro file_getattr_all_files ((type ARG1))
-	(call getattr_files_pattern (ARG1 file_obj_type file_obj_type)))
-
-(macro file_getattr_all_lnk_files ((type ARG1))
-	(call getattr_lnk_files_pattern (ARG1 file_obj_type file_obj_type)))
-
-(macro file_read_all_lnk_files ((type ARG1))
-	(call read_lnk_files_pattern (ARG1 file_obj_type file_obj_type)))
-
-(macro file_getattr_all_fifo_files ((type ARG1))
-	(call getattr_fifo_files_pattern (ARG1 file_obj_type file_obj_type)))
-
-(macro file_getattr_all_sock_files ((type ARG1))
-	(call getattr_sock_files_pattern (ARG1 file_obj_type file_obj_type)))
-
-(macro file_read_all_files_except ((type ARG1))
-	(call read_files_pattern (ARG1 file_except_obj_type file_except_obj_type)))
-
-(macro file_rw_all_files_except ((type ARG1))
-	(call rw_files_pattern (ARG1 file_except_obj_type file_except_obj_type)))
-
-(macro file_read_all_inherited_files_except ((type ARG1))
-	(allow ARG1 file_except_obj_type read_inherited_file_perms))
-
-(macro file_read_all_lnk_files_except ((type ARG1))
-	(allow ARG1 file_except_obj_type read_lnk_file_perms))
-
-(macro file_setattr_all_dirs_except ((type ARG1))
-	(allow ARG1 file_except_obj_type (dir (setattr))))
-
-(macro file_list_all ((type ARG1))
-	(allow ARG1 file_obj_type list_dir_perms))
-
-(macro file_list_all_except ((type ARG1))
-	(allow ARG1 file_except_obj_type list_dir_perms))
 
 (macro file_mounton_all_except ((type ARG1))
 	(allow ARG1 file_except_obj_type (file (mounton)))
