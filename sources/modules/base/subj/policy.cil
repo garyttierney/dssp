@@ -67,6 +67,8 @@
 
 (call fs_read_proc (subj_common_type))
 
+(call seutil_libselinux_linked_client_subj_type (subj_common_type))
+
 (optional subj_common_type_optional_lib
 	(call lib_use_ld_so (subj_common_type))
 	(call lib_use_all_libs (subj_common_type)))
