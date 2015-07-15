@@ -6,7 +6,7 @@
 	execheap setkeycreate setsockcreate))
 
 (class system (ipc_info syslog_read syslog_mod syslog_console
-	module_request))
+	module_request halt reboot status start stop undefined enable disable reload))
 
 (class capability (chown dac_override dac_read_search fowner fsetid kill setgid setuid setpcap linux_immutable net_bind_service
 	net_broadcast net_admin net_raw ipc_lock ipc_owner sys_module sys_rawio sys_chroot sys_ptrace sys_pacct sys_admin sys_boot
@@ -90,6 +90,8 @@
 (classcommon ipc ipc)
 (class ipc ())
 
+(class passwd (passwd chfn chsh rootok crontab))
+
 (classcommon netlink_route_socket socket)
 (class netlink_route_socket (nlmsg_read nlmsg_write))
 
@@ -144,6 +146,8 @@
 
 (class tun_socket (attach_queue))
 
+(class service (stop status disable enable reload start))
+
 (class binder (impersonate call set_context_mgr transfer))
 
 (classcommon netlink_iscsi_socket socket)
@@ -172,8 +176,8 @@
 
 (classorder (security process system capability filesystem file dir fd lnk_file chr_file blk_file sock_file fifo_file socket
 	tcp_socket udp_socket rawip_socket node netif netlink_socket packet_socket key_socket unix_stream_socket unix_dgram_socket
-	sem msg msgq shm ipc netlink_route_socket netlink_firewall_socket netlink_tcpdiag_socket netlink_nflog_socket
+	sem msg msgq shm ipc passwd netlink_route_socket netlink_firewall_socket netlink_tcpdiag_socket netlink_nflog_socket
 	netlink_xfrm_socket netlink_selinux_socket netlink_audit_socket netlink_ip6fw_socket netlink_dnrt_socket association
 	netlink_kobject_uevent_socket appletalk_socket packet key dccp_socket memprotect peer capability2 kernel_service
-	tun_socket binder netlink_iscsi_socket netlink_fib_lookup_socket netlink_connector_socket netlink_netfilter_socket
+	tun_socket service binder netlink_iscsi_socket netlink_fib_lookup_socket netlink_connector_socket netlink_netfilter_socket
 	netlink_generic_socket netlink_scsitransport_socket netlink_rdma_socket netlink_crypto_socket))
