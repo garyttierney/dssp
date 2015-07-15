@@ -105,63 +105,63 @@
 (macro subj_use_interactive_fd_type ((type ARG1))
 	(typeattributeset subj_use_interactive_fd_type ARG1))
 
-(macro subj_getattr_all_subj ((type ARG1))
+(macro subj_getattr_subj ((type ARG1))
 	(allow ARG1 subj_type (process (getattr))))
 
-(macro subj_read_all_subj_state ((type ARG1))
+(macro subj_read_subj_state ((type ARG1))
 	(call fs_search_proc (ARG1))
 	(allow ARG1 subj_type read_file_perms)
 	(allow ARG1 subj_type list_dir_perms)
 	(allow ARG1 subj_type read_lnk_file_perms))
 
-(macro subj_getattr_all_common_subj ((type ARG1))
+(macro subj_getattr_common_subj ((type ARG1))
 	(allow ARG1 subj_common_type (process (getattr))))
 
-(macro subj_dontaudit_read_all_common_subj_state ((type ARG1))
+(macro subj_dontaudit_read_common_subj_state ((type ARG1))
 	(dontaudit ARG1 subj_common_type read_file_perms)
 	(dontaudit ARG1 subj_common_type list_dir_perms)
 	(dontaudit ARG1 subj_common_type read_lnk_file_perms))
 
-(macro subj_read_all_common_subj_state ((type ARG1))
+(macro subj_read_common_subj_state ((type ARG1))
 	(call fs_search_proc (ARG1))
 	(allow ARG1 subj_common_type read_file_perms)
 	(allow ARG1 subj_common_type list_dir_perms)
 	(allow ARG1 subj_common_type read_lnk_file_perms))
 
-(macro subj_getpgid_all_subj ((type ARG1))
+(macro subj_getpgid_subj ((type ARG1))
 	(allow ARG1 subj_type (process (getpgid))))
 
-(macro subj_getpgid_all_common_subj ((type ARG1))
+(macro subj_getpgid_common_subj ((type ARG1))
 	(allow ARG1 subj_common_type (process (getpgid))))
 
-(macro subj_getsched_all_common_subj ((type ARG1))
+(macro subj_getsched_common_subj ((type ARG1))
 	(allow ARG1 subj_common_type (process (getsched))))
 
-(macro subj_setsched_all_common_subj ((type ARG1))
+(macro subj_setsched_common_subj ((type ARG1))
 	(allow ARG1 subject_common_type (process (setsched))))
 
-(macro subj_send_sigkill_all_subj ((type ARG1))
+(macro subj_send_sigkill_subj ((type ARG1))
 	(allow ARG1 subj_type (process (sigkill))))
 
-(macro subj_send_sigkill_all_common_subj ((type ARG1))
+(macro subj_send_sigkill_common_subj ((type ARG1))
 	(allow ARG1 subj_common_type (process (sigkill))))
 
-(macro subj_send_signal_all_subj ((type ARG1))
+(macro subj_send_signal_subj ((type ARG1))
 	(allow ARG1 subj_type (process (signal))))
 
-(macro subj_send_signal_all_common_subj ((type ARG1))
+(macro subj_send_signal_common_subj ((type ARG1))
 	(allow ARG1 subj_common_type (process (signal))))
 
-(macro subj_send_signull_all_subj ((type ARG1))
+(macro subj_send_signull_subj ((type ARG1))
 	(allow ARG1 subj_type (process (signull))))
 
-(macro subj_send_signull_all_common_subj ((type ARG1))
+(macro subj_send_signull_common_subj ((type ARG1))
 	(allow ARG1 subj_common_type (process (signull))))
 
-(macro subj_send_sigstop_all_subj ((type ARG1))
+(macro subj_send_sigstop_subj ((type ARG1))
 	(allow ARG1 subj_type (process (sigstop))))
 
-(macro subj_send_sigstop_all_common_subj ((type ARG1))
+(macro subj_send_sigstop_common_subj ((type ARG1))
 	(allow ARG1 subj_common_type (process (sigstop))))
 
 (macro subj_unconfined_type ((type ARG1))
