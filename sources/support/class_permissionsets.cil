@@ -162,7 +162,7 @@
 (classpermissionset read_chr_file_perms (chr_file (getattr open read lock ioctl)))
 
 (classpermission all_chr_file_perms_except_mounton_and_execmod)
-(classpermissionset all_chr_file_perms_except_mounton_and_execmod (lnk_file (ioctl read write create getattr setattr lock
+(classpermissionset all_chr_file_perms_except_mounton_and_execmod (chr_file (ioctl read write create getattr setattr lock
 	relabelfrom relabelto append unlink link rename execute quotaon audit_access open)))
 
 (classpermission append_chr_file_perms)
@@ -220,7 +220,7 @@
 (classpermissionset append_inherited_blk_file_perms (blk_file (getattr append lock ioctl)))
 
 (classpermission all_blk_file_perms_except_mounton_and_execmod)
-(classpermissionset all_blk_file_perms_except_mounton_and_execmod (lnk_file (ioctl read write create getattr setattr lock
+(classpermissionset all_blk_file_perms_except_mounton_and_execmod (blk_file (ioctl read write create getattr setattr lock
 	relabelfrom relabelto append unlink link rename execute quotaon audit_access open)))
 
 (classpermission write_blk_file_perms)
@@ -257,7 +257,7 @@
 (classpermissionset relabel_blk_file_perms (blk_file (getattr relabelfrom relabelto)))
 
 (classpermission all_sock_file_perms_except_mounton_and_execmod)
-(classpermissionset all_sock_file_perms_except_mounton_and_execmod (lnk_file (ioctl read write create getattr setattr lock
+(classpermissionset all_sock_file_perms_except_mounton_and_execmod (sock_file (ioctl read write create getattr setattr lock
 	relabelfrom relabelto append unlink link rename execute quotaon audit_access open)))
 
 (classpermission read_sock_file_perms)
@@ -297,7 +297,7 @@
 (classpermissionset relabel_sock_file_perms (sock_file (getattr relabelfrom relabelto)))
 
 (classpermission all_fifo_file_perms_except_mounton_and_execmod)
-(classpermissionset all_fifo_file_perms_except_mounton_and_execmod (lnk_file (ioctl read write create getattr setattr lock
+(classpermissionset all_fifo_file_perms_except_mounton_and_execmod (fifo_file (ioctl read write create getattr setattr lock
 	relabelfrom relabelto append unlink link rename execute quotaon audit_access open)))
 
 (classpermission read_fifo_file_perms)
