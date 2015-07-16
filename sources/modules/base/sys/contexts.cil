@@ -15,7 +15,6 @@
 (context net_unix (sys.id sys.role net_unix.sysctl (systemlow systemlow)))
 (context security (sys.id sys.role security.sysctl (systemlow systemlow)))
 (context sysctl (sys.id sys.role sysctl.sysctl (systemlow systemlow)))
-(context sys (sys.id sys.role sys.subj (systemhigh systemhigh)))
 (context sys_load_kernel_module (sys.id sys.role sys_load_kernel_module.bool (systemlow systemlow)))
 (context sysrq (sys.id sys.role sysrq.proc (systemlow systemlow)))
 (context sys_var_log_file (sys.id sys.role sys.var_log_file (systemlow systemlow)))
@@ -23,6 +22,12 @@
 (context usermodehelper (sys.id sys.role usermodehelper.sysctl (systemlow systemlow)))
 (context vm_overcommit (sys.id sys.role vm_overcommit.sysctl (systemlow systemlow)))
 (context vm (sys.id sys.role vm.sysctl (systemlow systemlow)))
+
+(tunableif enable_mls
+	(true
+		(context sys (sys.id sys.role sys.subj (systemhigh systemhigh))))
+	(false
+		(context sys (sys.id sys.role sys.subj (systemlow systemlow)))))
 
 (filecon "/var/log/boot\.log" file sys_var_log_file)
 (genfscon "proc" "/irq" irq)
