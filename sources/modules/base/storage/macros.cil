@@ -112,7 +112,7 @@
 	(call fs_search_devtmpfs (ARG1))
 	(allow ARG1 fixed_disk.storage_dev write_chr_file_perms)
 	(allow ARG1 fixed_disk.storage_dev write_blk_file_perms)
-	(typeattributeset storage_can_write_fixed_disk ARG1))
+	(typeattributeset storage_write_fixed_disk_subj_type ARG1))
 
 (macro storage_write_fuse ((type ARG1))
 	(call fs_search_devtmpfs (ARG1))
@@ -125,7 +125,7 @@
 (macro storage_write_scsi_generic ((type ARG1))
 	(call fs_search_devtmpfs (ARG1))
 	(allow ARG1 scsi_generic.storage_dev write_chr_file_perms)
-	(typeattributeset storage_can_write_scsi_generic ARG1))
+	(typeattributeset storage_write_scsi_generic_subj_type ARG1))
 
 (macro storage_write_all ((type ARG1))
 	(call storage_write_fixed_disk (ARG1))
@@ -137,7 +137,7 @@
 	(call fs_search_devtmpfs (ARG1))
 	(allow ARG1 fixed_disk.storage_dev read_chr_file_perms)
 	(allow ARG1 fixed_disk.storage_dev read_blk_file_perms)
-	(typeattributeset storage_can_read_fixed_disk ARG1))
+	(typeattributeset storage_read_fixed_disk_subj_type ARG1))
 
 (macro storage_read_fuse ((type ARG1))
 	(call fs_search_devtmpfs (ARG1))
@@ -150,7 +150,7 @@
 (macro storage_read_scsi_generic ((type ARG1))
 	(call fs_search_devtmpfs (ARG1))
 	(allow ARG1 scsi_generic.storage_dev read_chr_file_perms)
-	(typeattributeset storage_can_read_scsi_generic ARG1))
+	(typeattributeset storage_read_scsi_generic_subj_type ARG1))
 
 (macro storage_read_all ((type ARG1))
 	(call storage_read_fixed_disk (ARG1))
@@ -163,8 +163,8 @@
 	(call fs_rw_devtmpfs_dirs (ARG1))
 	(allow ARG1 fixed_disk.storage_dev manage_blk_file_perms)
 	(allow ARG1 fixed_disk.storage_dev manage_chr_file_perms)
-	(typeattributeset storage_can_read_fixed_disk ARG1)
-	(typeattributeset storage_can_write_fixed_disk ARG1))
+	(typeattributeset storage_read_fixed_disk_subj_type ARG1)
+	(typeattributeset storage_write_fixed_disk_subj_type ARG1))
 
 (macro storage_manage_fuse ((type ARG1))
 	(allow ARG1 self (capability (mknod)))
@@ -180,8 +180,8 @@
 	(allow ARG1 self (capability (mknod)))
 	(call fs_rw_devtmpfs_dirs (ARG1))
 	(allow ARG1 scsi_generic.storage_dev manage_chr_file_perms)
-	(typeattributeset storage_can_read_scsi_generic ARG1)
-	(typeattributeset storage_can_write_scsi_generic ARG1))
+	(typeattributeset storage_read_scsi_generic_subj_type ARG1)
+	(typeattributeset storage_write_scsi_generic_subj_type ARG1))
 
 (macro storage_manage_all ((type ARG1))
 	(call storage_manage_fixed_disk (ARG1))
