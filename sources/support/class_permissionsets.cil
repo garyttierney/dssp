@@ -1,27 +1,33 @@
 (classpermission all_security_perms_except_load_policy_and_setenforce)
-(classpermissionset all_security_perms_except_load_policy_and_setenforce (security (not (load_policy setenforce))))
+(classpermissionset all_security_perms_except_load_policy_and_setenforce (security (compute_av compute_create compute_member
+	check_context compute_relabel compute_user setbool setsecparam setcheckreqprot read_policy)))
 
 (classpermission
 	all_process_perms_except_ptrace_setsched_transition_dyntransition_setcurrent_execmem_execstack_and_execheap)
 (classpermissionset
 	all_process_perms_except_ptrace_setsched_transition_dyntransition_setcurrent_execmem_execstack_and_execheap
-	(process (not (ptrace setsched transition dyntransition setcurrent execmem execstack execheap))))
+	(process (fork sigchld sigkill sigstop signull signal getsched getsession getpgid setpgid getcap setcap share getattr
+	setexec setfscreate noatsecure siginh setrlimit rlimitinh setkeycreate setsockcreate)))
 
 (classpermission signal_perms)
 (classpermissionset signal_perms (process (sigchld sigkill sigstop signull signal)))
 
 (classpermission all_capability_perms_except_sys_module_sys_ptrace_and_sys_nice)
 (classpermissionset all_capability_perms_except_sys_module_sys_ptrace_and_sys_nice
-	(capability (not (sys_module sys_ptrace sys_nice))))
+	(capability (chown dac_override dac_read_search fowner fsetid kill setgid setuid setpcap linux_immutable
+	net_bind_service net_broadcast net_admin net_raw ipc_lock ipc_owner sys_rawio sys_chroot sys_pacct sys_admin
+	sys_boot sys_resource sys_time sys_tty_config mknod lease audit_write audit_control setfcap)))
 
 (classpermission mount_fs_perms)
 (classpermissionset mount_fs_perms (filesystem (mount remount unmount getattr)))
 
 (classpermission all_file_perms_except_getattr)
-(classpermissionset all_file_perms_except_getattr (file (not getattr)))
+(classpermissionset all_file_perms_except_getattr (file (ioctl read write create setattr lock relabelfrom relabelto append
+	unlink link rename execute quotaon mounton audit_access open execmod execute_no_trans entrypoint)))
 
 (classpermission all_file_perms_except_mounton_execmod_and_entrypoint)
-(classpermissionset all_file_perms_except_mounton_execmod_and_entrypoint (file (not (mounton execmod entrypoint))))
+(classpermissionset all_file_perms_except_mounton_execmod_and_entrypoint (file (ioctl read write create getattr setattr lock
+	relabelfrom relabelto append unlink link rename execute quotaon audit_access open execute_no_trans)))
 
 (classpermission read_file_perms)
 (classpermissionset read_file_perms (file (getattr open read lock ioctl)))
@@ -84,7 +90,8 @@
 (classpermissionset add_entry_dir_perms (dir (getattr search open read lock ioctl write add_name)))
 
 (classpermission all_dir_perms_except_mounton_and_execmod)
-(classpermissionset all_dir_perms_except_mounton_and_execmod (dir (not (mounton execmod))))
+(classpermissionset all_dir_perms_except_mounton_and_execmod (dir (ioctl read write create getattr setattr lock relabelfrom
+	relabelto append unlink link rename execute quotaon audit_access open add_name remove_name reparent search rmdir)))
 
 (classpermission del_entry_dir_perms)
 (classpermissionset del_entry_dir_perms (dir (getattr search open read lock ioctl write remove_name)))
@@ -118,7 +125,8 @@
 (classpermissionset read_lnk_file_perms (lnk_file (getattr read)))
 
 (classpermission all_lnk_file_perms_except_mounton_and_execmod)
-(classpermissionset all_lnk_file_perms_except_mounton_and_execmod (lnk_file (not (mounton execmod))))
+(classpermissionset all_lnk_file_perms_except_mounton_and_execmod (lnk_file (ioctl read write create getattr setattr lock
+	relabelfrom relabelto append unlink link rename execute quotaon audit_access open)))
 
 (classpermission append_lnk_file_perms)
 (classpermissionset append_lnk_file_perms (lnk_file (getattr append lock ioctl)))
@@ -154,7 +162,8 @@
 (classpermissionset read_chr_file_perms (chr_file (getattr open read lock ioctl)))
 
 (classpermission all_chr_file_perms_except_mounton_and_execmod)
-(classpermissionset all_chr_file_perms_except_mounton_and_execmod (chr_file (not (mounton execmod))))
+(classpermissionset all_chr_file_perms_except_mounton_and_execmod (lnk_file (ioctl read write create getattr setattr lock
+	relabelfrom relabelto append unlink link rename execute quotaon audit_access open)))
 
 (classpermission append_chr_file_perms)
 (classpermissionset append_chr_file_perms (chr_file (getattr open append lock ioctl)))
@@ -211,7 +220,8 @@
 (classpermissionset append_inherited_blk_file_perms (blk_file (getattr append lock ioctl)))
 
 (classpermission all_blk_file_perms_except_mounton_and_execmod)
-(classpermissionset all_blk_file_perms_except_mounton_and_execmod (blk_file (not (mounton execmod))))
+(classpermissionset all_blk_file_perms_except_mounton_and_execmod (lnk_file (ioctl read write create getattr setattr lock
+	relabelfrom relabelto append unlink link rename execute quotaon audit_access open)))
 
 (classpermission write_blk_file_perms)
 (classpermissionset write_blk_file_perms (blk_file (getattr open write append lock ioctl)))
@@ -247,7 +257,8 @@
 (classpermissionset relabel_blk_file_perms (blk_file (getattr relabelfrom relabelto)))
 
 (classpermission all_sock_file_perms_except_mounton_and_execmod)
-(classpermissionset all_sock_file_perms_except_mounton_and_execmod (sock_file (not (mounton execmod))))
+(classpermissionset all_sock_file_perms_except_mounton_and_execmod (lnk_file (ioctl read write create getattr setattr lock
+	relabelfrom relabelto append unlink link rename execute quotaon audit_access open)))
 
 (classpermission read_sock_file_perms)
 (classpermissionset read_sock_file_perms (sock_file (getattr open read)))
@@ -286,7 +297,8 @@
 (classpermissionset relabel_sock_file_perms (sock_file (getattr relabelfrom relabelto)))
 
 (classpermission all_fifo_file_perms_except_mounton_and_execmod)
-(classpermissionset all_fifo_file_perms_except_mounton_and_execmod (fifo_file (not (mounton execmod))))
+(classpermissionset all_fifo_file_perms_except_mounton_and_execmod (lnk_file (ioctl read write create getattr setattr lock
+	relabelfrom relabelto append unlink link rename execute quotaon audit_access open)))
 
 (classpermission read_fifo_file_perms)
 (classpermissionset read_fifo_file_perms (fifo_file (getattr open read lock ioctl)))
@@ -587,7 +599,8 @@
 	setopt shutdown listen accept)))
 
 (classpermission all_capability2_perms_except_mac_override_and_mac_admin)
-(classpermissionset all_capability2_perms_except_mac_override_and_mac_admin (capability2 (not (mac_override mac_admin))))
+(classpermissionset all_capability2_perms_except_mac_override_and_mac_admin (capability2 (audit_read syslog wake_alarm
+	block_suspend)))
 
 (classpermission rw_tun_socket_perms)
 (classpermissionset rw_tun_socket_perms (tun_socket (ioctl read getattr write setattr append bind connect getopt setopt
