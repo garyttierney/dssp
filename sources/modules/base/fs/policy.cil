@@ -135,4 +135,5 @@
 (allow fs_unconfined_subj_type fs_obj_type all_blk_file_perms_except_mounton_and_execmod)
 (allow fs_unconfined_subj_type fs_obj_type all_chr_file_perms_except_mounton_and_execmod)
 
-(allow fs_unconfined_subj_type fs_obj_type (filesystem (all)))
+(allow fs_unconfined_subj_type fs_obj_type (filesystem (mount remount unmount getattr relabelfrom relabelto associate
+	quotamod quotaget)))

@@ -248,7 +248,8 @@
 (allow sys_unconfined_subj_type invalid.isid all_chr_file_perms_except_mounton_and_execmod)
 (allow sys_unconfined_subj_type invalid.isid all_blk_file_perms_except_mounton_and_execmod)
 
-(allow sys_unconfined_subj_type invalid.isid (filesystem (all)))
+(allow sys_unconfined_subj_type invalid.isid (filesystem (mount remount unmount getattr relabelfrom relabelto associate
+	quotamod quotaget)))
 
 (allow sys_unconfined_subj_type sys_mountpoint_obj_type (dir (mounton)))
 

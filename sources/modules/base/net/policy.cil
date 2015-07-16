@@ -49,9 +49,9 @@
 (call sys_obj_type (net_peer_obj_type))
 (call sys_obj_type (net_port_obj_type))
 
-(allow net_unconfined_subj_type net_node_obj_type (node (all)))
-(allow net_unconfined_subj_type net_if_obj_type (netif (all)))
-(allow net_unconfined_subj_type net_packet_obj_type (packet (all)))
+(allow net_unconfined_subj_type net_node_obj_type (node (recvfrom sendto)))
+(allow net_unconfined_subj_type net_if_obj_type (netif (ingress egress)))
+(allow net_unconfined_subj_type net_packet_obj_type (packet (send recv relabelto forward_in forward_out)))
 
 (allow net_unconfined_subj_type net_port_obj_type (tcp_socket (name_bind name_connect)))
 (allow net_unconfined_subj_type net_port_obj_type (udp_socket (name_bind)))
