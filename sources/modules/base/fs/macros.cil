@@ -435,7 +435,7 @@
 	(allow ARG1 rootfs.fs rw_dir_perms))
 
 (macro fs_write_inherited_rootfs_dirs ((type ARG1))
-	(allow ARG1 rootfs.fs write_inherited_dir_perms))
+	(allow ARG1 rootfs.fs (dir (write))))
 
 (macro fs_search_rootfs ((type ARG1))
 	(allow ARG1 rootfs.fs search_dir_perms))
