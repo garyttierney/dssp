@@ -94,6 +94,7 @@
 	(allow ARG1 self (netlink_audit_socket (nlmsg_relay))))
 
 (macro sys_rw_inherited_netlink_audit_sockets ((type ARG1))
+	(call sys_use_fd (ARG1))
 	(allow ARG1 sys.subj (netlink_audit_socket (getattr read write))))
 
 (macro sys_dontaudit_audit_access_mountpoint_dirs ((type ARG1))
