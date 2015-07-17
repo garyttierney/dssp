@@ -219,7 +219,7 @@
 	(call manage_dirs_pattern (ARG1 devtmpfs.fs devtmpfs.fs)))
 
 (macro fs_write_inherited_devtmpfs_dirs ((type ARG1))
-	(allow ARG1 devtmpfs.fs write_inherited_dir_perms))
+	(allow ARG1 devtmpfs.fs (dir (write))))
 
 (macro fs_setattr_devtmpfs_dirs ((type ARG1))
 	(allow ARG1 devtmpfs.fs (dir (setattr))))
