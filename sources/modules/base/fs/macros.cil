@@ -218,7 +218,7 @@
 (macro fs_manage_devtmpfs_dirs ((type ARG1))
 	(call manage_dirs_pattern (ARG1 devtmpfs.fs devtmpfs.fs)))
 
-(macro fs_write_inherited_devtmpfs_dirs ((type ARG1))
+(macro fs_audit_access_devtmpfs_dirs ((type ARG1))
 	(allow ARG1 devtmpfs.fs (dir (write))))
 
 (macro fs_setattr_devtmpfs_dirs ((type ARG1))
@@ -434,7 +434,7 @@
 (macro fs_rw_rootfs_dirs ((type ARG1))
 	(allow ARG1 rootfs.fs rw_dir_perms))
 
-(macro fs_write_inherited_rootfs_dirs ((type ARG1))
+(macro fs_audit_access_rootfs_dirs ((type ARG1))
 	(allow ARG1 rootfs.fs (dir (write))))
 
 (macro fs_search_rootfs ((type ARG1))
