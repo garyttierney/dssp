@@ -731,6 +731,10 @@
 	(call file_search_runtime (ARG1))
 	(allow ARG1 runtime_user.runtime_file rw_dir_perms))
 
+(macro file_manage_runtime_user_dirs ((type ARG1))
+	(call file_rw_runtime_dirs (ARG1))
+	(allow ARG1 runtime_user.runtime_file manage_dir_perms))
+
 (macro file_runtime_user_obj_type_transition ((type ARG1)(type ARG2)(class ARG3)(name ARG4))
 	(call file_search_runtime (ARG1))
 	(call obj_type_transition_pattern (ARG1 runtime_user.runtime_file ARG2 ARG3 ARG4)))
