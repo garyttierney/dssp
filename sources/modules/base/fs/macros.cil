@@ -410,6 +410,12 @@
 (macro fs_rw_proc_dirs ((type ARG1))
 	(allow ARG1 proc.fs rw_dir_perms))
 
+(macro fs_dontaudit_setattr_proc_dirs ((type ARG1))
+	(dontaudit ARG1 proc.fs (dir (setattr))))
+
+(macro fs_setattr_proc_dirs ((type ARG1))
+	(allow ARG1 proc.fs (dir (setattr))))
+
 (macro fs_mounton_proc_dirs ((type ARG1))
 	(allow ARG1 proc.fs (dir (mounton))))
 

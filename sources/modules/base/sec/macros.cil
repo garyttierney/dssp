@@ -11,6 +11,9 @@
 	(call fs_search_sysfs (ARG1))
 	(allow ARG1 securityfs.fs search_dir_perms))
 
+(macro sec_dontaudit_list_fs ((type ARG1))
+	(dontaudit ARG1 securityfs.fs list_dir_perms))
+
 (macro sec_list_fs ((type ARG1))
 	(call fs_search_sysfs (ARG1))
 	(allow ARG1 securityfs.fs list_dir_perms))
