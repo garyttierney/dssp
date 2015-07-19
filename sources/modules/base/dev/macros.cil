@@ -364,6 +364,9 @@
 (macro dev_setattr_v4l ((type ARG1))
 	(allow ARG1 v4l.dev (chr_file (setattr))))
 
+(macro dev_dontaudit_write_kmsg ((type ARG1))
+	(dontaudit ARG1 kmsg_dev.dev write_chr_file_perms))
+
 (macro dev_write_kmsg ((type ARG1))
 	(call fs_search_devtmpfs (ARG1))
 	(allow ARG1 kmsg_dev.dev write_chr_file_perms))
