@@ -109,6 +109,9 @@
 	(allow ARG1 sys_mountpoint_obj_type (chr_file (getattr)))
 	(allow ARG1 sys_mountpoint_obj_type (blk_file (getattr))))
 
+(macro sys_dontaudit_link_keyring ((type ARG1))
+	(dontaudit ARG1 sys.subj (key (search link))))
+
 (macro sys_link_keyring ((type ARG1))
 	(allow ARG1 sys.subj (key (search link))))
 
