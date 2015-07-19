@@ -423,7 +423,7 @@
 (macro sys_dontaudit_manage_all_proc_files ((type ARG1))
 	(dontaudit ARG1 sys_proc_obj_type manage_file_perms))
 
-(macro sys_read_all_proc ((type ARG1))
+(macro sys_read_all_proc_files ((type ARG1))
 	(call fs_search_proc (ARG1))
 	(call read_files_pattern (ARG1 sys_proc_obj_type sys_proc_obj_type))
 	(typeattributeset sys_dump_kernel_subj_type ARG1)
