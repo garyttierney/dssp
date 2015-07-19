@@ -182,7 +182,7 @@
 (macro fs_write_inherited_devpts_chr_files ((type ARG1))
 	(allow ARG1 devpts.fs write_inherited_chr_file_perms))
 
-(macro fs_relabelfrom_devpts_filesystems ((type ARG1))
+(macro fs_relabelfrom_devpts_fs ((type ARG1))
 	(allow ARG1 devpts.fs (filesystem (relabelfrom))))
 
 (macro fs_devpts_obj_type_transition ((type ARG1)(type ARG2) (class ARG3)(name ARG4))
@@ -268,7 +268,7 @@
 (macro fs_manage_devtmpfs_lnk_files ((type ARG1))
 	(call manage_lnk_files_pattern (ARG1 devtmpfs.fs devtmpfs.fs)))
 
-(macro filesystems_mounton_devtmpfs_dirs ((type ARG1))
+(macro fs_mounton_devtmpfs_dirs ((type ARG1))
 	(allow ARG1 devtmpfs.fs (dir (mounton))))
 
 (macro fs_search_devtmpfs ((type ARG1))
