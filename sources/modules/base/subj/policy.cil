@@ -55,6 +55,12 @@
 
 (call fs_search_rootfs (subj_type))
 
+(optional subj_type_optional_sd
+	(call sd_send_sigchld (subj_type)))
+
+(optional subj_type_optional_sd_shutdown
+	(call sd_shutdown_send_sigchld (subj_type)))
+
 (allow subj_common_type self (process (fork sigchld)))
 
 (call sys_read_vm_overcommit_sysctl_files (subj_common_type))
