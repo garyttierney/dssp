@@ -37,7 +37,9 @@
 	(call sys_mountpoint_obj_type (fs)))
 
 (block devpts
-	(blockinherit fs_obj_blk))
+	(blockinherit fs_obj_blk)
+
+	(call sys_mountpoint_obj_type (fs)))
 
 (block devtmpfs
 	(blockinherit fs_obj_blk)
