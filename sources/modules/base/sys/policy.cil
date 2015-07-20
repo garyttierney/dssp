@@ -68,6 +68,7 @@
 
 	(call fs_mounton_rootfs_dirs (subj))
 	(call fs_read_debugfs (subj))
+	(call fs_search_tmpfs (subj))
 
 	(call mls_file_read_subj_type (subj))
 	(call mls_file_write_subj_type (subj))
