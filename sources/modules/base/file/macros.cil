@@ -248,6 +248,9 @@
 (macro file_list_config ((type ARG1))
 	(allow ARG1 config.config_file list_dir_perms))
 
+(macro file_audit_access_config_dirs ((type ARG1))
+	(allow ARG1 config.config_file (dir (write))))
+
 (macro file_rw_config_dirs ((type ARG1))
 	(allow ARG1 config.config_file rw_dir_perms))
 
