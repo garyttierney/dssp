@@ -121,7 +121,7 @@
         (call fs_devtmpfs_obj_type_transition (ARG1 tty.serial_dev chr_file "vcs2"))
         (call fs_devtmpfs_obj_type_transition (ARG1 tty.serial_dev chr_file "vcs3"))
         (call fs_devtmpfs_obj_type_transition (ARG1 tty.serial_dev chr_file "vcs4"))
-        (call fs_devtmpfs_obj_type_transition (ARG1 tty.serial_dev chr_file "vcs4"))
+        (call fs_devtmpfs_obj_type_transition (ARG1 tty.serial_dev chr_file "vcs5"))
         (call fs_devtmpfs_obj_type_transition (ARG1 tty.serial_dev chr_file "vcs6"))
         (call fs_devtmpfs_obj_type_transition (ARG1 tty.serial_dev chr_file "vcsa"))
         (call fs_devtmpfs_obj_type_transition (ARG1 tty.serial_dev chr_file "vcsa1"))
