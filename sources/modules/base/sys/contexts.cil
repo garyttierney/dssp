@@ -2,12 +2,9 @@
 (context crypto (sys.id sys.role crypto.sysctl (systemlow systemlow)))
 (context dev (sys.id sys.role dev.sysctl (systemlow systemlow)))
 (context fs_sysctl (sys.id sys.role fs_sysctl.sysctl (systemlow systemlow)))
-(context invalid (sys.id sys.role invalid.isid (systemhigh systemhigh)))
 (context irq (sys.id sys.role irq.sysctl (systemlow systemlow)))
 (context kallsyms (sys.id sys.role kallsyms.proc (systemlow systemlow)))
-(context kcore (sys.id sys.role kcore.proc (systemhigh systemhigh)))
 (context kernel (sys.id sys.role kernel.sysctl (systemlow systemlow)))
-(context kmsg_proc (sys.id sys.role kmsg_proc.proc (systemhigh systemhigh)))
 (context mdstat (sys.id sys.role mdstat.proc (systemlow systemlow)))
 (context mtrr (sys.id sys.role mtrr.proc (systemlow systemlow)))
 (context net_proc (sys.id sys.role net_proc.proc (systemlow systemlow)))
@@ -25,8 +22,14 @@
 
 (tunableif enable_mls
 	(true
+		(context invalid (sys.id sys.role invalid.isid (systemhigh systemhigh)))
+		(context kcore (sys.id sys.role kcore.proc (systemhigh systemhigh)))
+		(context kmsg_proc (sys.id sys.role kmsg_proc.proc (systemhigh systemhigh)))
 		(context sys (sys.id sys.role sys.subj (systemhigh systemhigh))))
 	(false
+		(context invalid (sys.id sys.role invalid.isid (systemlow systemlow)))
+		(context kcore (sys.id sys.role kcore.proc (systemlow systemlow)))
+		(context kmsg_proc (sys.id sys.role kmsg_proc.proc (systemlow systemlow)))
 		(context sys (sys.id sys.role sys.subj (systemlow systemlow)))))
 
 (filecon "/var/log/boot\.log" file sys_var_log_file)

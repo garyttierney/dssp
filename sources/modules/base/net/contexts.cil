@@ -1,11 +1,18 @@
 (context ephemeral (sys.id sys.role ephemeral.port (systemlow systemlow)))
 (context hi_reserved (sys.id sys.role hi_reserved.port (systemlow systemlow)))
-(context if (sys.id sys.role if.if (systemlow systemhigh)))
-(context node (sys.id sys.role node.node (systemlow systemhigh)))
-(context peer (sys.id sys.role peer.peer (systemhigh systemhigh)))
 (context port (sys.id sys.role port.port (systemlow systemlow)))
 (context reserved (sys.id sys.role reserved.port (systemlow systemlow)))
 (context unreserved (sys.id sys.role unreserved.port (systemlow systemlow)))
+
+(tunableif enable_mls
+	(true
+		(context if (sys.id sys.role if.if (systemlow systemhigh)))
+		(context node (sys.id sys.role node.node (systemlow systemhigh)))
+		(context peer (sys.id sys.role peer.peer (systemhigh systemhigh))))
+	(false
+		(context if (sys.id sys.role if.if (systemlow systemlow)))
+		(context node (sys.id sys.role node.node (systemlow systemlow)))
+		(context peer (sys.id sys.role peer.peer (systemlow systemlow)))))
 
 (portcon "tcp" (1024 32767) unreserved)
 (portcon "tcp" (1 511) reserved)

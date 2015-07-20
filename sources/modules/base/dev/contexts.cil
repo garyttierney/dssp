@@ -6,15 +6,12 @@
 (context dri (sys.id sys.role dri.dev (systemlow systemlow)))
 (context event (sys.id sys.role event.dev (systemlow systemlow)))
 (context framebuf (sys.id sys.role framebuf.dev (systemlow systemlow)))
-(context kmsg (sys.id sys.role kmsg_dev.dev (systemhigh systemhigh)))
 (context kvm (sys.id sys.role kvm.dev (systemlow systemlow)))
 (context loop_control (sys.id sys.role loop_control.dev (systemlow systemlow)))
 (context lvm_control (sys.id sys.role lvm_control.dev (systemlow systemlow)))
 (context mei_misc (sys.id sys.role mei_misc.dev (systemlow systemlow)))
-(context memory (sys.id sys.role memory.dev (systemhigh systemhigh)))
 (context mouse (sys.id sys.role mouse.dev (systemlow systemlow)))
 (context null (sys.id sys.role null.dev (systemlow systemlow)))
-(context nvram (sys.id sys.role nvram.dev (systemhigh systemhigh)))
 (context pm_qos_misc (sys.id sys.role pm_qos_misc.dev (systemlow systemlow)))
 (context ppp (sys.id sys.role ppp.dev (systemlow systemlow)))
 (context printer (sys.id sys.role printer.dev (systemlow systemlow)))
@@ -35,6 +32,16 @@
 (context wireless (sys.id sys.role wireless.dev (systemlow systemlow)))
 (context xserver_misc (sys.id sys.role xserver_misc.dev (systemlow systemlow)))
 (context zero (sys.id sys.role zero.dev (systemlow systemlow)))
+
+(tunableif enable_mls
+	(true
+		(context kmsg (sys.id sys.role kmsg_dev.dev (systemhigh systemhigh)))
+		(context memory (sys.id sys.role memory.dev (systemhigh systemhigh)))
+		(context nvram (sys.id sys.role nvram.dev (systemhigh systemhigh))))
+	(false
+		(context kmsg (sys.id sys.role kmsg_dev.dev (systemlow systemlow)))
+		(context memory (sys.id sys.role memory.dev (systemlow systemlow)))
+		(context nvram (sys.id sys.role nvram.dev (systemlow systemlow)))))
 
 (filecon "/dev/autofs" char autofs_dev)
 (filecon "/dev/btrfs-control" char lvm_control)
