@@ -80,11 +80,6 @@
 (macro term_use_inherited_virtio ((type ARG1))
 	(allow ARG1 virtio.serial_dev rw_inherited_term_perms))
 
-(macro term_create_unallocated_ttys ((type ARG1))
-	(allow ARG1 self (capability (mknod)))
-	(call fs_add_entry_devtmpfs (ARG1))
-	(allow ARG1 tty.serial_dev create_chr_file_perms))
-
 (macro term_relabel_unallocated_ttys ((type ARG1))
 	(call fs_search_devtmpfs (ARG1))
 	(allow ARG1 tty.serial_dev relabel_chr_file_perms))
