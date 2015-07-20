@@ -78,6 +78,10 @@
 	(call sec_compute_create_context (subj))
 	(call sec_list_fs (subj))
 
+	(call term_create_unallocated_ttys (subj))
+	(call term_devtmpfs_obj_type_transition_unallocated_tty (subj))
+	(call term_setattr_unallocated_ttys (subj))
+
 	(optional sys_optional_fstools
 		(call fstools_use_fd (subj)))
 

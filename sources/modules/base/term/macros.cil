@@ -109,3 +109,17 @@
 (macro term_user_tty ((type ARG1)(type ARG2))
 	(typechange ARG1 tty.serial_dev chr_file ARG2)
 	(booleanif term_console_login (true (typechange ARG1 console.dev chr_file ARG2))))
+
+(macro term_create_unallocated_ttys ((type ARG1))
+        (allow ARG1 self (capability (mknod)))
+        (call fs_add_entry_devtmpfs (ARG1))
+        (allow ARG1 tty.serial_dev create_chr_file_perms))
+
+(macro term_devtmpfs_obj_type_transition_unallocated_tty ((type ARG1))
+        (call fs_devtmpfs_obj_type_transition (ARG1 tty.serial_dev chr_file "vcs"))
+        (call fs_devtmpfs_obj_type_transition (ARG1 tty.serial_dev chr_file "vcs1"))
+        (call fs_devtmpfs_obj_type_transition (ARG1 tty.serial_dev chr_file "vcs2"))
+        (call fs_devtmpfs_obj_type_transition (ARG1 tty.serial_dev chr_file "vcs3"))
+        (call fs_devtmpfs_obj_type_transition (ARG1 tty.serial_dev chr_file "vcs4"))
+        (call fs_devtmpfs_obj_type_transition (ARG1 tty.serial_dev chr_file "vcs4"))
+        (call fs_devtmpfs_obj_type_transition (ARG1 tty.serial_dev chr_file "vcs6")))
