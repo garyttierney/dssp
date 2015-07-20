@@ -172,7 +172,7 @@
 	(call file_rw_var_log_dirs (ARG1))
 	(allow ARG1 sys.var_log_file manage_file_perms))
 
-(macro sys_var_log_obj_type_transition_var_log_files ((type ARG1))
+(macro sys_var_log_obj_type_transition_var_log ((type ARG1))
 	(call file_var_log_obj_type_transition (ARG1 sys.var_log_file file "boot.log")))
 
 (macro sys_search_sysctl ((type ARG1))
