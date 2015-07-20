@@ -281,7 +281,7 @@
 	(call fs_search_devtmpfs (ARG1))
 	(allow ARG1 event.dev rw_inherited_chr_file_perms))
 
-(macro devices_rw_framebuf ((type ARG1))
+(macro dev_rw_framebuf ((type ARG1))
 	(call fs_search_devtmpfs (ARG1))
 	(allow ARG1 framebuf.dev rw_chr_file_perms))
 
