@@ -95,9 +95,6 @@
 		(call plymouth_manage_plymouthd_runtime_files (subj))
 		(call plymouth_manage_plymouthd_var_lib_files (subj)))
 
-	(optional sys_optional_resetimg
-		(call resetimg_use_fd (subj)))
-
 	(optional sys_optional_sd
 		(call subj_dynamic_subj_type_transition_type (subj))
 		(call sd_dynamic_subj_type_transition (subj))
