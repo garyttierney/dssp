@@ -337,7 +337,7 @@
 	(call fs_search_devtmpfs (ARG1))
 	(allow ARG1 urandom.dev rw_chr_file_perms))
 
-(macro devices_rw_usb ((type ARG1))
+(macro dev_rw_usb ((type ARG1))
 	(call fs_search_devtmpfs (ARG1))
 	(allow ARG1 usb.dev rw_chr_file_perms))
 
