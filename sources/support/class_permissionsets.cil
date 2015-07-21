@@ -3,11 +3,11 @@
 	check_context compute_relabel compute_user setbool setsecparam setcheckreqprot read_policy)))
 
 (classpermission
-	all_process_perms_except_ptrace_setsched_transition_dyntransition_setcurrent_execmem_execstack_and_execheap)
+	all_process_perms_except_transition_dyntransition_setcurrent_execmem_execstack_and_execheap)
 (classpermissionset
-	all_process_perms_except_ptrace_setsched_transition_dyntransition_setcurrent_execmem_execstack_and_execheap
-	(process (fork sigchld sigkill sigstop signull signal getsched getsession getpgid setpgid getcap setcap share getattr
-	setexec setfscreate noatsecure siginh setrlimit rlimitinh setkeycreate setsockcreate)))
+	all_process_perms_except_transition_dyntransition_setcurrent_execmem_execstack_and_execheap
+	(process (fork sigchld sigkill sigstop signull setsched ptrace signal getsched getsession getpgid setpgid getcap setcap
+	share getattr setexec setfscreate noatsecure siginh setrlimit rlimitinh setkeycreate setsockcreate)))
 
 (classpermission signal_perms)
 (classpermissionset signal_perms (process (sigchld sigkill sigstop signull signal)))

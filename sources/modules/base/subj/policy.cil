@@ -134,11 +134,10 @@
 
 (allow subj_unconfined_type self all_capability_perms_except_sys_module_sys_ptrace_and_sys_nice)
 (allow subj_unconfined_type self all_capability2_perms_except_mac_override_and_mac_admin)
-(allow subj_unconfined_type self (process (transition dyntransition setcurrent)))
 (allow subj_unconfined_type self all_fifo_file_perms_except_mounton_and_execmod)
 
 (allow subj_unconfined_type subj_type
-	all_process_perms_except_ptrace_setsched_transition_dyntransition_setcurrent_execmem_execstack_and_execheap)
+	all_process_perms_except_transition_dyntransition_setcurrent_execmem_execstack_and_execheap)
 (allow subj_unconfined_type subj_type rw_file_perms)
 (allow subj_unconfined_type subj_type list_dir_perms)
 (allow subj_unconfined_type subj_type read_lnk_file_perms)
