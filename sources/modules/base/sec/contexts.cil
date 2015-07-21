@@ -3,11 +3,11 @@
 
 (tunableif enable_mls
 	(true
-		(context securityisid (sys.id sys.role securityfs.fs (systemhigh systemhigh))))
+		(context security_sidcon (sys.id sys.role securityfs.fs (systemhigh systemhigh))))
 	(false
-		(context securityisid (sys.id sys.role securityfs.fs (systemlow systemlow)))))
+		(context security_sidcon (sys.id sys.role securityfs.fs (systemlow systemlow)))))
 
 (genfscon "securityfs" "/" securityfs)
 (genfscon "selinuxfs" "/booleans/sec_load_policy" sec_load_policy)
 (genfscon "selinuxfs" "/" securityfs)
-(sidcontext security securityisid)
+(sidcontext security security_sidcon)
