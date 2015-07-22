@@ -453,6 +453,10 @@
 	(call fs_search_sysfs (ARG1))
 	(call read_files_pattern (ARG1 cpu_sysfs.sysfs cpu_sysfs.sysfs)))
 
+(macro sys_rw_cpu_sysfs_files ((type ARG1))
+	(call fs_search_sysfs (ARG1))
+	(call rw_files_pattern (ARG1 cpu_sysfs.sysfs cpu_sysfs.sysfs)))
+
 (macro sys_read_state_files ((type ARG1))
 	(call fs_search_proc (ARG1))
 	(call read_files_pattern (ARG1 sys.subj sys.subj)))
