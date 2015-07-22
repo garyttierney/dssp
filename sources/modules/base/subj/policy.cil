@@ -152,7 +152,7 @@
 (allow subj_unconfined_type subj_type (packet_socket (ioctl read write create getattr setattr lock relabelfrom relabelto append
 	bind connect listen accept getopt setopt shutdown recvfrom sendto name_bind)))
 (allow subj_unconfined_type subj_type (unix_stream_socket (ioctl read write create getattr setattr lock relabelfrom relabelto append
-	bind connect listen accept getopt setopt shutdown recvfrom sendto name_bind)))
+	bind connect listen accept getopt setopt shutdown recvfrom sendto name_bind connectto)))
 (allow subj_unconfined_type subj_type (unix_dgram_socket (ioctl read write create getattr setattr lock relabelfrom relabelto append  
 	bind connect listen accept getopt setopt shutdown recvfrom sendto name_bind)))
 (allow subj_unconfined_type subj_type (sem (create destroy getattr setattr read write associate unix_read unix_write)))
