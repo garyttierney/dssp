@@ -1,5 +1,18 @@
 (tunableif enable_rbacsep
 	(true
+		(constrain (unix_stream_socket (getattr ioctl read write))
+		(or (or (eq r1 r2)
+		(eq r1 rbacsep_exempt_role))
+		(eq t1 rbacsep_exempt_subj_type)))
+
 		(constrain (process (sigchld sigkill sigstop signull signal ptrace getsched setsched getsession getpgid
-		setpgid getcap setcap share getattr setrlimit))
-		(eq r1 r2))))
+			setpgid getcap setcap share getattr setrlimit))
+		(or (or (eq r1 r2)
+		(eq r1 rbacsep_exempt_role))
+		(eq t1 rbacsep_exempt_subj_type)))
+
+		(constrain (file (getattr ioctl read write))
+		(or (or (or (eq r1 r2)
+		(eq r1 rbacsep_exempt_role))
+		(eq t1 rbacsep_exempt_obj_type))
+		(and (eq r2 rbacsep_exempt_role) (neq t2 subj_common_type))))))
