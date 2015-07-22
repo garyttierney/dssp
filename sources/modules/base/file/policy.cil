@@ -17,6 +17,7 @@
 (typeattribute file_runtime_lock_obj_type)
 (typeattribute file_var_obj_type)
 (typeattribute file_var_cache_obj_type)
+(typeattribute file_var_db_obj_type)
 (typeattribute file_var_lib_obj_type)
 (typeattribute file_var_log_obj_type)
 (typeattribute file_var_spool_obj_type)
@@ -83,6 +84,11 @@
 	(blockinherit file_var_cache_obj_blk)
 
 	(call sys_mountpoint_obj_type (var_cache_file)))
+
+(block var_db
+	(blockinherit file_var_db_obj_blk)
+
+	(call sys_mountpoint_obj_type (var_db_file)))
 
 (block var_lib
 	(blockinherit file_var_lib_obj_blk)

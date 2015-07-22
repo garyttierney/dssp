@@ -70,6 +70,12 @@
 	(type var_cache_file)
 	(call file_var_cache_obj_type (var_cache_file)))
 
+(block file_var_db_obj_blk
+	(blockabstract file_var_db_obj_blk)
+
+	(type var_db_file)
+	(call file_var_db_obj_type (var_db_file)))
+
 (block file_var_lib_obj_blk
 	(blockabstract file_var_lib_obj_blk)
 
@@ -148,6 +154,10 @@
 (macro file_var_cache_obj_type ((type ARG1))
 	(call file_obj_type (ARG1))
 	(typeattributeset file_var_cache_obj_type ARG1))
+
+(macro file_var_db_obj_type ((type ARG1))
+	(call file_obj_type (ARG1))
+	(typeattributeset file_var_db_obj_type ARG1))
 
 (macro file_var_lib_obj_type ((type ARG1))
 	(call file_obj_type (ARG1))
@@ -956,6 +966,78 @@
 (macro file_var_cache_obj_type_transition ((type ARG1)(type ARG2)(class ARG3)(name ARG4))
 	(call file_search_var (ARG1))
 	(call obj_type_transition_pattern (ARG1 var_cache.var_cache_file ARG2 ARG3 ARG4)))
+
+(macro file_search_var_db ((type ARG1))
+	(call file_search_var (ARG1))
+	(allow ARG1 var_db.var_db_file search_dir_perms))
+
+(macro file_list_var_db ((type ARG1))
+	(call file_search_var (ARG1))
+	(allow ARG1 var_db.var_db_file list_dir_perms))
+
+(macro file_read_var_db_files ((type ARG1))
+	(call file_search_var (ARG1))
+	(call read_files_pattern (ARG1 var_db.var_db_file var_db.var_db_file)))
+
+(macro file_read_var_db_lnk_files ((type ARG1))
+	(call file_search_var (ARG1))
+	(call read_lnk_files_pattern (ARG1 var_db.var_db_file var_db.var_db_file)))
+
+(macro file_read_var_db ((type ARG1))
+	(call file_search_var (ARG1))
+	(allow ARG1 var_db.var_db_file read_file_perms)
+	(allow ARG1 var_db.var_db_file list_dir_perms)
+	(allow ARG1 var_db.var_db_file read_fifo_file_perms)
+	(allow ARG1 var_db.var_db_file read_sock_file_perms)
+	(allow ARG1 var_db.var_db_file read_lnk_file_perms))
+
+(macro file_manage_var_db ((type ARG1))
+	(call file_rw_var_dirs (ARG1))
+	(allow ARG1 var_db.var_db_file manage_file_perms)
+	(allow ARG1 var_db.var_db_file manage_dir_perms)
+	(allow ARG1 var_db.var_db_file manage_fifo_file_perms)
+	(allow ARG1 var_db.var_db_file manage_sock_file_perms)
+	(allow ARG1 var_db.var_db_file manage_lnk_file_perms))
+
+(macro file_rw_var_db_dirs ((type ARG1))
+	(call file_search_var (ARG1))
+	(allow ARG1 var_db.var_db_file rw_dir_perms))
+
+(macro file_search_all_var_db ((type ARG1))
+	(call file_search_var (ARG1))
+	(allow ARG1 file_var_db_obj_type search_dir_perms))
+
+(macro file_list_all_var_db ((type ARG1))
+	(call file_search_var (ARG1))
+	(allow ARG1 file_var_db_obj_type list_dir_perms))
+
+(macro file_read_all_var_db_files ((type ARG1))
+	(call file_search_var (ARG1))
+	(call read_files_pattern (ARG1 file_var_db_obj_type file_var_db_obj_type)))
+
+(macro file_read_all_var_db_lnk_files ((type ARG1))
+	(call file_search_var (ARG1))
+	(call read_lnk_files_pattern (ARG1 file_var_db_obj_type file_var_db_obj_type)))
+
+(macro file_read_all_var_db ((type ARG1))
+	(call file_search_var (ARG1))
+	(allow ARG1 file_var_db_obj_type read_file_perms)
+	(allow ARG1 file_var_db_obj_type list_dir_perms)
+	(allow ARG1 file_var_db_obj_type read_fifo_file_perms)
+	(allow ARG1 file_var_db_obj_type read_sock_file_perms)
+	(allow ARG1 file_var_db_obj_type read_lnk_file_perms))
+
+(macro file_manage_all_var_db ((type ARG1))
+	(call file_rw_var_dirs (ARG1))
+	(allow ARG1 file_var_db_obj_type manage_file_perms)
+	(allow ARG1 file_var_db_obj_type manage_dir_perms)
+	(allow ARG1 file_var_db_obj_type manage_fifo_file_perms)
+	(allow ARG1 file_var_db_obj_type manage_sock_file_perms)
+	(allow ARG1 file_var_db_obj_type manage_lnk_file_perms))
+
+(macro file_var_db_obj_type_transition ((type ARG1)(type ARG2)(class ARG3)(name ARG4))
+	(call file_search_var (ARG1))
+	(call obj_type_transition_pattern (ARG1 var_db.var_db_file ARG2 ARG3 ARG4)))
 
 (macro file_search_var_lib ((type ARG1))
 	(call file_search_var (ARG1))
