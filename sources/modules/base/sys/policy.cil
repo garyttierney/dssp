@@ -29,7 +29,10 @@
 
 (block sys
 	(user id)
+
 	(role role)
+
+	(call rbacsep_exemption_role (role))
 
 	(blockinherit subj_common_blk)
 

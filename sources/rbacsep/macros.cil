@@ -1,0 +1,8 @@
+(macro rbacsep_exemption_role ((role ARG1))
+	(roleattributeset rbacsep_exemption_role ARG1))
+
+(macro rbacsep_exemption_obj_type ((type ARG1))
+	(typeattributeset rbacsep_exemption_obj_type ARG1))
+
+(macro rbacsep_exemption_subj_type ((type ARG1))
+	(typeattributeset rbacsep_exemption_subj_type ARG1))
