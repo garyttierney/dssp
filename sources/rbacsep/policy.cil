@@ -1,16 +1,6 @@
 (tunable enable_rbacsep true)
 
 (roleattribute rbacsep_exempt_role)
-(roleattribute rbacsep_exemption_role)
-
-(roleattributeset rbacsep_exempt_role (and (sys_role) (not (rbacsep_exemption_role))))
 
 (typeattribute rbacsep_exempt_obj_type)
-(typeattribute rbacsep_exemption_obj_type)
-
-(typeattributeset rbacsep_exempt_obj_type (and (sys_obj_type) (not (rbacsep_exemption_obj_type))))
-
 (typeattribute rbacsep_exempt_subj_type)
-(typeattribute rbacsep_exemption_subj_type)
-
-(typeattributeset rbacsep_exempt_subj_type (and (subj_common_type) (not (rbacsep_exemption_subj_type))))
