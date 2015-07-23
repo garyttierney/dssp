@@ -372,7 +372,7 @@
 	(call fs_search_proc (ARG1))
 	(call list_dirs_pattern (ARG1 sys_sysctl_obj_type sys_sysctl_obj_type)))
 
-(macro system_read_all_sysctl_files ((type ARG1))
+(macro sys_read_all_sysctl_files ((type ARG1))
 	(call sys_read_crypto_sysctl_files (ARG1))
 	(call sys_read_dev_sysctl_files (ARG1))
 	(call sys_read_fs_sysctl_files (ARG1))
