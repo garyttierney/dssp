@@ -486,6 +486,21 @@
 (classpermission create_shm_perms)
 (classpermissionset create_shm_perms (shm (associate getattr setattr create destroy read write lock unix_read unix_write)))
 
+(classpermission create_key_perms)
+(classpermissionset create_key_perms (key (create search link write)))
+
+(classpermission link_key_perms)
+(classpermissionset link_key_perms (key (search link)))
+
+(classpermission rw_key_perms)
+(classpermissionset rw_key_perms (key (view read search write link)))
+
+(classpermission write_key_perms)
+(classpermissionset write_key_perms (key (search write link)))
+
+(classpermission setattr_key_perms)
+(classpermissionset setattr_key_perms (key (search link setattr write)))
+
 (classpermission create_netlink_route_socket_perms)
 (classpermissionset create_netlink_route_socket_perms (netlink_route_socket (create ioctl read getattr write setattr append
 	bind connect getopt setopt shutdown nlmsg_read nlmsg_write)))
