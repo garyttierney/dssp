@@ -1,1 +1,3 @@
-sys.role:sys.subj
+sysadm.role:sysadm.subj
+user.role:user.subj
+wheel.role:wheel.subj
