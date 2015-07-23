@@ -19,10 +19,13 @@
 		(eq t1 rbacsep_exempt_subj_type)))
 
 		(constrain (chr_file (getattr ioctl read write))
-		(or (or (or (eq r1 r2)
+		(or (or (or (or (or (or (eq r1 r2)
 		(eq r1 rbacsep_exempt_role))
 		(eq t1 rbacsep_exempt_subj_type))
-		(eq t2 rbacsep_exempt_obj_type)))
+		(eq t2 rbacsep_exempt_obj_type))
+		(and (eq r2 rbacsep_exempt_role) (neq t2 term_pty_obj_type)))
+		(and (eq r2 rbacsep_exempt_role) (neq t2 term_tty_obj_type)))
+		(and (eq r2 rbacsep_exempt_role) (neq t2 term_serial_obj_type))))
 
 		(constrain (fifo_file (getattr ioctl read write))
 		(or (or (or (or (eq r1 r2)
@@ -32,8 +35,9 @@
 		(eq t1 rbacsep_exempt_subj_type)))
 
 		(constrain (sock_file (getattr ioctl read write))
-		(or (or (or (eq r1 r2)
+		(or (or (or (or (eq r1 r2)
 		(eq r1 rbacsep_exempt_role))
+		(eq r2 rbacsep_exempt_role))
 		(eq t1 rbacsep_exempt_subj_type))
 		(eq t2 rbacsep_exempt_obj_type)))
 
