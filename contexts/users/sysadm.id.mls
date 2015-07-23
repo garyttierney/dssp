@@ -1,0 +1,5 @@
+sysadm.role:sysadm.subj:s0 sysadm.role:sysadm.subj:s0
+sysadm.role:sysadm_sudo.subj:s0 sysadm.role:sysadm.subj:s0
+sys.role:login.subj:s0 sysadm.role:sysadm.subj:s0
+sys.role:sd.subj:s0 sysadm.role:sysadm_sduser.subj:s0
+sys.role:sshd.subj:s0 sysadm.role:sysadm.subj:s0
