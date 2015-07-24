@@ -351,6 +351,9 @@
 (classpermission rw_tcp_socket_perms)
 (classpermissionset rw_tcp_socket_perms (tcp_socket (ioctl read getattr write setattr append bind connect getopt setopt shutdown)))
 
+(classpermission rw_inherited_tcp_socket_perms)
+(classpermissionset rw_inherited_tcp_socket_perms (tcp_socket (ioctl read getattr write)))
+
 (classpermission create_tcp_socket_perms)
 (classpermissionset create_tcp_socket_perms (tcp_socket (create ioctl read getattr write setattr append bind connect getopt
 	setopt shutdown)))
@@ -441,6 +444,9 @@
 (classpermission rw_unix_dgram_socket_perms)
 (classpermissionset rw_unix_dgram_socket_perms (unix_dgram_socket (ioctl read getattr write setattr append bind connect getopt
 	setopt shutdown)))
+
+(classpermission rw_inherited_unix_dgram_socket_perms)
+(classpermissionset rw_inherited_unix_dgram_socket_perms (unix_dgram_socket (ioctl read getattr write)))
 
 (classpermission create_unix_dgram_socket_perms)
 (classpermissionset create_unix_dgram_socket_perms (unix_dgram_socket (create ioctl read getattr write setattr append bind
