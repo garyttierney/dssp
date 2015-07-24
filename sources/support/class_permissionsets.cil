@@ -415,6 +415,9 @@
 (classpermissionset rw_unix_stream_socket_perms (unix_stream_socket (ioctl read getattr write setattr append bind connect getopt
 	setopt shutdown)))
 
+(classpermission rw_inherited_unix_stream_socket_perms)
+(classpermissionset rw_inherited_unix_stream_socket_perms (unix_stream_socket (ioctl read getattr write)))
+
 (classpermission create_unix_stream_socket_perms)
 (classpermissionset create_unix_stream_socket_perms (unix_stream_socket (create ioctl read getattr write setattr append bind
 	connect getopt setopt shutdown)))
