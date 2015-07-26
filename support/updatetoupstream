@@ -1,0 +1,8 @@
+#!/bin/bash
+
+if [ -x /bin/git ]
+then
+	git fetch --recurse-submodules https://github.com/defensec/dssp \
+		&& git pull --recurse-submodules \
+		&& git submodule update --recursive
+fi
