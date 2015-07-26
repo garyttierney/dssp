@@ -75,13 +75,13 @@ fi
 
 if [ ! -x /bin/basename ]
 then
-	echo "basename is required but not installed"
+	echo "basename is required but not executable"
 	exit 192
 fi
 
 if [ ! -x /bin/sudo ]
 then
-	echo "sudo is required but not installed"
+	echo "sudo is required but not executable"
 	exit 192
 fi
 

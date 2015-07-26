@@ -172,7 +172,7 @@ else
 	exit 192
 fi
 
-( cd "$SPATH" && "$SECILC" --policyvers="$VERSION" `echo "$VERBOSE" "$DONTAUDIT" "$UNKNOWN" ${modulestocompile[@]}` \
+( /bin/cd "$SPATH" && "$SECILC" --policyvers="$VERSION" `echo "$VERBOSE" "$DONTAUDIT" "$UNKNOWN" ${modulestocompile[@]}` \
 	-o policy/policy."$VERSION" -f contexts/files/file_contexts )
 
 log "built "$SPATH"/policy/policy."$VERSION""
