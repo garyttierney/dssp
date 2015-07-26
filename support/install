@@ -198,7 +198,7 @@ then
 
 		if [ "$?" == "193" ]
 		then
-			/bin/sudo /bin/cp "$SPATH"/policy/policy."$VERSION" /etc/selinux/"$TYPE"/
+			/bin/sudo \cp -f "$SPATH"/policy/policy."$VERSION" /etc/selinux/"$TYPE"/
 		else
 			echo "nothing to update"
 			exit 0
@@ -208,14 +208,14 @@ then
 
 		if [ "$?" == "193" ]
 		then
-			/bin/sudo /bin/cp "$SPATH"/contexts/files/file_contexts /etc/selinux/"$TYPE"/contexts/files/
+			/bin/sudo \cp -f "$SPATH"/contexts/files/file_contexts /etc/selinux/"$TYPE"/contexts/files/
 		fi
 
 		/bin/sudo "$SPATH"/support/checksha256sum "$SPATH"/contexts/files/file_contexts.homedirs /etc/selinux/"$TYPE"/contexts/files/file_contexts.homedirs
 
 		if [ "$?" == "193" ]
 		then
-			/bin/sudo /bin/cp "$SPATH"/contexts/files/file_contexts.homedirs /etc/selinux/"$TYPE"/contexts/files/
+			/bin/sudo \cp -f "$SPATH"/contexts/files/file_contexts.homedirs /etc/selinux/"$TYPE"/contexts/files/
 		fi
 
 		if [ -f "$SPATH"/contexts/files/file_contexts.subs_dist ]
@@ -224,7 +224,7 @@ then
 
 			if [ "$?" == "193" ]
 			then
-				/bin/sudo /bin/cp "$SPATH"/contexts/files/file_contexts.subs_dist /etc/selinux/"$TYPE"/contexts/files/
+				/bin/sudo \cp -f "$SPATH"/contexts/files/file_contexts.subs_dist /etc/selinux/"$TYPE"/contexts/files/
 			fi
 		fi
 
@@ -234,7 +234,7 @@ then
 
 			if [ "$?" == "193" ]
 			then
-				/bin/sudo /bin/cp "$SPATH"/contexts/files/file_contexts.bin /etc/selinux/"$TYPE"/contexts/files/
+				/bin/sudo \cp -f "$SPATH"/contexts/files/file_contexts.bin /etc/selinux/"$TYPE"/contexts/files/
 			fi
 		fi
 
@@ -244,7 +244,7 @@ then
 
 			if [ "$?" == "193" ]
 			then
-				/bin/sudo /bin/cp "$SPATH"/contexts/files/file_contexts.homedirs.bin /etc/selinux/"$TYPE"/contexts/files/
+				/bin/sudo \cp -f "$SPATH"/contexts/files/file_contexts.homedirs.bin /etc/selinux/"$TYPE"/contexts/files/
 			fi
 		fi
 
@@ -261,7 +261,7 @@ then
 
 				if [ "$?" == "193" ]
 				then
-					/bin/sudo /bin/cp "$SPATH"/contexts/files/"$entry" /etc/selinux/"$TYPE"/contexts/files/"$strippedentry"
+					/bin/sudo \cp -f "$SPATH"/contexts/files/"$entry" /etc/selinux/"$TYPE"/contexts/files/"$strippedentry"
 				fi
 			fi
 		done
@@ -277,7 +277,7 @@ then
 
 				if [ "$?" == "193" ]
 				then
-					/bin/sudo /bin/cp "$SPATH"/contexts/users/"$entry" /etc/selinux/"$TYPE"/contexts/users/"$strippedentry"
+					/bin/sudo \cp -f "$SPATH"/contexts/users/"$entry" /etc/selinux/"$TYPE"/contexts/users/"$strippedentry"
 				fi
 			fi
 		done
@@ -292,7 +292,7 @@ then
 
 				if [ "$?" == "193" ]
 				then
-					/bin/sudo /bin/cp "$SPATH"/contexts/"$entry" /etc/selinux/"$TYPE"/contexts/"$strippedentry"
+					/bin/sudo \cp -f "$SPATH"/contexts/"$entry" /etc/selinux/"$TYPE"/contexts/"$strippedentry"
 				fi
 			fi
 		done
@@ -305,7 +305,7 @@ then
 			then
 				if [ -f "$SPATH"/contexts/dbus_contexts ]
 				then
-					/bin/sudo /bin/cp "$SPATH"/contexts/dbus_contexts /etc/selinux/"$TYPE"/contexts/
+					/bin/sudo \cp -f "$SPATH"/contexts/dbus_contexts /etc/selinux/"$TYPE"/contexts/
 				fi
 			fi
 		fi
@@ -318,7 +318,7 @@ then
 			then
 				if [ -f "$SPATH"/contexts/openssh_contexts ]
 				then
-					/bin/sudo /bin/cp "$SPATH"/contexts/openssh_contexts /etc/selinux/"$TYPE"/contexts/
+					/bin/sudo \cp -f "$SPATH"/contexts/openssh_contexts /etc/selinux/"$TYPE"/contexts/
 				fi
 			fi
 		fi
@@ -331,7 +331,7 @@ then
 			then
 				if [ -f "$SPATH"/seusers.local ]
 				then
-					/bin/sudo /bin/cp "$SPATH"/seusers.local /etc/selinux/"$TYPE"/seusers
+					/bin/sudo \cp -f "$SPATH"/seusers.local /etc/selinux/"$TYPE"/seusers
 				fi
 			fi
 		else
@@ -345,7 +345,7 @@ then
 				then
 					if [ -f "$SPATH"/contexts/users/"$entry" ]
 					then
-						/bin/sudo /bin/cp "$SPATH"/"$entry" /etc/selinux/"$TYPE"/"$strippedentry"
+						/bin/sudo \cp -f "$SPATH"/"$entry" /etc/selinux/"$TYPE"/"$strippedentry"
 					fi
 				fi
 			done
