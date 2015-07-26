@@ -1,0 +1,384 @@
+#!/bin/bash
+
+while (($# > 0))
+do
+	 case $1 in
+		\-n)
+		shift
+		VERSION="$1"
+			if [ ! -r /sys/fs/selinux/policyvers ]
+			then
+				echo "unable to determine max policy version"
+				exit 192
+			elif [ "$VERSION" -gt "`/bin/cat /sys/fs/selinux/policyvers`" ]
+			then
+				echo "option -n expects a single parameter: policy version less than or equal to max policy version"
+				exit 192
+			fi
+		;;
+		\-m)
+		shift
+		MODEL="$1"
+			if [ "$MODEL" != "standard" -a "$MODEL" != "mcs" -a "$MODEL" != "mls" ]
+			then
+				echo "option -m expects a single parameter: standard, mcs or mls"
+				exit 192
+			fi
+		;;
+		\-h)
+			echo "
+$0 install or update CIL SELinux security policy
+
+-n   (version)	: specify policy version to install or update
+-m   (model)	: specify security model to install or update (standard, mcs or mls)
+-p   (path)	: specify location of policy to install or update
+			"
+			exit
+		;;
+		\-p)
+		shift
+		SPATH="$1"
+			if [ ! -d "$SPATH" -a  ! -r "$SPATH" ]
+			then
+				echo "option -p expects a single parameter: accessible path to policy to install"
+				exit 192
+			fi
+		;;
+		*) break
+		;;
+	esac
+	shift
+done
+
+if [ -z "$MODEL" ]
+then
+	echo "valid security model to install or update must be specified with -m"
+	exit 192
+fi
+
+if [ -z "$SPATH" ]
+then
+        echo "valid path to policy to install or update must be specified with -p"
+        exit 192
+fi
+
+if [ -z "$VERSION" ]
+then
+	if [ -r /sys/fs/selinux/policyvers ]
+	then
+		VERSION="`/bin/cat /sys/fs/selinux/policyvers`"
+	else
+		echo "unable to determine max policy version"
+		exit 192
+	fi
+fi
+
+if [ ! -x /bin/basename ]
+then
+	echo "basename is required but not installed"
+	exit 192
+fi
+
+if [ ! -x /bin/sudo ]
+then
+	echo "sudo is required but not installed"
+	exit 192
+fi
+
+TYPE="`/bin/basename "$SPATH"`"
+
+if [ ! -d /etc/selinux -o ! -d /etc/selinux/"$TYPE" ]
+then
+	if [ -f "$SPATH"/policy/policy."$VERSION" -a -f "$SPATH"/contexts/files/file_contexts -a -f "$SPATH"/contexts/files/file_contexts.homedirs ]
+	then
+		/bin/sudo /bin/mkdir -p /etc/selinux/"$TYPE"/contexts/files \
+			&& /bin/sudo /bin/mkdir -m 0700 /etc/selinux/"$TYPE"/policy \
+			&& /bin/sudo /bin/mkdir /etc/selinux/"$TYPE"/contexts/users \
+
+		for entry in `/bin/ls "$SPATH"/contexts/files/ | /bin/grep ".${MODEL}$"`
+		do
+			if [ -f "$SPATH"/contexts/files/"$entry" ]
+			then
+				strippedentry="`/bin/basename "$entry" ".${MODEL}"`"
+
+				if [ -f "$SPATH"/contexts/files/"$entry" ]
+				then
+					/bin/sudo /bin/cp "$SPATH"/contexts/files/"$entry" /etc/selinux/"$TYPE"/contexts/files/"$strippedentry"
+				fi
+			fi
+		done
+
+		for entry in `/bin/ls "$SPATH"/contexts/users/ | /bin/grep ".${MODEL}$"`
+		do
+			if [ -f "$SPATH"/contexts/users/"$entry" ]
+			then
+				strippedentry="`/bin/basename "$entry" ".${MODEL}"`"
+
+				if [ -f "$SPATH"/contexts/users/"$entry" ]
+				then
+					/bin/sudo /bin/cp "$SPATH"/contexts/users/"$entry" /etc/selinux/"$TYPE"/contexts/users/"$strippedentry"
+				fi
+			fi
+		done
+
+		for entry in `/bin/ls "$SPATH"/contexts/ | /bin/grep ".${MODEL}$"`
+		do
+			if [ -f "$SPATH"/contexts/"$entry" ]
+			then
+				strippedentry="`/bin/basename "$entry" ".${MODEL}"`"
+
+				if [ -f "$SPATH"/contexts/"$entry" ]
+				then
+					/bin/sudo /bin/cp "$SPATH"/contexts/"$entry" /etc/selinux/"$TYPE"/contexts/"$strippedentry"
+				fi
+			fi
+		done
+
+		/bin/sudo /bin/cp "$SPATH"/policy/policy."$VERSION" /etc/selinux/"$TYPE"/policy/ \
+			&& /bin/sudo /bin/chmod 0600 /etc/selinux/"$TYPE"/policy/policy."$VERSION"
+
+		/bin/sudo /bin/cp "$SPATH"/contexts/files/file_contexts /etc/selinux/"$TYPE"/contexts/files/
+		/bin/sudo /bin/cp "$SPATH"/contexts/files/file_contexts.homedirs /etc/selinux/"$TYPE"/contexts/files/
+
+		if [ -f "$SPATH"/contexts/files/file_contexts.subs_dist ]
+		then
+			/bin/sudo /bin/cp "$SPATH"/contexts/files/file_contexts.subs_dis /etc/selinux/"$TYPE"/contexts/files/
+		fi
+
+		if [ -f "$SPATH"/contexts/files/file_contexts.bin -a -f "$SPATH"/contexts/files/file_contexts.homedirs.bin ]
+		then
+			/bin/sudo /bin/cp "$SPATH"/contexts/files/file_contexts.bin /etc/selinux/"$TYPE"/contexts/files/
+			/bin/sudo /bin/cp "$SPATH"/contexts/files/file_contexts.homedirs.bin /etc/selinux/"$TYPE"/contexts/files/
+		fi
+
+		if [ -f "$SPATH"/contexts/dbus_contexts ]
+		then
+			/bin/sudo /bin/cp "$SPATH"/contexts/dbus_contexts /etc/selinux/"$TYPE"/contexts/
+		fi
+
+		if [ -f "$SPATH"/contexts/openssh_contexts ]
+		then
+			/bin/sudo /bin/cp "$SPATH"/contexts/openssh_contexts /etc/selinux/"$TYPE"/contexts/
+		fi
+
+		if [ -f "$SPATH"/seusers.local ]
+		then
+			/bin/sudo /bin/cp "$SPATH"/seusers.local /etc/selinux/"$TYPE"/seusers
+		else
+			for entry in `/bin/ls "$SPATH"/ | /bin/grep ^seusers | /bin/grep ".${MODEL}$"`
+			do
+				strippedentry="`/bin/basename "$entry" ".${MODEL}"`"
+
+				if [ -f "$SPATH"/"$entry" ]
+				then
+					/bin/sudo /bin/cp "$SPATH"/"$entry" /etc/selinux/"$TYPE"/"$strippedentry"
+				fi
+			done
+		fi
+
+		echo "
+clean installation!
+
+1. change SELINUXTYPE in /etc/selinux/config to "$TYPE"
+2. change mode to permissive
+3. execute /sbin/load_policy
+4. execute /sbin/restorecon -RF /
+5. empty /var/tmp
+6. reboot
+		"
+	else
+		echo "no valid policy found in "$SPATH""
+		exit 192
+	fi
+elif [ -d /etc/selinux/"$TYPE" -a -d /etc/selinux/"$TYPE"/contexts -a -d /etc/selinux/"$TYPE"/policy -a -d /etc/selinux/"$TYPE"/contexts/files -a -d /etc/selinux/"$TYPE"/contexts/users ]
+then
+	if [ -f "$SPATH"/policy/policy."$VERSION" -a -f "$SPATH"/contexts/files/file_contexts -a -f "$SPATH"/contexts/files/file_contexts.homedirs ]
+	then
+		/bin/sudo "$SPATH"/support/checksha256sum "$SPATH"/policy/policy."$VERSION" /etc/selinux/"$TYPE"/policy/policy."$VERSION"
+
+		if [ "$?" == "193" ]
+		then
+			/bin/sudo /bin/cp "$SPATH"/policy/policy."$VERSION" /etc/selinux/"$TYPE"/
+		else
+			echo "nothing to update"
+			exit 0
+		fi
+
+		/bin/sudo "$SPATH"/support/checksha256sum "$SPATH"/contexts/files/file_contexts /etc/selinux/"$TYPE"/contexts/files/file_contexts
+
+		if [ "$?" == "193" ]
+		then
+			/bin/sudo /bin/cp "$SPATH"/contexts/files/file_contexts /etc/selinux/"$TYPE"/contexts/files/
+		fi
+
+		/bin/sudo "$SPATH"/support/checksha256sum "$SPATH"/contexts/files/file_contexts.homedirs /etc/selinux/"$TYPE"/contexts/files/file_contexts.homedirs
+
+		if [ "$?" == "193" ]
+		then
+			/bin/sudo /bin/cp "$SPATH"/contexts/files/file_contexts.homedirs /etc/selinux/"$TYPE"/contexts/files/
+		fi
+
+		if [ -f "$SPATH"/contexts/files/file_contexts.subs_dist ]
+		then
+			/bin/sudo "$SPATH"/support/checksha256sum "$SPATH"/contexts/files/file_contexts.subs_dist /etc/selinux/"$TYPE"/contexts/files/file_contexts.subs_dist
+
+			if [ "$?" == "193" ]
+			then
+				/bin/sudo /bin/cp "$SPATH"/contexts/files/file_contexts.subs_dist /etc/selinux/"$TYPE"/contexts/files/
+			fi
+		fi
+
+		if [ -f "$SPATH"/contexts/files/file_contexts.bin ]
+		then
+			/bin/sudo "$SPATH"/support/checksha256sum "$SPATH"/contexts/files/file_contexts.bin /etc/selinux/"$TYPE"/contexts/files/file_contexts.bin
+
+			if [ "$?" == "193" ]
+			then
+				/bin/sudo /bin/cp "$SPATH"/contexts/files/file_contexts.bin /etc/selinux/"$TYPE"/contexts/files/
+			fi
+		fi
+
+		if [ -f "$SPATH"/contexts/files/file_contexts.homedirs.bin ]
+		then
+			/bin/sudo "$SPATH"/support/checksha256sum "$SPATH"/contexts/files/file_contexts.homedirs.bin /etc/selinux/"$TYPE"/contexts/files/file_contexts.homedirs.bin
+
+			if [ "$?" == "193" ]
+			then
+				/bin/sudo /bin/cp "$SPATH"/contexts/files/file_contexts.homedirs.bin /etc/selinux/"$TYPE"/contexts/files/
+			fi
+		fi
+
+                /bin/sudo /bin/cp "$SPATH"/contexts/files/file_contexts /etc/selinux/"$TYPE"/contexts/files/
+                /bin/sudo /bin/cp "$SPATH"/contexts/files/file_contexts.homedirs /etc/selinux/"$TYPE"/contexts/files/
+
+		for entry in `/bin/ls "$SPATH"/contexts/files/ | /bin/grep ".${MODEL}$"`
+		do
+			if [ -f "$SPATH"/contexts/files/"$entry" ]
+			then
+				strippedentry="`/bin/basename "$entry" ".${MODEL}"`"
+
+				/bin/sudo "$SPATH"/support/checksha256sum "$SPATH"/contexts/files/"$entry" /etc/selinux/"$TYPE"/contexts/files/"$strippedentry"
+
+				if [ "$?" == "193" ]
+				then
+					/bin/sudo /bin/cp "$SPATH"/contexts/files/"$entry" /etc/selinux/"$TYPE"/contexts/files/"$strippedentry"
+				fi
+			fi
+		done
+
+
+		for entry in `/bin/ls "$SPATH"/contexts/users/ | /bin/grep ".${MODEL}$"`
+		do
+			if [ -f "$SPATH"/contexts/users/"$entry" ]
+			then
+				strippedentry="`/bin/basename "$entry" ".${MODEL}"`"
+
+				/bin/sudo "$SPATH"/support/checksha256sum "$SPATH"/contexts/users/"$entry" /etc/selinux/"$TYPE"/contexts/users/"$strippedentry"
+
+				if [ "$?" == "193" ]
+				then
+					/bin/sudo /bin/cp "$SPATH"/contexts/users/"$entry" /etc/selinux/"$TYPE"/contexts/users/"$strippedentry"
+				fi
+			fi
+		done
+
+		for entry in `/bin/ls "$SPATH"/contexts/ | /bin/grep ".${MODEL}$"`
+		do
+			if [ -f "$SPATH"/contexts/"$entry" ]
+			then
+				strippedentry="`/bin/basename "$entry" ".${MODEL}"`"
+
+				/bin/sudo "$SPATH"/support/checksha256sum "$SPATH"/contexts/"$entry" /etc/selinux/"$TYPE"/contexts/"$strippedentry"
+
+				if [ "$?" == "193" ]
+				then
+					/bin/sudo /bin/cp "$SPATH"/contexts/"$entry" /etc/selinux/"$TYPE"/contexts/"$strippedentry"
+				fi
+			fi
+		done
+
+		if [ -f "$SPATH"/contexts/dbus_contexts ]
+		then
+			/bin/sudo "$SPATH"/support/checksha256sum "$SPATH"/contexts/dbus_contexts /etc/selinux/"$TYPE"/contexts/dbus_contexts
+
+			if [ "$?" == "193" ]
+			then
+				if [ -f "$SPATH"/contexts/dbus_contexts ]
+				then
+					/bin/sudo /bin/cp "$SPATH"/contexts/dbus_contexts /etc/selinux/"$TYPE"/contexts/
+				fi
+			fi
+		fi
+
+		if [ -f "$SPATH"/contexts/openssh_contexts ]
+		then
+			/bin/sudo "$SPATH"/support/checksha256sum "$SPATH"/contexts/openssh_contexts /etc/selinux/"$TYPE"/contexts/openssh_contexts
+
+			if [ "$?" == "193" ]
+			then
+				if [ -f "$SPATH"/contexts/openssh_contexts ]
+				then
+					/bin/sudo /bin/cp "$SPATH"/contexts/openssh_contexts /etc/selinux/"$TYPE"/contexts/
+				fi
+			fi
+		fi
+
+		if [ -f "$SPATH"/seusers.local ]
+		then
+			/bin/sudo "$SPATH"/support/checksha256sum "$SPATH"/seusers.local /etc/selinux/"$TYPE"/seusers
+
+			if [ "$?" == "193" ]
+			then
+				if [ -f "$SPATH"/seusers.local ]
+				then
+					/bin/sudo /bin/cp "$SPATH"/seusers.local /etc/selinux/"$TYPE"/seusers
+				fi
+			fi
+		else
+			for entry in `/bin/ls "$SPATH"/ | /bin/grep ^seusers | /bin/grep ".${MODEL}$"`
+			do
+				strippedentry="`/bin/basename "$entry" ".${MODEL}"`"
+
+				/bin/sudo "$SPATH"/support/checksha256sum "$SPATH"/"$entry" /etc/selinux/"$TYPE"/"$strippedentry"
+
+				if [ "$?" == "193" ]
+				then
+					if [ -f "$SPATH"/contexts/users/"$entry" ]
+					then
+						/bin/sudo /bin/cp "$SPATH"/"$entry" /etc/selinux/"$TYPE"/"$strippedentry"
+					fi
+				fi
+			done
+		fi
+
+		if [ "`/bin/grep ^SELINUXTYPE /etc/selinux/config | /bin/awk -F "=" '{print $2}'`" == "$TYPE" ]
+		then
+			echo "
+updated existing policy configuration!
+
+1. execute /sbin/load_policy to apply changes
+2. file contexts changes may require that you relabel and restart affected processes
+			"
+		else
+			echo "
+policy model change!
+
+1. change SELINUXTYPE in /etc/selinux/config to "$TYPE"
+2. change mode to permissive
+3. execute /sbin/load_policy
+4. execute /sbin/restorecon -RF /
+5. empty /var/tmp
+6. reboot
+			"
+		fi
+	else
+		echo "no valid policy found in "$SPATH""
+		exit 192
+	fi
+else
+	echo "unhandled exception"
+	exit 192
+fi
+exit
+
+#EOF

@@ -1,0 +1,31 @@
+#!/bin/bash
+
+if [ $# -eq 0 ]
+then
+	input+=`/bin/cat`
+else
+	input+=`echo $*`
+fi
+
+for entry in ${input[@]}
+do
+	test -f "$entry" || exit 1
+	test -r "$entry" || exit 1
+	test -s "$entry" || exit 1
+done
+
+output+=`/bin/cat "${input[@]}"`
+
+if [ -z "$output" ]
+then
+	exit 192
+elif [ -n "$output" ]
+then
+	echo "${output[@]}"
+else
+	exit 1
+fi
+
+exit
+
+#EOF

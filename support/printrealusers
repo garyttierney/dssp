@@ -1,0 +1,62 @@
+#!/bin/bash
+
+test -d /home || exit 1
+
+test -f /etc/login.defs || exit 1
+test -r /etc/login.defs || exit 1
+test -s /etc/login.defs || exit 1
+
+test -f /etc/shells || exit 1
+test -r /etc/shells || exit 1
+test -s /etc/shells || exit 1
+
+test -f /bin/getent || exit 1
+test -x /bin/getent || exit 1
+test -s /bin/getent || exit 1
+
+UID_MAX="`/bin/grep ^UID_MAX /etc/login.defs | /bin/awk -F" " '{print $2}'`"
+UID_MIN="`/bin/grep ^UID_MIN /etc/login.defs | /bin/awk -F" " '{print $2}'`"
+
+LSHELLS+="`/bin/grep -v nologin /etc/shells`"
+
+[[ ! "$UID_MAX" =~ "^[0-9]+$" ]] || exit 1
+[[ ! "$UID_MIN" =~ "^[0-9]+$" ]] || exit 1
+
+IFS=$'\n'
+
+for ent in `/bin/getent passwd`
+do
+	id="`echo "$ent" | /bin/awk -F ":" '{print $3}'`"
+
+	if ! [[ "$id" -lt "$UID_MIN" ]] && ! [[ "$id" -gt "$UID_MAX" ]] && [[ "$id" -ne "0" ]]
+	then
+		uname="`echo "$ent" | /bin/awk -F ":" '{print $1}'`"
+
+		[[ -d /home/"$uname" ]] || exit 1
+
+		ushell="`echo "$ent" | /bin/awk -F ":" '{print $7}'`"
+
+		unset hshell
+
+		for lshell in ${LSHELLS[@]}
+		do
+			[[ "$lshell" == "$ushell" ]] && hshell=true
+		done
+
+		[[ "$hshell" == "true" ]] || exit 1
+
+		uhome="`echo "$ent" | /bin/awk -F ":" '{print $6}'`"
+
+		[[ ${uhome%/*} == "/home" ]] || exit 1
+
+		unames+=($uname)
+	fi
+done
+
+[[ -z "$unames" ]] && exit 192
+
+echo "${unames[*]}"
+
+exit
+
+#EOF

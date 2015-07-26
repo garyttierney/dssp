@@ -1,0 +1,28 @@
+#!/bin/bash
+
+if [ $# -eq 1 ]
+then
+	input+=`echo $1`
+else
+	exit 1
+fi
+
+test -f "$input" || exit 1
+test -r "$input" || exit 1
+test -s "$input" || exit 1
+
+spoolfiletemplate+="`/bin/grep 'USER_SPOOL' "$input"`"
+
+if [ -z "$spoolfiletemplate" ]
+then
+	exit 192
+elif [ -n "$spoolfiletemplate" ]
+then
+	echo "${spoolfiletemplate[@]}"
+else
+	exit 1
+fi
+
+exit
+
+#EOF

@@ -1,0 +1,57 @@
+#!/bin/bash
+
+if [ $# -eq 1 ]
+then
+	seusersfile="$1"
+
+	test -f "$seusersfile" || exit 1
+	test -r "$seusersfile" || exit 1
+	test -s "$seusersfile" || exit 1
+
+	defaultseuser=`/bin/grep ^__default__ "$seusersfile" | /bin/awk -F ":" '{print $2}'`
+	defaultseuserprefix=`echo "$defaultseuser" | /bin/cut -s -f1 -d.`
+
+	if [ -n "$defaultseuserprefix" ]
+	then
+		echo "${defaultseuser}:${defaultseuserprefix}.role"
+	else [ -z "$defaultseuserprefix" ]
+		alternatedefaultseuserprefix=`echo "$defaultseuser" | /bin/awk -F "_u"$ '{print $1}'`
+		if [ "$defaultseuser" == "${alternatedefaultseuserprefix}_u" ]
+		then
+			echo "${defaultseuser}:${alternatedefaultseuserprefix}_r"
+		else
+			exit 192
+		fi
+	fi
+
+elif [ $# -eq 2 ]
+then
+	seusersfile="$1"
+	seusername="$2"
+
+	test -f "$seusersfile" || exit 1
+	test -r "$seusersfile" || exit 1
+	test -s "$seusersfile" || exit 1
+
+	seuser=`/bin/grep ^"${seusername}" "$seusersfile" | /bin/awk -F ":" '{print $2}'`
+	seuserprefix=`echo "$seuser" | /bin/cut -s -f1 -d.`
+
+	if [ -n "$seuserprefix" ]
+	then
+		echo "${seuser}:${seuserprefix}.role"
+	else [ -z "$seuserprefix" ]
+		alternateseuserprefix=`echo "$seuser" | /bin/awk -F "_u"$ '{print $1}'`
+		if [ "$seuser" == "${alternateseuserprefix}_u" ]
+		then
+			echo "${seuser}:${alternateseuserprefix}_r"
+		else
+			exit 192
+		fi
+	fi
+else
+	exit 192
+fi
+
+exit
+
+#EOF

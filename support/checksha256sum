@@ -1,0 +1,33 @@
+#!/bin/bash
+
+if [ $# -eq 2 ]
+then
+	test -x /bin/sha256sum || exit 192
+
+	sourcefile="$1"
+	targetfile="$2"
+
+	[[ -f "$sourcefile" ]] || exit 1
+	[[ -r "$sourcefile" ]] || exit 1
+	[[ -s "$sourcefile" ]] || exit 1
+
+	[[ -f "$targetfile" ]] || exit 1
+	[[ -w "$targetfile" ]] || exit 1
+	[[ -s "$targetfile" ]] || exit 1
+
+	sumsource="`/bin/sha256sum "$sourcefile" | /bin/awk '{print $1}'`"
+	sumtarget="`/bin/sha256sum "$targetfile" | /bin/awk '{print $1}'`"
+
+	if [ "$sumsource" == "$sumtarget" ]
+	then
+		exit 194
+	else
+		exit 193
+	fi
+else
+	exit 192
+fi
+
+exit
+
+#EOF

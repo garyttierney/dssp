@@ -1,0 +1,414 @@
+#!/bin/bash
+
+while (($# > 0))
+do
+	 case $1 in
+		\-a)
+		shift
+		UNKNOWN=$1
+			if [ "$UNKNOWN" != "allow" -o "$UNKNOWN" != "deny" -o "$UNKNOWN" != "reject" ]
+			then
+				echo "option -a expects a single paremeter: allow, deny or reject"
+				exit 192
+			fi
+
+			case "$UNKNOWN" in
+				allow)
+					UNKNOWN="--handle-unknown=allow"
+					;;
+				deny)
+					UNKNOWN="--handle-unknown=deny"
+					;;
+				reject)
+					UNKNOWN="--handle-unknown=reject"
+					;;
+				*)
+					echo "unhandled exception in option -a"
+					exit 192
+					;;
+			esac
+		;;
+		\-d)
+		DONTAUDIT="-D"
+		;;
+		\-n)
+		shift
+		VERSION="$1"
+			if [ ! -r /sys/fs/selinux/policyvers ]
+			then
+				echo "unable to determine max policy version"
+				exit
+			elif [ "$VERSION" -gt "`/bin/cat /sys/fs/selinux/policyvers`" ]
+			then
+				echo "option -n expects a single parameter: policy version less than or equal to max policy version"
+				exit 192
+			fi
+		;;
+		\-m)
+		shift
+		MODEL="$1"
+			if [ "$MODEL" != "standard" -a "$MODEL" != "mcs" -a "$MODEL" != "mls" ]
+			then
+				echo "option -m expects a single parameter: standard, mcs or mls"
+				exit 192
+			fi
+		;;
+		\-h)
+			echo "
+$0 compile CIL SELinux security policy
+
+-a		: allow unknown access vectors
+-d		: disable dontaudit
+-n   (version)	: specify a policy version to build
+-m   (model)	: specify security model to build (standard, mcs or mls)
+			cannot be used to override policy configuration but must be used for proper file context generation
+-i   (location)	: specify compiler location
+-p   (path)	: specify source policy location
+-v		: compile policy in verbose mode
+			"
+			exit
+		;;
+		\-i)
+		shift
+		SECILC="$1"
+			if [ ! -f "$SECILC" -a ! -x "$SECILC" -a ! -s "$SECILC" ]
+			then
+				echo "option -i expects a single parameter: accessible secilc location"
+				exit 192
+			fi
+		;;
+		\-p)
+		shift
+		SPATH="$1"
+			if [ ! -d "$SPATH" -a  ! -w "$SPATH" ]
+			then
+				echo "option -p expects a single parameter: accessible path to source policy to build"
+				exit 192
+			fi
+		;;
+		\-v)
+		VERBOSE="-v"
+		;;
+		*) break
+		;;
+	esac
+	shift
+done
+
+if [ -z "$MODEL" ]
+then
+	echo "valid security model to build must be specified with -m"
+	exit 192
+elif [ -z "$SPATH" ]
+then
+	echo "valid path to source policy to build must be specified with -p"
+	exit 192
+elif [ -z "$SECILC" ]
+then
+	if [ ! -f /usr/bin/secilc -a ! -x /usr/bin/secilc -a ! -s /usr/bin/secilc ]
+	then
+		echo "valid SECILC location must be specified with -i"
+		exit 192
+	fi
+elif [ -z "$VERSION" ]
+then
+	if [ -r /sys/fs/selinux/policyvers ]
+	then
+		VERSION="`/bin/cat /sys/fs/selinux/policyvers`"
+	else
+		echo "unable to determine max policy version"
+		exit 192
+	fi
+fi
+
+log ()
+{
+	if [ $# -ge 1 -a "$VERBOSE" == "-v" ]
+	then
+		echo "$*"
+	elif [ "$VERBOSE" == "-v" ]
+	then
+		while read line; do
+			echo "$line"
+		done
+	fi
+}
+
+if [ -f "$SPATH"/exclude -a -r "$SPATH"/exclude -a -s "$SPATH"/exclude -a -f "$SPATH"/exclude.local -a -r "$SPATH"/exclude.local -a -s "$SPATH"/exclude.local ]
+then
+	excludes+="`"$SPATH"/support/printexcludes "$SPATH"/exclude "$SPATH"/exclude.local`"
+
+	log "identified upstream and local excludes to process"
+elif [ -f "$SPATH"/exclude -a -r "$SPATH"/exclude -a -s "$SPATH"/exclude ]
+then
+	excludes+="`"$SPATH"/support/printexcludes "$SPATH"/exclude`"
+
+	log "identified upstream excludes to process"
+elif [ -f "$SPATH"/exclude.local -a -r "$SPATH"/exclude.local -a -s "$SPATH"/exclude.local ]
+then
+	excludes+="`"$SPATH"/support/printexcludes "$SPATH"/exclude.local`"
+
+	log "identifier local excludes to process"
+fi
+
+modules+=`"$SPATH"/support/printmodules "$SPATH"`
+
+if [ -n "$excludes" ]
+then
+	for exclude in "${excludes[*]}"
+	do
+		modulestocompile+=`echo ${modules[@]} | /bin/grep -v "$exclude"`
+
+		log "excluding module "$exclude""
+	done
+elif [ -z "$excludes" ]
+then
+	modulestocompile+=`echo ${modules[@]}`
+
+	log "noting to exclude"
+
+else
+	echo "unhandled exception in modules to compile"
+	exit 192
+fi
+
+( cd "$SPATH" && "$SECILC" --policyvers="$VERSION" `echo "$VERBOSE" "$DONTAUDIT" "$UNKNOWN" ${modulestocompile[@]}` \
+	-o policy/policy."$VERSION" -f contexts/files/file_contexts )
+
+log "built "$SPATH"/policy/policy."$VERSION""
+
+usernames+=`"$SPATH"/support/printrealusers`
+
+homedirtemplate+="`"$SPATH"/support/printhomedirtemplate "$SPATH"/contexts/files/file_contexts`"
+spoolfiletemplate+="`"$SPATH"/support/printspoolfiletemplate "$SPATH"/contexts/files/file_contexts`"
+
+/bin/sed -i.bak '/HOME_DIR/d' "$SPATH"/contexts/files/file_contexts
+/bin/sed -i.bak '/USER_SPOOL/d' "$SPATH"/contexts/files/file_contexts
+
+IFS=$'\n'
+
+echo > "$SPATH"/contexts/files/file_contexts.homedirs
+
+if [ -f "$SPATH"/seusers.local ]
+then
+	defaultseuseruserroletuple="`"$SPATH"/support/seusertuple "$SPATH"/seusers.local`"
+
+	defaultseuserid="`echo "$defaultseuseruserroletuple" | /bin/awk -F":" '{print $1}'`"
+	defaultseuserrole="`echo "$defaultseuseruserroletuple" | /bin/awk -F":" '{print $2}'`"
+
+	log "fetched seusers to process from "$SPATH"/seusers.local"
+
+	echo "/home(/.*)? "$defaultseuserid":"$defaultseuserrole":home_dir.file" >> "$SPATH"/contexts/files/file_contexts.homedirs
+	echo "/home/.*/.* "$defaultseuserid":"$defaultseuserrole":home_user.home_user_file" >> "$SPATH"/contexts/files/file_contexts.homedirs
+elif [ "$MODEL" == "standard" ]
+then
+	defaultseuseruserroletuple="`"$SPATH"/support/seusertuple "$SPATH"/seusers.standard`"
+
+	defaultseuserid="`echo "$defaultseuseruserroletuple" | /bin/awk -F":" '{print $1}'`"
+	defaultseuserrole="`echo "$defaultseuseruserroletuple" | /bin/awk -F":" '{print $2}'`"
+
+	log "fetched seusers to process from "$SPATH"/seusers.standard"
+
+	echo "/home(/.*)? "$defaultseuserid":"$defaultseuserrole":home_dir.file" >> "$SPATH"/contexts/files/file_contexts.homedirs
+	echo "/home/.*/.* "$defaultseuserid":"$defaultseuserrole":home_user.home_user_file" >> "$SPATH"/contexts/files/file_contexts.homedirs
+elif [ "$MODEL" == "mcs" ]
+then
+	defaultseuseruserroletuple="`"$SPATH"/support/seusertuple "$SPATH"/seusers.mcs`"
+
+	defaultseuserid="`echo "$defaultseuseruserroletuple" | /bin/awk -F":" '{print $1}'`"
+	defaultseuserrole="`echo "$defaultseuseruserroletuple" | /bin/awk -F":" '{print $2}'`"
+
+	log "fetched seusers to process from "$SPATH"/seusers.mcs"
+
+	echo "/home(/.*)? "$defaultseuserid":"$defaultseuserrole":home_dir.file:s0" >> "$SPATH"/contexts/files/file_contexts.homedirs
+	echo "/home/.*/.* "$defaultseuserid":"$defaultseuserrole":home_user.home_user_file:s0" >> "$SPATH"/contexts/files/file_contexts.homedirs
+elif [ "$MODEL" == "mls" ]
+then
+	defaultseuseruserroletuple="`"$SPATH"/support/seusertuple "$SPATH"/seusers.mls`"
+
+	defaultseuserid="`echo "$defaultseuseruserroletuple" | /bin/awk -F":" '{print $1}'`"
+	defaultseuserrole="`echo "$defaultseuseruserroletuple" | /bin/awk -F":" '{print $2}'`"
+
+	log "fetched seusers to process from "$SPATH"/seusers.mls"
+
+	echo "/home(/.*)? "$defaultseuserid":"$defaultseuserrole":home_dir.file:s0-s15:c0.c1023" >> "$SPATH"/contexts/files/file_contexts.homedirs
+	echo "/home/.*/.* "$defaultseuserid":"$defaultseuserrole":home_user.home_user_file:s0" >> "$SPATH"/contexts/files/file_contexts.homedirs
+fi
+
+for username in ${usernames[*]}
+do
+	if [ -f "$SPATH"/seusers.local ]
+	then
+		if [ `/bin/grep "^$username:" "$SPATH"/seusers.local` ]
+		then
+			seuseruserroletuple="`"$SPATH"/support/seusertuple "$SPATH"/seusers.local "$username"`"
+
+			seuserid="`echo "$seuseruserroletuple" | /bin/awk -F":" '{print $1}'`"
+			seuserrole="`echo "$seuseruserroletuple" | /bin/awk -F":" '{print $2}'`"
+
+			log "processing "$username" found in "$SPATH"/seusers.local"
+
+			for homedir in ${homedirtemplate[*]}
+			do
+				name=`echo "${homedir//HOME_DIR//home/"$username"}"`
+				id=`echo "${name//sys.id/$seuserid}"`
+				echo "${id//sys.role/"$seuserrole"}" >> "$SPATH"/contexts/files/file_contexts.homedirs
+			done
+
+			for spoolfile in ${spoolfiletemplate[*]}
+			do
+				name=`echo "${spoolfile//USER_SPOOL//var/spool/mail/"$username"}"`
+				id=`echo "${name//sys.id/$seuserid}"`
+				echo "${id//sys.role/"$seuserrole"}" >> "$SPATH"/contexts/files/file_contexts.homedirs
+			done
+		else
+			log "processing default user found in "$SPATH"/seusers.local"
+
+			for homedir in ${homedirtemplate[*]}
+			do
+				name=`echo "${homedir//HOME_DIR//home/"$username"}"`
+				id=`echo "${name//sys.id/$defaultseuserid}"`
+				echo "${id//sys.role/"$defaultseuserrole"}" >> "$SPATH"/contexts/files/file_contexts.homedirs
+			done
+
+			for spoolfile in ${spoolfiletemplate[*]}
+			do
+				name=`echo "${spoolfile//USER_SPOOL//var/spool/mail/"$username"}"`
+				id=`echo "${name//sys.id/$defaultseuserid}"`
+				echo "${id//sys.role/"$defaultseuserrole"}" >> "$SPATH"/contexts/files/file_contexts.homedirs
+			done
+		fi
+	elif [ "$MODEL" == "standard" ]
+	then
+		if [ `/bin/grep "^$username:" "$SPATH"/seusers.standard` ]
+		then
+			seuseruserroletuple="`"$SPATH"/support/seusertuple "$SPATH"/seusers.standard "$username"`"
+
+			seuserid="`echo "$seuseruserroletuple" | /bin/awk -F":" '{print $1}'`"
+			seuserrole="`echo "$seuseruserroletuple" | /bin/awk -F":" '{print $2}'`"
+
+			log "processing "$username" found in "$SPATH"/seusers.standard"
+
+			for homedir in ${homedirtemplate[*]}
+			do
+				name=`echo "${homedir//HOME_DIR//home/"$username"}"`
+				id=`echo "${name//sys.id/$seuserid}"`
+				echo "${id//sys.role/"$seuserrole"}" >> "$SPATH"/contexts/files/file_contexts.homedirs
+			done
+
+			for spoolfile in ${spoolfiletemplate[*]}
+			do
+				name=`echo "${spoolfile//USER_SPOOL//var/spool/mail/"$username"}"`
+				id=`echo "${name//sys.id/$seuserid}"`
+				echo "${id//sys.role/"$seuserrole"}" >> "$SPATH"/contexts/files/file_contexts.homedirs
+			done
+		else
+			log "processing default user found in "$SPATH"/seusers.standard"
+
+			for homedir in ${homedirtemplate[*]}
+			do
+				name=`echo "${homedir//HOME_DIR//home/"$username"}"`
+				id=`echo "${name//sys.id/$defaultseuserid}"`
+				echo "${id//sys.role/"$defaultseuserrole"}" >> "$SPATH"/contexts/files/file_contexts.homedirs
+			done
+
+			for spoolfile in ${spoolfiletemplate[*]}
+			do
+				name=`echo "${spoolfile//USER_SPOOL//var/spool/mail/"$username"}"`
+				id=`echo "${name//sys.id/$defaultseuserid}"`
+				echo "${id//sys.role/"$defaultseuserrole"}" >> "$SPATH"/contexts/files/file_contexts.homedirs
+			done
+		fi
+	elif [ "$MODEL" == "mcs" ]
+	then
+		if [ `/bin/grep "^$username:" "$SPATH"/seusers.mcs` ]
+		then
+			seuseruserroletuple="`"$SPATH"/support/seusertuple "$SPATH"/seusers.mcs "$username"`"
+
+			seuserid="`echo "$seuseruserroletuple" | /bin/awk -F":" '{print $1}'`"
+			seuserrole="`echo "$seuseruserroletuple" | /bin/awk -F":" '{print $2}'`"
+
+			log "processing "$username" found in "$SPATH"/seusers.mcs"
+
+			for homedir in ${homedirtemplate[*]}
+			do
+				name=`echo "${homedir//HOME_DIR//home/"$username"}"`
+				id=`echo "${name//sys.id/$seuserid}"`
+				echo "${id//sys.role/"$seuserrole"}" >> "$SPATH"/contexts/files/file_contexts.homedirs
+			done
+
+			for spoolfile in ${spoolfiletemplate[*]}
+			do
+				name=`echo "${spoolfile//USER_SPOOL//var/spool/mail/"$username"}"`
+				id=`echo "${name//sys.id/$seuserid}"`
+				echo "${id//sys.role/"$seuserrole"}" >> "$SPATH"/contexts/files/file_contexts.homedirs
+			done
+		else
+			log "processing "$username" found in "$SPATH"/seusers.mcs"
+
+			for homedir in ${homedirtemplate[*]}
+			do
+				name=`echo "${homedir//HOME_DIR//home/"$username"}"`
+				id=`echo "${name//sys.id/$defaultseuserid}"`
+				echo "${id//sys.role/"$defaultseuserrole"}" >> "$SPATH"/contexts/files/file_contexts.homedirs
+			done
+
+			for spoolfile in ${spoolfiletemplate[*]}
+			do
+				name=`echo "${spoolfile//USER_SPOOL//var/spool/mail/"$username"}"`
+				id=`echo "${name//sys.id/$defaultseuserid}"`
+				echo "${id//sys.role/"$defaultseuserrole"}" >> "$SPATH"/contexts/files/file_contexts.homedirs
+			done
+		fi
+	elif [ "$MODEL" == "mls" ]
+	then
+		if [ `/bin/grep "^$username:" "$SPATH"/seusers.mls` ]
+		then
+			seuseruserroletuple="`"$SPATH"/support/seusertuple "$SPATH"/seusers.mls "$username"`"
+
+			seuserid="`echo "$seuseruserroletuple" | /bin/awk -F":" '{print $1}'`"
+			seuserrole="`echo "$seuseruserroletuple" | /bin/awk -F":" '{print $2}'`"
+
+			log "processing "$username" found in "$SPATH"/seusers.mcs"
+
+			for homedir in ${homedirtemplate[*]}
+			do
+				name=`echo "${homedir//HOME_DIR//home/"$username"}"`
+				id=`echo "${name//sys.id/$seuserid}"`
+				echo "${id//sys.role/"$seuserrole"}" >> "$SPATH"/contexts/files/file_contexts.homedirs
+			done
+
+			for spoolfile in ${spoolfiletemplate[*]}
+			do
+				name=`echo "${spoolfile//USER_SPOOL//var/spool/mail/"$username"}"`
+				id=`echo "${name//sys.id/$seuserid}"`
+				echo "${id//sys.role/"$seuserrole"}" >> "$SPATH"/contexts/files/file_contexts.homedirs
+			done
+		else
+			log "processing default found in "$SPATH"/seusers.local"
+
+			for homedir in ${homedirtemplate[*]}
+			do
+				name=`echo "${homedir//HOME_DIR//home/"$username"}"`
+				id=`echo "${name//sys.id/$defaultseuserid}"`
+				echo "${id//sys.role/"$defaultseuserrole"}" >> "$SPATH"/contexts/files/file_contexts.homedirs
+			done
+
+			for spoolfile in ${spoolfiletemplate[*]}
+			do
+				name=`echo "${spoolfile//USER_SPOOL//var/spool/mail/"$username"}"`
+				id=`echo "${name//sys.id/$defaultseuserid}"`
+				echo "${id//sys.role/"$defaultseuserrole"}" >> "$SPATH"/contexts/files/file_contexts.homedirs
+			done
+		fi
+	fi
+done
+
+if [ -x /sbin/sefcontext_compile ]
+then
+	/sbin/sefcontext_compile "$SPATH"/contexts/files/file_contexts && /sbin/sefcontext_compile "$SPATH"/contexts/files/file_contexts.homedirs
+fi
+
+exit
+
+#EOF
