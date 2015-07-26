@@ -6,3 +6,7 @@ then
 		&& git pull --recurse-submodules \
 		&& git submodule update --recursive
 fi
+
+exit
+
+#EOF
