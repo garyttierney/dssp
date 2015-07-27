@@ -267,6 +267,9 @@
 (macro file_read_config_files ((type ARG1))
 	(call read_files_pattern (ARG1 config.config_file config.config_file)))
 
+(macro file_relabel_config_files ((type ARG1))
+	(call relabel_files_pattern (ARG1 config.config_file config.config_file)))
+
 (macro file_read_config_lnk_files ((type ARG1))
 	(call read_lnk_files_pattern (ARG1 config.config_file config.config_file)))
 
