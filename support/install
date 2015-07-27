@@ -178,7 +178,7 @@ then
 			then
 				/bin/sudo /bin/cp "$SPATH"/contexts.d/openssh_contexts /etc/selinux/"$TYPE"/contexts/
 			else
-				/bin/sudo /bin/cp "$SPATH"/contexts.d/openssh_contexts /etc/selinux/"$TYPE"/contexts/
+				/bin/sudo /bin/cp "$SPATH"/contexts/openssh_contexts /etc/selinux/"$TYPE"/contexts/
 			fi
 		fi
 
