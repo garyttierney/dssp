@@ -122,15 +122,6 @@
 (macro subj_use_interactive_fd_type ((type ARG1))
 	(typeattributeset subj_use_interactive_fd_type ARG1))
 
-(macro subj_getattr ((type ARG1))
-	(allow ARG1 subj_type (process (getattr))))
-
-(macro subj_read_state ((type ARG1))
-	(call fs_search_proc (ARG1))
-	(allow ARG1 subj_type read_file_perms)
-	(allow ARG1 subj_type list_dir_perms)
-	(allow ARG1 subj_type read_lnk_file_perms))
-
 (macro subj_getattr_common_subj ((type ARG1))
 	(allow ARG1 subj_common_type (process (getattr))))
 
@@ -145,9 +136,6 @@
 	(allow ARG1 subj_common_type list_dir_perms)
 	(allow ARG1 subj_common_type read_lnk_file_perms))
 
-(macro subj_getpgid ((type ARG1))
-	(allow ARG1 subj_type (process (getpgid))))
-
 (macro subj_getpgid_common_subj ((type ARG1))
 	(allow ARG1 subj_common_type (process (getpgid))))
 
@@ -157,26 +145,14 @@
 (macro subj_setsched_common_subj ((type ARG1))
 	(allow ARG1 subject_common_type (process (setsched))))
 
-(macro subj_send_sigkill ((type ARG1))
-	(allow ARG1 subj_type (process (sigkill))))
-
 (macro subj_send_sigkill_common_subj ((type ARG1))
 	(allow ARG1 subj_common_type (process (sigkill))))
-
-(macro subj_send_signal ((type ARG1))
-	(allow ARG1 subj_type (process (signal))))
 
 (macro subj_send_signal_common_subj ((type ARG1))
 	(allow ARG1 subj_common_type (process (signal))))
 
-(macro subj_send_signull ((type ARG1))
-	(allow ARG1 subj_type (process (signull))))
-
 (macro subj_send_signull_common_subj ((type ARG1))
 	(allow ARG1 subj_common_type (process (signull))))
-
-(macro subj_send_sigstop ((type ARG1))
-	(allow ARG1 subj_type (process (sigstop))))
 
 (macro subj_send_sigstop_common_subj ((type ARG1))
 	(allow ARG1 subj_common_type (process (sigstop))))
