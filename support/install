@@ -198,7 +198,7 @@ then
 
 		if [ "$?" == "193" ]
 		then
-			/bin/sudo \cp -f "$SPATH"/policy/policy."$VERSION" /etc/selinux/"$TYPE"/
+			/bin/sudo \cp -f "$SPATH"/policy/policy."$VERSION" /etc/selinux/"$TYPE"/policy/
 		else
 			echo "nothing to update"
 			exit 0
