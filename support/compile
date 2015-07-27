@@ -136,22 +136,22 @@ log ()
 
 if [ -f "$SPATH"/exclude -a -r "$SPATH"/exclude -a -s "$SPATH"/exclude -a -f "$SPATH"/exclude.local -a -r "$SPATH"/exclude.local -a -s "$SPATH"/exclude.local ]
 then
-	excludes+="`"$SPATH"/support/printexcludes "$SPATH"/exclude "$SPATH"/exclude.local`"
+	excludes+="`/bin/bash "$SPATH"/support/printexcludes "$SPATH"/exclude "$SPATH"/exclude.local`"
 
 	log "identified upstream and local excludes to process"
 elif [ -f "$SPATH"/exclude -a -r "$SPATH"/exclude -a -s "$SPATH"/exclude ]
 then
-	excludes+="`"$SPATH"/support/printexcludes "$SPATH"/exclude`"
+	excludes+="`/bin/bash "$SPATH"/support/printexcludes "$SPATH"/exclude`"
 
 	log "identified upstream excludes to process"
 elif [ -f "$SPATH"/exclude.local -a -r "$SPATH"/exclude.local -a -s "$SPATH"/exclude.local ]
 then
-	excludes+="`"$SPATH"/support/printexcludes "$SPATH"/exclude.local`"
+	excludes+="`/bin/bash "$SPATH"/support/printexcludes "$SPATH"/exclude.local`"
 
 	log "identifier local excludes to process"
 fi
 
-modules+=`"$SPATH"/support/printmodules "$SPATH"`
+modules+=`/bin/bash "$SPATH"/support/printmodules "$SPATH"`
 
 if [ -n "$excludes" ]
 then
@@ -173,14 +173,14 @@ else
 fi
 
 ( /bin/cd "$SPATH" && "$SECILC" --policyvers="$VERSION" `echo "$VERBOSE" "$DONTAUDIT" "$UNKNOWN" ${modulestocompile[@]}` \
-	-o policy/policy."$VERSION" -f contexts/files/file_contexts )
+	-o "$SPATH"/policy/policy."$VERSION" -f "$SPATH"/contexts/files/file_contexts )
 
 log "built "$SPATH"/policy/policy."$VERSION""
 
-usernames+=`"$SPATH"/support/printrealusers`
+usernames+=`/bin/bash "$SPATH"/support/printrealusers`
 
-homedirtemplate+="`"$SPATH"/support/printhomedirtemplate "$SPATH"/contexts/files/file_contexts`"
-spoolfiletemplate+="`"$SPATH"/support/printspoolfiletemplate "$SPATH"/contexts/files/file_contexts`"
+homedirtemplate+="`/bin/bash "$SPATH"/support/printhomedirtemplate "$SPATH"/contexts/files/file_contexts`"
+spoolfiletemplate+="`/bin/bash "$SPATH"/support/printspoolfiletemplate "$SPATH"/contexts/files/file_contexts`"
 
 /bin/sed -i.bak '/HOME_DIR/d' "$SPATH"/contexts/files/file_contexts
 /bin/sed -i.bak '/USER_SPOOL/d' "$SPATH"/contexts/files/file_contexts
@@ -191,7 +191,7 @@ echo > "$SPATH"/contexts/files/file_contexts.homedirs
 
 if [ -f "$SPATH"/seusers.local ]
 then
-	defaultseuseruserroletuple="`"$SPATH"/support/seusertuple "$SPATH"/seusers.local`"
+	defaultseuseruserroletuple="`/bin/bash "$SPATH"/support/seusertuple "$SPATH"/seusers.local`"
 
 	defaultseuserid="`echo "$defaultseuseruserroletuple" | /bin/awk -F":" '{print $1}'`"
 	defaultseuserrole="`echo "$defaultseuseruserroletuple" | /bin/awk -F":" '{print $2}'`"
@@ -202,7 +202,7 @@ then
 	echo "/home/.*/.* "$defaultseuserid":"$defaultseuserrole":home_user.home_user_file" >> "$SPATH"/contexts/files/file_contexts.homedirs
 elif [ "$MODEL" == "standard" ]
 then
-	defaultseuseruserroletuple="`"$SPATH"/support/seusertuple "$SPATH"/seusers.standard`"
+	defaultseuseruserroletuple="`/bin/bash "$SPATH"/support/seusertuple "$SPATH"/seusers.standard`"
 
 	defaultseuserid="`echo "$defaultseuseruserroletuple" | /bin/awk -F":" '{print $1}'`"
 	defaultseuserrole="`echo "$defaultseuseruserroletuple" | /bin/awk -F":" '{print $2}'`"
@@ -213,7 +213,7 @@ then
 	echo "/home/.*/.* "$defaultseuserid":"$defaultseuserrole":home_user.home_user_file" >> "$SPATH"/contexts/files/file_contexts.homedirs
 elif [ "$MODEL" == "mcs" ]
 then
-	defaultseuseruserroletuple="`"$SPATH"/support/seusertuple "$SPATH"/seusers.mcs`"
+	defaultseuseruserroletuple="`/bin/bash "$SPATH"/support/seusertuple "$SPATH"/seusers.mcs`"
 
 	defaultseuserid="`echo "$defaultseuseruserroletuple" | /bin/awk -F":" '{print $1}'`"
 	defaultseuserrole="`echo "$defaultseuseruserroletuple" | /bin/awk -F":" '{print $2}'`"
@@ -224,7 +224,7 @@ then
 	echo "/home/.*/.* "$defaultseuserid":"$defaultseuserrole":home_user.home_user_file:s0" >> "$SPATH"/contexts/files/file_contexts.homedirs
 elif [ "$MODEL" == "mls" ]
 then
-	defaultseuseruserroletuple="`"$SPATH"/support/seusertuple "$SPATH"/seusers.mls`"
+	defaultseuseruserroletuple="`/bin/bash "$SPATH"/support/seusertuple "$SPATH"/seusers.mls`"
 
 	defaultseuserid="`echo "$defaultseuseruserroletuple" | /bin/awk -F":" '{print $1}'`"
 	defaultseuserrole="`echo "$defaultseuseruserroletuple" | /bin/awk -F":" '{print $2}'`"
@@ -241,7 +241,7 @@ do
 	then
 		if [ `/bin/grep "^$username:" "$SPATH"/seusers.local` ]
 		then
-			seuseruserroletuple="`"$SPATH"/support/seusertuple "$SPATH"/seusers.local "$username"`"
+			seuseruserroletuple="`/bin/bash "$SPATH"/support/seusertuple "$SPATH"/seusers.local "$username"`"
 
 			seuserid="`echo "$seuseruserroletuple" | /bin/awk -F":" '{print $1}'`"
 			seuserrole="`echo "$seuseruserroletuple" | /bin/awk -F":" '{print $2}'`"
@@ -282,7 +282,7 @@ do
 	then
 		if [ `/bin/grep "^$username:" "$SPATH"/seusers.standard` ]
 		then
-			seuseruserroletuple="`"$SPATH"/support/seusertuple "$SPATH"/seusers.standard "$username"`"
+			seuseruserroletuple="`/bin/bash "$SPATH"/support/seusertuple "$SPATH"/seusers.standard "$username"`"
 
 			seuserid="`echo "$seuseruserroletuple" | /bin/awk -F":" '{print $1}'`"
 			seuserrole="`echo "$seuseruserroletuple" | /bin/awk -F":" '{print $2}'`"
@@ -323,7 +323,7 @@ do
 	then
 		if [ `/bin/grep "^$username:" "$SPATH"/seusers.mcs` ]
 		then
-			seuseruserroletuple="`"$SPATH"/support/seusertuple "$SPATH"/seusers.mcs "$username"`"
+			seuseruserroletuple="`/bin/bash "$SPATH"/support/seusertuple "$SPATH"/seusers.mcs "$username"`"
 
 			seuserid="`echo "$seuseruserroletuple" | /bin/awk -F":" '{print $1}'`"
 			seuserrole="`echo "$seuseruserroletuple" | /bin/awk -F":" '{print $2}'`"
@@ -364,7 +364,7 @@ do
 	then
 		if [ `/bin/grep "^$username:" "$SPATH"/seusers.mls` ]
 		then
-			seuseruserroletuple="`"$SPATH"/support/seusertuple "$SPATH"/seusers.mls "$username"`"
+			seuseruserroletuple="`/bin/bash "$SPATH"/support/seusertuple "$SPATH"/seusers.mls "$username"`"
 
 			seuserid="`echo "$seuseruserroletuple" | /bin/awk -F":" '{print $1}'`"
 			seuserrole="`echo "$seuseruserroletuple" | /bin/awk -F":" '{print $2}'`"
