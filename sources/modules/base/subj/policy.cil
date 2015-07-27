@@ -15,12 +15,16 @@
 (typeattribute subj_use_interactive_fd_type)
 
 (typeattribute subj_obj_id_change_exemption_type)
-
-(typeattribute subj_sys_id_change_exemption_type)
-(typeattribute subj_sys_role_change_exemption_type)
+(typeattribute subj_obj_role_change_exemption_type)
 
 (typeattribute subj_id_change_exemption_type)
 (typeattribute subj_role_change_exemption_type)
+
+(typeattribute subj_obj_sys_id_change_exemption_type)
+(typeattribute subj_obj_sys_role_change_exemption_type)
+
+(typeattribute subj_sys_id_change_exemption_type)
+(typeattribute subj_sys_role_change_exemption_type)
 
 (typeattribute subj_user_exemption_target_type)
 
@@ -212,7 +216,7 @@
 (call subj_execstack_type (subj_unconfined_type))
 (call subj_mmap_low_type (subj_unconfined_type))
 
-(call subj_obj_id_change_exemption_type (subj_unconfined_type))
 (call subj_uncond_exemption_type (subj_unconfined_type))
+(call subj_obj_change_exemption_type (subj_unconfined_type))
 
 (allow subj_unconfined_type subj_entry_obj_type (file (entrypoint)))
