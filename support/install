@@ -255,7 +255,7 @@ then
 
 				if [ "$?" == "193" ]
 				then
-					/bin/sudo \cp -f "$SPATH"/contexts.d/files/file_contexts.subs_dist /etc/selinux/"$TYPE"/contexts/files/
+					/bin/sudo \cp -f "$SPATH"/contexts/files/file_contexts.subs_dist /etc/selinux/"$TYPE"/contexts/files/
 				fi
 			fi
 		fi
