@@ -2,7 +2,7 @@
 
 if [ $# -eq 1 ]
 then
-	input+=`echo $1`
+	input="$1"
 else
 	exit 1
 fi
