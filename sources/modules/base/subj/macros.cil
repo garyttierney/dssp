@@ -143,7 +143,7 @@
 	(allow ARG1 subj_common_type (process (getsched))))
 
 (macro subj_setsched_common_subj ((type ARG1))
-	(allow ARG1 subject_common_type (process (setsched))))
+	(allow ARG1 subj_common_type (process (setsched))))
 
 (macro subj_send_sigkill_common_subj ((type ARG1))
 	(allow ARG1 subj_common_type (process (sigkill))))
