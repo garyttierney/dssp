@@ -134,7 +134,7 @@
 
 (typeattributeset subj_not_ptrace_type (and (subj_type) (not (subj_ptrace_type))))
 
-(neverallow subj_ptrace_type self (capability (sys_ptrace)))
+(neverallow subj_not_ptrace_type self (capability (sys_ptrace)))
 
 (allow subj_unconfined_type self all_capability_perms_except_sys_module_sys_ptrace_and_sys_nice)
 (allow subj_unconfined_type self all_capability2_perms_except_mac_override_and_mac_admin)
