@@ -510,6 +510,10 @@
 	(call fs_search_devtmpfs (ARG1))
 	(allow ARG1 tmpfs.fs list_dir_perms))
 
+(macro fs_del_entry_tmpfs_dirs ((type ARG1))
+	(call fs_search_devtmpfs (ARG1))
+	(allow ARG1 tmpfs.fs del_entry_dir_perms))
+
 (macro fs_getattr_tmpfs_fs ((type ARG1))
 	(allow ARG1 tmpfs.fs (filesystem (getattr))))
 
