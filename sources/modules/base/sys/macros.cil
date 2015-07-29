@@ -420,7 +420,7 @@
 	(call sys_search_net_proc (ARG1))
 	(allow ARG1 net_proc.proc rw_file_perms))
 
-(macro sys_write_mtrr_proc ((type ARG1))
+(macro sys_write_mtrr_proc_files ((type ARG1))
 	(call fs_search_proc (ARG1))
 	(allow ARG1 mtrr.proc write_file_perms))
 
