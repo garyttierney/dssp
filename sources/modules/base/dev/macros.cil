@@ -395,6 +395,14 @@
 	(call fs_search_devtmpfs (ARG1))
 	(allow ARG1 kmsg_dev.dev write_chr_file_perms))
 
+(macro dev_create_mei_misc ((type ARG1))
+	(allow ARG1 self (capability (mknod)))
+	(call fs_add_entry_devtmpfs (ARG1))
+	(allow ARG1 mei_misc.dev create_chr_file_perms))
+
+(macro dev_devtmpfs_obj_type_transition_mei_misc ((type ARG1))
+	(call fs_devtmpfs_obj_type_transition (ARG1 mei_misc.dev chr_file "mei0")))
+
 (macro dev_write_memory ((type ARG1))
 	(allow ARG1 self (capability (sys_rawio)))
 	(call fs_search_devtmpfs (ARG1))
