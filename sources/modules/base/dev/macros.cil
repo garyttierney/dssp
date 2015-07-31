@@ -159,6 +159,8 @@
 	(allow ARG1 sound.dev create_chr_file_perms))
 
 (macro dev_devtmpfs_obj_type_transition_sound ((type ARG1))
+	(call fs_devtmpfs_obj_type_transition (ARG1 sound.dev chr_file "hwC0D0"))
+	(call fs_devtmpfs_obj_type_transition (ARG1 sound.dev chr_file "hwC0D3"))
 	(call fs_devtmpfs_obj_type_transition (ARG1 sound.dev chr_file "pcmC0D0c"))
 	(call fs_devtmpfs_obj_type_transition (ARG1 sound.dev chr_file "pcmC0D0p"))
 	(call fs_devtmpfs_obj_type_transition (ARG1 sound.dev chr_file "pcmC0D3p"))
@@ -201,6 +203,9 @@
 	(allow ARG1 v4l.dev create_chr_file_perms))
 
 (macro dev_devtmpfs_obj_type_transition_v4l ((type ARG1))
+	(call fs_devtmpfs_obj_type_transition (ARG1 v4l.dev chr_file "media0"))
+	(call fs_devtmpfs_obj_type_transition (ARG1 v4l.dev chr_file "media1"))
+	(call fs_devtmpfs_obj_type_transition (ARG1 v4l.dev chr_file "media3"))
 	(call fs_devtmpfs_obj_type_transition (ARG1 v4l.dev chr_file "video0"))
 	(call fs_devtmpfs_obj_type_transition (ARG1 v4l.dev chr_file "video1"))
 	(call fs_devtmpfs_obj_type_transition (ARG1 v4l.dev chr_file "video2")))
