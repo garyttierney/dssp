@@ -66,6 +66,7 @@
 	(call dev_devtmpfs_obj_type_transition_event (subj))
 	(call dev_devtmpfs_obj_type_transition_printer (subj))
 	(call dev_devtmpfs_obj_type_transition_sound (subj))
+	(call dev_devtmpfs_obj_type_transition_tpm (subj))
 	(call dev_devtmpfs_obj_type_transition_usb (subj))
 	(call dev_devtmpfs_obj_type_transition_v4l (subj))
 	(call dev_devtmpfs_obj_type_transition_watchdog (subj))
