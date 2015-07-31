@@ -449,6 +449,10 @@
 	(call fs_search_sysfs (ARG1))
 	(allow ARG1 cpu_sysfs.sysfs search_dir_perms))
 
+(macro sys_list_cpu_sysfs ((type ARG1))
+	(call fs_search_sysfs (ARG1))
+	(allow ARG1 cpu_sysfs.sysfs list_dir_perms))
+
 (macro sys_read_cpu_sysfs_files ((type ARG1))
 	(call fs_search_sysfs (ARG1))
 	(call read_files_pattern (ARG1 cpu_sysfs.sysfs cpu_sysfs.sysfs)))
