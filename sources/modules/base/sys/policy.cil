@@ -69,6 +69,7 @@
 	(call dev_devtmpfs_obj_type_transition_usb (subj))
 	(call dev_devtmpfs_obj_type_transition_v4l (subj))
 	(call dev_devtmpfs_obj_type_transition_watchdog (subj))
+	(call dev_devtmpfs_obj_type_transition_wireless (subj))
 
 	(call fs_mounton_rootfs_dirs (subj))
 	(call fs_read_debugfs (subj))
