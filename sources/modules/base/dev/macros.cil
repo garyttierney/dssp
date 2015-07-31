@@ -338,12 +338,12 @@
 	(allow ARG1 tpm.dev rw_chr_file_perms))
 
 (macro dev_create_tpm ((type ARG1))
-        (allow ARG1 self (capability (mknod)))
-        (call fs_add_entry_devtmpfs (ARG1))
-        (allow ARG1 tpm.dev create_chr_file_perms))
+	(allow ARG1 self (capability (mknod)))
+	(call fs_add_entry_devtmpfs (ARG1))
+	(allow ARG1 tpm.dev create_chr_file_perms))
 
 (macro dev_devtmpfs_obj_type_transition_tpm ((type ARG1))
-        (call fs_devtmpfs_obj_type_transition (ARG1 wireless.dev chr_file "tpm0")))
+	(call fs_devtmpfs_obj_type_transition (ARG1 wireless.dev chr_file "tpm0")))
 
 (macro dev_rw_tun_tap ((type ARG1))
 	(call fs_search_devtmpfs (ARG1))
