@@ -1207,6 +1207,14 @@
 	(allow ARG1 var_spool.var_spool_file read_lnk_file_perms)
 	(allow ARG1 var_spool.var_spool_file list_dir_perms))
 
+(macro file_add_entry_var_spool ((type ARG1))
+	(call file_search_var (ARG1))
+	(allow ARG1 var_spool.var_spool_file add_entry_dir_perms))
+
+(macro file_del_entry_var_spool ((type ARG1))
+	(call file_search_var (ARG1))
+	(allow ARG1 var_spool.var_spool_file del_entry_dir_perms))
+
 (macro file_read_var_spool_files ((type ARG1))
 	(call file_search_var_spool (ARG1))
 	(allow ARG1 var_spool.var_spool_file read_file_perms))
