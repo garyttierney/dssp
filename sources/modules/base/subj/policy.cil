@@ -68,6 +68,7 @@
 (allow subj_common_type self (process (fork sigchld)))
 
 (call sys_read_vm_overcommit_sysctl_files (subj_common_type))
+(call sys_search_invalid (subj_common_type))
 
 (call cmd_search_cmd (subj_common_type))
 
