@@ -73,6 +73,8 @@
 	(call dev_devtmpfs_obj_type_transition_watchdog (subj))
 	(call dev_devtmpfs_obj_type_transition_wireless (subj))
 
+	(call fs_manage_devtmpfs_dirs (subj))
+	(call fs_manage_devtmpfs_lnk_files (subj))
 	(call fs_mounton_rootfs_dirs (subj))
 	(call fs_read_debugfs (subj))
 	(call fs_search_tmpfs (subj))
