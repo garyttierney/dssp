@@ -198,8 +198,21 @@ then
 
 	log "fetched seusers to process from "$SPATH"/seusers.local"
 
-	echo "/home(/.*)? "$defaultseuserid":"$defaultseuserrole":home_dir.file" >> "$SPATH"/contexts/files/file_contexts.homedirs
-	echo "/home/.*/.* "$defaultseuserid":"$defaultseuserrole":home_user.home_user_file" >> "$SPATH"/contexts/files/file_contexts.homedirs
+	if [ "$MODEL" == "standard" ]
+	then
+		echo "/home(/.*)? "$defaultseuserid":"$defaultseuserrole":home_dir.file" >> "$SPATH"/contexts/files/file_contexts.homedirs
+		echo "/home/.*/.* "$defaultseuserid":"$defaultseuserrole":home_user.home_user_file" >> "$SPATH"/contexts/files/file_contexts.homedirs
+	elif [ "$MODEL" == "mcs" ]
+	then
+		echo "/home(/.*)? "$defaultseuserid":"$defaultseuserrole":home_dir.file:s0" >> "$SPATH"/contexts/files/file_contexts.homedirs
+		echo "/home/.*/.* "$defaultseuserid":"$defaultseuserrole":home_user.home_user_file:s0" >> "$SPATH"/contexts/files/file_contexts.homedirs
+	elif [ "$MODEL" == "mls" ]
+	then
+		echo "/home(/.*)? "$defaultseuserid":"$defaultseuserrole":home_dir.file:s0-s15:c0.c1023" >> "$SPATH"/contexts/files/file_contexts.homedirs
+		echo "/home/.*/.* "$defaultseuserid":"$defaultseuserrole":home_user.home_user_file:s0" >> "$SPATH"/contexts/files/file_contexts.homedirs
+	else
+		exit 192
+	fi
 elif [ "$MODEL" == "standard" ]
 then
 	defaultseuseruserroletuple="`/bin/bash "$SPATH"/support/seusertuple "$SPATH"/seusers.standard`"
