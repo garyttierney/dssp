@@ -33,6 +33,7 @@
 	(role role)
 
 	(call rbacsep_exempt_role (role))
+	(call rbacsep_read_state_target_role (role))
 
 	(blockinherit subj_common_blk)
 

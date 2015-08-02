@@ -1,6 +1,12 @@
 (macro rbacsep_exempt_role ((role ARG1))
 	(roleattributeset rbacsep_exempt_role ARG1))
 
+(macro rbacsep_read_state_source_role ((role ARG1))
+	(roleattributeset rbacsep_read_state_source_role ARG1))
+
+(macro rbacsep_read_state_target_role ((role ARG1))
+	(roleattributeset rbacsep_read_state_target_role ARG1))
+
 (macro rbacsep_exempt_obj_type ((type ARG1))
 	(typeattributeset rbacsep_exempt_obj_type ARG1))
 
