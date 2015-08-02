@@ -165,7 +165,7 @@ elif [ -z "$excludes" ]
 then
 	modulestocompile+=`echo ${modules[@]}`
 
-	log "noting to exclude"
+	log "nothing to exclude"
 
 else
 	echo "unhandled exception in modules to compile"
