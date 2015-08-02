@@ -2,5 +2,8 @@
 
 (roleattribute rbacsep_exempt_role)
 
+(typeattribute rbacsep_read_state_source_subj_type)
+(typeattribute rbacsep_read_state_target_subj_type)
+
 (typeattribute rbacsep_exempt_obj_type)
 (typeattribute rbacsep_exempt_subj_type)
