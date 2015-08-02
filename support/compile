@@ -99,18 +99,29 @@ if [ -z "$MODEL" ]
 then
 	echo "valid security model to build must be specified with -m"
 	exit 192
-elif [ -z "$SPATH" ]
+fi
+
+if [ -z "$SPATH" ]
 then
 	echo "valid path to source policy to build must be specified with -p"
 	exit 192
-elif [ -z "$SECILC" ]
+fi
+
+if [ -z "$SECILC" ]
 then
 	if [ ! -f /usr/bin/secilc -a ! -x /usr/bin/secilc -a ! -s /usr/bin/secilc ]
 	then
 		echo "valid SECILC location must be specified with -i"
 		exit 192
+	elif [ -f /usr/bin/secilc -a -x /usr/bin/secilc -a -s /usr/bin/secilc ]
+	then
+		SECILC="/usr/bin/secilc"
+	else
+		exit 192
 	fi
-elif [ -z "$VERSION" ]
+fi
+
+if [ -z "$VERSION" ]
 then
 	if [ -r /sys/fs/selinux/policyvers ]
 	then
