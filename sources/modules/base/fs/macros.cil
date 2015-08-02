@@ -4,6 +4,39 @@
 	(type fs)
 	(call fs_obj_type (fs)))
 
+(macro fs_read_cifs_subj_type ((type ARG1))
+	(typeattributeset fs_read_cifs_subj_type ARG1))
+
+(macro fs_manage_cifs_subj_type ((type ARG1))
+	(typeattributeset fs_manage_cifs_subj_type ARG1))
+
+(macro fs_read_dosfs_subj_type ((type ARG1))
+	(typeattributeset fs_read_dosfs_subj_type ARG1))
+
+(macro fs_manage_dosfs_subj_type ((type ARG1))
+	(typeattributeset fs_manage_dosfs_subj_type ARG1))
+
+(macro fs_read_fuse_subj_type ((type ARG1))
+	(typeattributeset fs_read_fuse_subj_type ARG1))
+
+(macro fs_manage_fuse_subj_type ((type ARG1))
+	(typeattributeset fs_manage_fuse_subj_type ARG1))
+
+(macro fs_read_iso9660_subj_type ((type ARG1))
+	(typeattributeset fs_read_iso9660_subj_type ARG1))
+
+(macro fs_read_nfs_subj_type ((type ARG1))
+	(typeattributeset fs_read_nfs_subj_type ARG1))
+
+(macro fs_manage_nfs_subj_type ((type ARG1))
+	(typeattributeset fs_manage_nfs_subj_type ARG1))
+
+(macro fs_read_removable_subj_type ((type ARG1))
+	(typeattributeset fs_read_removable_subj_type ARG1))
+
+(macro fs_manage_removable_subj_type ((type ARG1))
+	(typeattributeset fs_manage_removable_subj_type ARG1))
+
 (macro fs_obj_type ((type ARG1))
 	(typeattributeset fs_obj_type ARG1))
 
@@ -134,6 +167,28 @@
 
 (macro fs_remount_cgroup_fs ((type ARG1))
 	(allow ARG1 cgroup.fs (filesystem (remount))))
+
+(macro fs_search_cifs ((type ARG1))
+	(allow ARG1 cifs.fs search_dir_perms))
+
+(macro fs_list_cifs ((type ARG1))
+	(allow ARG1 cifs.fs list_dir_perms))
+
+(macro fs_read_cifs_files ((type ARG1))
+	(call read_files_pattern (ARG1 cifs.fs cifs.fs)))
+
+(macro fs_read_cifs ((type ARG1))
+	(allow ARG1 cifs.fs list_dir_perms)
+	(allow ARG1 cifs.fs read_file_perms)
+	(allow ARG1 cifs.fs read_lnk_file_perms))
+
+(macro fs_manage_cifs ((type ARG1))
+	(allow ARG1 cifs.fs manage_dir_perms)
+	(allow ARG1 cifs.fs manage_file_perms)
+	(allow ARG1 cifs.fs manage_lnk_file_perms))
+
+(macro fs_getattr_cifs_fs ((type ARG1))
+	(allow ARG1 cifs.fs (filesystem (getattr))))
 
 (macro fs_search_debugfs ((type ARG1))
 	(call fs_search_proc (ARG1))
@@ -303,6 +358,11 @@
 	(allow ARG1 dosfs.fs list_dir_perms)
 	(allow ARG1 dosfs.fs read_lnk_file_perms))
 
+(macro fs_manage_dosfs ((type ARG1))
+	(allow ARG1 dosfs.fs manage_file_perms)
+	(allow ARG1 dosfs.fs manage_dir_perms)
+	(allow ARG1 dosfs.fs manage_lnk_file_perms))
+
 (macro fs_remount_dosfs_fs ((type ARG1))
 	(allow ARG1 dosfs.fs (filesystem (remount))))
 
@@ -378,6 +438,48 @@
 (macro fs_remount_hugetlbfs_fs ((type ARG1))
 	(allow ARG1 hugetlbfs.fs (filesystem (remount))))
 
+(macro fs_search_iso9660 ((type ARG1))
+	(allow ARG1 iso9660.fs search_dir_perms))
+
+(macro fs_list_iso9660 ((type ARG1))
+	(allow ARG1 iso9660.fs list_dir_perms))
+
+(macro fs_read_iso9660_files ((type ARG1))
+	(call read_files_pattern (ARG1 iso9660.fs iso9660.fs)))
+
+(macro fs_read_iso9660_lnk_files ((type ARG1))
+	(call read_lnk_files_pattern (ARG1 iso9660.fs iso9660.fs)))
+
+(macro fs_read_iso9660 ((type ARG1))
+	(allow ARG1 iso9660.fs read_file_perms)
+	(allow ARG1 iso9660.fs list_dir_perms)
+	(allow ARG1 iso9660.fs read_lnk_file_perms))
+
+(macro fs_getattr_iso9660_fs ((type ARG1))
+	(allow ARG1 iso9660.fs (filesystem (getattr))))
+
+(macro fs_search_nfs ((type ARG1))
+	(allow ARG1 nfs.fs search_dir_perms))
+
+(macro fs_list_nfs ((type ARG1))
+	(allow ARG1 nfs.fs list_dir_perms))
+
+(macro fs_read_nfs_files ((type ARG1))
+	(call read_files_pattern (ARG1 nfs.fs nfs.fs)))
+
+(macro fs_read_nfs ((type ARG1))
+	(allow ARG1 nfs.fs list_dir_perms)
+	(allow ARG1 nfs.fs read_file_perms)
+	(allow ARG1 nfs.fs read_lnk_file_perms))
+
+(macro fs_manage_nfs ((type ARG1))
+	(allow ARG1 nfs.fs manage_dir_perms)
+	(allow ARG1 nfs.fs manage_file_perms)
+	(allow ARG1 nfs.fs manage_lnk_file_perms))
+
+(macro fs_getattr_nfs_fs ((type ARG1))
+	(allow ARG1 nfs.fs (filesystem (getattr))))
+
 (macro fs_search_proc ((type ARG1))
 	(allow ARG1 proc.fs search_dir_perms))
 
@@ -427,9 +529,27 @@
 	(call fs_search_sysfs (ARG1))
 	(allow ARG1 pstore.fs list_dir_perms))
 
-(macro fs_tmpfs_obj_type_transition ((type ARG1)(type ARG2)(class ARG3)(name ARG4))
-	(call fs_search_devtmpfs (ARG1))
-	(call obj_type_transition_pattern (ARG1 tmpfs.fs ARG2 ARG3 ARG4)))
+(macro fs_search_removable ((type ARG1))
+	(allow ARG1 removable_fs.fs search_dir_perms))
+
+(macro fs_list_removable ((type ARG1))
+	(allow ARG1 removable_fs.fs list_dir_perms))
+
+(macro fs_read_removable_files ((type ARG1))
+	(call read_files_pattern (ARG1 removable_fs.fs removable_fs.fs)))
+
+(macro fs_read_removable ((type ARG1))
+	(allow ARG1 removable_fs.fs list_dir_perms)
+	(allow ARG1 removable_fs.fs read_file_perms)
+	(allow ARG1 removable_fs.fs read_lnk_file_perms))
+
+(macro fs_manage_removable ((type ARG1))
+	(allow ARG1 removable_fs.fs manage_dir_perms)
+	(allow ARG1 removable_fs.fs manage_file_perms)
+	(allow ARG1 removable_fs.fs manage_lnk_file_perms))
+
+(macro fs_getattr_removable_fs ((type ARG1))
+	(allow ARG1 removable_fs.fs (filesystem (getattr))))
 
 (macro fs_getattr_rootfs_fs ((type ARG1))
 	(allow ARG1 rootfs.fs (filesystem (getattr))))
@@ -595,6 +715,10 @@
 
 (macro fs_unmount_tmpfs_fs ((type ARG1))
 	(allow ARG1 tmpfs.fs (filesystem (unmount))))
+
+(macro fs_tmpfs_obj_type_transition ((type ARG1)(type ARG2)(class ARG3)(name ARG4))
+	(call fs_search_devtmpfs (ARG1))
+	(call obj_type_transition_pattern (ARG1 tmpfs.fs ARG2 ARG3 ARG4)))
 
 (macro fs_mount_tracefs_fs ((type ARG1))
 	(allow ARG1 tracefs.fs (filesystem (mount))))

@@ -1,8 +1,50 @@
+(boolean fs_use_cifs true)
+(boolean fs_use_dosfs true)
+(boolean fs_use_fuse true)
+(boolean fs_use_nfs true)
+(boolean fs_use_iso9660 true)
+(boolean fs_use_removable true)
+
 (sid fs)
 
 (typeattribute fs_obj_type)
 
 (typeattribute fs_unconfined_subj_type)
+
+(typeattribute fs_read_cifs_subj_type)
+(typeattribute fs_manage_cifs_subj_type)
+
+(typeattribute fs_read_dosfs_subj_type)
+(typeattribute fs_manage_dosfs_subj_type)
+
+(typeattribute fs_read_fuse_subj_type)
+(typeattribute fs_manage_fuse_subj_type)
+
+(typeattribute fs_read_iso9660_subj_type)
+
+(typeattribute fs_read_nfs_subj_type)
+(typeattribute fs_manage_nfs_subj_type)
+
+(typeattribute fs_read_removable_subj_type)
+(typeattribute fs_manage_removable_subj_type)
+
+(block fs_use_dosfs
+	(blockinherit sec_bool_obj_blk))
+
+(block fs_use_cifs
+	(blockinherit sec_bool_obj_blk))
+
+(block fs_use_fuse
+	(blockinherit sec_bool_obj_blk))
+
+(block fs_use_iso9660
+	(blockinherit sec_bool_obj_blk))
+
+(block fs_use_nfs
+	(blockinherit sec_bool_obj_blk))
+
+(block fs_use_removable
+	(blockinherit sec_bool_obj_blk))
 
 (block aio
 	(blockinherit fs_obj_blk))
@@ -19,6 +61,11 @@
 	(blockinherit fs_obj_blk))
 
 (block binfmt_misc
+	(blockinherit fs_obj_blk)
+
+	(call sys_mountpoint_obj_type (fs)))
+
+(block cifs
 	(blockinherit fs_obj_blk)
 
 	(call sys_mountpoint_obj_type (fs)))
@@ -70,6 +117,16 @@
 	(call sys_mountpoint_obj_type (fs)))
 
 (block hugetlbfs
+	(blockinherit fs_obj_blk)
+
+	(call sys_mountpoint_obj_type (fs)))
+
+(block iso9660
+	(blockinherit fs_obj_blk)
+
+	(call sys_mountpoint_obj_type (fs)))
+
+(block nfs
 	(blockinherit fs_obj_blk)
 
 	(call sys_mountpoint_obj_type (fs)))
@@ -139,3 +196,43 @@
 
 (allow fs_unconfined_subj_type fs_obj_type (filesystem (mount remount unmount getattr relabelfrom relabelto associate
 	quotamod quotaget)))
+
+(booleanif fs_use_cifs
+	(true
+		(call fs_read_cifs (fs_read_cifs_subj_type))
+		(call fs_getattr_cifs_fs (fs_read_cifs_subj_type))
+		(call fs_manage_cifs (fs_manage_cifs_subj_type))
+		(call fs_getattr_cifs_fs (fs_manage_cifs_subj_type))))
+
+(booleanif fs_use_dosfs
+	(true
+		(call fs_read_dosfs (fs_read_dosfs_subj_type))
+		(call fs_getattr_dosfs_fs (fs_read_dosfs_subj_type))
+		(call fs_manage_dosfs (fs_manage_dosfs_subj_type))
+		(call fs_getattr_dosfs_fs (fs_manage_dosfs_subj_type))))
+
+(booleanif fs_use_fuse
+	(true
+		(call fs_read_fuse (fs_read_fuse_subj_type))
+		(call fs_getattr_fuse_fs (fs_read_fuse_subj_type))
+		(call fs_manage_fuse (fs_manage_fuse_subj_type))
+		(call fs_getattr_fuse_fs (fs_manage_fuse_subj_type))))
+
+(booleanif fs_use_iso9660
+	(true
+		(call fs_read_iso9660 (fs_read_iso9660_subj_type))
+		(call fs_getattr_iso9660_fs (fs_read_iso9660_subj_type))))
+
+(booleanif fs_use_nfs
+	(true
+		(call fs_read_nfs (fs_read_nfs_subj_type))
+		(call fs_getattr_nfs_fs (fs_read_nfs_subj_type))
+		(call fs_manage_nfs (fs_manage_nfs_subj_type))
+		(call fs_getattr_nfs_fs (fs_manage_nfs_subj_type))))
+
+(booleanif fs_use_removable
+	(true
+		(call fs_read_removable (fs_read_removable_subj_type))
+		(call fs_getattr_removable_fs (fs_read_removable_subj_type))
+		(call fs_manage_removable (fs_manage_removable_subj_type))
+		(call fs_getattr_removable_fs (fs_manage_removable_subj_type))))
