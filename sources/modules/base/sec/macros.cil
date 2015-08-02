@@ -61,8 +61,8 @@
 
 (macro sec_get_all_booleans ((type ARG1))
 	(call fs_search_sysfs (ARG1))
-	(allow ARG1 sec_bool_obj_type read_file_perms)
-	(call read_files_pattern (ARG1 securityfs.fs securityfs.fs)))
+	(allow ARG1 securityfs.fs list_dir_perms)
+	(allow ARG1 sec_bool_obj_type read_file_perms))
 
 (macro sec_set_all_booleans ((type ARG1))
 	(call fs_search_sysfs (ARG1))
