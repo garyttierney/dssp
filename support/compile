@@ -157,7 +157,7 @@ if [ -n "$excludes" ]
 then
 	for exclude in "${excludes[*]}"
 	do
-		modulestocompile+=`echo ${modules[@]} | /bin/grep -v "$exclude"`
+		modulestocompile="`echo ${modules[@]} | /bin/grep -v "$exclude"`"
 
 		log "excluding module "$exclude""
 	done

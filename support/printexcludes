@@ -11,10 +11,9 @@ for entry in ${input[@]}
 do
 	test -f "$entry" || exit 1
 	test -r "$entry" || exit 1
-	test -s "$entry" || exit 1
 done
 
-output+=`/bin/cat "${input[@]}"`
+output+=`/bin/cat ${input[@]}`
 
 if [ -z "$output" ]
 then
