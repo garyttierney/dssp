@@ -120,6 +120,10 @@
 	(call fs_search_cgroup (ARG1))
 	(allow ARG1 cgroup.fs read_file_perms))
 
+(macro fs_write_cgroup_files ((type ARG1))
+	(call fs_search_cgroup (ARG1))
+	(allow ARG1 cgroup.fs write_file_perms))
+
 (macro fs_setattr_cgroup_dirs ((type ARG1))
 	(call fs_search_cgroup (ARG1))
 	(allow ARG1 cgroup.fs (dir (setattr))))
