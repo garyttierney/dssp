@@ -328,6 +328,14 @@
 	(call fs_search_devtmpfs (ARG1))
 	(allow ARG1 kvm.dev rw_chr_file_perms))
 
+(macro dev_create_kvm ((type ARG1))
+	(allow ARG1 self (capability (mknod)))
+	(call fs_add_entry_devtmpfs (ARG1))
+	(allow ARG1 kvm.dev create_chr_file_perms))
+
+(macro dev_devtmpfs_obj_type_transition_kvm ((type ARG1))
+	(call fs_devtmpfs_obj_type_transition (ARG1 kvm.dev chr_file "kvm")))
+
 (macro dev_rw_loop_control ((type ARG1))
 	(call fs_search_devtmpfs (ARG1))
 	(allow ARG1 loop_control.dev rw_chr_file_perms))

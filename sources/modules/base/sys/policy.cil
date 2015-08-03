@@ -65,6 +65,7 @@
 
 	(call dev_devtmpfs_obj_type_transition_clock (subj))
 	(call dev_devtmpfs_obj_type_transition_event (subj))
+	(call dev_devtmpfs_obj_type_transition_kvm (subj))
 	(call dev_devtmpfs_obj_type_transition_mei_misc (subj))
 	(call dev_devtmpfs_obj_type_transition_printer (subj))
 	(call dev_devtmpfs_obj_type_transition_sound (subj))
