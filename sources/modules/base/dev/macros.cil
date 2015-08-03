@@ -200,7 +200,13 @@
 	(call fs_devtmpfs_obj_type_transition (ARG1 usb.dev chr_file "006"))
 	(call fs_devtmpfs_obj_type_transition (ARG1 usb.dev chr_file "007"))
 	(call fs_devtmpfs_obj_type_transition (ARG1 usb.dev chr_file "008"))
-	(call fs_devtmpfs_obj_type_transition (ARG1 usb.dev chr_file "009")))
+	(call fs_devtmpfs_obj_type_transition (ARG1 usb.dev chr_file "009"))
+	(call fs_devtmpfs_obj_type_transition (ARG1 usb.dev chr_file "010"))
+	(call fs_devtmpfs_obj_type_transition (ARG1 usb.dev chr_file "011"))
+	(call fs_devtmpfs_obj_type_transition (ARG1 usb.dev chr_file "012"))
+	(call fs_devtmpfs_obj_type_transition (ARG1 usb.dev chr_file "013"))
+	(call fs_devtmpfs_obj_type_transition (ARG1 usb.dev chr_file "014"))
+	(call fs_devtmpfs_obj_type_transition (ARG1 usb.dev chr_file "015")))
 
 (macro dev_create_v4l ((type ARG1))
 	(allow ARG1 self (capability (mknod)))
@@ -272,6 +278,16 @@
 	(call fs_search_devtmpfs (ARG1))
 	(allow ARG1 memory.dev read_chr_file_perms)
 	(typeattributeset dev_read_memory_subj_type ARG1))
+
+(macro dev_create_mouse ((type ARG1))
+	(allow ARG1 self (capability (mknod)))
+	(call fs_add_entry_devtmpfs (ARG1))
+	(allow ARG1 mouse.dev create_chr_file_perms))
+
+(macro dev_devtmpfs_obj_type_transition_mouse ((type ARG1))
+	(call fs_devtmpfs_obj_type_transition (ARG1 mouse.dev chr_file "mouse0"))
+	(call fs_devtmpfs_obj_type_transition (ARG1 mouse.dev chr_file "mouse1"))
+	(call fs_devtmpfs_obj_type_transition (ARG1 mouse.dev chr_file "mouse2")))
 
 (macro dev_read_random ((type ARG1))
 	(call fs_search_devtmpfs (ARG1))
