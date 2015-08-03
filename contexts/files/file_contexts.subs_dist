@@ -18,4 +18,11 @@
 
 /run /var/run
 
+/run/systemd/generator /usr/lib/systemd/system
+/run/systemd/generator.early /usr/lib/systemd/system
+/run/systemd/generator.late /usr/lib/systemd/system
+
+/etc/systemd/system /usr/lib/systemd/system
+/etc/systemd/user /usr/lib/systemd/user
+
 /var/lib/container /var/lib/machines
