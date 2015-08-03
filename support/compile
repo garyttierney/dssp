@@ -159,7 +159,7 @@ elif [ -f "$SPATH"/exclude.local -a -r "$SPATH"/exclude.local -a -s "$SPATH"/exc
 then
 	excludes+="`/bin/bash "$SPATH"/support/printexcludes "$SPATH"/exclude.local`"
 
-	log "identifier local excludes to process"
+	log "identified local excludes to process"
 fi
 
 modules+=`/bin/bash "$SPATH"/support/printmodules "$SPATH"`
