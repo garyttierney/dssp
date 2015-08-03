@@ -99,6 +99,9 @@
 (macro net_udp_bind_all_unreserved_ports ((type ARG1))
 	(allow ARG1 net_unreserved_port_obj_type (udp_socket (name_bind))))
 
+(macro net_tcp_connect_unreserved_port ((type ARG1))
+	(allow ARG1 unreserved.port (tcp_socket (name_connect))))
+
 (macro net_udp_bind_generic_node ((type ARG1))
 	(allow ARG1 node.node (udp_socket (node_bind))))
 
