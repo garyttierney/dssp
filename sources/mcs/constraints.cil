@@ -1,13 +1,5 @@
 (tunableif enable_mcs
 	(true
-		(defaultrange file target low)
-		(defaultrange dir target low)
-		(defaultrange lnk_file target low)
-		(defaultrange chr_file target low)
-		(defaultrange blk_file target low)
-		(defaultrange sock_file target low)
-		(defaultrange fifo_file target low)
-
 		(mlsconstrain (file (read ioctl lock execute execute_no_trans write setattr append unlink rename relabelfrom))
 			(or (dom h1 h2) (neq t1 mcs_constrained_subj_type)))
 

@@ -4,6 +4,14 @@
 
 (tunableif enable_mcs
 	(true
+		(defaultrange file source low)
+		(defaultrange dir source low)
+		(defaultrange lnk_file source low)
+		(defaultrange chr_file source low)
+		(defaultrange blk_file source low)
+		(defaultrange sock_file source low)
+		(defaultrange fifo_file source low)
+
 		(mls true)
 
 		(sensitivity s0)
