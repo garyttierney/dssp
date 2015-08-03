@@ -262,6 +262,9 @@
 (macro fs_read_devtmpfs_chr_files ((type ARG1))
 	(call read_chr_files_pattern (ARG1 devtmpfs.fs devtmpfs.fs)))
 
+(macro fs_dontaudit_write_devtmpfs_chr_files ((type ARG1))
+	(dontaudit ARG1 devtmpfs.fs (chr_file (write))))
+
 (macro fs_read_devtmpfs_lnk_files ((type ARG1))
 	(call read_lnk_files_pattern (ARG1 devtmpfs.fs devtmpfs.fs)))
 

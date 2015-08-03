@@ -236,6 +236,16 @@
 	(call fs_search_devtmpfs (ARG1))
 	(allow ARG1 clock.dev read_chr_file_perms))
 
+(macro dev_create_clock ((type ARG1))
+	(allow ARG1 self (capability (mknod)))
+	(call fs_add_entry_devtmpfs (ARG1))
+	(allow ARG1 clock.dev create_chr_file_perms))
+
+(macro dev_devtmpfs_obj_type_transition_clock ((type ARG1))
+	(call fs_devtmpfs_obj_type_transition (ARG1 clock.dev chr_file "ptp0"))
+	(call fs_devtmpfs_obj_type_transition (ARG1 clock.dev chr_file "ptp1"))
+	(call fs_devtmpfs_obj_type_transition (ARG1 clock.dev chr_file "ptp3")))
+
 (macro dev_read_cpu ((type ARG1))
 	(call fs_search_devtmpfs (ARG1))
 	(allow ARG1 cpu.dev read_chr_file_perms))

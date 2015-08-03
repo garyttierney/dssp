@@ -63,6 +63,7 @@
 
 	(call dev_manage_all (subj))
 
+	(call dev_devtmpfs_obj_type_transition_clock (subj))
 	(call dev_devtmpfs_obj_type_transition_event (subj))
 	(call dev_devtmpfs_obj_type_transition_mei_misc (subj))
 	(call dev_devtmpfs_obj_type_transition_printer (subj))
@@ -73,6 +74,7 @@
 	(call dev_devtmpfs_obj_type_transition_watchdog (subj))
 	(call dev_devtmpfs_obj_type_transition_wireless (subj))
 
+	(call fs_dontaudit_write_devtmpfs_chr_files (subj))
 	(call fs_manage_devtmpfs_dirs (subj))
 	(call fs_manage_devtmpfs_lnk_files (subj))
 	(call fs_mounton_rootfs_dirs (subj))
@@ -81,8 +83,6 @@
 
 	(call mls_file_read_subj_type (subj))
 	(call mls_file_write_subj_type (subj))
-	(call mls_proc_read_subj_type (subj))
-	(call mls_proc_write_subj_type (subj))
 	(call mls_range_trans_subj_type (subj))
 
 	(call sec_compute_create_context (subj))
