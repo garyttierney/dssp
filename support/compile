@@ -211,15 +211,15 @@ then
 
 	if [ "$MODEL" == "standard" ]
 	then
-		echo "/home(/.*)? dir "$defaultseuserid":"$defaultseuserrole":home_dir.file" >> "$SPATH"/contexts/files/file_contexts.homedirs
+		echo "/home(/.*)? -d "$defaultseuserid":"$defaultseuserrole":home_dir.file" >> "$SPATH"/contexts/files/file_contexts.homedirs
 		echo "/home/.*/.* "$defaultseuserid":"$defaultseuserrole":home_user.home_user_file" >> "$SPATH"/contexts/files/file_contexts.homedirs
 	elif [ "$MODEL" == "mcs" ]
 	then
-		echo "/home(/.*)? dir "$defaultseuserid":"$defaultseuserrole":home_dir.file:s0" >> "$SPATH"/contexts/files/file_contexts.homedirs
+		echo "/home(/.*)? -d "$defaultseuserid":"$defaultseuserrole":home_dir.file:s0" >> "$SPATH"/contexts/files/file_contexts.homedirs
 		echo "/home/.*/.* "$defaultseuserid":"$defaultseuserrole":home_user.home_user_file:s0" >> "$SPATH"/contexts/files/file_contexts.homedirs
 	elif [ "$MODEL" == "mls" ]
 	then
-		echo "/home(/.*)? dir "$defaultseuserid":"$defaultseuserrole":home_dir.file:s0-s15:c0.c1023" >> "$SPATH"/contexts/files/file_contexts.homedirs
+		echo "/home(/.*)? -d "$defaultseuserid":"$defaultseuserrole":home_dir.file:s0-s15:c0.c1023" >> "$SPATH"/contexts/files/file_contexts.homedirs
 		echo "/home/.*/.* "$defaultseuserid":"$defaultseuserrole":home_user.home_user_file:s0" >> "$SPATH"/contexts/files/file_contexts.homedirs
 	else
 		exit 192
@@ -233,7 +233,7 @@ then
 
 	log "fetched seusers to process from "$SPATH"/seusers.standard"
 
-	echo "/home(/.*)? dir "$defaultseuserid":"$defaultseuserrole":home_dir.file" >> "$SPATH"/contexts/files/file_contexts.homedirs
+	echo "/home(/.*)? -d "$defaultseuserid":"$defaultseuserrole":home_dir.file" >> "$SPATH"/contexts/files/file_contexts.homedirs
 	echo "/home/.*/.* "$defaultseuserid":"$defaultseuserrole":home_user.home_user_file" >> "$SPATH"/contexts/files/file_contexts.homedirs
 elif [ "$MODEL" == "mcs" ]
 then
@@ -244,7 +244,7 @@ then
 
 	log "fetched seusers to process from "$SPATH"/seusers.mcs"
 
-	echo "/home(/.*)? dir "$defaultseuserid":"$defaultseuserrole":home_dir.file:s0" >> "$SPATH"/contexts/files/file_contexts.homedirs
+	echo "/home(/.*)? -d "$defaultseuserid":"$defaultseuserrole":home_dir.file:s0" >> "$SPATH"/contexts/files/file_contexts.homedirs
 	echo "/home/.*/.* "$defaultseuserid":"$defaultseuserrole":home_user.home_user_file:s0" >> "$SPATH"/contexts/files/file_contexts.homedirs
 elif [ "$MODEL" == "mls" ]
 then
@@ -255,7 +255,7 @@ then
 
 	log "fetched seusers to process from "$SPATH"/seusers.mls"
 
-	echo "/home(/.*)? dir "$defaultseuserid":"$defaultseuserrole":home_dir.file:s0-s15:c0.c1023" >> "$SPATH"/contexts/files/file_contexts.homedirs
+	echo "/home(/.*)? -d "$defaultseuserid":"$defaultseuserrole":home_dir.file:s0-s15:c0.c1023" >> "$SPATH"/contexts/files/file_contexts.homedirs
 	echo "/home/.*/.* "$defaultseuserid":"$defaultseuserrole":home_user.home_user_file:s0" >> "$SPATH"/contexts/files/file_contexts.homedirs
 fi
 
