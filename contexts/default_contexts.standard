@@ -1,4 +1,4 @@
 sys.role:login.subj exempt.role:exempt.subj sysadm.role:sysadm.subj wheel.role:wheel.subj user.role:user.subj
-sys.role:sd.subj exempt.role:exempt.subj sysadm.role:sysadm.subj wheel.role:wheel.subj user.role:user.subj
+sys.role:sd.subj exempt.role:exempt.subj sysadm.role:sysadm_sduser.subj wheel.role:wheel_sduser.subj user.role:user_sduser.subj
 sys.role:sshd.subj exempt.role:exempt.subj sysadm.role:sysadm.subj wheel.role:wheel.subj user.role:user.subj
 sys.role:sulogin.subj sysadm.role:sysadm.subj
