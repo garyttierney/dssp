@@ -390,14 +390,6 @@
 (classpermissionset create_rawip_socket_perms (rawip_socket (create ioctl read getattr write setattr append bind connect getopt
 	setopt shutdown)))
 
-(classpermission rw_netlink_socket_perms)
-(classpermissionset rw_netlink_socket_perms (netlink_socket (ioctl read getattr write setattr append bind connect getopt setopt
-	shutdown)))
-
-(classpermission create_netlink_socket_perms)
-(classpermissionset create_netlink_socket_perms (netlink_socket (create ioctl read getattr write setattr append bind connect getopt
-	setopt shutdown)))
-
 (classpermission rw_packet_socket_perms)
 (classpermissionset rw_packet_socket_perms (packet_socket (ioctl read getattr write setattr append bind connect getopt setopt
 	shutdown)))
