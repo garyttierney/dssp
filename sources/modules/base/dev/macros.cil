@@ -165,6 +165,7 @@
 	(call fs_devtmpfs_obj_type_transition (ARG1 sound.dev chr_file "pcmC0D0c"))
 	(call fs_devtmpfs_obj_type_transition (ARG1 sound.dev chr_file "pcmC0D0p"))
 	(call fs_devtmpfs_obj_type_transition (ARG1 sound.dev chr_file "pcmC0D3p"))
+	(call fs_devtmpfs_obj_type_transition (ARG1 sound.dev chr_file "pcmC0D7p"))
 	(call fs_devtmpfs_obj_type_transition (ARG1 sound.dev chr_file "pcmC1D0c"))
 	(call fs_devtmpfs_obj_type_transition (ARG1 sound.dev chr_file "pcmC1D0p"))
 	(call fs_devtmpfs_obj_type_transition (ARG1 sound.dev chr_file "pcmC1D3p"))
