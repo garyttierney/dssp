@@ -2,6 +2,7 @@
 (context crypto (sys.id sys.role crypto.sysctl (systemlow systemlow)))
 (context dev (sys.id sys.role dev.sysctl (systemlow systemlow)))
 (context fs_sysctl (sys.id sys.role fs_sysctl.sysctl (systemlow systemlow)))
+(context iomem (sys.id sys.role iomem.proc (systemlow systemlow)))
 (context irq (sys.id sys.role irq.sysctl (systemlow systemlow)))
 (context kallsyms (sys.id sys.role kallsyms.proc (systemlow systemlow)))
 (context kernel (sys.id sys.role kernel.sysctl (systemlow systemlow)))
@@ -33,6 +34,8 @@
 		(context sys (sys.id sys.role sys.subj (systemlow systemlow)))))
 
 (filecon "/var/log/boot\.log" file sys_var_log_file)
+
+(genfscon "proc" "/iomem" iomem)
 (genfscon "proc" "/irq" irq)
 (genfscon "proc" "/kallsyms" kallsyms)
 (genfscon "proc" "/kcore" kcore)
@@ -64,6 +67,7 @@
 (genfscon "proc" "/sys/vm" vm)
 (genfscon "selinuxfs" "/booleans/sys_load_kernel_module" sys_load_kernel_module)
 (genfscon "sysfs" "/devices/system/cpu" cpu_sysfs)
+
 (sidcontext file unlabeled)
 (sidcontext kernel sys)
 (sidcontext sysctl sysctl)
