@@ -83,11 +83,14 @@
 	(call fs_read_debugfs (subj))
 	(call fs_search_tmpfs (subj))
 
+	(call mls_fd_share_subj_type (subj))
+	(call mls_fd_use_subj_type (subj))
 	(call mls_file_read_subj_type (subj))
 	(call mls_file_write_subj_type (subj))
 	(call mls_proc_read_subj_type (subj))
 	(call mls_proc_write_subj_type (subj))
 	(call mls_priv_range_trans_subj_type (subj))
+	(call mls_trusted_obj_type (subj))
 
 	(call sec_compute_create_context (subj))
 	(call sec_list_fs (subj))
@@ -112,6 +115,7 @@
 		(call plymouth_manage_plymouthd_var_lib_files (subj)))
 
 	(optional sys_optional_sd
+		(call mls_proc_set_sl_subj_type (subj))
 		(call subj_dynamic_subj_type_transition_type (subj))
 		(call sd_dynamic_subj_type_transition (subj))
 		(call sd_getattr_cmd_files (subj))
