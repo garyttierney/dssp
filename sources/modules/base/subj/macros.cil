@@ -142,6 +142,9 @@
 (macro subj_getsched_common_subj ((type ARG1))
 	(allow ARG1 subj_common_type (process (getsched))))
 
+(macro subj_getsession_common_subj ((type ARG1))
+	(allow ARG1 subj_common_type (process (getsession))))
+
 (macro subj_setsched_common_subj ((type ARG1))
 	(allow ARG1 subj_common_type (process (setsched))))
 
