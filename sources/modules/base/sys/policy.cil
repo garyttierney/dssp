@@ -102,8 +102,7 @@
 	(tunableif enable_mls
 		(true
 			(call fs_obj_range_transition_devtmpfs_dirs (subj systemlow systemhigh))
-			(call fs_obj_range_transition_devtmpfs_lnk_files (subj systemlow systemhigh))
-			(call fs_obj_range_transition_tmpfs_lnk_files (subj systemlow systemhigh))))
+			(call fs_obj_range_transition_devtmpfs_lnk_files (subj systemlow systemhigh))))
 
 	(optional sys_optional_fstools
 		(call fstools_use_fd (subj)))

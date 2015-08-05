@@ -635,9 +635,6 @@
 (macro fs_remount_sysfs_fs ((type ARG1))
 	(allow ARG1 sysfs.fs (filesystem (remount))))
 
-(macro fs_obj_range_transition_sysfs_dirs ((type ARG1)(level ARG2)(level ARG3))
-	(rangetransition ARG1 sysfs.fs dir (ARG2 ARG3)))
-
 (macro fs_search_tmpfs ((type ARG1))
 	(call fs_search_devtmpfs (ARG1))
 	(allow ARG1 tmpfs.fs search_dir_perms))
@@ -735,9 +732,6 @@
 (macro fs_tmpfs_obj_type_transition ((type ARG1)(type ARG2)(class ARG3)(name ARG4))
 	(call fs_search_devtmpfs (ARG1))
 	(call obj_type_transition_pattern (ARG1 tmpfs.fs ARG2 ARG3 ARG4)))
-
-(macro fs_obj_range_transition_tmpfs_lnk_files ((type ARG1)(level ARG2)(level ARG3))
-        (rangetransition ARG1 tmpfs.fs lnk_file (ARG2 ARG3)))
 
 (macro fs_mount_tracefs_fs ((type ARG1))
 	(allow ARG1 tracefs.fs (filesystem (mount))))
