@@ -79,8 +79,9 @@
 	(call fs_dontaudit_write_devtmpfs_chr_files (subj))
 	(call fs_manage_devtmpfs_dirs (subj))
 	(call fs_manage_devtmpfs_lnk_files (subj))
-	(call fs_obj_range_transition_devtmpfs_lnk_files (subj systemlow systemlow))
 	(call fs_mounton_rootfs_dirs (subj))
+	(call fs_obj_range_transition_devtmpfs_dirs (subj systemlow systemlow))
+	(call fs_obj_range_transition_devtmpfs_lnk_files (subj systemlow systemlow))
 	(call fs_read_debugfs (subj))
 	(call fs_search_tmpfs (subj))
 
