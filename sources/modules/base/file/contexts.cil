@@ -106,4 +106,5 @@
 (filecon "/var/tmp/\.journal" any ())
 (filecon "/var/tmp/lost\+found/.*" any ())
 (filecon "/var/tmp/lost\+found" dir lost_found)
+
 (genfscon "selinuxfs" "/booleans/file_execmod_all_except" file_execmod_all_except)
