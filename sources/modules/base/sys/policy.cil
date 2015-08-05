@@ -124,9 +124,10 @@
 		(call plymouth_manage_plymouthd_var_lib_files (subj)))
 
 	(optional sys_optional_sd
-		(call mls_proc_set_sl_subj_type (subj))
-		(call subj_dynamic_subj_type_transition_type (subj))
-		(call sd_dynamic_subj_type_transition (subj))
+		(call sd_auto_subj_type_transition (subj))
+		;(call mls_proc_set_sl_subj_type (subj))
+		;(call subj_dynamic_subj_type_transition_type (subj))
+		;(call sd_dynamic_subj_type_transition (subj))
 		(call sd_getattr_cmd_files (subj))
 		(call sd_mls (subj systemlow systemhigh))
 		(call sd_send_signal (subj)))
