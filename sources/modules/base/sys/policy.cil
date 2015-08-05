@@ -87,6 +87,7 @@
 	(call mls_fd_use_subj_type (subj))
 	(call mls_file_read_subj_type (subj))
 	(call mls_file_write_subj_type (subj))
+	(call mls_net_write_subj_type (subj))
 	(call mls_proc_read_subj_type (subj))
 	(call mls_proc_write_subj_type (subj))
 	(call mls_priv_range_trans_subj_type (subj))
