@@ -289,12 +289,6 @@
 (macro fs_manage_devtmpfs_chr_files ((type ARG1))
 	(call manage_chr_files_pattern (ARG1 devtmpfs.fs devtmpfs.fs)))
 
-(macro fs_obj_range_transition_devtmpfs_lnk_files ((type ARG1)(level ARG2)(level ARG3))
-	(rangetransition ARG1 devtmpfs.fs lnk_file (ARG2 ARG3)))
-
-(macro fs_obj_range_transition_devtmpfs_dirs ((type ARG1)(level ARG2)(level ARG3))
-	(rangetransition ARG1 devtmpfs.fs dir (ARG2 ARG3)))
-
 (macro fs_add_entry_devtmpfs ((type ARG1))
 	(allow ARG1 devtmpfs.fs add_entry_dir_perms))
 
