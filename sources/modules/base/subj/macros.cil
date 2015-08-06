@@ -70,52 +70,6 @@
 	(allow ARG1 self (capability (sys_ptrace)))
 	(typeattributeset subj_ptrace_type ARG1))
 
-(macro subj_obj_change_exemption_type ((type ARG1))
-	(call subj_obj_id_change_exemption_type (ARG1))
-	(call subj_obj_role_change_exemption_type (ARG1)))
-
-(macro subj_obj_id_change_exemption_type ((type ARG1))
-	(typeattributeset subj_obj_id_change_exemption_type ARG1))
-
-(macro subj_obj_role_change_exemption_type ((type ARG1))
-	(typeattributeset subj_obj_role_change_exemption_type ARG1))
-
-(macro subj_uncond_exemption_type ((type ARG1))
-	(typeattributeset subj_uncond_exempt_type ARG1))
-
-(macro subj_sys_change_exemption_type ((type ARG1))
-	(call subj_sys_id_change_exemption_type (ARG1))
-	(call subj_sys_role_change_exemption_type (ARG1)))
-
-(macro subj_sys_id_change_exemption_type ((type ARG1))
-	(typeattributeset subj_sys_id_change_exemption_type ARG1))
-
-(macro subj_sys_role_change_exemption_type ((type ARG1))
-	(typeattributeset subj_sys_role_change_exemption_type ARG1))
-
-(macro subj_obj_sys_change_exemption_type ((type ARG1))
-	(call subj_obj_sys_id_change_exemption_type (ARG1))
-	(call subj_obj_sys_role_change_exemption_type (ARG1)))
-
-(macro subj_obj_sys_id_change_exemption_type ((type ARG1))
-	(typeattributeset subj_obj_sys_id_change_exemption_type ARG1))
-
-(macro subj_obj_sys_role_change_exemption_type ((type ARG1))
-	(typeattributeset subj_obj_sys_role_change_exemption_type ARG1))
-
-(macro subj_change_exemption_type ((type ARG1))
-	(call subj_id_change_exemption_type (ARG1))
-	(call subj_role_change_exemption_type (ARG1)))
-
-(macro subj_id_change_exemption_type ((type ARG1))
-	(typeattributeset subj_id_change_exemption_type ARG1))
-
-(macro subj_role_change_exemption_type ((type ARG1))
-	(typeattributeset subj_role_change_exemption_type ARG1))
-
-(macro subj_user_exemption_target_type ((type ARG1))
-	(typeattributeset subj_user_exemption_target_type ARG1))
-
 (macro subj_interactive_fd_type ((type ARG1))
 	(typeattributeset subj_interactive_fd_type ARG1))
 

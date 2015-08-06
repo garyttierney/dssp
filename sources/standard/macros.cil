@@ -1,0 +1,45 @@
+(macro standard_obj_change_exemption_subj_type ((type ARG1))
+	(call standard_obj_id_change_exemption_subj_type (ARG1))
+	(call standard_obj_role_change_exemption_subj_type (ARG1)))
+
+(macro standard_obj_id_change_exemption_subj_type ((type ARG1))
+	(typeattributeset standard_obj_id_change_exemption_subj_type ARG1))
+
+(macro standard_obj_role_change_exemption_subj_type ((type ARG1))
+	(typeattributeset standard_obj_role_change_exemption_subj_type ARG1))
+
+(macro standard_uncond_exemption_subj_type ((type ARG1))
+	(typeattributeset standard_uncond_exempt_subj_type ARG1))
+
+(macro standard_sys_change_exemption_subj_type ((type ARG1))
+	(call standard_sys_id_change_exemption_subj_type (ARG1))
+	(call standard_sys_role_change_exemption_subj_type (ARG1)))
+
+(macro standard_sys_id_change_exemption_subj_type ((type ARG1))
+	(typeattributeset standard_sys_id_change_exemption_subj_type ARG1))
+
+(macro standard_sys_role_change_exemption_subj_type ((type ARG1))
+	(typeattributeset standard_sys_role_change_exemption_subj_type ARG1))
+
+(macro standard_obj_sys_change_exemption_subj_type ((type ARG1))
+	(call standard_obj_sys_id_change_exemption_subj_type (ARG1))
+	(call standard_obj_sys_role_change_exemption_subj_type (ARG1)))
+
+(macro standard_obj_sys_id_change_exemption_subj_type ((type ARG1))
+	(typeattributeset standard_obj_sys_id_change_exemption_subj_type ARG1))
+
+(macro standard_obj_sys_role_change_exemption_subj_type ((type ARG1))
+	(typeattributeset standard_obj_sys_role_change_exemption_subj_type ARG1))
+
+(macro standard_change_exemption_subj_type ((type ARG1))
+	(call standard_id_change_exemption_subj_type (ARG1))
+	(call standard_role_change_exemption_subj_type (ARG1)))
+
+(macro standard_id_change_exemption_subj_type ((type ARG1))
+	(typeattributeset standard_id_change_exemption_subj_type ARG1))
+
+(macro standard_role_change_exemption_subj_type ((type ARG1))
+	(typeattributeset standard_role_change_exemption_subj_type ARG1))
+
+(macro standard_user_exemption_target_subj_type ((type ARG1))
+	(typeattributeset standard_user_exemption_target_subj_type ARG1))
