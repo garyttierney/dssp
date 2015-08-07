@@ -1,11 +1,9 @@
 (typeattribute standard_obj_id_change_exemption_subj_type)
-(typeattribute standard_obj_role_change_exemption_subj_type)
 
 (typeattribute standard_id_change_exemption_subj_type)
 (typeattribute standard_role_change_exemption_subj_type)
 
 (typeattribute standard_obj_sys_id_change_exemption_subj_type)
-(typeattribute standard_obj_sys_role_change_exemption_subj_type)
 
 (typeattribute standard_sys_id_change_exemption_subj_type)
 (typeattribute standard_sys_role_change_exemption_subj_type)

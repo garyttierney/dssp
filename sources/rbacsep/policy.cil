@@ -7,3 +7,19 @@
 
 (typeattribute rbacsep_exempt_obj_type)
 (typeattribute rbacsep_exempt_subj_type)
+
+(typeattribute rbacsep_obj_role_change_exemption_subj_type)
+(typeattribute rbacsep_obj_sys_role_change_exemption_subj_type)
+
+(tunableif enable_rbacsep
+	(true
+		(defaultrole file source)
+		(defaultrole dir source)
+		(defaultrole lnk_file source)
+		(defaultrole chr_file source)
+		(defaultrole blk_file source)
+		(defaultrole sock_file source)
+		(defaultrole fifo_file source))
+	(false
+		(role object_r)
+		(call sys_role (object_r))))

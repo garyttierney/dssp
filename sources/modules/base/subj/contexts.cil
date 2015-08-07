@@ -1,8 +1,16 @@
-(context subj_execheap (sys.id sys.role subj_execheap.bool (systemlow systemlow)))
-(context subj_execmem (sys.id sys.role subj_execmem.bool (systemlow systemlow)))
-(context subj_execstack (sys.id sys.role subj_execstack.bool (systemlow systemlow)))
-(context subj_mmap_low (sys.id sys.role subj_mmap_low.bool (systemlow systemlow)))
-(context subj_ptrace (sys.id sys.role subj_ptrace.bool (systemlow systemlow)))
+(tunableif enable_rbacsep
+	(true
+		(context subj_execheap (sys.id sys.role subj_execheap.bool (systemlow systemlow)))
+		(context subj_execmem (sys.id sys.role subj_execmem.bool (systemlow systemlow)))
+		(context subj_execstack (sys.id sys.role subj_execstack.bool (systemlow systemlow)))
+		(context subj_mmap_low (sys.id sys.role subj_mmap_low.bool (systemlow systemlow)))
+		(context subj_ptrace (sys.id sys.role subj_ptrace.bool (systemlow systemlow))))
+	(false
+		(context subj_execheap (sys.id object_r subj_execheap.bool (systemlow systemlow)))
+		(context subj_execmem (sys.id object_r subj_execmem.bool (systemlow systemlow)))
+		(context subj_execstack (sys.id object_r subj_execstack.bool (systemlow systemlow)))
+		(context subj_mmap_low (sys.id object_r subj_mmap_low.bool (systemlow systemlow)))
+		(context subj_ptrace (sys.id object_r subj_ptrace.bool (systemlow systemlow)))))
 
 (genfscon "selinuxfs" "/booleans/subj_execheap" subj_execheap)
 (genfscon "selinuxfs" "/booleans/subj_execmem" subj_execmem)

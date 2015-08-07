@@ -1,6 +1,12 @@
-(context ld_so_cache (sys.id sys.role ld_so_cache.file (systemlow systemlow)))
-(context ld_so (sys.id sys.role ld_so.file (systemlow systemlow)))
-(context lib (sys.id sys.role lib.lib_file (systemlow systemlow)))
+(tunableif enable_rbacsep
+	(true
+		(context ld_so_cache (sys.id sys.role ld_so_cache.file (systemlow systemlow)))
+		(context ld_so (sys.id sys.role ld_so.file (systemlow systemlow)))
+		(context lib (sys.id sys.role lib.lib_file (systemlow systemlow))))
+	(false
+		(context ld_so_cache (sys.id object_r ld_so_cache.file (systemlow systemlow)))
+		(context ld_so (sys.id object_r ld_so.file (systemlow systemlow)))
+		(context lib (sys.id object_r lib.lib_file (systemlow systemlow)))))
 
 (filecon "/etc/ld\.so\.cache.*" file ld_so_cache)
 (filecon "/etc/ld\.so\.preload.*" file ld_so_cache)

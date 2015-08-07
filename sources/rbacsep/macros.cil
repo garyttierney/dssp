@@ -12,3 +12,9 @@
 
 (macro rbacsep_exempt_subj_type ((type ARG1))
 	(typeattributeset rbacsep_exempt_subj_type ARG1))
+
+(macro rbacsep_obj_role_change_exemption_subj_type ((type ARG1))
+	(typeattributeset rbacsep_obj_role_change_exemption_subj_type ARG1))
+
+(macro rbacsep_obj_sys_role_change_exemption_subj_type ((type ARG1))
+	(typeattributeset rbacsep_obj_sys_role_change_exemption_subj_type ARG1))

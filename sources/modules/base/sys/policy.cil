@@ -1,13 +1,5 @@
 (boolean sys_load_kernel_module true)
 
-(defaultrole file source)
-(defaultrole dir source)
-(defaultrole lnk_file source)
-(defaultrole chr_file source)
-(defaultrole blk_file source)
-(defaultrole sock_file source)
-(defaultrole fifo_file source)
-
 (sid kernel)
 (sid sysctl)
 (sid unlabeled)
@@ -32,16 +24,12 @@
 
 	(role role)
 
-	(call rbacsep_exempt_role (role))
-
 	(blockinherit subj_common_blk)
 
 	(context sys (id role subj (systemhigh systemhigh)))
 
 	(userrole id role)
 	(roletype role subj)
-
-	(call sys_role (role))
 
 	(userlevel id systemlow)
 	(userrange id (systemlow systemhigh))
@@ -90,6 +78,13 @@
 	(call sec_list_fs (subj))
 
 	(call term_devtmpfs_obj_type_transition_unallocated_tty (subj))
+
+	(tunableif enable_rbacsep
+		(true
+			(call sys_role (role))
+			(call rbacsep_exempt_role (role)))
+		(false
+			(userrole id object_r)))
 
 	(optional sys_optional_fstools
 		(call fstools_use_fd (subj)))
@@ -149,7 +144,11 @@
 
 	(call fs_associate_fs (isid))
 	(call fs_associate_tmpfs (isid))
-	(call fs_search_proc (isid)))
+	(call fs_search_proc (isid))
+
+	(tunableif enable_rbacsep
+		(false
+			(roletype object_r isid))))
 
 (block unlabeled
 	(blockinherit sys_isid_blk)
