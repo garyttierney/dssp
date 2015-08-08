@@ -562,5 +562,10 @@
 (macro sys_use_fd ((type ARG1))
 	(allow ARG1 sys.subj (fd (use))))
 
+(macro sys_set_load_kernel_module_boolean ((type ARG1))
+	(call sec_set_spec_boolean (ARG1 sys_load_kernel_module.bool))
+	(optional sys_set_load_kernel_module_boolean_optional_seutil
+		(call seutil_exec_setsebool (ARG1))))
+
 (macro sys_unconfined_subj_type ((type ARG1))
 	(typeattributeset sys_unconfined_subj_type ARG1))

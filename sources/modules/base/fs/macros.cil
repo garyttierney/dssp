@@ -790,5 +790,35 @@
 (macro fs_unmount_all_fs ((type ARG1))
 	(allow ARG1 fs_obj_type (filesystem (unmount))))
 
+(macro fs_set_use_cifs_boolean ((type ARG1))
+	(call sec_set_spec_boolean (ARG1 fs_use_cifs.bool))
+	(optional fs_set_use_cifs_boolean_optional_seutil
+		(call seutil_exec_setsebool (ARG1))))
+
+(macro fs_set_use_dosfs_boolean ((type ARG1))
+	(call sec_set_spec_boolean (ARG1 fs_use_dosfs.bool))
+	(optional fs_set_use_dosfs_boolean_optional_seutil
+		(call seutil_exec_setsebool (ARG1))))
+
+(macro fs_set_use_fuse_boolean ((type ARG1))
+	(call sec_set_spec_boolean (ARG1 fs_use_fuse.bool))
+	(optional fs_set_use_fuse_boolean_optional_seutil
+		(call seutil_exec_setsebool (ARG1))))
+
+(macro fs_set_use_iso9660_boolean ((type ARG1))
+	(call sec_set_spec_boolean (ARG1 fs_use_iso9660.bool))
+	(optional fs_set_use_iso9660_boolean_optional_seutil
+		(call seutil_exec_setsebool (ARG1))))
+
+(macro fs_set_use_nfs_boolean ((type ARG1))
+	(call sec_set_spec_boolean (ARG1 fs_use_nfs.bool))
+	(optional fs_set_use_nfs_boolean_optional_seutil
+		(call seutil_exec_setsebool (ARG1))))
+
+(macro fs_set_use_removable_boolean ((type ARG1))
+	(call sec_set_spec_boolean (ARG1 fs_use_removable.bool))
+	(optional fs_set_use_removable_boolean_optional_seutil
+		(call seutil_exec_setsebool (ARG1))))
+
 (macro fs_unconfined_subj_type ((type ARG1))
 	(typeattributeset fs_unconfined_subj_type ARG1))

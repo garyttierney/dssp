@@ -114,5 +114,30 @@
 (macro subj_send_sigstop_common_subj ((type ARG1))
 	(allow ARG1 subj_common_type (process (sigstop))))
 
+(macro subj_set_execheap_boolean ((type ARG1))
+	(call sec_set_spec_boolean (ARG1 subj_execheap.bool))
+	(optional subj_set_execheap_boolean_optional_seutil
+		(call seutil_exec_setsebool (ARG1))))
+
+(macro subj_set_exemem_boolean ((type ARG1))
+	(call sec_set_spec_boolean (ARG1 subj_mem.bool))
+	(optional subj_set_execmem_boolean_optional_seutil
+		(call seutil_exec_setsebool (ARG1))))
+
+(macro subj_set_execstack_boolean ((type ARG1))
+	(call sec_set_spec_boolean (ARG1 subj_execstack.bool))
+	(optional subj_set_execstack_boolean_optional_seutil
+		(call seutil_exec_setsebool (ARG1))))
+
+(macro subj_set_mmap_low_boolean ((type ARG1))
+	(call sec_set_spec_boolean (ARG1 subj_mmap_low.bool))
+	(optional subj_set_mmap_low_boolean_optional_seutil
+		(call seutil_exec_setsebool (ARG1))))
+
+(macro subj_set_ptrace_boolean ((type ARG1))
+	(call sec_set_spec_boolean (ARG1 subj_ptrace.bool))
+	(optional subj_set_ptrace_boolean_optional_seutil
+		(call seutil_exec_setsebool (ARG1))))
+
 (macro subj_unconfined_type ((type ARG1))
 	(typeattributeset subj_unconfined_type ARG1))

@@ -100,5 +100,10 @@
 	(call rw_files_pattern (ARG1 securityfs.fs securityfs.fs))
 	(allow ARG1 securityfs.fs (security (check_context))))
 
+(macro sec_set_load_policy_boolean ((type ARG1))
+	(call sec_set_spec_boolean (ARG1 sec_load_policy.bool))
+	(optional sec_set_load_policy_boolean_optional_seutil
+		(call seutil_exec_setsebool (ARG1))))
+
 (macro sec_unconfined_subj_type ((type ARG1))
 	(typeattributeset sec_unconfined_subj_type ARG1))
