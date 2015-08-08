@@ -283,9 +283,6 @@
 		(mlsconstrain (netlink_selinux_socket (relabelto))
 			(dom h1 h2))
 
-		(mlsconstrain (netlink_socket (relabelto))
-			(dom h1 h2))
-
 		(mlsconstrain (tun_socket (relabelto))
 			(dom h1 h2))
 
@@ -399,13 +396,6 @@
 			(eq t1 mls_net_write_subj_type)))))
 
 		(mlsconstrain (netlink_selinux_socket (accept connect))
-			(or (eq l1 l2)
-			(and (or (and (eq t1 mls_net_read_to_clr_subj_type) (dom h1 l2)) (eq t1 mls_net_read_subj_type))
-			(or (or (and (and (eq t1 mls_net_write_ranged_subj_type) (dom l1 l2)) (domby l1 h2))
-			(and (and (eq t1 mls_net_write_to_clr_subj_type) (dom h1 l2)) (domby l1 l2)))
-			(eq t1 mls_net_write_subj_type)))))
-
-		(mlsconstrain (netlink_socket (accept connect))
 			(or (eq l1 l2)
 			(and (or (and (eq t1 mls_net_read_to_clr_subj_type) (dom h1 l2)) (eq t1 mls_net_read_subj_type))
 			(or (or (and (and (eq t1 mls_net_write_ranged_subj_type) (dom l1 l2)) (domby l1 h2))

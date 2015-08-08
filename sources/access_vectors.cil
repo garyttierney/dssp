@@ -59,6 +59,7 @@
 
 (class netif (ingress egress))
 
+; remove me when everything is at Linux 4.2
 (classcommon netlink_socket socket)
 (class netlink_socket ())
 
