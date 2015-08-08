@@ -64,6 +64,7 @@ $0 compile CIL SELinux security policy
 			cannot be used to override policy configuration but must be used for proper file context generation
 -i   (location)	: specify compiler location
 -p   (path)	: specify source policy location
+-r		: disable rbacsep
 -v		: compile policy in verbose mode
 			"
 			exit
@@ -85,6 +86,9 @@ $0 compile CIL SELinux security policy
 				echo "option -p expects a single parameter: accessible path to source policy to build"
 				exit 192
 			fi
+		;;
+		\-r)
+		RBACSEP="0"
 		;;
 		\-v)
 		VERBOSE="-v"
@@ -119,6 +123,11 @@ then
 	else
 		exit 192
 	fi
+fi
+
+if [ -z "$RBACSEP" ]
+then
+	RBACSEP="1"
 fi
 
 if [ -z "$VERSION" ]
@@ -211,16 +220,43 @@ then
 
 	if [ "$MODEL" == "standard" ]
 	then
-		echo "/home(/.*)? -d "$defaultseuserid":"$defaultseuserrole":home_dir.file" >> "$SPATH"/contexts/files/file_contexts.homedirs
-		echo "/home/.*/.* "$defaultseuserid":"$defaultseuserrole":home_user.home_user_file" >> "$SPATH"/contexts/files/file_contexts.homedirs
+		if [ "$RBACSEP" == "1" ]
+		then
+			echo "/home(/.*)? -d "$defaultseuserid":"$defaultseuserrole":home_dir.file" >> "$SPATH"/contexts/files/file_contexts.homedirs
+			echo "/home/.*/.* "$defaultseuserid":"$defaultseuserrole":home_user.home_user_file" >> "$SPATH"/contexts/files/file_contexts.homedirs
+		elif [ "$RBACSEP" == "0" ]
+		then
+			echo "/home(/.*)? -d "$defaultseuserid":object_r:home_dir.file" >> "$SPATH"/contexts/files/file_contexts.homedirs
+			echo "/home/.*/.* "$defaultseuserid":object_r:home_user.home_user_file" >> "$SPATH"/contexts/files/file_contexts.homedirs
+		else
+			exit 192
+		fi
 	elif [ "$MODEL" == "mcs" ]
 	then
-		echo "/home(/.*)? -d "$defaultseuserid":"$defaultseuserrole":home_dir.file:s0" >> "$SPATH"/contexts/files/file_contexts.homedirs
-		echo "/home/.*/.* "$defaultseuserid":"$defaultseuserrole":home_user.home_user_file:s0" >> "$SPATH"/contexts/files/file_contexts.homedirs
+		if [ "$RBACSEP" == "1" ]
+		then
+			echo "/home(/.*)? -d "$defaultseuserid":"$defaultseuserrole":home_dir.file:s0" >> "$SPATH"/contexts/files/file_contexts.homedirs
+			echo "/home/.*/.* "$defaultseuserid":"$defaultseuserrole":home_user.home_user_file:s0" >> "$SPATH"/contexts/files/file_contexts.homedirs
+		elif [ "$RBACSEP" == "0" ]
+		then
+			echo "/home(/.*)? -d "$defaultseuserid":object_r:home_dir.file:s0" >> "$SPATH"/contexts/files/file_contexts.homedirs
+			echo "/home/.*/.* "$defaultseuserid":object_r:home_user.home_user_file:s0" >> "$SPATH"/contexts/files/file_contexts.homedirs
+		else
+			exit 192
+		fi
 	elif [ "$MODEL" == "mls" ]
 	then
-		echo "/home(/.*)? -d "$defaultseuserid":"$defaultseuserrole":home_dir.file:s0-s15:c0.c1023" >> "$SPATH"/contexts/files/file_contexts.homedirs
-		echo "/home/.*/.* "$defaultseuserid":"$defaultseuserrole":home_user.home_user_file:s0" >> "$SPATH"/contexts/files/file_contexts.homedirs
+		if [ "$RBACSEP" == "1" ]
+		then
+			echo "/home(/.*)? -d "$defaultseuserid":"$defaultseuserrole":home_dir.file:s0-s15:c0.c1023" >> "$SPATH"/contexts/files/file_contexts.homedirs
+			echo "/home/.*/.* "$defaultseuserid":"$defaultseuserrole":home_user.home_user_file:s0" >> "$SPATH"/contexts/files/file_contexts.homedirs
+		elif [ "$RBACSEP" == "0" ]
+		then
+			echo "/home(/.*)? -d "$defaultseuserid":object_r:home_dir.file:s0-s15:c0.c1023" >> "$SPATH"/contexts/files/file_contexts.homedirs
+			echo "/home/.*/.* "$defaultseuserid":object_r:home_user.home_user_file:s0" >> "$SPATH"/contexts/files/file_contexts.homedirs
+		else
+			exit 192
+		fi
 	else
 		exit 192
 	fi
@@ -233,8 +269,17 @@ then
 
 	log "fetched seusers to process from "$SPATH"/seusers.standard"
 
-	echo "/home(/.*)? -d "$defaultseuserid":"$defaultseuserrole":home_dir.file" >> "$SPATH"/contexts/files/file_contexts.homedirs
-	echo "/home/.*/.* "$defaultseuserid":"$defaultseuserrole":home_user.home_user_file" >> "$SPATH"/contexts/files/file_contexts.homedirs
+	if [ "$RBACSEP" == "1" ]
+	then
+		echo "/home(/.*)? -d "$defaultseuserid":"$defaultseuserrole":home_dir.file" >> "$SPATH"/contexts/files/file_contexts.homedirs
+		echo "/home/.*/.* "$defaultseuserid":"$defaultseuserrole":home_user.home_user_file" >> "$SPATH"/contexts/files/file_contexts.homedirs
+	elif [ "$RBACSEP" == "0" ]
+	then
+		echo "/home(/.*)? -d "$defaultseuserid":object_r:home_dir.file" >> "$SPATH"/contexts/files/file_contexts.homedirs
+		echo "/home/.*/.* "$defaultseuserid":object_r:home_user.home_user_file" >> "$SPATH"/contexts/files/file_contexts.homedirs
+	else
+		exit 192
+	fi
 elif [ "$MODEL" == "mcs" ]
 then
 	defaultseuseruserroletuple="`/bin/bash "$SPATH"/support/seusertuple "$SPATH"/seusers.mcs`"
@@ -244,8 +289,17 @@ then
 
 	log "fetched seusers to process from "$SPATH"/seusers.mcs"
 
-	echo "/home(/.*)? -d "$defaultseuserid":"$defaultseuserrole":home_dir.file:s0" >> "$SPATH"/contexts/files/file_contexts.homedirs
-	echo "/home/.*/.* "$defaultseuserid":"$defaultseuserrole":home_user.home_user_file:s0" >> "$SPATH"/contexts/files/file_contexts.homedirs
+	if [ "$RBACSEP" == "1" ]
+	then
+		echo "/home(/.*)? -d "$defaultseuserid":"$defaultseuserrole":home_dir.file:s0" >> "$SPATH"/contexts/files/file_contexts.homedirs
+		echo "/home/.*/.* "$defaultseuserid":"$defaultseuserrole":home_user.home_user_file:s0" >> "$SPATH"/contexts/files/file_contexts.homedirs
+	elif [ "$RBACSEP" == "0" ]
+	then
+		echo "/home(/.*)? -d "$defaultseuserid":object_r:home_dir.file:s0" >> "$SPATH"/contexts/files/file_contexts.homedirs
+		echo "/home/.*/.* "$defaultseuserid":object_r:home_user.home_user_file:s0" >> "$SPATH"/contexts/files/file_contexts.homedirs
+	else
+		exit 192
+	fi
 elif [ "$MODEL" == "mls" ]
 then
 	defaultseuseruserroletuple="`/bin/bash "$SPATH"/support/seusertuple "$SPATH"/seusers.mls`"
@@ -255,8 +309,17 @@ then
 
 	log "fetched seusers to process from "$SPATH"/seusers.mls"
 
-	echo "/home(/.*)? -d "$defaultseuserid":"$defaultseuserrole":home_dir.file:s0-s15:c0.c1023" >> "$SPATH"/contexts/files/file_contexts.homedirs
-	echo "/home/.*/.* "$defaultseuserid":"$defaultseuserrole":home_user.home_user_file:s0" >> "$SPATH"/contexts/files/file_contexts.homedirs
+	if [ "$RBACSEP" == "1" ]
+	then
+		echo "/home(/.*)? -d "$defaultseuserid":"$defaultseuserrole":home_dir.file:s0-s15:c0.c1023" >> "$SPATH"/contexts/files/file_contexts.homedirs
+		echo "/home/.*/.* "$defaultseuserid":"$defaultseuserrole":home_user.home_user_file:s0" >> "$SPATH"/contexts/files/file_contexts.homedirs
+	elif [ "$RBACSEP" == "0" ]
+	then
+		echo "/home(/.*)? -d "$defaultseuserid":object_r:home_dir.file:s0-s15:c0.c1023" >> "$SPATH"/contexts/files/file_contexts.homedirs
+		echo "/home/.*/.* "$defaultseuserid":object_:home_user.home_user_file:s0" >> "$SPATH"/contexts/files/file_contexts.homedirs
+	else
+		exit 192
+	fi
 fi
 
 for username in ${usernames[*]}
@@ -274,32 +337,68 @@ do
 
 			for homedir in ${homedirtemplate[*]}
 			do
-				name=`echo "${homedir//HOME_DIR//home/"$username"}"`
-				id=`echo "${name//sys.id/$seuserid}"`
-				echo "${id//sys.role/"$seuserrole"}" >> "$SPATH"/contexts/files/file_contexts.homedirs
+				if [ "$RBACSEP" == "1" ]
+				then
+					name=`echo "${homedir//HOME_DIR//home/"$username"}"`
+					id=`echo "${name//sys.id/$seuserid}"`
+					echo "${id//sys.role/"$seuserrole"}" >> "$SPATH"/contexts/files/file_contexts.homedirs
+				elif [ "$RBACSEP" == "0" ]
+				then
+					name=`echo "${homedir//HOME_DIR//home/"$username"}"`
+					echo "${name//sys.id/"$seuserid"}" >> "$SPATH"/contexts/files/file_contexts.homedirs
+				else
+					exit 192
+				fi
 			done
 
 			for spoolfile in ${spoolfiletemplate[*]}
 			do
-				name=`echo "${spoolfile//USER_SPOOL//var/spool/mail/"$username"}"`
-				id=`echo "${name//sys.id/$seuserid}"`
-				echo "${id//sys.role/"$seuserrole"}" >> "$SPATH"/contexts/files/file_contexts.homedirs
+				if [ "$RBACSEP" == "1" ]
+				then
+					name=`echo "${spoolfile//USER_SPOOL//var/spool/mail/"$username"}"`
+					id=`echo "${name//sys.id/$seuserid}"`
+					echo "${id//sys.role/"$seuserrole"}" >> "$SPATH"/contexts/files/file_contexts.homedirs
+				elif [ "$RBACSEP" == "0" ]
+				then
+					name=`echo "${spoolfile//USER_SPOOL//var/spool/mail/"$username"}"`
+					echo "${name//sys.id/"$seuserid"}" >> "$SPATH"/contexts/files/file_contexts.homedirs
+				else
+					exit 192
+				fi
 			done
 		else
 			log "processing default user found in "$SPATH"/seusers.local"
 
 			for homedir in ${homedirtemplate[*]}
 			do
-				name=`echo "${homedir//HOME_DIR//home/"$username"}"`
-				id=`echo "${name//sys.id/$defaultseuserid}"`
-				echo "${id//sys.role/"$defaultseuserrole"}" >> "$SPATH"/contexts/files/file_contexts.homedirs
+				if [ "$RBACSEP" == "1" ]
+				then
+					name=`echo "${homedir//HOME_DIR//home/"$username"}"`
+					id=`echo "${name//sys.id/$defaultseuserid}"`
+					echo "${id//sys.role/"$defaultseuserrole"}" >> "$SPATH"/contexts/files/file_contexts.homedirs
+				elif [ "$RBACSEP" == "0" ]
+				then
+					name=`echo "${homedir//HOME_DIR//home/"$username"}"`
+					echo "${name//sys.id/"$defaultseuserid"}" >> "$SPATH"/contexts/files/file_contexts.homedirs
+				else
+					exit 192
+				fi
 			done
 
 			for spoolfile in ${spoolfiletemplate[*]}
 			do
-				name=`echo "${spoolfile//USER_SPOOL//var/spool/mail/"$username"}"`
-				id=`echo "${name//sys.id/$defaultseuserid}"`
-				echo "${id//sys.role/"$defaultseuserrole"}" >> "$SPATH"/contexts/files/file_contexts.homedirs
+				if [ "$RBACSEP" == "1" ]
+				then
+					name=`echo "${spoolfile//USER_SPOOL//var/spool/mail/"$username"}"`
+					id=`echo "${name//sys.id/$defaultseuserid}"`
+					echo "${id//sys.role/"$defaultseuserrole"}" >> "$SPATH"/contexts/files/file_contexts.homedirs
+				elif [ "$RBACSEP" == "0" ]
+				then
+					name=`echo "${spoolfile//USER_SPOOL//var/spool/mail/"$username"}"`
+					echo "${name//sys.id/"$defaultseuserid"}" >> "$SPATH"/contexts/files/file_contexts.homedirs
+				else
+					exit 192
+				fi
 			done
 		fi
 	elif [ "$MODEL" == "standard" ]
@@ -315,32 +414,68 @@ do
 
 			for homedir in ${homedirtemplate[*]}
 			do
-				name=`echo "${homedir//HOME_DIR//home/"$username"}"`
-				id=`echo "${name//sys.id/$seuserid}"`
-				echo "${id//sys.role/"$seuserrole"}" >> "$SPATH"/contexts/files/file_contexts.homedirs
+				if [ "$RBACSEP" == "1" ]
+				then
+					name=`echo "${homedir//HOME_DIR//home/"$username"}"`
+					id=`echo "${name//sys.id/$seuserid}"`
+					echo "${id//sys.role/"$seuserrole"}" >> "$SPATH"/contexts/files/file_contexts.homedirs
+				elif [ "$RBACSEP" == "0" ]
+				then
+					name=`echo "${homedir//HOME_DIR//home/"$username"}"`
+					echo "${name//sys.id/"$seuserid"}" >> "$SPATH"/contexts/files/file_contexts.homedirs
+				else
+					exit 192
+				fi
 			done
 
 			for spoolfile in ${spoolfiletemplate[*]}
 			do
-				name=`echo "${spoolfile//USER_SPOOL//var/spool/mail/"$username"}"`
-				id=`echo "${name//sys.id/$seuserid}"`
-				echo "${id//sys.role/"$seuserrole"}" >> "$SPATH"/contexts/files/file_contexts.homedirs
+				if [ "$RBACSEP" == "1" ]
+				then
+					name=`echo "${spoolfile//USER_SPOOL//var/spool/mail/"$username"}"`
+					id=`echo "${name//sys.id/$seuserid}"`
+					echo "${id//sys.role/"$seuserrole"}" >> "$SPATH"/contexts/files/file_contexts.homedirs
+				elif [ "$RBACSEP" == "0" ]
+				then
+					name=`echo "${spoolfile//USER_SPOOL//var/spool/mail/"$username"}"`
+					echo "${name//sys.id/"$seuserid"}" >> "$SPATH"/contexts/files/file_contexts.homedirs
+				else
+					exit 192
+				fi
 			done
 		else
 			log "processing default user found in "$SPATH"/seusers.standard"
 
 			for homedir in ${homedirtemplate[*]}
 			do
-				name=`echo "${homedir//HOME_DIR//home/"$username"}"`
-				id=`echo "${name//sys.id/$defaultseuserid}"`
-				echo "${id//sys.role/"$defaultseuserrole"}" >> "$SPATH"/contexts/files/file_contexts.homedirs
+				if [ "$RBACSEP" == "1" ]
+				then
+					name=`echo "${homedir//HOME_DIR//home/"$username"}"`
+					id=`echo "${name//sys.id/$defaultseuserid}"`
+					echo "${id//sys.role/"$defaultseuserrole"}" >> "$SPATH"/contexts/files/file_contexts.homedirs
+				elif [ "$RBACSEP" == "0" ]
+				then
+					name=`echo "${homedir//HOME_DIR//home/"$username"}"`
+					echo "${name//sys.id/"$defaultseuserid"}" >> "$SPATH"/contexts/files/file_contexts.homedirs
+				else
+					exit 192
+				fi
 			done
 
 			for spoolfile in ${spoolfiletemplate[*]}
 			do
-				name=`echo "${spoolfile//USER_SPOOL//var/spool/mail/"$username"}"`
-				id=`echo "${name//sys.id/$defaultseuserid}"`
-				echo "${id//sys.role/"$defaultseuserrole"}" >> "$SPATH"/contexts/files/file_contexts.homedirs
+				if [ "$RBACSEP" == "1" ]
+				then
+					name=`echo "${spoolfile//USER_SPOOL//var/spool/mail/"$username"}"`
+					id=`echo "${name//sys.id/$defaultseuserid}"`
+					echo "${id//sys.role/"$defaultseuserrole"}" >> "$SPATH"/contexts/files/file_contexts.homedirs
+				elif [ "$RBACSEP" == "0" ]
+				then
+					name=`echo "${spoolfile//USER_SPOOL//var/spool/mail/"$username"}"`
+					echo "${name//sys.id/"$defaultseuserid"}" >> "$SPATH"/contexts/files/file_contexts.homedirs
+				else
+					exit 192
+				fi
 			done
 		fi
 	elif [ "$MODEL" == "mcs" ]
@@ -356,32 +491,68 @@ do
 
 			for homedir in ${homedirtemplate[*]}
 			do
-				name=`echo "${homedir//HOME_DIR//home/"$username"}"`
-				id=`echo "${name//sys.id/$seuserid}"`
-				echo "${id//sys.role/"$seuserrole"}" >> "$SPATH"/contexts/files/file_contexts.homedirs
+				if [ "$RBACSEP" == "1" ]
+				then
+					name=`echo "${homedir//HOME_DIR//home/"$username"}"`
+					id=`echo "${name//sys.id/$seuserid}"`
+					echo "${id//sys.role/"$seuserrole"}" >> "$SPATH"/contexts/files/file_contexts.homedirs
+				elif [ "$RBACSEP" == "0" ]
+				then
+					name=`echo "${homedir//HOME_DIR//home/"$username"}"`
+					echo "${name//sys.id/"$seuserid"}" >> "$SPATH"/contexts/files/file_contexts.homedirs
+				else
+					exit 192
+				fi
 			done
 
 			for spoolfile in ${spoolfiletemplate[*]}
 			do
-				name=`echo "${spoolfile//USER_SPOOL//var/spool/mail/"$username"}"`
-				id=`echo "${name//sys.id/$seuserid}"`
-				echo "${id//sys.role/"$seuserrole"}" >> "$SPATH"/contexts/files/file_contexts.homedirs
+				if [ "$RBACSEP" == "1" ]
+				then
+					name=`echo "${spoolfile//USER_SPOOL//var/spool/mail/"$username"}"`
+					id=`echo "${name//sys.id/$seuserid}"`
+					echo "${id//sys.role/"$seuserrole"}" >> "$SPATH"/contexts/files/file_contexts.homedirs
+				elif [ "$RBACSEP" == "0" ]
+				then
+					name=`echo "${spoolfile//USER_SPOOL//var/spool/mail/"$username"}"`
+					echo "${name//sys.id/"$seuserid"}" >> "$SPATH"/contexts/files/file_contexts.homedirs
+				else
+					exit 192
+				fi
 			done
 		else
 			log "processing "$username" found in "$SPATH"/seusers.mcs"
 
 			for homedir in ${homedirtemplate[*]}
 			do
-				name=`echo "${homedir//HOME_DIR//home/"$username"}"`
-				id=`echo "${name//sys.id/$defaultseuserid}"`
-				echo "${id//sys.role/"$defaultseuserrole"}" >> "$SPATH"/contexts/files/file_contexts.homedirs
+				if [ "$RBACSEP" == "1" ]
+				then
+					name=`echo "${homedir//HOME_DIR//home/"$username"}"`
+					id=`echo "${name//sys.id/$defaultseuserid}"`
+					echo "${id//sys.role/"$defaultseuserrole"}" >> "$SPATH"/contexts/files/file_contexts.homedirs
+				elif [ "$RBACSEP" == "0" ]
+				then
+					name=`echo "${homedir//HOME_DIR//home/"$username"}"`
+					echo "${name//sys.id/"$defaultseuserid"}" >> "$SPATH"/contexts/files/file_contexts.homedirs
+				else
+					exit 192
+				fi
 			done
 
 			for spoolfile in ${spoolfiletemplate[*]}
 			do
-				name=`echo "${spoolfile//USER_SPOOL//var/spool/mail/"$username"}"`
-				id=`echo "${name//sys.id/$defaultseuserid}"`
-				echo "${id//sys.role/"$defaultseuserrole"}" >> "$SPATH"/contexts/files/file_contexts.homedirs
+				if [ "$RBACSEP" == "1" ]
+				then
+					name=`echo "${spoolfile//USER_SPOOL//var/spool/mail/"$username"}"`
+					id=`echo "${name//sys.id/$defaultseuserid}"`
+					echo "${id//sys.role/"$defaultseuserrole"}" >> "$SPATH"/contexts/files/file_contexts.homedirs
+				elif [ "$RBACSEP" == "0" ]
+				then
+					name=`echo "${spoolfile//USER_SPOOL//var/spool/mail/"$username"}"`
+					echo "${name//sys.id/"$defaultseuserid"}" >> "$SPATH"/contexts/files/file_contexts.homedirs
+				else
+					exit 192
+				fi
 			done
 		fi
 	elif [ "$MODEL" == "mls" ]
@@ -397,32 +568,68 @@ do
 
 			for homedir in ${homedirtemplate[*]}
 			do
-				name=`echo "${homedir//HOME_DIR//home/"$username"}"`
-				id=`echo "${name//sys.id/$seuserid}"`
-				echo "${id//sys.role/"$seuserrole"}" >> "$SPATH"/contexts/files/file_contexts.homedirs
+				if [ "$RBACSEP" == "1" ]
+				then
+					name=`echo "${homedir//HOME_DIR//home/"$username"}"`
+					id=`echo "${name//sys.id/$seuserid}"`
+					echo "${id//sys.role/"$seuserrole"}" >> "$SPATH"/contexts/files/file_contexts.homedirs
+				elif [ "$RBACSEP" == "0" ]
+				then
+					name=`echo "${homedir//HOME_DIR//home/"$username"}"`
+					echo "${name//sys.id/"$seuserid"}" >> "$SPATH"/contexts/files/file_contexts.homedirs
+				else
+					exit 192
+				fi
 			done
 
 			for spoolfile in ${spoolfiletemplate[*]}
 			do
-				name=`echo "${spoolfile//USER_SPOOL//var/spool/mail/"$username"}"`
-				id=`echo "${name//sys.id/$seuserid}"`
-				echo "${id//sys.role/"$seuserrole"}" >> "$SPATH"/contexts/files/file_contexts.homedirs
+				if [ "$RBACSEP" == "1" ]
+				then
+					name=`echo "${spoolfile//USER_SPOOL//var/spool/mail/"$username"}"`
+					id=`echo "${name//sys.id/$seuserid}"`
+					echo "${id//sys.role/"$seuserrole"}" >> "$SPATH"/contexts/files/file_contexts.homedirs
+				elif [ "$RBACSEP" == "0" ]
+				then
+					name=`echo "${spoolfile//USER_SPOOL//var/spool/mail/"$username"}"`
+					echo "${name//sys.id/"$seuserid"}" >> "$SPATH"/contexts/files/file_contexts.homedirs
+				else
+					exit 192
+				fi
 			done
 		else
 			log "processing default found in "$SPATH"/seusers.local"
 
 			for homedir in ${homedirtemplate[*]}
 			do
-				name=`echo "${homedir//HOME_DIR//home/"$username"}"`
-				id=`echo "${name//sys.id/$defaultseuserid}"`
-				echo "${id//sys.role/"$defaultseuserrole"}" >> "$SPATH"/contexts/files/file_contexts.homedirs
+				if [ "$RBACSEP" == "1" ]
+				then
+					name=`echo "${homedir//HOME_DIR//home/"$username"}"`
+					id=`echo "${name//sys.id/$defaultseuserid}"`
+					echo "${id//sys.role/"$defaultseuserrole"}" >> "$SPATH"/contexts/files/file_contexts.homedirs
+				elif [ "$RBACSEP" == "0" ]
+				then
+					name=`echo "${homedir//HOME_DIR//home/"$username"}"`
+					echo "${name//sys.id/"$defaultseuserid"}" >> "$SPATH"/contexts/files/file_contexts.homedirs
+				else
+					exit 192
+				fi
 			done
 
 			for spoolfile in ${spoolfiletemplate[*]}
 			do
-				name=`echo "${spoolfile//USER_SPOOL//var/spool/mail/"$username"}"`
-				id=`echo "${name//sys.id/$defaultseuserid}"`
-				echo "${id//sys.role/"$defaultseuserrole"}" >> "$SPATH"/contexts/files/file_contexts.homedirs
+				if [ "$RBACSEP" == "1" ]
+				then
+					name=`echo "${spoolfile//USER_SPOOL//var/spool/mail/"$username"}"`
+					id=`echo "${name//sys.id/$defaultseuserid}"`
+					echo "${id//sys.role/"$defaultseuserrole"}" >> "$SPATH"/contexts/files/file_contexts.homedirs
+				elif [ "$RBACSEP" == "0" ]
+				then
+					name=`echo "${spoolfile//USER_SPOOL//var/spool/mail/"$username"}"`					id=`echo "${name//sys.id/$defaultseuserid}"`
+					echo "${name//sys.id/"$defaultseuserid"}" >> "$SPATH"/contexts/files/file_contexts.homedirs
+				else
+					exit 192
+				fi
 			done
 		fi
 	fi
