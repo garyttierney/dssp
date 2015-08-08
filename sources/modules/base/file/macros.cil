@@ -1302,6 +1302,9 @@
 	(call file_search_var_tmp (ARG1))
 	(allow ARG1 var_tmp.var_tmp_file read_file_perms))
 
+(macro file_audit_access_var_tmp_dirs ((type ARG1))
+	(allow ARG1 var_tmp.var_tmp_file (dir (write))))
+
 (macro file_dontaudit_audit_access_var_tmp_dirs ((type ARG1))
 	(dontaudit ARG1 var_tmp.var_tmp_file (dir (audit_access))))
 
