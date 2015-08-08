@@ -92,7 +92,7 @@
 				(and (eq t1 rbacsep_obj_sys_role_change_exemption_subj_type) (eq r2 sys.role)))
 				(eq t1 rbacsep_obj_role_change_exemption_subj_type)))
 
-		(constrain (dir (getattr ioctl read))
+		(constrain (dir (getattr ioctl read write))
 			(or (or (or (or (or (eq r1 r2)
 				(eq r1 rbacsep_exempt_role))
 				(eq t1 rbacsep_exempt_subj_type))
@@ -105,7 +105,7 @@
 				(and (eq t1 rbacsep_obj_sys_role_change_exemption_subj_type) (eq r2 sys.role)))
 				(eq t1 rbacsep_obj_role_change_exemption_subj_type)))
 
-		(constrain (lnk_file (getattr ioctl read))
+		(constrain (lnk_file (getattr ioctl read write))
 			(or (or (or (or (or (eq r1 r2)
 				(eq r1 rbacsep_exempt_role))
 				(eq t1 rbacsep_exempt_subj_type))
@@ -118,7 +118,7 @@
 				(and (eq t1 rbacsep_obj_sys_role_change_exemption_subj_type) (eq r2 sys.role)))
 				(eq t1 rbacsep_obj_role_change_exemption_subj_type)))
 
-		(constrain (file (getattr ioctl read))
+		(constrain (file (getattr ioctl read write))
 			(or (or (or (or (or (eq r1 r2)
 				(eq r1 rbacsep_exempt_role))
 				(eq t1 rbacsep_exempt_subj_type))
@@ -168,6 +168,41 @@
 				(eq t1 rbacsep_obj_role_change_exemption_subj_type)))
 
 		(constrain (packet_socket (getattr ioctl read write))
+			(or (or (or (or (eq r1 r2)
+				(eq r1 rbacsep_exempt_role))
+				(eq r2 rbacsep_exempt_role))
+				(eq t1 rbacsep_exempt_subj_type))
+				(eq t2 rbacsep_exempt_subj_type)))
+
+		(constrain (key (create link read search setattr view write))
+			(or (or (or (or (eq r1 r2)
+				(eq r1 rbacsep_exempt_role))
+				(eq r2 rbacsep_exempt_role))
+				(eq t1 rbacsep_exempt_subj_type))
+				(eq t2 rbacsep_exempt_subj_type)))
+
+		(constrain (ipc (create destroy setattr write unix_write))
+			(or (or (or (or (eq r1 r2)
+				(eq r1 rbacsep_exempt_role))
+				(eq r2 rbacsep_exempt_role))
+				(eq t1 rbacsep_exempt_subj_type))
+				(eq t2 rbacsep_exempt_subj_type)))
+
+		(constrain (sem (create destroy setattr write unix_write))
+			(or (or (or (or (eq r1 r2)
+				(eq r1 rbacsep_exempt_role))
+				(eq r2 rbacsep_exempt_role))
+				(eq t1 rbacsep_exempt_subj_type))
+				(eq t2 rbacsep_exempt_subj_type)))
+
+		(constrain (msgq (create destroy setattr write unix_write))
+			(or (or (or (or (eq r1 r2)
+				(eq r1 rbacsep_exempt_role))
+				(eq r2 rbacsep_exempt_role))
+				(eq t1 rbacsep_exempt_subj_type))
+				(eq t2 rbacsep_exempt_subj_type)))
+
+		(constrain (shm (create destroy setattr write unix_write))
 			(or (or (or (or (eq r1 r2)
 				(eq r1 rbacsep_exempt_role))
 				(eq r2 rbacsep_exempt_role))
