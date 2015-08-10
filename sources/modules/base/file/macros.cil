@@ -792,6 +792,14 @@
 	(allow ARG1 file_tmpfs_obj_type read_sock_file_perms)
 	(allow ARG1 file_tmpfs_obj_type read_lnk_file_perms))
 
+(macro file_delete_all_tmpfs ((type ARG1))
+	(call fs_del_entry_tmpfs_dirs (ARG1))
+	(allow ARG1 file_tmpfs_obj_type delete_file_perms)
+	(allow ARG1 file_tmpfs_obj_type delete_dir_perms)
+	(allow ARG1 file_tmpfs_obj_type delete_fifo_perms)
+	(allow ARG1 file_tmpfs_obj_type delete_sock_perms)
+	(allow ARG1 file_tmpfs_obj_type delete_lnk_file_perms))
+
 (macro file_manage_all_tmpfs ((type ARG1))
 	(call fs_rw_tmpfs_dirs (ARG1))
 	(allow ARG1 file_tmpfs_obj_type manage_file_perms)
