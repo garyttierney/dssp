@@ -114,9 +114,6 @@
 (block vfio
 	(blockinherit dev_obj_blk))
 
-(block vhci
-	(blockinherit dev_obj_blk))
-
 (block vhost
 	(blockinherit dev_obj_blk)
 
