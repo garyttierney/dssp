@@ -28,6 +28,8 @@
 (typeattribute fs_read_removable_subj_type)
 (typeattribute fs_manage_removable_subj_type)
 
+(typeattribute fs_trace_client_subj_type)
+
 (block fs_use_dosfs
 	(blockinherit sec_bool_obj_blk))
 
@@ -189,6 +191,11 @@
 (call sys_obj_type (fs_obj_type))
 
 (allow fs_obj_type self (filesystem (associate)))
+
+(call fs_getattr_debugfs_fs (fs_trace_client_subj_type))
+(call fs_mount_tracefs_fs (fs_trace_client_subj_type))
+(call fs_read_debugfs (fs_trace_client_subj_type))
+(call fs_read_tracefs (fs_trace_client_subj_type))
 
 (allow fs_unconfined_subj_type fs_obj_type all_file_perms_except_mounton_execmod_and_entrypoint)
 (allow fs_unconfined_subj_type fs_obj_type all_dir_perms_except_mounton_and_execmod)

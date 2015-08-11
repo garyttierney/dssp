@@ -4,6 +4,9 @@
 	(type fs)
 	(call fs_obj_type (fs)))
 
+(macro fs_trace_client_subj_type ((type ARG1))
+	(typeattributeset fs_trace_client_subj_type ARG1))
+
 (macro fs_read_cifs_subj_type ((type ARG1))
 	(typeattributeset fs_read_cifs_subj_type ARG1))
 
