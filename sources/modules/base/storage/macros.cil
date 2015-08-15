@@ -294,10 +294,10 @@
 	(call fs_devtmpfs_obj_type_transition (ARG1 removable_storage.storage_dev blk_file "mspblk0p9")))
 
 (macro storage_devtmpfs_obj_type_transition_scsi_generic ((type ARG1))
-	(call fs_devtmpfs_obj_type_transition (ARG1 scsi_generic.storage_dev blk_file "sg0"))
-	(call fs_devtmpfs_obj_type_transition (ARG1 scsi_generic.storage_dev blk_file "sg1"))
-	(call fs_devtmpfs_obj_type_transition (ARG1 scsi_generic.storage_dev blk_file "sg2"))
-	(call fs_devtmpfs_obj_type_transition (ARG1 scsi_generic.storage_dev blk_file "sg3")))
+	(call fs_devtmpfs_obj_type_transition (ARG1 scsi_generic.storage_dev chr_file "sg0"))
+	(call fs_devtmpfs_obj_type_transition (ARG1 scsi_generic.storage_dev chr_file "sg1"))
+	(call fs_devtmpfs_obj_type_transition (ARG1 scsi_generic.storage_dev chr_file "sg2"))
+	(call fs_devtmpfs_obj_type_transition (ARG1 scsi_generic.storage_dev chr_file "sg3")))
 
 (macro storage_unconfined_subj_type ((type ARG1))
 	(typeattributeset storage_unconfined_subj_type ARG1))
