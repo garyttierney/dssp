@@ -159,6 +159,9 @@
 	(call fs_associate_fs (isid))
 	(call fs_associate_tmpfs (isid)))
 
+(block cpuinfo
+	(blockinherit sys_proc_obj_blk))
+
 (block iomem
 	(blockinherit sys_proc_obj_blk))
 

@@ -400,6 +400,10 @@
 	(call sys_rw_vm_sysctl_files (ARG1))
 	(call sys_rw_vm_overcommit_sysctl_files (ARG1)))
 
+(macro sys_read_cpuinfo_proc ((type ARG1))
+	(call fs_search_proc (ARG1))
+	(allow ARG1 cpuinfo_proc.proc read_file_perms))
+
 (macro sys_read_iomem_proc_files ((type ARG1))
 	(call fs_search_proc (ARG1))
 	(allow ARG1 iomem.proc read_file_perms))

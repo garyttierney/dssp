@@ -1,7 +1,8 @@
 (tunableif enable_rbacsep
 	(true
-		(context cpu_sysfs (sys.id sys.role cpu_sysfs.sysfs (systemlow systemlow)))
 		(context cpu_online_sysfs (sys.id sys.role cpu_online_sysfs.sysfs (systemlow systemlow)))
+		(context cpu_sysfs (sys.id sys.role cpu_sysfs.sysfs (systemlow systemlow)))
+		(context cpuinfo (sys.id sys.role cpuinfo.proc (systemlow systemlow)))
 		(context memory_sysfs (sys.id sys.role memory_sysfs.sysfs (systemlow systemlow)))
 		(context crypto (sys.id sys.role crypto.sysctl (systemlow systemlow)))
 		(context dev (sys.id sys.role dev.sysctl (systemlow systemlow)))
@@ -25,8 +26,9 @@
 		(context vm_overcommit (sys.id sys.role vm_overcommit.sysctl (systemlow systemlow)))
 		(context vm (sys.id sys.role vm.sysctl (systemlow systemlow))))
 	(false
-		(context cpu_sysfs (sys.id object_r cpu_sysfs.sysfs (systemlow systemlow)))
 		(context cpu_online_sysfs (sys.id object_r cpu_online_sysfs.sysfs (systemlow systemlow)))
+		(context cpu_sysfs (sys.id object_r cpu_sysfs.sysfs (systemlow systemlow)))
+		(context cpuinfo (sys.id object_r cpuinfo.proc (systemlow systemlow)))
 		(context memory_sysfs (sys.id object_r memory_sysfs.sysfs (systemlow systemlow)))
 		(context crypto (sys.id object_r crypto.sysctl (systemlow systemlow)))
 		(context dev (sys.id object_r dev.sysctl (systemlow systemlow)))
@@ -84,6 +86,7 @@
 
 (filecon "/var/log/boot\.log" file sys_var_log_file)
 
+(genfscon "proc" "/cpuinfo" cpuinfo)
 (genfscon "proc" "/iomem" iomem)
 (genfscon "proc" "/irq" irq)
 (genfscon "proc" "/kallsyms" kallsyms)
