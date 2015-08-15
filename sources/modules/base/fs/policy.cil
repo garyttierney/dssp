@@ -75,7 +75,9 @@
 	(call sys_mountpoint_obj_type (fs)))
 
 (block cgroup
-	(blockinherit fs_obj_blk))
+	(blockinherit fs_obj_blk)
+
+	(call sys_mountpoint_obj_type (fs)))
 
 (block configfs
 	(blockinherit fs_obj_blk)

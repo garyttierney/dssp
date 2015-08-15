@@ -100,9 +100,6 @@
 (macro sys_dontaudit_audit_access_mountpoint_dirs ((type ARG1))
 	(dontaudit ARG1 sys_mountpoint_obj_type (dir (audit_access))))
 
-(macro sys_dontaudit_getattr_mountpoint_dirs ((type ARG1))
-	(dontaudit ARG1 sys_mountpoint_obj_type (dir (getattr))))
-
 (macro sys_getattr_mountpoints ((type ARG1))
 	(allow ARG1 sys_mountpoint_obj_type (file (getattr)))
 	(allow ARG1 sys_mountpoint_obj_type (dir (getattr)))
@@ -129,6 +126,9 @@
 
 (macro sys_list_mountpoints ((type ARG1))
 	(allow ARG1 sys_mountpoint_obj_type list_dir_perms))
+
+(macro sys_dontaudit_list_mountpoints ((type ARG1))
+	(dontaudit ARG1 sys_mountpoint_obj_type list_dir_perms))
 
 (macro sys_search_mountpoints ((type ARG1))
 	(allow ARG1 sys_mountpoint_obj_type search_dir_perms))
