@@ -127,7 +127,8 @@
 
 	(optional sys_optional_storage
 		(call storage_devtmpfs_obj_type_transition_fixed_disk (subj))
-		(call storage_devtmpfs_obj_type_transition_removable (subj))))
+		(call storage_devtmpfs_obj_type_transition_removable (subj))
+		(call storage_devtmpfs_obj_type_transition_scsi_generic (subj))))
 
 (block invalid
 	(blockinherit sys_isid_blk)
