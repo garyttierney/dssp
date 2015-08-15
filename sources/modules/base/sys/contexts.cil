@@ -1,6 +1,8 @@
 (tunableif enable_rbacsep
 	(true
 		(context cpu_sysfs (sys.id sys.role cpu_sysfs.sysfs (systemlow systemlow)))
+		(context cpu_online_sysfs (sys.id sys.role cpu_online_sysfs.sysfs (systemlow systemlow)))
+		(context memory_sysfs (sys.id sys.role memory_sysfs.sysfs (systemlow systemlow)))
 		(context crypto (sys.id sys.role crypto.sysctl (systemlow systemlow)))
 		(context dev (sys.id sys.role dev.sysctl (systemlow systemlow)))
 		(context fs_sysctl (sys.id sys.role fs_sysctl.sysctl (systemlow systemlow)))
@@ -24,6 +26,8 @@
 		(context vm (sys.id sys.role vm.sysctl (systemlow systemlow))))
 	(false
 		(context cpu_sysfs (sys.id object_r cpu_sysfs.sysfs (systemlow systemlow)))
+		(context cpu_online_sysfs (sys.id object_r cpu_online_sysfs.sysfs (systemlow systemlow)))
+		(context memory_sysfs (sys.id object_r memory_sysfs.sysfs (systemlow systemlow)))
 		(context crypto (sys.id object_r crypto.sysctl (systemlow systemlow)))
 		(context dev (sys.id object_r dev.sysctl (systemlow systemlow)))
 		(context fs_sysctl (sys.id object_r fs_sysctl.sysctl (systemlow systemlow)))
@@ -112,6 +116,8 @@
 (genfscon "proc" "/sys/vm" vm)
 (genfscon "selinuxfs" "/booleans/sys_load_kernel_module" sys_load_kernel_module)
 (genfscon "sysfs" "/devices/system/cpu" cpu_sysfs)
+(genfscon "sysfs" "/devices/system/cpu/online" cpu_online_sysfs)
+(genfscon "sysfs" "/devices/system/memory" memory_sysfs)
 
 (sidcontext file unlabeled)
 (sidcontext kernel sys)

@@ -228,6 +228,12 @@
 (block cpu_sysfs
         (blockinherit sys_sysfs_obj_blk))
 
+(block cpu_online_sysfs
+        (blockinherit sys_sysfs_obj_blk))
+
+(block memory_sysfs
+        (blockinherit sys_sysfs_obj_blk))
+
 (block sys_load_kernel_module
 	(blockinherit sec_bool_obj_blk))
 
