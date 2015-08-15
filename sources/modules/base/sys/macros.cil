@@ -362,6 +362,11 @@
 (macro sys_dontaudit_manage_all_sysctl_files ((type ARG1))
 	(dontaudit ARG1 sys_sysctl_obj_type manage_file_perms))
 
+(macro sys_dontaudit_read_all_sysctl ((type ARG1))
+	(dontaudit ARG1 sys_sysctl_obj_type read_file_perms)
+	(dontaudit ARG1 sys_sysctl_obj_type list_dir_perms)
+	(dontaudit ARG1 sys_sysctl_obj_type read_lnk_file_perms))
+
 (macro sys_getattr_all_sysctl_files ((type ARG1))
 	(call getattr_files_pattern (ARG1 sys_sysctl_obj_type sys_sysctl_obj_type)))
 
@@ -435,6 +440,9 @@
 (macro sys_dontaudit_manage_all_proc_files ((type ARG1))
 	(dontaudit ARG1 sys_proc_obj_type manage_file_perms))
 
+(macro sys_dontaudit_read_all_proc_files ((type ARG1))
+	(dontaudit ARG1 sys_proc_obj_type read_file_perms))
+
 (macro sys_read_all_proc_files ((type ARG1))
 	(call fs_search_proc (ARG1))
 	(call read_files_pattern (ARG1 sys_proc_obj_type sys_proc_obj_type))
@@ -452,6 +460,11 @@
 (macro sys_getattr_all_proc_lnk_files ((type ARG1))
 	(call fs_search_proc (ARG1))
 	(call getattr_lnk_files_pattern (ARG1 sys_proc_obj_type sys_proc_obj_type)))
+
+(macro sys_dontaudit_read_all_sysfs ((type ARG1))
+	(dontaudit ARG1 sys_sysfs_obj_type read_file_perms)
+	(dontaudit ARG1 sys_sysfs_obj_type list_dir_perms)
+	(dontaudit ARG1 sys_sysfs_obj_type read_lnk_file_perms))
 
 (macro sys_search_cpu_sysfs ((type ARG1))
 	(call fs_search_sysfs (ARG1))
