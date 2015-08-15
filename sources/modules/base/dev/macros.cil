@@ -208,7 +208,10 @@
 	(call fs_devtmpfs_obj_type_transition (ARG1 usb.dev chr_file "012"))
 	(call fs_devtmpfs_obj_type_transition (ARG1 usb.dev chr_file "013"))
 	(call fs_devtmpfs_obj_type_transition (ARG1 usb.dev chr_file "014"))
-	(call fs_devtmpfs_obj_type_transition (ARG1 usb.dev chr_file "015")))
+	(call fs_devtmpfs_obj_type_transition (ARG1 usb.dev chr_file "hidraw0"))
+	(call fs_devtmpfs_obj_type_transition (ARG1 usb.dev chr_file "hidraw1"))
+	(call fs_devtmpfs_obj_type_transition (ARG1 usb.dev chr_file "hidraw2"))
+	(call fs_devtmpfs_obj_type_transition (ARG1 usb.dev chr_file "hidraw3")))
 
 (macro dev_create_v4l ((type ARG1))
 	(allow ARG1 self (capability (mknod)))
