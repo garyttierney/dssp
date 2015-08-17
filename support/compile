@@ -521,7 +521,7 @@ do
 				fi
 			done
 		else
-			log "processing "$username" found in "$SPATH"/seusers.mcs"
+			log "processing default user found in "$SPATH"/seusers.mcs"
 
 			for homedir in ${homedirtemplate[*]}
 			do
@@ -564,7 +564,7 @@ do
 			seuserid="`echo "$seuseruserroletuple" | /bin/awk -F":" '{print $1}'`"
 			seuserrole="`echo "$seuseruserroletuple" | /bin/awk -F":" '{print $2}'`"
 
-			log "processing "$username" found in "$SPATH"/seusers.mcs"
+			log "processing "$username" found in "$SPATH"/seusers.mls"
 
 			for homedir in ${homedirtemplate[*]}
 			do
@@ -598,7 +598,7 @@ do
 				fi
 			done
 		else
-			log "processing default found in "$SPATH"/seusers.local"
+			log "processing default user found in "$SPATH"/seusers.mls"
 
 			for homedir in ${homedirtemplate[*]}
 			do
