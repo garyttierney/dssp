@@ -32,8 +32,6 @@ do
 	then
 		uname="`echo "$ent" | /bin/awk -F ":" '{print $1}'`"
 
-		[[ -d /home/"$uname" ]] || exit 1
-
 		ushell="`echo "$ent" | /bin/awk -F ":" '{print $7}'`"
 
 		unset hshell
