@@ -307,7 +307,15 @@
 	(allow ARG1 devtmpfs.fs create_chr_file_perms))
 
 (macro fs_setattr_devtmpfs_chr_files ((type ARG1))
-	(allow ARG1 devtmpfs.fs (file (setattr))))
+	(allow ARG1 devtmpfs.fs (chr_file (setattr))))
+
+(macro fs_create_devtmpfs_blk_files ((type ARG1))
+	(allow ARG1 self (capability (mknod)))
+	(call fs_add_entry_devtmpfs (ARG1))
+	(allow ARG1 devtmpfs.fs create_blk_file_perms))
+
+(macro fs_setattr_devtmpfs_blk_files ((type ARG1))
+	(allow ARG1 devtmpfs.fs (blk_file (setattr))))
 
 (macro fs_relabel_devtmpfs_dirs ((type ARG1))
 	(call relabel_dirs_pattern (ARG1 devtmpfs.fs devtmpfs.fs)))
