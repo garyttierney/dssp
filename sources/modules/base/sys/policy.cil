@@ -26,8 +26,6 @@
 
 	(blockinherit subj_common_blk)
 
-	(context sys (id role subj (systemhigh systemhigh)))
-
 	(userrole id role)
 	(roletype role subj)
 
