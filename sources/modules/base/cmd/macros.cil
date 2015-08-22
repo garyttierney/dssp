@@ -49,6 +49,9 @@
 	(call cmd_search_cmd (ARG1))
 	(allow ARG1 cmd.cmd_file mmap_file_perms))
 
+(macro cmd_audit_exec_access_all_cmd_files ((type ARG1))
+	(allow ARG1 cmd.cmd_file (file (execute))))
+
 (macro cmd_exec_all_cmd ((type ARG1))
 	(call cmd_search_cmd (ARG1))
 	(allow ARG1 cmd_obj_type exec_file_perms))
@@ -91,8 +94,14 @@
 	(call cmd_search_cmd (ARG1))
 	(allow ARG1 shell.cmd_file mmap_file_perms))
 
-(macro cmd_audit_access_cmd_files ((type ARG1))
+(macro cmd_audit_exec_access_cmd_files ((type ARG1))
+	(allow ARG1 cmd.cmd_file (file (execute))))
+
+(macro cmd_audit_exec_access_shell_files ((type ARG1))
+	(allow ARG1 shell.cmd_file (file (execute))))
+
+(macro cmd_audit_read_access_cmd_files ((type ARG1))
 	(allow ARG1 cmd.cmd_file (file (read))))
 
-(macro cmd_audit_access_shell_files ((type ARG1))
+(macro cmd_audit_read_access_shell_files ((type ARG1))
 	(allow ARG1 shell.cmd_file (file (read))))
