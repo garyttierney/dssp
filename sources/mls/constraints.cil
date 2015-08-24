@@ -268,12 +268,6 @@
 		(mlsconstrain (netlink_dnrt_socket (relabelto))
 			(dom h1 h2))
 
-		(mlsconstrain (netlink_firewall_socket (relabelto))
-			(dom h1 h2))
-
-		(mlsconstrain (netlink_ip6fw_socket (relabelto))
-			(dom h1 h2))
-
 		(mlsconstrain (netlink_nflog_socket (relabelto))
 			(dom h1 h2))
 
@@ -361,20 +355,6 @@
 			(eq t1 mls_net_write_subj_type)))))
 
 		(mlsconstrain (netlink_dnrt_socket (accept connect))
-			(or (eq l1 l2)
-			(and (or (and (eq t1 mls_net_read_to_clr_subj_type) (dom h1 l2)) (eq t1 mls_net_read_subj_type))
-			(or (or (and (and (eq t1 mls_net_write_ranged_subj_type) (dom l1 l2)) (domby l1 h2))
-			(and (and (eq t1 mls_net_write_to_clr_subj_type) (dom h1 l2)) (domby l1 l2)))
-			(eq t1 mls_net_write_subj_type)))))
-
-		(mlsconstrain (netlink_firewall_socket (accept connect))
-			(or (eq l1 l2)
-			(and (or (and (eq t1 mls_net_read_to_clr_subj_type) (dom h1 l2)) (eq t1 mls_net_read_subj_type))
-			(or (or (and (and (eq t1 mls_net_write_ranged_subj_type) (dom l1 l2)) (domby l1 h2))
-			(and (and (eq t1 mls_net_write_to_clr_subj_type) (dom h1 l2)) (domby l1 l2)))
-			(eq t1 mls_net_write_subj_type)))))
-
-		(mlsconstrain (netlink_ip6fw_socket (accept connect))
 			(or (eq l1 l2)
 			(and (or (and (eq t1 mls_net_read_to_clr_subj_type) (dom h1 l2)) (eq t1 mls_net_read_subj_type))
 			(or (or (and (and (eq t1 mls_net_write_ranged_subj_type) (dom l1 l2)) (domby l1 h2))
@@ -564,16 +544,6 @@
 			(and (eq t1 mls_net_read_to_clr_subj_type) (dom h1 l2)))
 			(eq t1 mls_net_read_subj_type)))
 
-		(mlsconstrain (netlink_firewall_socket (read getattr listen accept getopt))
-			(or (or (dom l1 l2)
-			(and (eq t1 mls_net_read_to_clr_subj_type) (dom h1 l2)))
-			(eq t1 mls_net_read_subj_type)))
-
-		(mlsconstrain (netlink_ip6fw_socket (read getattr listen accept getopt))
-			(or (or (dom l1 l2)
-			(and (eq t1 mls_net_read_to_clr_subj_type) (dom h1 l2)))
-			(eq t1 mls_net_read_subj_type)))
-
 		(mlsconstrain (netlink_nflog_socket (read getattr listen accept getopt))
 			(or (or (dom l1 l2)
 			(and (eq t1 mls_net_read_to_clr_subj_type) (dom h1 l2)))
@@ -704,16 +674,6 @@
 			(and (eq t1 mls_net_read_to_clr_subj_type) (dom h1 l2)))
 			(eq t1 mls_net_read_subj_type)))
 
-		(mlsconstrain (netlink_firewall_socket (nlmsg_read))
-			(or (or (dom l1 l2)
-			(and (eq t1 mls_net_read_to_clr_subj_type) (dom h1 l2)))
-			(eq t1 mls_net_read_subj_type)))
-
-		(mlsconstrain (netlink_ip6fw_socket (nlmsg_read))
-			(or (or (dom l1 l2)
-			(and (eq t1 mls_net_read_to_clr_subj_type) (dom h1 l2)))
-			(eq t1 mls_net_read_subj_type)))
-
 		(mlsconstrain (netlink_route_socket (nlmsg_read))
 			(or (or (dom l1 l2)
 			(and (eq t1 mls_net_read_to_clr_subj_type) (dom h1 l2)))
@@ -742,18 +702,6 @@
 			(eq t1 mls_net_write_subj_type)))
 
 		(mlsconstrain (netlink_dnrt_socket (write setattr relabelfrom connect setopt shutdown))
-			(or (or (or (eq l1 l2)
-			(and (and (eq t1 mls_net_write_ranged_subj_type) (dom l1 l2)) (domby l1 h2)))
-			(and (and (eq t1 mls_net_write_to_clr_subj_type) (dom h1 l2)) (domby l1 l2)))
-			(eq t1 mls_net_write_subj_type)))
-
-		(mlsconstrain (netlink_firewall_socket (write setattr relabelfrom connect setopt shutdown))
-			(or (or (or (eq l1 l2)
-			(and (and (eq t1 mls_net_write_ranged_subj_type) (dom l1 l2)) (domby l1 h2)))
-			(and (and (eq t1 mls_net_write_to_clr_subj_type) (dom h1 l2)) (domby l1 l2)))
-			(eq t1 mls_net_write_subj_type)))
-
-		(mlsconstrain (netlink_ip6fw_socket (write setattr relabelfrom connect setopt shutdown))
 			(or (or (or (eq l1 l2)
 			(and (and (eq t1 mls_net_write_ranged_subj_type) (dom l1 l2)) (domby l1 h2)))
 			(and (and (eq t1 mls_net_write_to_clr_subj_type) (dom h1 l2)) (domby l1 l2)))

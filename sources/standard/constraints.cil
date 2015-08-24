@@ -80,11 +80,6 @@
 	(and (eq t1 standard_obj_sys_id_change_exemption_subj_type) (eq u2 sys.id)))
 	(eq t1 standard_obj_id_change_exemption_subj_type)))
 
-(constrain (netlink_firewall_socket (create relabelto relabelfrom))
-	(or (or (eq u1 u2)
-	(and (eq t1 standard_obj_sys_id_change_exemption_subj_type) (eq u2 sys.id)))
-	(eq t1 standard_obj_id_change_exemption_subj_type)))
-
 (constrain (netlink_tcpdiag_socket (create relabelto relabelfrom))
 	(or (or (eq u1 u2)
 	(and (eq t1 standard_obj_sys_id_change_exemption_subj_type) (eq u2 sys.id)))
@@ -106,11 +101,6 @@
 	(eq t1 standard_obj_id_change_exemption_subj_type)))
 
 (constrain (netlink_audit_socket (create relabelto relabelfrom))
-	(or (or (eq u1 u2)
-	(and (eq t1 standard_obj_sys_id_change_exemption_subj_type) (eq u2 sys.id)))
-	(eq t1 standard_obj_id_change_exemption_subj_type)))
-
-(constrain (netlink_ip6fw_socket (create relabelto relabelfrom))
 	(or (or (eq u1 u2)
 	(and (eq t1 standard_obj_sys_id_change_exemption_subj_type) (eq u2 sys.id)))
 	(eq t1 standard_obj_id_change_exemption_subj_type)))

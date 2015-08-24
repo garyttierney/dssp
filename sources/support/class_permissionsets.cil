@@ -510,14 +510,6 @@
 (classpermissionset r_netlink_route_socket_perms (netlink_route_socket (create ioctl read getattr write setattr append bind
 	connect getopt setopt shutdown nlmsg_read)))
 
-(classpermission create_netlink_firewall_socket_perms)
-(classpermissionset create_netlink_firewall_socket_perms (netlink_firewall_socket (create ioctl read getattr write setattr
-	append bind connect getopt setopt shutdown nlmsg_read nlmsg_write)))
-
-(classpermission r_netlink_firewall_socket_perms)
-(classpermissionset r_netlink_firewall_socket_perms (netlink_firewall_socket (create ioctl read getattr write setattr
-	append bind connect getopt setopt shutdown nlmsg_read)))
-
 (classpermission create_netlink_tcpdiag_socket_perms)
 (classpermissionset create_netlink_tcpdiag_socket_perms (netlink_tcpdiag_socket (create ioctl read getattr write setattr
 	append bind connect getopt setopt shutdown nlmsg_read nlmsg_write)))
@@ -556,14 +548,6 @@
 
 (classpermission r_netlink_audit_socket_perms)
 (classpermissionset r_netlink_audit_socket_perms (netlink_audit_socket (create ioctl read getattr write setattr append bind
-	connect getopt setopt shutdown nlmsg_read)))
-
-(classpermission create_netlink_ip6fw_socket_perms)
-(classpermissionset create_netlink_ip6fw_socket_perms (netlink_ip6fw_socket (create ioctl read getattr write setattr append
-	bind connect getopt setopt shutdown nlmsg_read nlmsg_write)))
-
-(classpermission r_netlink_ip6fw_socket_perms)
-(classpermissionset r_netlink_ip6fw_socket_perms (netlink_ip6fw_socket (create ioctl read getattr write setattr append bind
 	connect getopt setopt shutdown nlmsg_read)))
 
 (classpermission rw_netlink_dnrt_socket_perms)
