@@ -64,6 +64,8 @@
 	(call dev_devtmpfs_obj_type_transition_watchdog (subj))
 	(call dev_devtmpfs_obj_type_transition_wireless (subj))
 
+	(call file_read_data_files (subj))
+
 	(call fs_dontaudit_write_devtmpfs_chr_files (subj))
 	(call fs_list_rootfs (subj))
 	(call fs_manage_devtmpfs_dirs (subj))
