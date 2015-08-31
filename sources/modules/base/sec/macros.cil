@@ -24,6 +24,9 @@
 (macro sec_remount_fs ((type ARG1))
 	(allow ARG1 securityfs.fs (filesystem (remount))))
 
+(macro sec_dontaudit_write_securityfs_files ((type ARG1))
+	(dontaudit ARG1 securityfs.fs write_file_perms))
+
 (macro sec_compute_access_vector ((type ARG1))
 	(call fs_search_sysfs (ARG1))
 	(call rw_files_pattern (ARG1 securityfs.fs securityfs.fs))
