@@ -432,6 +432,9 @@
 (macro dev_setattr_kvm ((type ARG1))
 	(allow ARG1 kvm.dev (chr_file (setattr))))
 
+(macro dev_setattr_null ((type ARG1))
+	(allow ARG1 null.dev (chr_file (setattr))))
+
 (macro dev_setattr_sound ((type ARG1))
 	(allow ARG1 sound.dev (chr_file (setattr))))
 
