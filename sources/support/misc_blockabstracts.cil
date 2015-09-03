@@ -1,0 +1,16 @@
+(block exec_blk
+	(blockabstract exec_blk)
+
+	(call can_exec (ARG1 cmd_file)))
+
+(block send_signal_blk
+	(blockabstract send_signal_blk)
+
+	(allow ARG1 subj (process (signal))))
+
+(block auto_subj_type_transition_blk
+	(blockabstract auto_subj_type_transition_blk)
+
+	(blockinherit send_signal_blk)
+
+	(call auto_subj_type_transition_pattern (ARG1 cmd_file subj)))
