@@ -1,0 +1,8 @@
+sources/modules/contrib
+sources.d
+global_tunables.cil
+tests/tunables/mcs.cil
+tests/tunables/mcs_plus_rbacsep.cil
+tests/tunables/mls_plus_rbacsep.cil
+tests/tunables/standard.cil
+tests/tunables/standard_plus_rbapsep.cil

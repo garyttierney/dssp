@@ -1,0 +1,183 @@
+#!/bin/bash
+
+# @param1 : path to printexcludes script
+# @param2 : path to exclude file
+
+get_excludes () {
+	EXCLUDES=
+	PRINTEXCLUDESPATH=$1
+	EXCLUDESPATH=$2
+
+	if [ ! -f "$PRINTEXCLUDESPATH" ]
+	then
+		echo "printexludes script not found at $PRINTEXCLUDESPATH"
+		return 1
+	fi
+
+	if [ -f "$EXCLUDESPATH" -a -r "$EXCLUDESPATH" -a -s "$EXCLUDESPATH" ]
+	then
+		unset EXCLUDES
+		EXCLUDES+="`/bin/bash "$PRINTEXCLUDESPATH" "$EXCLUDESPATH"`"
+		test -n "$EXCLUDES" && return 0
+
+	else
+		return 1
+	fi
+}
+
+get_modules () {
+	MODULES=
+	PRINTMODULESPATH=$1
+	MODULESPATH=$2
+
+	if [ ! -f "$PRINTMODULESPATH" ]
+	then
+		echo "printmodules script not found at $PRINTMODULESPATH"
+		return 1
+	fi
+
+	if [ -d "$MODULESPATH" ]
+	then
+		unset MODULES
+		MODULES+=`/bin/bash "$PRINTMODULESPATH" "$MODULESPATH"`
+		test -n "$MODULES" && return 0
+	else
+		return 1
+	fi
+
+}
+
+get_modules_minus_excludes () {
+	EXCLUDE=
+	MODULESTOCOMPILE=
+
+	if [ -z "$MODULES" ]
+	then
+		echo "No modules!"
+		return 1
+	fi
+
+	if [ -n "$EXCLUDES" ]
+	then
+		for EXCLUDE in "${EXCLUDES[*]}"
+		do
+			MODULESTOCOMPILE="`echo "${MODULES[@]}" | /bin/grep -v "$EXCLUDE"`"
+			test -n "$MODULESTOCOMPILE" && return 0
+		done
+	elif [ -z "$EXCLUDES" ]
+	then
+		MODULESTOCOMPILE+=`echo ${MODULES[@]}`
+		test -n "$MODULESTOCOMPILE" && return 0
+	fi
+}
+
+buildit () {
+	if [ -z "$MODULESTOCOMPILE" ]
+	then
+		echo "No modules to compile!"
+		return 1
+        fi
+
+	if [ -z "$SPATH" ]
+	then
+		echo "No path to sources!"
+		return 1
+        fi
+
+	if [ -z "SECILC" ]
+	then
+		echo "No SECILC compiler!"
+		return 1
+        fi
+
+	( /bin/cd "$SPATH" && time "$SECILC" ${MODULESTOCOMPILE[@]} \
+		-o "$SPATH"/policy/policy.`/bin/cat /sys/fs/selinux/policyvers` -f "$SPATH"/contexts/files/file_contexts || return 1 )
+}
+
+# @param1: test case name
+
+get_policy_size () {
+	if [ -z "SPATH" ]
+	then
+		echo "No path to sources!"
+		return 1
+	fi
+
+	if [ -f "$SPATH"/policy/policy.`/bin/cat /sys/fs/selinux/policyvers` ]
+	then
+		echo "Size of policy ${1} is `/bin/stat -c %s ${SPATH}/policy/policy.$(/bin/cat /sys/fs/selinux/policyvers)` bytes"
+		echo "--- end of test ---"
+		echo
+	fi
+}
+
+get_options () {
+	SECILC="/usr/bin/secilc"
+	SPATH=
+
+	while (($# > 0))
+	do
+		case $1 in
+			\-i)
+			shift
+
+			unset SECILC
+			SECILC="$1"
+
+			if [ ! -f "$SECILC" -a ! -x "$SECILC" -a ! -s "$SECILC" ]
+			then
+				echo "option -i expects a single parameter: accessible secilc location"
+				return 1
+			fi
+			;;
+			\-p)
+			shift
+
+			unset SPATH
+			SPATH="$1"
+
+			if [ ! -d "$SPATH" -a  ! -w "$SPATH" ]
+			then
+				echo "option -p expects a single parameter: accessible path to source policy to build"
+				return 1
+			fi
+			;;
+			*) break
+			;;
+		esac
+	shift
+	done
+}
+
+# @param1: test case name
+# @param2: excludes file name
+
+do_test () {
+	echo "--- Testing ${1} ---"
+	get_excludes ${SPATH}/support/printexcludes ${SPATH}/tests/${2} || return 1
+	get_modules ${SPATH}/support/printmodules ${SPATH} || return 1
+	get_modules_minus_excludes || return 1
+	buildit || return 1
+	get_policy_size ${1} || return 1
+}
+
+get_options $@ || exit 1
+
+if [ ! -f "$SECILC" -a ! -x "$SECILC" ]
+then
+	echo "SECILC is not executable at $SECILC"
+	exit 1
+fi
+
+if [ ! -d "$SPATH" -a ! -w "$SPATH" ]
+then
+	echo "source path is not writable at $SPATH"
+	exit 1
+fi
+
+do_test standard_base test_base_excludes_standard || echo "Test standard_base FAILED"
+do_test rbacsep_base test_base_excludes_rbacsep || echo "Test rbacsep_base FAILED"
+do_test mcs_base test_base_excludes_mcs || echo "Test mcs_base FAILED"
+do_test mcsrbacsep_base test_base_excludes_mcsrbacsep || echo "Test mcsrbacsep_base FAILED"
+do_test mls_base test_base_excludes_mls || echo "Test mls_base FAILED"
+do_test mlsrbacsep_base test_base_excludes_mlsrbacsep || echo "Test mlsrbacsep_base FAILED"
