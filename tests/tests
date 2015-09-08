@@ -175,9 +175,20 @@ then
 	exit 1
 fi
 
+# base tests
+
 do_test standard_base test_base_excludes_standard || echo "Test standard_base FAILED"
 do_test rbacsep_base test_base_excludes_rbacsep || echo "Test rbacsep_base FAILED"
 do_test mcs_base test_base_excludes_mcs || echo "Test mcs_base FAILED"
 do_test mcsrbacsep_base test_base_excludes_mcsrbacsep || echo "Test mcsrbacsep_base FAILED"
 do_test mls_base test_base_excludes_mls || echo "Test mls_base FAILED"
 do_test mlsrbacsep_base test_base_excludes_mlsrbacsep || echo "Test mlsrbacsep_base FAILED"
+
+# all tests
+
+do_test standard_all test_all_excludes_standard || echo "Test standard_all FAILED"
+do_test rbacsep_all test_all_excludes_rbacsep || echo "Test rbacsep_all FAILED"
+do_test mcs_all test_all_excludes_mcs || echo "Test mcs_all FAILED"
+do_test mcsrbacsep_all test_all_excludes_mcsrbacsep || echo "Test mcsrbacsep_all FAILED"
+do_test mls_all test_all_excludes_mls || echo "Test mls_all FAILED"
+do_test mlsrbacsep_all test_all_excludes_mlsrbacsep || echo "Test mlsrbacsep_all FAILED"
