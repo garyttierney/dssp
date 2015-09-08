@@ -84,7 +84,7 @@ buildit () {
 		return 1
         fi
 
-	if [ -z "SECILC" ]
+	if [ -z "$SECILC" ]
 	then
 		echo "No SECILC compiler!"
 		return 1
