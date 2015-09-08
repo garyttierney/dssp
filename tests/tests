@@ -201,3 +201,12 @@ do_test mcs_all_minus_sd test_all_minus_sd_excludes_mcs || echo "Test mcs_all_mi
 do_test mcsrbacsep_all_minus_sd test_all_minus_sd_excludes_mcsrbacsep || echo "Test mcsrbacsep_all_minus_sd FAILED"
 do_test mls_all_minus_sd test_all_minus_sd_excludes_mls || echo "Test mls_all_minus_sd FAILED"
 do_test mlsrbacsep_all_minus_sd test_all_minus_sd_excludes_mlsrbacsep || echo "Test mlsrbacsep_all_minus_sd FAILED"
+
+# all minus dbus tests
+
+do_test standard_all_minus_dbus test_all_minus_dbus_excludes_standard || echo "Test standard_all_minus_dbus FAILED"
+do_test rbacsep_all_minus_dbus test_all_minus_dbus_excludes_rbacsep || echo "Test rbacsep_all_minus_dbus FAILED"
+do_test mcs_all_minus_dbus test_all_minus_dbus_excludes_mcs || echo "Test mcs_all_minus_dbus FAILED"
+do_test mcsrbacsep_all_minus_dbus test_all_minus_dbus_excludes_mcsrbacsep || echo "Test mcsrbacsep_all_minus_dbus FAILED"
+do_test mls_all_minus_dbus test_all_minus_dbus_excludes_mls || echo "Test mls_all_minus_dbus FAILED"
+do_test mlsrbacsep_all_minus_dbus test_all_minus_dbus_excludes_mlsrbacsep || echo "Test mlsrbacsep_all_minus_dbus FAILED"
