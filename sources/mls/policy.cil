@@ -33,8 +33,6 @@
 (typeattribute mls_fd_use_subj_type)
 (typeattribute mls_fd_share_subj_type)
 
-(tunable enable_mls false)
-
 (tunableif enable_mls
 	(true
 		(mls true)

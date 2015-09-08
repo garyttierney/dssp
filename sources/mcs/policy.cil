@@ -1,7 +1,5 @@
 (typeattribute mcs_constrained_subj_type)
 
-(tunable enable_mcs true)
-
 (tunableif enable_mcs
 	(true
 		(defaultrange file source low)
