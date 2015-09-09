@@ -1,5 +1,5 @@
 sources.d
-global_tunables.cil
+sources/global_tunables.cil
 tests/tunables/mcs.cil
 tests/tunables/mcs_plus_rbacsep.cil
 tests/tunables/mls.cil

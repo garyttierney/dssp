@@ -2,7 +2,7 @@ sources/modules/contrib/applications/sessbus_launch
 sources/modules/contrib/services/sessbus
 sources/modules/contrib/services/sysbus
 sources.d
-global_tunables.cil
+sources/global_tunables.cil
 tests/tunables/mcs.cil
 tests/tunables/mcs_plus_rbacsep.cil
 tests/tunables/mls.cil

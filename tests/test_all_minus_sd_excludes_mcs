@@ -1,6 +1,6 @@
 sources/modules/contrib/sd
 sources.d
-global_tunables.cil
+sources/global_tunables.cil
 tests/tunables/mcs_plus_rbacsep.cil
 tests/tunables/mls.cil
 tests/tunables/mls_plus_rbacsep.cil
