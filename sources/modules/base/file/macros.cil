@@ -106,6 +106,1030 @@
 	(type tmpfs_file)
 	(call file_tmpfs_obj_type (tmpfs_file)))
 
+(block list_boot_blk
+	(blockabstract list_boot_blk)
+	(macro list_boot ((type ARG1))
+		(call file_search_boot (ARG1))
+		(allow ARG1 boot_file list_dir_perms)))
+
+(block search_boot_blk
+	(blockabstract search_boot_blk)
+	(macro search_boot ((type ARG1))
+		(call file_search_boot (ARG1))
+		(allow ARG1 boot_file search_dir_perms)))
+
+(block read_boot_files_blk
+	(blockabstract read_boot_files_blk)
+	(macro read_boot_files ((type ARG1))
+		(call file_search_boot (ARG1))
+		(call read_files_pattern (ARG1 boot_file boot_file))))
+
+(block manage_boot_files_blk
+	(blockabstract manage_boot_files_blk)
+	(macro manage_boot_files ((type ARG1))
+		(call file_search_boot (ARG1))
+		(call manage_files_pattern (ARG1 boot_file boot_file))))
+
+(block read_boot_fifo_files_blk
+	(blockabstract read_boot_fifo_files_blk)
+	(macro read_boot_fifo_files ((type ARG1))
+		(call file_search_boot (ARG1))
+		(call read_fifo_files_pattern (ARG1 boot_file boot_file))))
+
+(block read_boot_lnk_files_blk
+	(blockabstract read_boot_lnk_files_blk)
+	(macro read_boot_lnk_files ((type ARG1))
+		(call file_search_boot (ARG1))
+		(call read_lnk_files_pattern (ARG1 boot_file boot_file))))
+
+(block read_boot_sock_files_blk
+	(blockabstract read_boot_sock_files_blk)
+	(macro read_boot_sock_files ((type ARG1))
+		(call file_search_boot (ARG1))
+		(call read_sock_files_pattern (ARG1 boot_file boot_file))))
+
+(block read_boot_blk
+	(blockabstract read_boot_blk)
+	(macro read_boot ((type ARG1))
+		(call file_search_boot (ARG1))
+		(allow ARG1 boot_file read_file_perms)
+		(allow ARG1 boot_file read_fifo_file_perms)
+		(allow ARG1 boot_file list_dir_perms)
+		(allow ARG1 boot_file read_lnk_file_perms)
+		(allow ARG1 boot_file read_sock_file_perms)))
+
+(block manage_boot_blk
+	(blockabstract manage_boot_blk)
+	(macro manage_boot ((type ARG1))
+		(call file_rw_boot_dirs (ARG1))
+		(allow ARG1 boot_file manage_file_perms)
+		(allow ARG1 boot_file manage_fifo_file_perms)
+		(allow ARG1 boot_file manage_dir_perms)
+		(allow ARG1 boot_file manage_lnk_file_perms)
+		(allow ARG1 boot_file manage_sock_file_perms)))
+
+(block relabel_boot_blk
+	(blockabstract relabel_boot_blk)
+	(macro relabel_boot ((type ARG1))
+		(call file_search_boot (ARG1))
+		(allow ARG1 boot_file relabel_file_perms)
+		(allow ARG1 boot_file relabel_fifo_file_perms)
+		(allow ARG1 boot_file relabel_dir_perms)
+		(allow ARG1 boot_file relabel_lnk_file_perms)
+		(allow ARG1 boot_file relabel_sock_file_perms)))
+
+(block read_boot_flag_files_blk
+	(blockabstract read_boot_flag_files_blk)
+	(macro read_boot_flag_files ((type ARG1))
+		(allow ARG1 boot_flag_file read_file_perms)))
+
+(block manage_boot_flag_files_blk
+	(blockabstract manage_boot_flag_files_blk)
+	(macro manage_boot_flag_files ((type ARG1))
+		(call fs_rw_rootfs_dirs (ARG1))
+		(allow ARG1 boot_flag_file manage_file_perms)))
+
+(block relabel_boot_flag_files_blk
+	(blockabstract relabel_boot_flag_files_blk)
+	(macro relabel_boot_flag_files ((type ARG1))
+		(allow ARG1 boot_flag_file relabel_file_perms)))
+
+(block list_config_blk
+	(blockabstract list_config_blk)
+	(macro list_config ((type ARG1))
+		(call file_search_config (ARG1))
+		(allow ARG1 config_file list_dir_perms)))
+
+(block search_config_blk
+	(blockabstract search_config_blk)
+	(macro search_config ((type ARG1))
+		(call file_search_config (ARG1))
+		(allow ARG1 config_file search_dir_perms)))
+
+(block read_config_files_blk
+	(blockabstract read_config_files_blk)
+	(macro read_config_files ((type ARG1))
+		(call file_search_config (ARG1))
+		(call read_files_pattern (ARG1 config_file config_file))))
+
+(block manage_config_files_blk
+	(blockabstract manage_config_files_blk)
+	(macro manage_config_files ((type ARG1))
+		(call file_search_config (ARG1))
+		(call manage_files_pattern (ARG1 config_file config_file))))
+
+(block read_config_fifo_files_blk
+	(blockabstract read_config_fifo_files_blk)
+	(macro read_config_fifo_files ((type ARG1))
+		(call file_search_config (ARG1))
+		(call read_fifo_files_pattern (ARG1 config_file config_file))))
+
+(block read_config_lnk_files_blk
+	(blockabstract read_config_lnk_files_blk)
+	(macro read_config_lnk_files ((type ARG1))
+		(call file_search_config (ARG1))
+		(call read_lnk_files_pattern (ARG1 config_file config_file))))
+
+(block read_config_sock_files_blk
+	(blockabstract read_config_sock_files_blk)
+	(macro read_config_sock_files ((type ARG1))
+		(call file_search_config (ARG1))
+		(call read_sock_files_pattern (ARG1 config_file config_file))))
+
+(block read_config_blk
+	(blockabstract read_config_blk)
+	(macro read_config ((type ARG1))
+		(call file_search_config (ARG1))
+		(allow ARG1 config_file read_file_perms)
+		(allow ARG1 config_file read_fifo_file_perms)
+		(allow ARG1 config_file list_dir_perms)
+		(allow ARG1 config_file read_lnk_file_perms)
+		(allow ARG1 config_file read_sock_file_perms)))
+
+(block manage_config_blk
+	(blockabstract manage_config_blk)
+	(macro manage_config ((type ARG1))
+		(call file_rw_config_dirs (ARG1))
+		(allow ARG1 config_file manage_file_perms)
+		(allow ARG1 config_file manage_fifo_file_perms)
+		(allow ARG1 config_file manage_dir_perms)
+		(allow ARG1 config_file manage_lnk_file_perms)
+		(allow ARG1 config_file manage_sock_file_perms)))
+
+(block relabel_config_blk
+	(blockabstract relabel_config_blk)
+	(macro relabel_config ((type ARG1))
+		(call file_search_config (ARG1))
+		(allow ARG1 config_file relabel_file_perms)
+		(allow ARG1 config_file relabel_fifo_file_perms)
+		(allow ARG1 config_file relabel_dir_perms)
+		(allow ARG1 config_file relabel_lnk_file_perms)
+		(allow ARG1 config_file relabel_sock_file_perms)))
+
+(block list_data_blk
+	(blockabstract list_data_blk)
+	(macro list_data ((type ARG1))
+		(call file_search_data (ARG1))
+		(allow ARG1 data_file list_dir_perms)))
+
+(block search_data_blk
+	(blockabstract search_data_blk)
+	(macro search_data ((type ARG1))
+		(call file_search_data (ARG1))
+		(allow ARG1 data_file search_dir_perms)))
+
+(block read_data_files_blk
+	(blockabstract read_data_files_blk)
+	(macro read_data_files ((type ARG1))
+		(call file_search_data (ARG1))
+		(call read_files_pattern (ARG1 data_file data_file))))
+
+(block manage_data_files_blk
+	(blockabstract manage_data_files_blk)
+	(macro manage_data_files ((type ARG1))
+		(call file_search_data (ARG1))
+		(call manage_files_pattern (ARG1 data_file data_file))))
+
+(block read_data_fifo_files_blk
+	(blockabstract read_data_fifo_files_blk)
+	(macro read_data_fifo_files ((type ARG1))
+		(call file_search_data (ARG1))
+		(call read_fifo_files_pattern (ARG1 data_file data_file))))
+
+(block read_data_lnk_files_blk
+	(blockabstract read_data_lnk_files_blk)
+	(macro read_data_lnk_files ((type ARG1))
+		(call file_search_data (ARG1))
+		(call read_lnk_files_pattern (ARG1 data_file data_file))))
+
+(block read_data_sock_files_blk
+	(blockabstract read_data_sock_files_blk)
+	(macro read_data_sock_files ((type ARG1))
+		(call file_search_data (ARG1))
+		(call read_sock_files_pattern (ARG1 data_file data_file))))
+
+(block read_data_blk
+	(blockabstract read_data_blk)
+	(macro read_data ((type ARG1))
+		(call file_search_data (ARG1))
+		(allow ARG1 data_file read_file_perms)
+		(allow ARG1 data_file read_fifo_file_perms)
+		(allow ARG1 data_file list_dir_perms)
+		(allow ARG1 data_file read_lnk_file_perms)
+		(allow ARG1 data_file read_sock_file_perms)))
+
+(block manage_data_blk
+	(blockabstract manage_data_blk)
+	(macro manage_data ((type ARG1))
+		(call file_rw_data_dirs (ARG1))
+		(allow ARG1 data_file manage_file_perms)
+		(allow ARG1 data_file manage_fifo_file_perms)
+		(allow ARG1 data_file manage_dir_perms)
+		(allow ARG1 data_file manage_lnk_file_perms)
+		(allow ARG1 data_file manage_sock_file_perms)))
+
+(block relabel_data_blk
+	(blockabstract relabel_data_blk)
+	(macro relabel_data ((type ARG1))
+		(call file_search_data (ARG1))
+		(allow ARG1 data_file relabel_file_perms)
+		(allow ARG1 data_file relabel_fifo_file_perms)
+		(allow ARG1 data_file relabel_dir_perms)
+		(allow ARG1 data_file relabel_lnk_file_perms)
+		(allow ARG1 data_file relabel_sock_file_perms)))
+
+(block list_runtime_blk
+	(blockabstract list_runtime_blk)
+	(macro list_runtime ((type ARG1))
+		(call file_search_runtime (ARG1))
+		(allow ARG1 runtime_file list_dir_perms)))
+
+(block search_runtime_blk
+	(blockabstract search_runtime_blk)
+	(macro search_runtime ((type ARG1))
+		(call file_search_runtime (ARG1))
+		(allow ARG1 runtime_file search_dir_perms)))
+
+(block read_runtime_files_blk
+	(blockabstract read_runtime_files_blk)
+	(macro read_runtime_files ((type ARG1))
+		(call file_search_runtime (ARG1))
+		(call read_files_pattern (ARG1 runtime_file runtime_file))))
+
+(block manage_runtime_files_blk
+	(blockabstract manage_runtime_files_blk)
+	(macro manage_runtime_files ((type ARG1))
+		(call file_search_runtime (ARG1))
+		(call manage_files_pattern (ARG1 runtime_file runtime_file))))
+
+(block read_runtime_fifo_files_blk
+	(blockabstract read_runtime_fifo_files_blk)
+	(macro read_runtime_fifo_files ((type ARG1))
+		(call file_search_runtime (ARG1))
+		(call read_fifo_files_pattern (ARG1 runtime_file runtime_file))))
+
+(block read_runtime_lnk_files_blk
+	(blockabstract read_runtime_lnk_files_blk)
+	(macro read_runtime_lnk_files ((type ARG1))
+		(call file_search_runtime (ARG1))
+		(call read_lnk_files_pattern (ARG1 runtime_file runtime_file))))
+
+(block read_runtime_sock_files_blk
+	(blockabstract read_runtime_sock_files_blk)
+	(macro read_runtime_sock_files ((type ARG1))
+		(call file_search_runtime (ARG1))
+		(call read_sock_files_pattern (ARG1 runtime_file runtime_file))))
+
+(block read_runtime_blk
+	(blockabstract read_runtime_blk)
+	(macro read_runtime ((type ARG1))
+		(call file_search_runtime (ARG1))
+		(allow ARG1 runtime_file read_file_perms)
+		(allow ARG1 runtime_file read_fifo_file_perms)
+		(allow ARG1 runtime_file list_dir_perms)
+		(allow ARG1 runtime_file read_lnk_file_perms)
+		(allow ARG1 runtime_file read_sock_file_perms)))
+
+(block manage_runtime_blk
+	(blockabstract manage_runtime_blk)
+	(macro manage_runtime ((type ARG1))
+		(call file_rw_runtime_dirs (ARG1))
+		(allow ARG1 runtime_file manage_file_perms)
+		(allow ARG1 runtime_file manage_fifo_file_perms)
+		(allow ARG1 runtime_file manage_dir_perms)
+		(allow ARG1 runtime_file manage_lnk_file_perms)
+		(allow ARG1 runtime_file manage_sock_file_perms)))
+
+(block relabel_runtime_blk
+	(blockabstract relabel_runtime_blk)
+	(macro relabel_runtime ((type ARG1))
+		(call file_search_runtime (ARG1))
+		(allow ARG1 runtime_file relabel_file_perms)
+		(allow ARG1 runtime_file relabel_fifo_file_perms)
+		(allow ARG1 runtime_file relabel_dir_perms)
+		(allow ARG1 runtime_file relabel_lnk_file_perms)
+		(allow ARG1 runtime_file relabel_sock_file_perms)))
+
+(block list_runtime_config_blk
+	(blockabstract list_runtime_config_blk)
+	(macro list_runtime_config ((type ARG1))
+		(call file_search_runtime_config (ARG1))
+		(allow ARG1 runtime_config_file list_dir_perms)))
+
+(block search_runtime_config_blk
+	(blockabstract search_runtime_config_blk)
+	(macro search_runtime_config ((type ARG1))
+		(call file_search_runtime_config (ARG1))
+		(allow ARG1 runtime_config_file search_dir_perms)))
+
+(block read_runtime_config_files_blk
+	(blockabstract read_runtime_config_files_blk)
+	(macro read_runtime_config_files ((type ARG1))
+		(call file_search_runtime_config (ARG1))
+		(call read_files_pattern (ARG1 runtime_config_file runtime_config_file))))
+
+(block manage_runtime_config_files_blk
+	(blockabstract manage_runtime_config_files_blk)
+	(macro manage_runtime_config_files ((type ARG1))
+		(call file_search_runtime_config (ARG1))
+		(call manage_files_pattern (ARG1 runtime_config_file runtime_config_file))))
+
+(block read_runtime_config_fifo_files_blk
+	(blockabstract read_runtime_config_fifo_files_blk)
+	(macro read_runtime_config_fifo_files ((type ARG1))
+		(call file_search_runtime_config (ARG1))
+		(call read_fifo_files_pattern (ARG1 runtime_config_file runtime_config_file))))
+
+(block read_runtime_config_lnk_files_blk
+	(blockabstract read_runtime_config_lnk_files_blk)
+	(macro read_runtime_config_lnk_files ((type ARG1))
+		(call file_search_runtime_config (ARG1))
+		(call read_lnk_files_pattern (ARG1 runtime_config_file runtime_config_file))))
+
+(block read_runtime_config_sock_files_blk
+	(blockabstract read_runtime_config_sock_files_blk)
+	(macro read_runtime_config_sock_files ((type ARG1))
+		(call file_search_runtime_config (ARG1))
+		(call read_sock_files_pattern (ARG1 runtime_config_file runtime_config_file))))
+
+(block read_runtime_config_blk
+	(blockabstract read_runtime_config_blk)
+	(macro read_runtime_config ((type ARG1))
+		(call file_search_runtime_config (ARG1))
+		(allow ARG1 runtime_config_file read_file_perms)
+		(allow ARG1 runtime_config_file read_fifo_file_perms)
+		(allow ARG1 runtime_config_file list_dir_perms)
+		(allow ARG1 runtime_config_file read_lnk_file_perms)
+		(allow ARG1 runtime_config_file read_sock_file_perms)))
+
+(block manage_runtime_config_blk
+	(blockabstract manage_runtime_config_blk)
+	(macro manage_runtime_config ((type ARG1))
+		(call file_rw_runtime_config_dirs (ARG1))
+		(allow ARG1 runtime_config_file manage_file_perms)
+		(allow ARG1 runtime_config_file manage_fifo_file_perms)
+		(allow ARG1 runtime_config_file manage_dir_perms)
+		(allow ARG1 runtime_config_file manage_lnk_file_perms)
+		(allow ARG1 runtime_config_file manage_sock_file_perms)))
+
+(block relabel_runtime_config_blk
+	(blockabstract relabel_runtime_config_blk)
+	(macro relabel_runtime_config ((type ARG1))
+		(call file_search_runtime_config (ARG1))
+		(allow ARG1 runtime_config_file relabel_file_perms)
+		(allow ARG1 runtime_config_file relabel_fifo_file_perms)
+		(allow ARG1 runtime_config_file relabel_dir_perms)
+		(allow ARG1 runtime_config_file relabel_lnk_file_perms)
+		(allow ARG1 runtime_config_file relabel_sock_file_perms)))
+
+(block list_runtime_lock_blk
+	(blockabstract list_runtime_lock_blk)
+	(macro list_runtime_lock ((type ARG1))
+		(call file_search_runtime_lock (ARG1))
+		(allow ARG1 runtime_lock_file list_dir_perms)))
+
+(block search_runtime_lock_blk
+	(blockabstract search_runtime_lock_blk)
+	(macro search_runtime_lock ((type ARG1))
+		(call file_search_runtime_lock (ARG1))
+		(allow ARG1 runtime_lock_file search_dir_perms)))
+
+(block read_runtime_lock_files_blk
+	(blockabstract read_runtime_lock_files_blk)
+	(macro read_runtime_lock_files ((type ARG1))
+		(call file_search_runtime_lock (ARG1))
+		(call read_files_pattern (ARG1 runtime_lock_file runtime_lock_file))))
+
+(block manage_runtime_lock_files_blk
+	(blockabstract manage_runtime_lock_files_blk)
+	(macro manage_runtime_lock_files ((type ARG1))
+		(call file_search_runtime_lock (ARG1))
+		(call manage_files_pattern (ARG1 runtime_lock_file runtime_lock_file))))
+
+(block read_runtime_lock_fifo_files_blk
+	(blockabstract read_runtime_lock_fifo_files_blk)
+	(macro read_runtime_lock_fifo_files ((type ARG1))
+		(call file_search_runtime_lock (ARG1))
+		(call read_fifo_files_pattern (ARG1 runtime_lock_file runtime_lock_file))))
+
+(block read_runtime_lock_lnk_files_blk
+	(blockabstract read_runtime_lock_lnk_files_blk)
+	(macro read_runtime_lock_lnk_files ((type ARG1))
+		(call file_search_runtime_lock (ARG1))
+		(call read_lnk_files_pattern (ARG1 runtime_lock_file runtime_lock_file))))
+
+(block read_runtime_lock_sock_files_blk
+	(blockabstract read_runtime_lock_sock_files_blk)
+	(macro read_runtime_lock_sock_files ((type ARG1))
+		(call file_search_runtime_lock (ARG1))
+		(call read_sock_files_pattern (ARG1 runtime_lock_file runtime_lock_file))))
+
+(block read_runtime_lock_blk
+	(blockabstract read_runtime_lock_blk)
+	(macro read_runtime_lock ((type ARG1))
+		(call file_search_runtime_lock (ARG1))
+		(allow ARG1 runtime_lock_file read_file_perms)
+		(allow ARG1 runtime_lock_file read_fifo_file_perms)
+		(allow ARG1 runtime_lock_file list_dir_perms)
+		(allow ARG1 runtime_lock_file read_lnk_file_perms)
+		(allow ARG1 runtime_lock_file read_sock_file_perms)))
+
+(block manage_runtime_lock_blk
+	(blockabstract manage_runtime_lock_blk)
+	(macro manage_runtime_lock ((type ARG1))
+		(call file_rw_runtime_lock_dirs (ARG1))
+		(allow ARG1 runtime_lock_file manage_file_perms)
+		(allow ARG1 runtime_lock_file manage_fifo_file_perms)
+		(allow ARG1 runtime_lock_file manage_dir_perms)
+		(allow ARG1 runtime_lock_file manage_lnk_file_perms)
+		(allow ARG1 runtime_lock_file manage_sock_file_perms)))
+
+(block relabel_runtime_lock_blk
+	(blockabstract relabel_runtime_lock_blk)
+	(macro relabel_runtime_lock ((type ARG1))
+		(call file_search_runtime_lock (ARG1))
+		(allow ARG1 runtime_lock_file relabel_file_perms)
+		(allow ARG1 runtime_lock_file relabel_fifo_file_perms)
+		(allow ARG1 runtime_lock_file relabel_dir_perms)
+		(allow ARG1 runtime_lock_file relabel_lnk_file_perms)
+		(allow ARG1 runtime_lock_file relabel_sock_file_perms)))
+
+(block list_var_blk
+	(blockabstract list_var_blk)
+	(macro list_var ((type ARG1))
+		(call file_search_var (ARG1))
+		(allow ARG1 var_file list_dir_perms)))
+
+(block search_var_blk
+	(blockabstract search_var_blk)
+	(macro search_var ((type ARG1))
+		(call file_search_var (ARG1))
+		(allow ARG1 var_file search_dir_perms)))
+
+(block read_var_files_blk
+	(blockabstract read_var_files_blk)
+	(macro read_var_files ((type ARG1))
+		(call file_search_var (ARG1))
+		(call read_files_pattern (ARG1 var_file var_file))))
+
+(block manage_var_files_blk
+	(blockabstract manage_var_files_blk)
+	(macro manage_var_files ((type ARG1))
+		(call file_search_var (ARG1))
+		(call manage_files_pattern (ARG1 var_file var_file))))
+
+(block read_var_fifo_files_blk
+	(blockabstract read_var_fifo_files_blk)
+	(macro read_var_fifo_files ((type ARG1))
+		(call file_search_var (ARG1))
+		(call read_fifo_files_pattern (ARG1 var_file var_file))))
+
+(block read_var_lnk_files_blk
+	(blockabstract read_var_lnk_files_blk)
+	(macro read_var_lnk_files ((type ARG1))
+		(call file_search_var (ARG1))
+		(call read_lnk_files_pattern (ARG1 var_file var_file))))
+
+(block read_var_sock_files_blk
+	(blockabstract read_var_sock_files_blk)
+	(macro read_var_sock_files ((type ARG1))
+		(call file_search_var (ARG1))
+		(call read_sock_files_pattern (ARG1 var_file var_file))))
+
+(block read_var_blk
+	(blockabstract read_var_blk)
+	(macro read_var ((type ARG1))
+		(call file_search_var (ARG1))
+		(allow ARG1 var_file read_file_perms)
+		(allow ARG1 var_file read_fifo_file_perms)
+		(allow ARG1 var_file list_dir_perms)
+		(allow ARG1 var_file read_lnk_file_perms)
+		(allow ARG1 var_file read_sock_file_perms)))
+
+(block manage_var_blk
+	(blockabstract manage_var_blk)
+	(macro manage_var ((type ARG1))
+		(call file_rw_var_dirs (ARG1))
+		(allow ARG1 var_file manage_file_perms)
+		(allow ARG1 var_file manage_fifo_file_perms)
+		(allow ARG1 var_file manage_dir_perms)
+		(allow ARG1 var_file manage_lnk_file_perms)
+		(allow ARG1 var_file manage_sock_file_perms)))
+
+(block relabel_var_blk
+	(blockabstract relabel_var_blk)
+	(macro relabel_var ((type ARG1))
+		(call file_search_var (ARG1))
+		(allow ARG1 var_file relabel_file_perms)
+		(allow ARG1 var_file relabel_fifo_file_perms)
+		(allow ARG1 var_file relabel_dir_perms)
+		(allow ARG1 var_file relabel_lnk_file_perms)
+		(allow ARG1 var_file relabel_sock_file_perms)))
+
+(block list_var_cache_blk
+	(blockabstract list_var_cache_blk)
+	(macro list_var_cache ((type ARG1))
+		(call file_search_var_cache (ARG1))
+		(allow ARG1 var_cache_file list_dir_perms)))
+
+(block search_var_cache_blk
+	(blockabstract search_var_cache_blk)
+	(macro search_var_cache ((type ARG1))
+		(call file_search_var_cache (ARG1))
+		(allow ARG1 var_cache_file search_dir_perms)))
+
+(block read_var_cache_files_blk
+	(blockabstract read_var_cache_files_blk)
+	(macro read_var_cache_files ((type ARG1))
+		(call file_search_var_cache (ARG1))
+		(call read_files_pattern (ARG1 var_cache_file var_cache_file))))
+
+(block manage_var_cache_files_blk
+	(blockabstract manage_var_cache_files_blk)
+	(macro manage_var_cache_files ((type ARG1))
+		(call file_search_var_cache (ARG1))
+		(call manage_files_pattern (ARG1 var_cache_file var_cache_file))))
+
+(block read_var_cache_fifo_files_blk
+	(blockabstract read_var_cache_fifo_files_blk)
+	(macro read_var_cache_fifo_files ((type ARG1))
+		(call file_search_var_cache (ARG1))
+		(call read_fifo_files_pattern (ARG1 var_cache_file var_cache_file))))
+
+(block read_var_cache_lnk_files_blk
+	(blockabstract read_var_cache_lnk_files_blk)
+	(macro read_var_cache_lnk_files ((type ARG1))
+		(call file_search_var_cache (ARG1))
+		(call read_lnk_files_pattern (ARG1 var_cache_file var_cache_file))))
+
+(block read_var_cache_sock_files_blk
+	(blockabstract read_var_cache_sock_files_blk)
+	(macro read_var_cache_sock_files ((type ARG1))
+		(call file_search_var_cache (ARG1))
+		(call read_sock_files_pattern (ARG1 var_cache_file var_cache_file))))
+
+(block read_var_cache_blk
+	(blockabstract read_var_cache_blk)
+	(macro read_var_cache ((type ARG1))
+		(call file_search_var_cache (ARG1))
+		(allow ARG1 var_cache_file read_file_perms)
+		(allow ARG1 var_cache_file read_fifo_file_perms)
+		(allow ARG1 var_cache_file list_dir_perms)
+		(allow ARG1 var_cache_file read_lnk_file_perms)
+		(allow ARG1 var_cache_file read_sock_file_perms)))
+
+(block manage_var_cache_blk
+	(blockabstract manage_var_cache_blk)
+	(macro manage_var_cache ((type ARG1))
+		(call file_rw_var_cache_dirs (ARG1))
+		(allow ARG1 var_cache_file manage_file_perms)
+		(allow ARG1 var_cache_file manage_fifo_file_perms)
+		(allow ARG1 var_cache_file manage_dir_perms)
+		(allow ARG1 var_cache_file manage_lnk_file_perms)
+		(allow ARG1 var_cache_file manage_sock_file_perms)))
+
+(block relabel_var_cache_blk
+	(blockabstract relabel_var_cache_blk)
+	(macro relabel_var_cache ((type ARG1))
+		(call file_search_var_cache (ARG1))
+		(allow ARG1 var_cache_file relabel_file_perms)
+		(allow ARG1 var_cache_file relabel_fifo_file_perms)
+		(allow ARG1 var_cache_file relabel_dir_perms)
+		(allow ARG1 var_cache_file relabel_lnk_file_perms)
+		(allow ARG1 var_cache_file relabel_sock_file_perms)))
+
+(block list_var_db_blk
+	(blockabstract list_var_db_blk)
+	(macro list_var_db ((type ARG1))
+		(call file_search_var_db (ARG1))
+		(allow ARG1 var_db_file list_dir_perms)))
+
+(block search_var_db_blk
+	(blockabstract search_var_db_blk)
+	(macro search_var_db ((type ARG1))
+		(call file_search_var_db (ARG1))
+		(allow ARG1 var_db_file search_dir_perms)))
+
+(block read_var_db_files_blk
+	(blockabstract read_var_db_files_blk)
+	(macro read_var_db_files ((type ARG1))
+		(call file_search_var_db (ARG1))
+		(call read_files_pattern (ARG1 var_db_file var_db_file))))
+
+(block manage_var_db_files_blk
+	(blockabstract manage_var_db_files_blk)
+	(macro manage_var_db_files ((type ARG1))
+		(call file_search_var_db (ARG1))
+		(call manage_files_pattern (ARG1 var_db_file var_db_file))))
+
+(block read_var_db_fifo_files_blk
+	(blockabstract read_var_db_fifo_files_blk)
+	(macro read_var_db_fifo_files ((type ARG1))
+		(call file_search_var_db (ARG1))
+		(call read_fifo_files_pattern (ARG1 var_db_file var_db_file))))
+
+(block read_var_db_lnk_files_blk
+	(blockabstract read_var_db_lnk_files_blk)
+	(macro read_var_db_lnk_files ((type ARG1))
+		(call file_search_var_db (ARG1))
+		(call read_lnk_files_pattern (ARG1 var_db_file var_db_file))))
+
+(block read_var_db_sock_files_blk
+	(blockabstract read_var_db_sock_files_blk)
+	(macro read_var_db_sock_files ((type ARG1))
+		(call file_search_var_db (ARG1))
+		(call read_sock_files_pattern (ARG1 var_db_file var_db_file))))
+
+(block read_var_db_blk
+	(blockabstract read_var_db_blk)
+	(macro read_var_db ((type ARG1))
+		(call file_search_var_db (ARG1))
+		(allow ARG1 var_db_file read_file_perms)
+		(allow ARG1 var_db_file read_fifo_file_perms)
+		(allow ARG1 var_db_file list_dir_perms)
+		(allow ARG1 var_db_file read_lnk_file_perms)
+		(allow ARG1 var_db_file read_sock_file_perms)))
+
+(block manage_var_db_blk
+	(blockabstract manage_var_db_blk)
+	(macro manage_var_db ((type ARG1))
+		(call file_rw_var_db_dirs (ARG1))
+		(allow ARG1 var_db_file manage_file_perms)
+		(allow ARG1 var_db_file manage_fifo_file_perms)
+		(allow ARG1 var_db_file manage_dir_perms)
+		(allow ARG1 var_db_file manage_lnk_file_perms)
+		(allow ARG1 var_db_file manage_sock_file_perms)))
+
+(block relabel_var_db_blk
+	(blockabstract relabel_var_db_blk)
+	(macro relabel_var_db ((type ARG1))
+		(call file_search_var_db (ARG1))
+		(allow ARG1 var_db_file relabel_file_perms)
+		(allow ARG1 var_db_file relabel_fifo_file_perms)
+		(allow ARG1 var_db_file relabel_dir_perms)
+		(allow ARG1 var_db_file relabel_lnk_file_perms)
+		(allow ARG1 var_db_file relabel_sock_file_perms)))
+
+(block list_var_lib_blk
+	(blockabstract list_var_lib_blk)
+	(macro list_var_lib ((type ARG1))
+		(call file_search_var_lib (ARG1))
+		(allow ARG1 var_lib_file list_dir_perms)))
+
+(block search_var_lib_blk
+	(blockabstract search_var_lib_blk)
+	(macro search_var_lib ((type ARG1))
+		(call file_search_var_lib (ARG1))
+		(allow ARG1 var_lib_file search_dir_perms)))
+
+(block read_var_lib_files_blk
+	(blockabstract read_var_lib_files_blk)
+	(macro read_var_lib_files ((type ARG1))
+		(call file_search_var_lib (ARG1))
+		(call read_files_pattern (ARG1 var_lib_file var_lib_file))))
+
+(block manage_var_lib_files_blk
+	(blockabstract manage_var_lib_files_blk)
+	(macro manage_var_lib_files ((type ARG1))
+		(call file_search_var_lib (ARG1))
+		(call manage_files_pattern (ARG1 var_lib_file var_lib_file))))
+
+(block read_var_lib_fifo_files_blk
+	(blockabstract read_var_lib_fifo_files_blk)
+	(macro read_var_lib_fifo_files ((type ARG1))
+		(call file_search_var_lib (ARG1))
+		(call read_fifo_files_pattern (ARG1 var_lib_file var_lib_file))))
+
+(block read_var_lib_lnk_files_blk
+	(blockabstract read_var_lib_lnk_files_blk)
+	(macro read_var_lib_lnk_files ((type ARG1))
+		(call file_search_var_lib (ARG1))
+		(call read_lnk_files_pattern (ARG1 var_lib_file var_lib_file))))
+
+(block read_var_lib_sock_files_blk
+	(blockabstract read_var_lib_sock_files_blk)
+	(macro read_var_lib_sock_files ((type ARG1))
+		(call file_search_var_lib (ARG1))
+		(call read_sock_files_pattern (ARG1 var_lib_file var_lib_file))))
+
+(block read_var_lib_blk
+	(blockabstract read_var_lib_blk)
+	(macro read_var_lib ((type ARG1))
+		(call file_search_var_lib (ARG1))
+		(allow ARG1 var_lib_file read_file_perms)
+		(allow ARG1 var_lib_file read_fifo_file_perms)
+		(allow ARG1 var_lib_file list_dir_perms)
+		(allow ARG1 var_lib_file read_lnk_file_perms)
+		(allow ARG1 var_lib_file read_sock_file_perms)))
+
+(block manage_var_lib_blk
+	(blockabstract manage_var_lib_blk)
+	(macro manage_var_lib ((type ARG1))
+		(call file_rw_var_lib_dirs (ARG1))
+		(allow ARG1 var_lib_file manage_file_perms)
+		(allow ARG1 var_lib_file manage_fifo_file_perms)
+		(allow ARG1 var_lib_file manage_dir_perms)
+		(allow ARG1 var_lib_file manage_lnk_file_perms)
+		(allow ARG1 var_lib_file manage_sock_file_perms)))
+
+(block relabel_var_lib_blk
+	(blockabstract relabel_var_lib_blk)
+	(macro relabel_var_lib ((type ARG1))
+		(call file_search_var_lib (ARG1))
+		(allow ARG1 var_lib_file relabel_file_perms)
+		(allow ARG1 var_lib_file relabel_fifo_file_perms)
+		(allow ARG1 var_lib_file relabel_dir_perms)
+		(allow ARG1 var_lib_file relabel_lnk_file_perms)
+		(allow ARG1 var_lib_file relabel_sock_file_perms)))
+
+(block list_var_log_blk
+	(blockabstract list_var_log_blk)
+	(macro list_var_log ((type ARG1))
+		(call file_search_var_log (ARG1))
+		(allow ARG1 var_log_file list_dir_perms)))
+
+(block search_var_log_blk
+	(blockabstract search_var_log_blk)
+	(macro search_var_log ((type ARG1))
+		(call file_search_var_log (ARG1))
+		(allow ARG1 var_log_file search_dir_perms)))
+
+(block read_var_log_files_blk
+	(blockabstract read_var_log_files_blk)
+	(macro read_var_log_files ((type ARG1))
+		(call file_search_var_log (ARG1))
+		(call read_files_pattern (ARG1 var_log_file var_log_file))))
+
+(block manage_var_log_files_blk
+	(blockabstract manage_var_log_files_blk)
+	(macro manage_var_log_files ((type ARG1))
+		(call file_search_var_log (ARG1))
+		(call manage_files_pattern (ARG1 var_log_file var_log_file))))
+
+(block read_var_log_fifo_files_blk
+	(blockabstract read_var_log_fifo_files_blk)
+	(macro read_var_log_fifo_files ((type ARG1))
+		(call file_search_var_log (ARG1))
+		(call read_fifo_files_pattern (ARG1 var_log_file var_log_file))))
+
+(block read_var_log_lnk_files_blk
+	(blockabstract read_var_log_lnk_files_blk)
+	(macro read_var_log_lnk_files ((type ARG1))
+		(call file_search_var_log (ARG1))
+		(call read_lnk_files_pattern (ARG1 var_log_file var_log_file))))
+
+(block read_var_log_sock_files_blk
+	(blockabstract read_var_log_sock_files_blk)
+	(macro read_var_log_sock_files ((type ARG1))
+		(call file_search_var_log (ARG1))
+		(call read_sock_files_pattern (ARG1 var_log_file var_log_file))))
+
+(block read_var_log_blk
+	(blockabstract read_var_log_blk)
+	(macro read_var_log ((type ARG1))
+		(call file_search_var_log (ARG1))
+		(allow ARG1 var_log_file read_file_perms)
+		(allow ARG1 var_log_file read_fifo_file_perms)
+		(allow ARG1 var_log_file list_dir_perms)
+		(allow ARG1 var_log_file read_lnk_file_perms)
+		(allow ARG1 var_log_file read_sock_file_perms)))
+
+(block manage_var_log_blk
+	(blockabstract manage_var_log_blk)
+	(macro manage_var_log ((type ARG1))
+		(call file_rw_var_log_dirs (ARG1))
+		(allow ARG1 var_log_file manage_file_perms)
+		(allow ARG1 var_log_file manage_fifo_file_perms)
+		(allow ARG1 var_log_file manage_dir_perms)
+		(allow ARG1 var_log_file manage_lnk_file_perms)
+		(allow ARG1 var_log_file manage_sock_file_perms)))
+
+(block relabel_var_log_blk
+	(blockabstract relabel_var_log_blk)
+	(macro relabel_var_log ((type ARG1))
+		(call file_search_var_log (ARG1))
+		(allow ARG1 var_log_file relabel_file_perms)
+		(allow ARG1 var_log_file relabel_fifo_file_perms)
+		(allow ARG1 var_log_file relabel_dir_perms)
+		(allow ARG1 var_log_file relabel_lnk_file_perms)
+		(allow ARG1 var_log_file relabel_sock_file_perms)))
+
+(block list_var_spool_blk
+	(blockabstract list_var_spool_blk)
+	(macro list_var_spool ((type ARG1))
+		(call file_search_var_spool (ARG1))
+		(allow ARG1 var_spool_file list_dir_perms)))
+
+(block search_var_spool_blk
+	(blockabstract search_var_spool_blk)
+	(macro search_var_spool ((type ARG1))
+		(call file_search_var_spool (ARG1))
+		(allow ARG1 var_spool_file search_dir_perms)))
+
+(block read_var_spool_files_blk
+	(blockabstract read_var_spool_files_blk)
+	(macro read_var_spool_files ((type ARG1))
+		(call file_search_var_spool (ARG1))
+		(call read_files_pattern (ARG1 var_spool_file var_spool_file))))
+
+(block manage_var_spool_files_blk
+	(blockabstract manage_var_spool_files_blk)
+	(macro manage_var_spool_files ((type ARG1))
+		(call file_search_var_spool (ARG1))
+		(call manage_files_pattern (ARG1 var_spool_file var_spool_file))))
+
+(block read_var_spool_fifo_files_blk
+	(blockabstract read_var_spool_fifo_files_blk)
+	(macro read_var_spool_fifo_files ((type ARG1))
+		(call file_search_var_spool (ARG1))
+		(call read_fifo_files_pattern (ARG1 var_spool_file var_spool_file))))
+
+(block read_var_spool_lnk_files_blk
+	(blockabstract read_var_spool_lnk_files_blk)
+	(macro read_var_spool_lnk_files ((type ARG1))
+		(call file_search_var_spool (ARG1))
+		(call read_lnk_files_pattern (ARG1 var_spool_file var_spool_file))))
+
+(block read_var_spool_sock_files_blk
+	(blockabstract read_var_spool_sock_files_blk)
+	(macro read_var_spool_sock_files ((type ARG1))
+		(call file_search_var_spool (ARG1))
+		(call read_sock_files_pattern (ARG1 var_spool_file var_spool_file))))
+
+(block read_var_spool_blk
+	(blockabstract read_var_spool_blk)
+	(macro read_var_spool ((type ARG1))
+		(call file_search_var_spool (ARG1))
+		(allow ARG1 var_spool_file read_file_perms)
+		(allow ARG1 var_spool_file read_fifo_file_perms)
+		(allow ARG1 var_spool_file list_dir_perms)
+		(allow ARG1 var_spool_file read_lnk_file_perms)
+		(allow ARG1 var_spool_file read_sock_file_perms)))
+
+(block manage_var_spool_blk
+	(blockabstract manage_var_spool_blk)
+	(macro manage_var_spool ((type ARG1))
+		(call file_rw_var_spool_dirs (ARG1))
+		(allow ARG1 var_spool_file manage_file_perms)
+		(allow ARG1 var_spool_file manage_fifo_file_perms)
+		(allow ARG1 var_spool_file manage_dir_perms)
+		(allow ARG1 var_spool_file manage_lnk_file_perms)
+		(allow ARG1 var_spool_file manage_sock_file_perms)))
+
+(block relabel_var_spool_blk
+	(blockabstract relabel_var_spool_blk)
+	(macro relabel_var_spool ((type ARG1))
+		(call file_search_var_spool (ARG1))
+		(allow ARG1 var_spool_file relabel_file_perms)
+		(allow ARG1 var_spool_file relabel_fifo_file_perms)
+		(allow ARG1 var_spool_file relabel_dir_perms)
+		(allow ARG1 var_spool_file relabel_lnk_file_perms)
+		(allow ARG1 var_spool_file relabel_sock_file_perms)))
+
+(block list_var_tmp_blk
+	(blockabstract list_var_tmp_blk)
+	(macro list_var_tmp ((type ARG1))
+		(call file_search_var_tmp (ARG1))
+		(allow ARG1 var_tmp_file list_dir_perms)))
+
+(block search_var_tmp_blk
+	(blockabstract search_var_tmp_blk)
+	(macro search_var_tmp ((type ARG1))
+		(call file_search_var_tmp (ARG1))
+		(allow ARG1 var_tmp_file search_dir_perms)))
+
+(block read_var_tmp_files_blk
+	(blockabstract read_var_tmp_files_blk)
+	(macro read_var_tmp_files ((type ARG1))
+		(call file_search_var_tmp (ARG1))
+		(call read_files_pattern (ARG1 var_tmp_file var_tmp_file))))
+
+(block manage_var_tmp_files_blk
+	(blockabstract manage_var_tmp_files_blk)
+	(macro manage_var_tmp_files ((type ARG1))
+		(call file_search_var_tmp (ARG1))
+		(call manage_files_pattern (ARG1 var_tmp_file var_tmp_file))))
+
+(block read_var_tmp_fifo_files_blk
+	(blockabstract read_var_tmp_fifo_files_blk)
+	(macro read_var_tmp_fifo_files ((type ARG1))
+		(call file_search_var_tmp (ARG1))
+		(call read_fifo_files_pattern (ARG1 var_tmp_file var_tmp_file))))
+
+(block read_var_tmp_lnk_files_blk
+	(blockabstract read_var_tmp_lnk_files_blk)
+	(macro read_var_tmp_lnk_files ((type ARG1))
+		(call file_search_var_tmp (ARG1))
+		(call read_lnk_files_pattern (ARG1 var_tmp_file var_tmp_file))))
+
+(block read_var_tmp_sock_files_blk
+	(blockabstract read_var_tmp_sock_files_blk)
+	(macro read_var_tmp_sock_files ((type ARG1))
+		(call file_search_var_tmp (ARG1))
+		(call read_sock_files_pattern (ARG1 var_tmp_file var_tmp_file))))
+
+(block read_var_tmp_blk
+	(blockabstract read_var_tmp_blk)
+	(macro read_var_tmp ((type ARG1))
+		(call file_search_var_tmp (ARG1))
+		(allow ARG1 var_tmp_file read_file_perms)
+		(allow ARG1 var_tmp_file read_fifo_file_perms)
+		(allow ARG1 var_tmp_file list_dir_perms)
+		(allow ARG1 var_tmp_file read_lnk_file_perms)
+		(allow ARG1 var_tmp_file read_sock_file_perms)))
+
+(block manage_var_tmp_blk
+	(blockabstract manage_var_tmp_blk)
+	(macro manage_var_tmp ((type ARG1))
+		(call file_rw_var_tmp_dirs (ARG1))
+		(allow ARG1 var_tmp_file manage_file_perms)
+		(allow ARG1 var_tmp_file manage_fifo_file_perms)
+		(allow ARG1 var_tmp_file manage_dir_perms)
+		(allow ARG1 var_tmp_file manage_lnk_file_perms)
+		(allow ARG1 var_tmp_file manage_sock_file_perms)))
+
+(block relabel_var_tmp_blk
+	(blockabstract relabel_var_tmp_blk)
+	(macro relabel_var_tmp ((type ARG1))
+		(call file_search_var_tmp (ARG1))
+		(allow ARG1 var_tmp_file relabel_file_perms)
+		(allow ARG1 var_tmp_file relabel_fifo_file_perms)
+		(allow ARG1 var_tmp_file relabel_dir_perms)
+		(allow ARG1 var_tmp_file relabel_lnk_file_perms)
+		(allow ARG1 var_tmp_file relabel_sock_file_perms)))
+
+(block list_tmpfs_blk
+	(blockabstract list_tmpfs_blk)
+	(macro list_tmpfs ((type ARG1))
+		(call fs_search_tmpfs (ARG1))
+		(allow ARG1 tmpfs_file list_dir_perms)))
+
+(block search_tmpfs_blk
+	(blockabstract search_tmpfs_blk)
+	(macro search_tmpfs ((type ARG1))
+		(call fs_search_tmpfs (ARG1))
+		(allow ARG1 tmpfs_file search_dir_perms)))
+
+(block read_tmpfs_files_blk
+	(blockabstract read_tmpfs_files_blk)
+	(macro read_tmpfs_files ((type ARG1))
+		(call fs_search_tmpfs (ARG1))
+		(call read_files_pattern (ARG1 tmpfs_file tmpfs_file))))
+
+(block manage_tmpfs_files_blk
+	(blockabstract manage_tmpfs_files_blk)
+	(macro manage_tmpfs_files ((type ARG1))
+		(call fs_search_tmpfs (ARG1))
+		(call manage_files_pattern (ARG1 tmpfs_file tmpfs_file))))
+
+(block read_tmpfs_fifo_files_blk
+	(blockabstract read_tmpfs_fifo_files_blk)
+	(macro read_tmpfs_fifo_files ((type ARG1))
+		(call fs_search_tmpfs (ARG1))
+		(call read_fifo_files_pattern (ARG1 tmpfs_file tmpfs_file))))
+
+(block read_tmpfs_lnk_files_blk
+	(blockabstract read_tmpfs_lnk_files_blk)
+	(macro read_tmpfs_lnk_files ((type ARG1))
+		(call fs_search_tmpfs (ARG1))
+		(call read_lnk_files_pattern (ARG1 tmpfs_file tmpfs_file))))
+
+(block read_tmpfs_sock_files_blk
+	(blockabstract read_tmpfs_sock_files_blk)
+	(macro read_tmpfs_sock_files ((type ARG1))
+		(call fs_search_tmpfs (ARG1))
+		(call read_sock_files_pattern (ARG1 tmpfs_file tmpfs_file))))
+
+(block read_tmpfs_blk
+	(blockabstract read_tmpfs_blk)
+	(macro read_tmpfs ((type ARG1))
+		(call fs_search_tmpfs (ARG1))
+		(allow ARG1 tmpfs_file read_file_perms)
+		(allow ARG1 tmpfs_file read_fifo_file_perms)
+		(allow ARG1 tmpfs_file list_dir_perms)
+		(allow ARG1 tmpfs_file read_lnk_file_perms)
+		(allow ARG1 tmpfs_file read_sock_file_perms)))
+
+(block manage_tmpfs_blk
+	(blockabstract manage_tmpfs_blk)
+	(macro manage_tmpfs ((type ARG1))
+		(call fs_rw_tmpfs_dirs (ARG1))
+		(allow ARG1 tmpfs_file manage_file_perms)
+		(allow ARG1 tmpfs_file manage_fifo_file_perms)
+		(allow ARG1 tmpfs_file manage_dir_perms)
+		(allow ARG1 tmpfs_file manage_lnk_file_perms)
+		(allow ARG1 tmpfs_file manage_sock_file_perms)))
+
+(block relabel_tmpfs_blk
+	(blockabstract relabel_tmpfs_blk)
+	(macro relabel_tmpfs ((type ARG1))
+		(call fs_search_tmpfs (ARG1))
+		(allow ARG1 tmpfs_file relabel_file_perms)
+		(allow ARG1 tmpfs_file relabel_fifo_file_perms)
+		(allow ARG1 tmpfs_file relabel_dir_perms)
+		(allow ARG1 tmpfs_file relabel_lnk_file_perms)
+		(allow ARG1 tmpfs_file relabel_sock_file_perms)))
+
 (macro file_obj_type ((type ARG1))
 	(typeattributeset file_obj_type ARG1)
 	(typeattributeset file_non_auth_obj_type ARG1)
