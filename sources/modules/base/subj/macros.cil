@@ -49,6 +49,12 @@
 		(allow ARG1 subj (fd (use)))
 		(allow ARG1 subj append_inherit_unix_stream_socket_perms)))
 
+(block rw_inherited_fifo_files_blk
+	(blockabstract rw_inherited_fifo_files_blk)
+	(macro rw_inherited_fifo_files ((type ARG1))
+		(allow ARG1 subj (fd (use)))
+		(allow ARG1 subj rw_inherit_fifo_file_perms)))
+
 (block rw_inherited_unix_stream_sockets_blk
 	(blockabstract rw_inherited_unix_stream_sockets_blk)
 	(macro rw_inherited_unix_stream_sockets ((type ARG1))
