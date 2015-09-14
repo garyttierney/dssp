@@ -30,6 +30,11 @@
 	(macro getsession ((type ARG1))
 		(allow ARG1 subj (process (getsession)))))
 
+(block noatsecure_blk
+	(blockabstract noatsecure_blk)
+	(macro noatsecure ((type ARG1))
+		(allow ARG1 subj (process (noatsecure)))))
+
 (block ptrace_blk
 	(blockabstract ptrace_blk)
 	(macro ptrace ((type ARG1))
@@ -115,6 +120,117 @@
 	(blockabstract use_fd_blk)
 	(macro use_fd ((type ARG1))
 		(allow ARG1 subj (fd (use)))))
+
+(block getattr_all_blk
+	(blockabstract getattr_all_blk)
+	(macro getattr_all_subj ((type ARG1))
+		(allow ARG1 subj_type_attribute (process (getattr)))))
+
+(block getpgid_all_blk
+	(blockabstract getpgid_all_blk)
+	(macro getpgid_all_subj ((type ARG1))
+		(allow ARG1 subj_type_attribute (process (getpgid)))))
+
+(block getsched_all_blk
+	(blockabstract getsched_all_blk)
+	(macro getsched_all_subj ((type ARG1))
+		(allow ARG1 subj_type_attribute (process (getsched)))))
+
+(block getsession_all_blk
+	(blockabstract getsession_all_blk)
+	(macro getsession_all_subj ((type ARG1))
+		(allow ARG1 subj_type_attribute (process (getsession)))))
+
+(block noatsecure_all_blk
+	(blockabstract noatsecure_all_blk)
+	(macro noatsecure_all_subj ((type ARG1))
+		(allow ARG1 subj_type_attribute (process (noatsecure)))))
+
+(block ptrace_all_blk
+	(blockabstract ptrace_all_blk)
+	(macro ptrace_all_subj ((type ARG1))
+		(allow ARG1 subj_type_attribute (process (ptrace)))))
+
+(block link_keyring_all_blk
+	(blockabstract link_keyring_all_blk)
+	(macro link_keyring_all_subj ((type ARG1))
+		(allow ARG1 subj_type_attribute link_key_perms)))
+
+(block read_state_all_blk
+	(blockabstract read_state_all_blk)
+	(macro read_state_all_subj ((type ARG1))
+		(call fs_search_proc (ARG1))
+		(allow ARG1 subj_type_attribute read_file_perms)
+		(allow ARG1 subj_type_attribute list_dir_perms)
+		(allow ARG1 subj_type_attribute read_lnk_file_perms)))
+
+(block rw_fifo_files_all_blk
+	(blockabstract rw_fifo_files_all_blk)
+	(macro rw_fifo_files_all_subj ((type ARG1))
+		(allow ARG1 subj_type_attribute rw_fifo_file_perms)))
+
+(block rw_inherited_fifo_files_all_blk
+	(blockabstract rw_inherited_fifo_files_all_blk)
+	(macro rw_inherited_fifo_files_all_subj ((type ARG1))
+		(allow ARG1 subj_type_attribute (fd (use)))
+		(allow ARG1 subj_type_attribute rw_inherited_fifo_file_perms)))
+
+(block append_inherited_unix_stream_sockets_all_blk
+	(blockabstract append_inherited_unix_stream_sockets_all_blk)
+	(macro append_inherited_unix_stream_sockets_all_subj ((type ARG1))
+		(allow ARG1 subj_type_attribute (fd (use)))
+		(allow ARG1 subj_type_attribute append_inherited_unix_stream_socket_perms)))
+
+(block rw_unix_stream_sockets_all_blk
+	(blockabstract rw_unix_stream_sockets_all_blk)
+	(macro rw_unix_stream_sockets_all_subj ((type ARG1))
+		(allow ARG1 subj_type_attribute rw_unix_stream_socket_perms)))
+
+(block rw_inherited_unix_stream_sockets_all_blk
+	(blockabstract rw_inherited_unix_stream_sockets_all_blk)
+	(macro rw_inherited_unix_stream_sockets_all_subj ((type ARG1))
+		(allow ARG1 subj_type_attribute (fd (use)))
+		(allow ARG1 subj_type_attribute rw_inherited_unix_stream_socket_perms)))
+
+(block share_all_blk
+	(blockabstract share_all_blk)
+	(macro share_all_subj ((type ARG1))
+		(allow ARG1 subj_type_attribute (process (share)))))
+
+(block send_sigchld_all_blk
+	(blockabstract send_sigchld_all_blk)
+	(macro send_sigchld_all_subj ((type ARG1))
+		(allow ARG1 subj_type_attribute (process (sigchld)))))
+
+(block send_signal_all_blk
+	(blockabstract send_signal_all_blk)
+	(macro send_signal_all_subj ((type ARG1))
+		(allow ARG1 subj_type_attribute (process (signal)))))
+
+(block send_signull_all_blk
+	(blockabstract send_signull_all_blk)
+	(macro send_signull_all_subj ((type ARG1))
+		(allow ARG1 subj_type_attribute (process (signull)))))
+
+(block send_sigkill_all_blk
+	(blockabstract send_sigkill_all_blk)
+	(macro send_sigkill_all_subj ((type ARG1))
+		(allow ARG1 subj_type_attribute (process (sigkill)))))
+
+(block send_sigstop_all_blk
+	(blockabstract send_sigstop_all_blk)
+	(macro send_sigstop_all_subj ((type ARG1))
+		(allow ARG1 subj_type_attribute (process (sigstop)))))
+
+(block setsched_all_blk
+	(blockabstract setsched_all_blk)
+	(macro setsched_all_subj ((type ARG1))
+		(allow ARG1 subj_type_attribute (process (setsched)))))
+
+(block use_fd_all_blk
+	(blockabstract use_fd_all_blk)
+	(macro use_fd_all_subj ((type ARG1))
+		(allow ARG1 subj_subj_type_attribute (fd (use)))))
 
 (macro subj_type ((type ARG1))
 	(typeattributeset subj_type ARG1))
