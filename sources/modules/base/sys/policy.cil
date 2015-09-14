@@ -106,10 +106,10 @@
 
 	(optional sys_optional_sd
 		(call subj_dynamic_subj_type_transition_type (subj))
-		(call sd_dynamic_subj_type_transition (subj))
-		(call sd_getattr_cmd_files (subj))
-		(call sd_mls (subj systemlow systemhigh))
-		(call sd_send_signal (subj)))
+		(call sd.dynamic_subj_type_transition (subj))
+		(call sd.getattr_cmd_files (subj))
+		(call sd.mls (subj systemlow systemhigh))
+		(call sd.send_signal (subj)))
 
 	(optional sys_optional_sd_cgagent
 		(call sd_cgagent_auto_subj_type_transition (subj))

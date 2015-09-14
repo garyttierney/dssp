@@ -9,6 +9,13 @@
 		(allow ARG1 subj (process (signal)))
 		(call auto_subj_type_transition_pattern (ARG1 cmd_file subj))))
 
+(block dynamic_subj_type_transition_blk
+	(blockabstract dynamic_subj_type_transition_blk)
+	(macro dynamic_subj_type_transition ((type ARG1))
+		(allow ARG1 subj (process (signal)))
+		(call dynamic_subj_type_transition_pattern (ARG1 subj))
+                (typetransition ARG1 cmd_file process "*" subj)))
+
 (block run_blk
 	(blockabstract run_blk)
 	(macro run ((type ARG1)(role ARG2))

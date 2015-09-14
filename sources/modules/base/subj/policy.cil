@@ -44,7 +44,7 @@
 (call fs_search_rootfs (subj_type))
 
 (optional subj_type_optional_sd
-	(call sd_send_sigchld (subj_type)))
+	(call sd.send_sigchld (subj_type)))
 
 (optional subj_type_optional_sd_shutdown
 	(call sd_shutdown_send_sigchld (subj_type)))

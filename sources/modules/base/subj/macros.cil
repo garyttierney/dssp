@@ -35,6 +35,11 @@
 	(macro ptrace ((type ARG1))
 		(allow ARG1 subj (process (ptrace)))))
 
+(block link_keyring_blk
+	(blockabstract link_keyring_blk)
+	(macro link_keyring ((type ARG1))
+		(allow ARG1 subj link_key_perms)))
+
 (block read_state_blk
 	(blockabstract read_state_blk)
 	(macro read_state ((type ARG1))
@@ -43,23 +48,33 @@
 		(allow ARG1 subj list_dir_perms)
 		(allow ARG1 subj read_lnk_file_perms)))
 
-(block append_inherited_unix_stream_sockets_blk
-	(blockabstract append_inherited_unix_stream_sockets_blk)
-	(macro append_inherited_unix_stream_sockets ((type ARG1))
-		(allow ARG1 subj (fd (use)))
-		(allow ARG1 subj append_inherit_unix_stream_socket_perms)))
+(block rw_fifo_files_blk
+	(blockabstract rw_fifo_files_blk)
+	(macro rw_fifo_files ((type ARG1))
+		(allow ARG1 subj rw_fifo_file_perms)))
 
 (block rw_inherited_fifo_files_blk
 	(blockabstract rw_inherited_fifo_files_blk)
 	(macro rw_inherited_fifo_files ((type ARG1))
 		(allow ARG1 subj (fd (use)))
-		(allow ARG1 subj rw_inherit_fifo_file_perms)))
+		(allow ARG1 subj rw_inherited_fifo_file_perms)))
+
+(block append_inherited_unix_stream_sockets_blk
+	(blockabstract append_inherited_unix_stream_sockets_blk)
+	(macro append_inherited_unix_stream_sockets ((type ARG1))
+		(allow ARG1 subj (fd (use)))
+		(allow ARG1 subj append_inherited_unix_stream_socket_perms)))
+
+(block rw_unix_stream_sockets_blk
+	(blockabstract rw_unix_stream_sockets_blk)
+	(macro rw_unix_stream_sockets ((type ARG1))
+		(allow ARG1 subj rw_unix_stream_socket_perms)))
 
 (block rw_inherited_unix_stream_sockets_blk
 	(blockabstract rw_inherited_unix_stream_sockets_blk)
 	(macro rw_inherited_unix_stream_sockets ((type ARG1))
 		(allow ARG1 subj (fd (use)))
-		(allow ARG1 subj rw_inherit_unix_stream_socket_perms)))
+		(allow ARG1 subj rw_inherited_unix_stream_socket_perms)))
 
 (block share_blk
 	(blockabstract share_blk)
@@ -99,7 +114,7 @@
 (block use_fd_blk
 	(blockabstract use_fd_blk)
 	(macro use_fd ((type ARG1))
-		(allow ARG1 subj (use (fd)))))
+		(allow ARG1 subj (fd (use)))))
 
 (macro subj_type ((type ARG1))
 	(typeattributeset subj_type ARG1))
