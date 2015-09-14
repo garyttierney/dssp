@@ -50,6 +50,12 @@
 	(macro link_keyring ((type ARG1))
 		(allow ARG1 subj link_key_perms)))
 
+(block create_keyring_blk
+	(blockabstract create_keyring_blk)
+	(macro create_keyring ((type ARG1))
+		(allow ARG1 self (process (setkeycreate)))
+		(allow ARG1 subj create_key_perms)))
+
 (block read_state_blk
 	(blockabstract read_state_blk)
 	(macro read_state ((type ARG1))
@@ -155,6 +161,12 @@
 	(blockabstract ptrace_all_blk)
 	(macro ptrace_all_subj ((type ARG1))
 		(allow ARG1 subj_type_attribute (process (ptrace)))))
+
+(block create_keyring_all_blk
+	(blockabstract create_keyring_all_blk)
+	(macro create_keyring_all_subj ((type ARG1))
+		(allow ARG1 self (process (setkeycreate)))
+		(allow ARG1 subj_type_attribute create_key_perms)))
 
 (block link_keyring_all_blk
 	(blockabstract link_keyring_all_blk)
