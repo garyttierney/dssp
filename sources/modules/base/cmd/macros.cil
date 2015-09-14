@@ -4,6 +4,21 @@
 	(type cmd_file)
 	(call cmd_obj_type (cmd_file)))
 
+(block cmd_obj_entry_subj_blk
+	(blockabstract cmd_obj_entry_subj_blk)
+	(macro cmd_obj_entry_subj ((type ARG1))
+		(call subj_entry (ARG1 cmd_file))))
+
+(block getattr_cmd_files_blk
+	(blockabstract getattr_cmd_files_blk)
+	(macro getattr_cmd_files ((type ARG1))
+		(allow ARG1 cmd_file (file (getattr)))))
+
+(block mmap_cmd_files_blk
+	(blockabstract mmap_cmd_files_blk)
+	(macro mmap_cmd_files ((type ARG1))
+		(allow ARG1 cmd_file mmap_file_perms)))
+
 (macro cmd_obj_type ((type ARG1))
 	(typeattributeset cmd_obj_type ARG1))
 

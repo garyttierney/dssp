@@ -10,6 +10,11 @@
 	(type subj)
 	(call subj_common_type (subj)))
 
+(block bounded_blk
+	(blockabstract bounded_blk)
+	(macro bounded ((type ARG1))
+		(typebounds subj ARG1)))
+
 (block getattr_blk
 	(blockabstract getattr_blk)
 	(macro getattr ((type ARG1))
