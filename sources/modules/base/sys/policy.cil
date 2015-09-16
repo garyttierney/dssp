@@ -120,7 +120,7 @@
 		(call sd_coredump.mls (subj systemlow systemhigh)))
 
 	(optional sys_optional_sd_machined
-		(call sd_machined_audit_access_var_lib_files (subj)))
+		(call sd_machined.audit_access_var_lib_files (subj)))
 
 	(optional sys_optional_sd_nspawn
 		(call sd_nspawn_use_fd (subj)))
