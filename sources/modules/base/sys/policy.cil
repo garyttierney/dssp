@@ -116,8 +116,8 @@
 		(call sd_cgagent.mls (subj systemlow systemhigh)))
 
 	(optional sys_optional_sd_coredump
-		(call sd_coredump_auto_subj_type_transition (subj))
-		(call sd_coredump_mls (subj systemlow systemhigh)))
+		(call sd_coredump.auto_subj_type_transition (subj))
+		(call sd_coredump.mls (subj systemlow systemhigh)))
 
 	(optional sys_optional_sd_machined
 		(call sd_machined_audit_access_var_lib_files (subj)))
