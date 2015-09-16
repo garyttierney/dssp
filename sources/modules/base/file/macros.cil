@@ -160,6 +160,12 @@
 		(call file_search_boot (ARG1))
 		(call read_lnk_files_pattern (ARG1 boot_file boot_file))))
 
+(block manage_boot_lnk_files_blk
+	(blockabstract manage_boot_lnk_files_blk)
+	(macro manage_boot_lnk_files ((type ARG1))
+		(call file_rw_boot_dirs (ARG1))
+		(call manage_lnk_files_pattern (ARG1 boot_file boot_file))))
+
 (block read_boot_sock_files_blk
 	(blockabstract read_boot_sock_files_blk)
 	(macro read_boot_sock_files ((type ARG1))
@@ -249,6 +255,12 @@
 	(macro read_all_boot_lnk_files ((type ARG1))
 		(call file_search_boot (ARG1))
 		(call read_lnk_files_pattern (ARG1 boot_obj_type_attribute boot_obj_type_attribute))))
+
+(block manage_all_boot_lnk_files_blk
+	(blockabstract manage_all_boot_lnk_files_blk)
+	(macro manage_all_boot_lnk_files ((type ARG1))
+		(call file_rw_boot_dirs (ARG1))
+		(call manage_lnk_files_pattern (ARG1 boot_obj_type_attribute boot_obj_type_attribute))))
 
 (block read_all_boot_sock_files_blk
 	(blockabstract read_all_boot_sock_files_blk)
@@ -382,6 +394,12 @@
 		(call file_search_config (ARG1))
 		(call read_lnk_files_pattern (ARG1 config_file config_file))))
 
+(block manage_config_lnk_files_blk
+	(blockabstract manage_config_lnk_files_blk)
+	(macro manage_config_lnk_files ((type ARG1))
+		(call file_rw_config_dirs (ARG1))
+		(call manage_lnk_files_pattern (ARG1 config_file config_file))))
+
 (block read_config_sock_files_blk
 	(blockabstract read_config_sock_files_blk)
 	(macro read_config_sock_files ((type ARG1))
@@ -471,6 +489,12 @@
 	(macro read_all_config_lnk_files ((type ARG1))
 		(call file_search_config (ARG1))
 		(call read_lnk_files_pattern (ARG1 config_obj_type_attribute config_obj_type_attribute))))
+
+(block manage_all_config_lnk_files_blk
+	(blockabstract manage_all_config_lnk_files_blk)
+	(macro manage_all_config_lnk_files ((type ARG1))
+		(call file_rw_config_dirs (ARG1))
+		(call manage_lnk_files_pattern (ARG1 config_obj_type_attribute config_obj_type_attribute))))
 
 (block read_all_config_sock_files_blk
 	(blockabstract read_all_config_sock_files_blk)
@@ -562,6 +586,12 @@
 		(call file_search_data (ARG1))
 		(call read_lnk_files_pattern (ARG1 data_file data_file))))
 
+(block manage_data_lnk_files_blk
+	(blockabstract manage_data_lnk_files_blk)
+	(macro manage_data_lnk_files ((type ARG1))
+		(call file_rw_data_dirs (ARG1))
+		(call manage_lnk_files_pattern (ARG1 data_file data_file))))
+
 (block read_data_sock_files_blk
 	(blockabstract read_data_sock_files_blk)
 	(macro read_data_sock_files ((type ARG1))
@@ -651,6 +681,12 @@
 	(macro read_all_data_lnk_files ((type ARG1))
 		(call file_search_data (ARG1))
 		(call read_lnk_files_pattern (ARG1 data_obj_type_attribute data_obj_type_attribute))))
+
+(block manage_all_data_lnk_files_blk
+	(blockabstract manage_all_data_lnk_files_blk)
+	(macro manage_all_data_lnk_files ((type ARG1))
+		(call file_rw_data_dirs (ARG1))
+		(call manage_lnk_files_pattern (ARG1 data_obj_type_attribute data_obj_type_attribute))))
 
 (block read_all_data_sock_files_blk
 	(blockabstract read_all_data_sock_files_blk)
@@ -742,6 +778,12 @@
 		(call file_search_runtime (ARG1))
 		(call read_lnk_files_pattern (ARG1 runtime_file runtime_file))))
 
+(block manage_runtime_lnk_files_blk
+	(blockabstract manage_runtime_lnk_files_blk)
+	(macro manage_runtime_lnk_files ((type ARG1))
+		(call file_rw_runtime_dirs (ARG1))
+		(call manage_lnk_files_pattern (ARG1 runtime_file runtime_file))))
+
 (block read_runtime_sock_files_blk
 	(blockabstract read_runtime_sock_files_blk)
 	(macro read_runtime_sock_files ((type ARG1))
@@ -831,6 +873,12 @@
 	(macro read_all_runtime_lnk_files ((type ARG1))
 		(call file_search_runtime (ARG1))
 		(call read_lnk_files_pattern (ARG1 runtime_obj_type_attribute runtime_obj_type_attribute))))
+
+(block manage_all_runtime_lnk_files_blk
+	(blockabstract manage_all_runtime_lnk_files_blk)
+	(macro manage_all_runtime_lnk_files ((type ARG1))
+		(call file_rw_runtime_dirs (ARG1))
+		(call manage_lnk_files_pattern (ARG1 runtime_obj_type_attribute runtime_obj_type_attribute))))
 
 (block read_all_runtime_sock_files_blk
 	(blockabstract read_all_runtime_sock_files_blk)
@@ -922,6 +970,12 @@
 		(call file_search_runtime_config (ARG1))
 		(call read_lnk_files_pattern (ARG1 runtime_config_file runtime_config_file))))
 
+(block manage_runtime_config_lnk_files_blk
+	(blockabstract manage_runtime_config_lnk_files_blk)
+	(macro manage_runtime_config_lnk_files ((type ARG1))
+		(call file_rw_runtime_config_dirs (ARG1))
+		(call manage_lnk_files_pattern (ARG1 runtime_config_file runtime_config_file))))
+
 (block read_runtime_config_sock_files_blk
 	(blockabstract read_runtime_config_sock_files_blk)
 	(macro read_runtime_config_sock_files ((type ARG1))
@@ -1011,6 +1065,12 @@
 	(macro read_all_runtime_config_lnk_files ((type ARG1))
 		(call file_search_runtime_config (ARG1))
 		(call read_lnk_files_pattern (ARG1 runtime_config_obj_type_attribute runtime_config_obj_type_attribute))))
+
+(block manage_all_runtime_config_lnk_files_blk
+	(blockabstract manage_all_runtime_config_lnk_files_blk)
+	(macro manage_all_runtime_config_lnk_files ((type ARG1))
+		(call file_rw_runtime_config_dirs (ARG1))
+		(call manage_lnk_files_pattern (ARG1 runtime_config_obj_type_attribute runtime_config_obj_type_attribute))))
 
 (block read_all_runtime_config_sock_files_blk
 	(blockabstract read_all_runtime_config_sock_files_blk)
@@ -1102,6 +1162,12 @@
 		(call file_search_runtime_lock (ARG1))
 		(call read_lnk_files_pattern (ARG1 runtime_lock_file runtime_lock_file))))
 
+(block manage_runtime_lock_lnk_files_blk
+	(blockabstract manage_runtime_lock_lnk_files_blk)
+	(macro manage_runtime_lock_lnk_files ((type ARG1))
+		(call file_rw_runtime_lock_dirs (ARG1))
+		(call manage_lnk_files_pattern (ARG1 runtime_lock_file runtime_lock_file))))
+
 (block read_runtime_lock_sock_files_blk
 	(blockabstract read_runtime_lock_sock_files_blk)
 	(macro read_runtime_lock_sock_files ((type ARG1))
@@ -1191,6 +1257,12 @@
 	(macro read_all_runtime_lock_lnk_files ((type ARG1))
 		(call file_search_runtime_lock (ARG1))
 		(call read_lnk_files_pattern (ARG1 runtime_lock_obj_type_attribute runtime_lock_obj_type_attribute))))
+
+(block manage_all_runtime_lock_lnk_files_blk
+	(blockabstract manage_all_runtime_lock_lnk_files_blk)
+	(macro manage_all_runtime_lock_lnk_files ((type ARG1))
+		(call file_rw_runtime_lock_dirs (ARG1))
+		(call manage_lnk_files_pattern (ARG1 runtime_lock_obj_type_attribute runtime_lock_obj_type_attribute))))
 
 (block read_all_runtime_lock_sock_files_blk
 	(blockabstract read_all_runtime_lock_sock_files_blk)
@@ -1282,6 +1354,12 @@
 		(call file_search_var (ARG1))
 		(call read_lnk_files_pattern (ARG1 var_file var_file))))
 
+(block manage_var_lnk_files_blk
+	(blockabstract manage_var_lnk_files_blk)
+	(macro manage_var_lnk_files ((type ARG1))
+		(call file_rw_var_dirs (ARG1))
+		(call manage_lnk_files_pattern (ARG1 var_file var_file))))
+
 (block read_var_sock_files_blk
 	(blockabstract read_var_sock_files_blk)
 	(macro read_var_sock_files ((type ARG1))
@@ -1371,6 +1449,12 @@
 	(macro read_all_var_lnk_files ((type ARG1))
 		(call file_search_var (ARG1))
 		(call read_lnk_files_pattern (ARG1 var_obj_type_attribute var_obj_type_attribute))))
+
+(block manage_all_var_lnk_files_blk
+	(blockabstract manage_all_var_lnk_files_blk)
+	(macro manage_all_var_lnk_files ((type ARG1))
+		(call file_rw_var_dirs (ARG1))
+		(call manage_lnk_files_pattern (ARG1 var_obj_type_attribute var_obj_type_attribute))))
 
 (block read_all_var_sock_files_blk
 	(blockabstract read_all_var_sock_files_blk)
@@ -1462,6 +1546,12 @@
 		(call file_search_var_cache (ARG1))
 		(call read_lnk_files_pattern (ARG1 var_cache_file var_cache_file))))
 
+(block manage_var_cache_lnk_files_blk
+	(blockabstract manage_var_cache_lnk_files_blk)
+	(macro manage_var_cache_lnk_files ((type ARG1))
+		(call file_rw_var_cache_dirs (ARG1))
+		(call manage_lnk_files_pattern (ARG1 var_cache_file var_cache_file))))
+
 (block read_var_cache_sock_files_blk
 	(blockabstract read_var_cache_sock_files_blk)
 	(macro read_var_cache_sock_files ((type ARG1))
@@ -1551,6 +1641,12 @@
 	(macro read_all_var_cache_lnk_files ((type ARG1))
 		(call file_search_var_cache (ARG1))
 		(call read_lnk_files_pattern (ARG1 var_cache_obj_type_attribute var_cache_obj_type_attribute))))
+
+(block manage_all_var_cache_lnk_files_blk
+	(blockabstract manage_all_var_cache_lnk_files_blk)
+	(macro manage_all_var_cache_lnk_files ((type ARG1))
+		(call file_rw_var_cache_dirs (ARG1))
+		(call manage_lnk_files_pattern (ARG1 var_cache_obj_type_attribute var_cache_obj_type_attribute))))
 
 (block read_all_var_cache_sock_files_blk
 	(blockabstract read_all_var_cache_sock_files_blk)
@@ -1642,6 +1738,12 @@
 		(call file_search_var_db (ARG1))
 		(call read_lnk_files_pattern (ARG1 var_db_file var_db_file))))
 
+(block manage_var_db_lnk_files_blk
+	(blockabstract manage_var_db_lnk_files_blk)
+	(macro manage_var_db_lnk_files ((type ARG1))
+		(call file_rw_var_db_dirs (ARG1))
+		(call manage_lnk_files_pattern (ARG1 var_db_file var_db_file))))
+
 (block read_var_db_sock_files_blk
 	(blockabstract read_var_db_sock_files_blk)
 	(macro read_var_db_sock_files ((type ARG1))
@@ -1731,6 +1833,12 @@
 	(macro read_all_var_db_lnk_files ((type ARG1))
 		(call file_search_var_db (ARG1))
 		(call read_lnk_files_pattern (ARG1 var_db_obj_type_attribute var_db_obj_type_attribute))))
+
+(block manage_all_var_db_lnk_files_blk
+	(blockabstract manage_all_var_db_lnk_files_blk)
+	(macro manage_all_var_db_lnk_files ((type ARG1))
+		(call file_rw_var_db_dirs (ARG1))
+		(call manage_lnk_files_pattern (ARG1 var_db_obj_type_attribute var_db_obj_type_attribute))))
 
 (block read_all_var_db_sock_files_blk
 	(blockabstract read_all_var_db_sock_files_blk)
@@ -1822,6 +1930,12 @@
 		(call file_search_var_lib (ARG1))
 		(call read_lnk_files_pattern (ARG1 var_lib_file var_lib_file))))
 
+(block manage_var_lib_lnk_files_blk
+	(blockabstract manage_var_lib_lnk_files_blk)
+	(macro manage_var_lib_lnk_files ((type ARG1))
+		(call file_rw_var_lib_dirs (ARG1))
+		(call manage_lnk_files_pattern (ARG1 var_lib_file var_lib_file))))
+
 (block read_var_lib_sock_files_blk
 	(blockabstract read_var_lib_sock_files_blk)
 	(macro read_var_lib_sock_files ((type ARG1))
@@ -1911,6 +2025,12 @@
 	(macro read_all_var_lib_lnk_files ((type ARG1))
 		(call file_search_var_lib (ARG1))
 		(call read_lnk_files_pattern (ARG1 var_lib_obj_type_attribute var_lib_obj_type_attribute))))
+
+(block manage_all_var_lib_lnk_files_blk
+	(blockabstract manage_all_var_lib_lnk_files_blk)
+	(macro manage_all_var_lib_lnk_files ((type ARG1))
+		(call file_rw_var_lib_dirs (ARG1))
+		(call manage_lnk_files_pattern (ARG1 var_lib_obj_type_attribute var_lib_obj_type_attribute))))
 
 (block read_all_var_lib_sock_files_blk
 	(blockabstract read_all_var_lib_sock_files_blk)
@@ -2002,6 +2122,12 @@
 		(call file_search_var_log (ARG1))
 		(call read_lnk_files_pattern (ARG1 var_log_file var_log_file))))
 
+(block manage_var_log_lnk_files_blk
+	(blockabstract manage_var_log_lnk_files_blk)
+	(macro manage_var_log_lnk_files ((type ARG1))
+		(call file_rw_var_log_dirs (ARG1))
+		(call manage_lnk_files_pattern (ARG1 var_log_file var_log_file))))
+
 (block read_var_log_sock_files_blk
 	(blockabstract read_var_log_sock_files_blk)
 	(macro read_var_log_sock_files ((type ARG1))
@@ -2091,6 +2217,12 @@
 	(macro read_all_var_log_lnk_files ((type ARG1))
 		(call file_search_var_log (ARG1))
 		(call read_lnk_files_pattern (ARG1 var_log_obj_type_attribute var_log_obj_type_attribute))))
+
+(block manage_all_var_log_lnk_files_blk
+	(blockabstract manage_all_var_log_lnk_files_blk)
+	(macro manage_all_var_log_lnk_files ((type ARG1))
+		(call file_search_var_log (ARG1))
+		(call manage_lnk_files_pattern (ARG1 var_log_obj_type_attribute var_log_obj_type_attribute))))
 
 (block read_all_var_log_sock_files_blk
 	(blockabstract read_all_var_log_sock_files_blk)
@@ -2182,6 +2314,12 @@
 		(call file_search_var_spool (ARG1))
 		(call read_lnk_files_pattern (ARG1 var_spool_file var_spool_file))))
 
+(block manage_var_spool_lnk_files_blk
+	(blockabstract manage_var_spool_lnk_files_blk)
+	(macro manage_var_spool_lnk_files ((type ARG1))
+		(call file_rw_var_spool_dirs (ARG1))
+		(call manage_lnk_files_pattern (ARG1 var_spool_file var_spool_file))))
+
 (block read_var_spool_sock_files_blk
 	(blockabstract read_var_spool_sock_files_blk)
 	(macro read_var_spool_sock_files ((type ARG1))
@@ -2271,6 +2409,12 @@
 	(macro read_all_var_spool_lnk_files ((type ARG1))
 		(call file_search_var_spool (ARG1))
 		(call read_lnk_files_pattern (ARG1 var_spool_obj_type_attribute var_spool_obj_type_attribute))))
+
+(block manage_all_var_spool_lnk_files_blk
+	(blockabstract manage_all_var_spool_lnk_files_blk)
+	(macro manage_all_var_spool_lnk_files ((type ARG1))
+		(call file_rw_var_spool_dirs (ARG1))
+		(call manage_lnk_files_pattern (ARG1 var_spool_obj_type_attribute var_spool_obj_type_attribute))))
 
 (block read_all_var_spool_sock_files_blk
 	(blockabstract read_all_var_spool_sock_files_blk)
@@ -2362,6 +2506,12 @@
 		(call file_search_var_tmp (ARG1))
 		(call read_lnk_files_pattern (ARG1 var_tmp_file var_tmp_file))))
 
+(block manage_var_tmp_lnk_files_blk
+	(blockabstract manage_var_tmp_lnk_files_blk)
+	(macro manage_var_tmp_lnk_files ((type ARG1))
+		(call file_rw_var_tmp_dirs (ARG1))
+		(call manage_lnk_files_pattern (ARG1 var_tmp_file var_tmp_file))))
+
 (block read_var_tmp_sock_files_blk
 	(blockabstract read_var_tmp_sock_files_blk)
 	(macro read_var_tmp_sock_files ((type ARG1))
@@ -2451,6 +2601,12 @@
 	(macro read_all_var_tmp_lnk_files ((type ARG1))
 		(call file_search_var_tmp (ARG1))
 		(call read_lnk_files_pattern (ARG1 var_tmp_obj_type_attribute var_tmp_obj_type_attribute))))
+
+(block manage_all_var_tmp_lnk_files_blk
+	(blockabstract manage_all_var_tmp_lnk_files_blk)
+	(macro manage_all_var_tmp_lnk_files ((type ARG1))
+		(call file_rw_var_tmp_dirs (ARG1))
+		(call manage_lnk_files_pattern (ARG1 var_tmp_obj_type_attribute var_tmp_obj_type_attribute))))
 
 (block read_all_var_tmp_sock_files_blk
 	(blockabstract read_all_var_tmp_sock_files_blk)
@@ -2542,6 +2698,12 @@
 		(call fs_search_tmpfs (ARG1))
 		(call read_lnk_files_pattern (ARG1 tmpfs_file tmpfs_file))))
 
+(block manage_tmpfs_lnk_files_blk
+	(blockabstract manage_tmpfs_lnk_files_blk)
+	(macro manage_tmpfs_lnk_files ((type ARG1))
+		(call fs_rw_tmpfs_dirs (ARG1))
+		(call manage_lnk_files_pattern (ARG1 tmpfs_file tmpfs_file))))
+
 (block read_tmpfs_sock_files_blk
 	(blockabstract read_tmpfs_sock_files_blk)
 	(macro read_tmpfs_sock_files ((type ARG1))
@@ -2631,6 +2793,12 @@
 	(macro read_all_tmpfs_lnk_files ((type ARG1))
 		(call fs_search_tmpfs (ARG1))
 		(call read_lnk_files_pattern (ARG1 tmpfs_obj_type_attribute tmpfs_obj_type_attribute))))
+
+(block manage_all_tmpfs_lnk_files_blk
+	(blockabstract manage_all_tmpfs_lnk_files_blk)
+	(macro manage_all_tmpfs_lnk_files ((type ARG1))
+		(call fs_rw_tmpfs_dirs (ARG1))
+		(call manage_lnk_files_pattern (ARG1 tmpfs_obj_type_attribute tmpfs_obj_type_attribute))))
 
 (block read_all_tmpfs_sock_files_blk
 	(blockabstract read_all_tmpfs_sock_files_blk)
