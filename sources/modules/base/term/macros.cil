@@ -22,6 +22,41 @@
 	(type tty_dev)
 	(call term_tty_obj_type (tty_dev)))
 
+(block setattr_login_ptys_blk
+	(blockabstract setattr_login_ptys_blk)
+	(macro setattr_login_ptys ((type ARG1))
+		(call fs_search_devpts (ARG1))
+		(allow ARG1 login_pty_dev (chr_file (setattr)))))
+
+(block use_login_ptys_blk
+	(blockabstract use_login_ptys_blk)
+	(macro use_login_ptys ((type ARG1))
+		(call fs_search_devpts (ARG1))
+		(allow ARG1 login_pty_dev rw_term_perms)))
+
+(block use_inherited_login_ptys_blk
+	(blockabstract use_inherited_login_ptys_blk)
+	(macro use_inherited_login_ptys ((type ARG1))
+		(allow ARG1 login_pty_dev rw_inherited_term_perms)))
+
+(block relabel_login_ptys_blk
+	(blockabstract relabel_login_ptys_blk)
+	(macro relabel_login_ptys ((type ARG1))
+		(call fs_search_devpts (ARG1))
+		(allow ARG1 login_pty_dev relabel_chr_file_perms)))
+
+(block relabelfrom_login_ptys_blk
+	(blockabstract relabelfrom_login_ptys_blk)
+	(macro relabelfrom_login_ptys ((type ARG1))
+		(call fs_search_devpts (ARG1))
+		(allow ARG1 login_pty_dev relabelfrom_chr_file_perms)))
+
+(block relabelto_login_ptys_blk
+	(blockabstract relabelto_login_ptys_blk)
+	(macro relabelto_login_ptys ((type ARG1))
+		(call fs_search_devpts (ARG1))
+		(allow ARG1 login_pty_dev relabelto_chr_file_perms)))
+
 (macro term_pty_obj_type ((type ARG1))
 	(call dev_obj_type (ARG1))
 	(typeattributeset term_pty_obj_type ARG1))
