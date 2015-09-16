@@ -112,8 +112,8 @@
 		(call sd.send_signal (subj)))
 
 	(optional sys_optional_sd_cgagent
-		(call sd_cgagent_auto_subj_type_transition (subj))
-		(call sd_cgagent_mls (subj systemlow systemhigh)))
+		(call sd_cgagent.auto_subj_type_transition (subj))
+		(call sd_cgagent.mls (subj systemlow systemhigh)))
 
 	(optional sys_optional_sd_coredump
 		(call sd_coredump_auto_subj_type_transition (subj))
