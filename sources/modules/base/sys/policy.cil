@@ -123,7 +123,7 @@
 		(call sd_machined.audit_access_var_lib_files (subj)))
 
 	(optional sys_optional_sd_nspawn
-		(call sd_nspawn_use_fd (subj)))
+		(call sd_nspawn.use_fd (subj)))
 
 	(optional sys_optional_storage
 		(call storage_devtmpfs_obj_type_transition_fixed_disk (subj))
