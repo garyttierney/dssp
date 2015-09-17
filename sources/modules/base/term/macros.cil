@@ -4,23 +4,40 @@
 	(type pty_dev)
 	(call term_pty_obj_type (pty_dev)))
 
+(block relabel_ptys_blk
+	(blockabstract relabel_ptys_blk)
+	(macro relabel_ptys ((type ARG1))
+		(call fs_search_devpts (ARG1))
+		(allow ARG1 pty_dev relabel_chr_file_perms)))
+
+(block setattr_ptys_blk
+	(blockabstract setattr_ptys_blk)
+	(macro setattr_ptys ((type ARG1))
+		(call fs_search_devpts (ARG1))
+		(allow ARG1 pty_dev (chr_file (setattr)))))
+
+(block getattr_ptys_blk
+	(blockabstract getattr_ptys_blk)
+	(macro getattr_ptys ((type ARG1))
+		(call fs_search_devpts (ARG1))
+		(allow ARG1 pty_dev (chr_file (getattr)))))
+
+(block use_ptys_blk
+	(blockabstract use_ptys_blk)
+	(macro use_ptys ((type ARG1))
+		(call fs_search_devpts (ARG1))
+		(allow ARG1 pty_dev rw_term_perms)))
+
+(block use_inherited_ptys_blk
+	(blockabstract use_inherited_ptys_blk)
+	(macro use_inherited_ptys ((type ARG1))
+		(allow ARG1 pty_dev rw_inherited_term_perms)))
+
 (block term_login_pty_obj_blk
 	(blockabstract term_login_pty_obj_blk)
 
 	(type login_pty_dev)
 	(call term_login_pty_obj_type (login_pty_dev)))
-
-(block term_serial_obj_blk
-	(blockabstract term_serial_obj_blk)
-
-	(type serial_dev)
-	(call term_serial_obj_type (serial_dev)))
-
-(block term_tty_obj_blk
-	(blockabstract term_tty_obj_blk)
-
-	(type tty_dev)
-	(call term_tty_obj_type (tty_dev)))
 
 (block setattr_login_ptys_blk
 	(blockabstract setattr_login_ptys_blk)
@@ -56,6 +73,18 @@
 	(macro relabelto_login_ptys ((type ARG1))
 		(call fs_search_devpts (ARG1))
 		(allow ARG1 login_pty_dev relabelto_chr_file_perms)))
+
+(block term_serial_obj_blk
+	(blockabstract term_serial_obj_blk)
+
+	(type serial_dev)
+	(call term_serial_obj_type (serial_dev)))
+
+(block term_tty_obj_blk
+	(blockabstract term_tty_obj_blk)
+
+	(type tty_dev)
+	(call term_tty_obj_type (tty_dev)))
 
 (macro term_pty_obj_type ((type ARG1))
 	(call dev_obj_type (ARG1))
