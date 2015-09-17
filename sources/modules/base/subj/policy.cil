@@ -47,7 +47,7 @@
 	(call sd.send_sigchld (subj_type)))
 
 (optional subj_type_optional_sd_shutdown
-	(call sd_shutdown_send_sigchld (subj_type)))
+	(call sd_shutdown.send_sigchld (subj_type)))
 
 (allow subj_common_type self (process (fork sigchld)))
 
