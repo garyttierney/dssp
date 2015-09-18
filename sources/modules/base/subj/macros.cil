@@ -98,6 +98,12 @@
 		(allow ARG1 subj (fd (use)))
 		(allow ARG1 subj rw_inherited_unix_stream_socket_perms)))
 
+(block rw_inherited_unix_dgram_sockets_blk
+	(blockabstract rw_inherited_unix_dgram_sockets_blk)
+	(macro rw_inherited_unix_dgram_sockets ((type ARG1))
+		(allow ARG1 subj (fd (use)))
+		(allow ARG1 subj rw_inherited_unix_dgram_socket_perms)))
+
 (block share_blk
 	(blockabstract share_blk)
 	(macro share ((type ARG1))
@@ -220,6 +226,12 @@
 	(macro rw_inherited_unix_stream_sockets_all_subj ((type ARG1))
 		(allow ARG1 subj_type_attribute (fd (use)))
 		(allow ARG1 subj_type_attribute rw_inherited_unix_stream_socket_perms)))
+
+(block rw_inherited_unix_dgram_sockets_all_blk
+	(blockabstract rw_inherited_unix_dgram_sockets_all_blk)
+	(macro rw_inherited_unix_dgram_sockets_all_subj ((type ARG1))
+		(allow ARG1 subj_type_attribute (fd (use)))
+		(allow ARG1 subj_type_attribute rw_inherited_unix_dgram_socket_perms)))
 
 (block share_all_blk
 	(blockabstract share_all_blk)
