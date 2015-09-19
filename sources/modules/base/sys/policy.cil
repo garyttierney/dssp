@@ -100,9 +100,9 @@
 			(call file_read_all_inherited_files_except (subj)))))
 
 	(optional sys_optional_plymouth
-		(call plymouth_read_config (subj))
-		(call plymouth_manage_plymouthd_runtime_files (subj))
-		(call plymouth_manage_plymouthd_var_lib_files (subj)))
+		(call plymouth.read_config (subj))
+		(call plymouthd.manage_runtime_files (subj))
+		(call plymouthd.manage_var_lib_files (subj)))
 
 	(optional sys_optional_sd
 		(call subj_dynamic_subj_type_transition_type (subj))
