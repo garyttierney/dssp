@@ -90,8 +90,8 @@
 		(call fstools.use_fd (subj)))
 
 	(optional sys_optional_kmod
-		(call kmod_auto_subj_type_transition (subj))
-		(call kmod_mls (subj systemlow systemhigh)))
+		(call kmod.auto_subj_type_transition (subj))
+		(call kmod.mls (subj systemlow systemhigh)))
 
 	(optional sys_optional_mount
 		(call mount_use_fd (subj))
