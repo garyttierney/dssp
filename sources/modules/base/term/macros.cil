@@ -195,4 +195,4 @@
 (macro term_set_console_login_boolean ((type ARG1))
 	(call sec_set_spec_boolean (ARG1 term_console_login.bool))
 	(optional term_set_console_login_boolean_optional_seutil
-		(call seutil_exec_setsebool (ARG1))))
+		(call setsebool.exec (ARG1))))

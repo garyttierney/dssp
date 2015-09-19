@@ -71,7 +71,7 @@
 	(call mcstransd.client_subj_type (subj_common_type)))
 
 (optional subj_common_type_optional_seutil
-	(call seutil_libselinux_linked_client_subj_type (subj_common_type)))
+	(call seutil.libselinux_linked_client_subj_type (subj_common_type)))
 
 (typeattribute subj_not_subj_entry_obj_type)
 
