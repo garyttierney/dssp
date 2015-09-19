@@ -94,7 +94,7 @@
 		(call kmod.mls (subj systemlow systemhigh)))
 
 	(optional sys_optional_mount
-		(call mount_use_fd (subj))
+		(call mount.use_fd (subj))
 
 		(booleanif (mount_any_file) (true
 			(call file_read_all_inherited_files_except (subj)))))
