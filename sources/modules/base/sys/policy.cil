@@ -87,7 +87,7 @@
 			(userrole id object_r)))
 
 	(optional sys_optional_fstools
-		(call fstools_use_fd (subj)))
+		(call fstools.use_fd (subj)))
 
 	(optional sys_optional_kmod
 		(call kmod_auto_subj_type_transition (subj))
