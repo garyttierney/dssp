@@ -23,7 +23,7 @@
 	(typeattributeset cmd_obj_type ARG1))
 
 (macro cmd_read_cmd ((type ARG1))
-	(call file_search_data (ARG1))
+	(call file.search_data (ARG1))
 	(allow ARG1 cmd.cmd_file list_dir_perms)
 	(allow ARG1 cmd.cmd_file read_file_perms)
 	(allow ARG1 cmd.cmd_file read_lnk_file_perms))
@@ -33,16 +33,16 @@
 	(allow ARG1 cmd.cmd_file read_file_perms))
 
 (macro cmd_read_cmd_lnk_files ((type ARG1))
-	(call file_search_data (ARG1))
+	(call file.search_data (ARG1))
 	(call read_lnk_files_pattern (ARG1 cmd.cmd_file cmd.cmd_file)))
 
 (macro cmd_search_cmd ((type ARG1))
-	(call file_search_data (ARG1))
+	(call file.search_data (ARG1))
 	(allow ARG1 cmd.cmd_file read_lnk_file_perms)
 	(allow ARG1 cmd.cmd_file search_dir_perms))
 
 (macro cmd_list_cmd ((type ARG1))
-	(call file_search_data (ARG1))
+	(call file.search_data (ARG1))
 	(allow ARG1 cmd.cmd_file read_lnk_file_perms)
 	(allow ARG1 cmd.cmd_file list_dir_perms))
 

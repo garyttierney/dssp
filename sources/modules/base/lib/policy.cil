@@ -7,9 +7,9 @@
 	(blockinherit lib_obj_blk))
 
 (block ld_so
-	(blockinherit file_obj_blk))
+	(blockinherit file.obj_blk))
 
 (block ld_so_cache
-	(blockinherit file_obj_blk))
+	(blockinherit file.obj_blk))
 
-(call file_obj_type (lib_obj_type))
+(call file.file_obj_type (lib_obj_type))

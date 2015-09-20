@@ -34,7 +34,7 @@
 
 	(roleallow role sys_roleallow_role)
 
-	(blockinherit file_var_log_obj_blk)
+	(blockinherit file.var_log_obj_blk)
 
 	(allow subj self (capability (sys_tty_config sys_admin sys_nice net_admin net_bind_service)))
 	(allow subj self (capability2 (block_suspend)))
@@ -42,7 +42,7 @@
 	(allow subj self create_unix_stream_socket_perms)
 
 	(allow subj var_log_file manage_file_perms)
-	(call file_var_log_obj_type_transition (subj var_log_file file "boot.log"))
+	(call file.var_log_obj_type_transition (subj var_log_file file "boot.log"))
 
 	(call sys_change_ring_buffer_level (subj))
 	(call sys_request_load_module (subj))
@@ -64,7 +64,7 @@
 	(call dev_devtmpfs_obj_type_transition_watchdog (subj))
 	(call dev_devtmpfs_obj_type_transition_wireless (subj))
 
-	(call file_read_data_files (subj))
+	(call file.read_data_files (subj))
 
 	(call fs_dontaudit_write_devtmpfs_chr_files (subj))
 	(call fs_list_rootfs (subj))
@@ -97,7 +97,7 @@
 		(call mount.use_fd (subj))
 
 		(booleanif (mount_any_file) (true
-			(call file_read_all_inherited_files_except (subj)))))
+			(call file.read_all_inherited_files_except (subj)))))
 
 	(optional sys_optional_plymouth
 		(call plymouth.read_config (subj))

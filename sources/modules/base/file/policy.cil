@@ -1,140 +1,141 @@
 (boolean file_execmod_all_except false)
 
-(typeattribute file_obj_type)
+(block file
+	(typeattribute obj_type_attribute)
 
-(typeattribute file_auth_obj_type)
-(typeattribute file_non_auth_obj_type)
+	(typeattribute auth_obj_type_attribute)
+	(typeattribute non_auth_obj_type_attribute)
 
-(typeattribute file_sec_obj_type)
-(typeattribute file_non_sec_obj_type)
+	(typeattribute sec_obj_type_attribute)
+	(typeattribute non_sec_obj_type_attribute)
 
-(typeattribute file_boot_obj_type)
-(typeattribute file_boot_flag_obj_type)
-(typeattribute file_config_obj_type)
-(typeattribute file_data_obj_type)
-(typeattribute file_runtime_obj_type)
-(typeattribute file_runtime_config_obj_type)
-(typeattribute file_runtime_lock_obj_type)
-(typeattribute file_var_obj_type)
-(typeattribute file_var_cache_obj_type)
-(typeattribute file_var_db_obj_type)
-(typeattribute file_var_lib_obj_type)
-(typeattribute file_var_log_obj_type)
-(typeattribute file_var_spool_obj_type)
-(typeattribute file_var_tmp_obj_type)
-(typeattribute file_tmpfs_obj_type)
+	(typeattribute boot_obj_type_attribute)
+	(typeattribute boot_flag_obj_type_attribute)
+	(typeattribute config_obj_type_attribute)
+	(typeattribute data_obj_type_attribute)
+	(typeattribute runtime_obj_type_attribute)
+	(typeattribute runtime_config_obj_type_attribute)
+	(typeattribute runtime_lock_obj_type_attribute)
+	(typeattribute var_obj_type_attribute)
+	(typeattribute var_cache_obj_type_attribute)
+	(typeattribute var_db_obj_type_attribute)
+	(typeattribute var_lib_obj_type_attribute)
+	(typeattribute var_log_obj_type_attribute)
+	(typeattribute var_spool_obj_type_attribute)
+	(typeattribute var_tmp_obj_type_attribute)
+	(typeattribute tmpfs_obj_type_attribute)
 
-(typeattribute file_unconfined_subj_type)
+	(typeattribute unconfined_subj_type_attribute)
+
+	(call sys_obj_type (obj_type_attribute))
+
+	(call fs_associate_fs (obj_type_attribute))
+
+	(call fs_associate_tmpfs (runtime_obj_type_attribute))
+	(call fs_associate_tmpfs (runtime_lock_obj_type_attribute))
+
+	(call fs_associate_tmpfs (tmpfs_obj_type_attribute))
+
+	(typeattribute except_obj_type_attribute)
+	(typeattribute exception_obj_type_attribute)
+
+	(typeattributeset except_obj_type_attribute (and (obj_type_attribute) (not (auth_obj_type_attribute sec_obj_type_attribute exception_obj_type_attribute))))
+
+	(allow unconfined_subj_type_attribute except_obj_type_attribute all_file_perms_except_mounton_execmod_and_entrypoint)
+	(allow unconfined_subj_type_attribute except_obj_type_attribute all_dir_perms_except_mounton_and_execmod)
+	(allow unconfined_subj_type_attribute except_obj_type_attribute all_fifo_file_perms_except_mounton_and_execmod)
+	(allow unconfined_subj_type_attribute except_obj_type_attribute all_lnk_file_perms_except_mounton_and_execmod)
+	(allow unconfined_subj_type_attribute except_obj_type_attribute all_sock_file_perms_except_mounton_and_execmod)
+	(allow unconfined_subj_type_attribute except_obj_type_attribute all_blk_file_perms_except_mounton_and_execmod)
+	(allow unconfined_subj_type_attribute except_obj_type_attribute all_chr_file_perms_except_mounton_and_execmod)
+
+	(call rootfs_obj_type_transition_unknown (unconfined_subj_type_attribute))
+
+	(call execmod_all_except_subj_type (unconfined_subj_type_attribute)))
 
 (block boot
-	(blockinherit file_boot_obj_blk)
+	(blockinherit file.boot_obj_blk)
 
 	(call sys_mountpoint_obj_type (boot_file)))
 
 (block config
-	(blockinherit file_config_obj_blk)
+	(blockinherit file.config_obj_blk)
 
 	(call sys_mountpoint_obj_type (config_file)))
 
 (block data
-	(blockinherit file_data_obj_blk)
+	(blockinherit file.data_obj_blk)
 
 	(call sys_mountpoint_obj_type (data_file)))
 
 (block home
-	(blockinherit file_obj_blk)
+	(blockinherit file.obj_blk)
 
 	(call sys_mountpoint_obj_type (file)))
 
 (block lost_found
-	(blockinherit file_obj_blk))
+	(blockinherit file.obj_blk))
 
 (block mnt
-	(blockinherit file_obj_blk)
+	(blockinherit file.obj_blk)
 
 	(call sys_mountpoint_obj_type (file)))
 
 (block runtime
-	(blockinherit file_runtime_obj_blk)
+	(blockinherit file.runtime_obj_blk)
 
 	(call sys_mountpoint_obj_type (runtime_file)))
 
 (block runtime_config
-	(blockinherit file_runtime_config_obj_blk))
+	(blockinherit file.runtime_config_obj_blk))
 
 (block runtime_lock
-	(blockinherit file_runtime_lock_obj_blk)
+	(blockinherit file.runtime_lock_obj_blk)
 
 	(call sys_mountpoint_obj_type (runtime_lock_file)))
 
 (block runtime_user
-	(blockinherit file_runtime_obj_blk)
+	(blockinherit file.runtime_obj_blk)
 
 	(call sys_mountpoint_obj_type (runtime_file)))
 
 (block unknown
-	(blockinherit file_obj_blk))
+	(blockinherit file.obj_blk))
 
 (block var
-	(blockinherit file_var_obj_blk)
+	(blockinherit file.var_obj_blk)
 
 	(call sys_mountpoint_obj_type (var_file)))
 
 (block var_cache
-	(blockinherit file_var_cache_obj_blk)
+	(blockinherit file.var_cache_obj_blk)
 
 	(call sys_mountpoint_obj_type (var_cache_file)))
 
 (block var_db
-	(blockinherit file_var_db_obj_blk)
+	(blockinherit file.var_db_obj_blk)
 
 	(call sys_mountpoint_obj_type (var_db_file)))
 
 (block var_lib
-	(blockinherit file_var_lib_obj_blk)
+	(blockinherit file.var_lib_obj_blk)
 
 	(call sys_mountpoint_obj_type (var_lib_file)))
 
 (block var_log
-	(blockinherit file_var_log_obj_blk)
+	(blockinherit file.var_log_obj_blk)
 
 	(call sys_mountpoint_obj_type (var_log_file)))
 
 (block var_spool
-	(blockinherit file_var_spool_obj_blk)
+	(blockinherit file.var_spool_obj_blk)
 
 	(call sys_mountpoint_obj_type (var_spool_file)))
 
 (block var_tmp
-	(blockinherit file_var_tmp_obj_blk)
+	(blockinherit file.var_tmp_obj_blk)
 
 	(call sys_mountpoint_obj_type (var_tmp_file)))
 
 (block file_execmod_all_except
 	(blockinherit sec_bool_obj_blk))
-
-(call sys_obj_type (file_obj_type))
-
-(call fs_associate_fs (file_obj_type))
-
-(call fs_associate_tmpfs (file_runtime_obj_type))
-(call fs_associate_tmpfs (file_runtime_lock_obj_type))
-
-(call fs_associate_tmpfs (file_tmpfs_obj_type))
-
-(typeattribute file_except_obj_type)
-(typeattribute file_exception_obj_type)
-
-(typeattributeset file_except_obj_type (and (file_obj_type) (not (file_auth_obj_type file_sec_obj_type file_exception_obj_type))))
-
-(allow file_unconfined_subj_type file_except_obj_type all_file_perms_except_mounton_execmod_and_entrypoint)
-(allow file_unconfined_subj_type file_except_obj_type all_dir_perms_except_mounton_and_execmod)
-(allow file_unconfined_subj_type file_except_obj_type all_fifo_file_perms_except_mounton_and_execmod)
-(allow file_unconfined_subj_type file_except_obj_type all_lnk_file_perms_except_mounton_and_execmod)
-(allow file_unconfined_subj_type file_except_obj_type all_sock_file_perms_except_mounton_and_execmod)
-(allow file_unconfined_subj_type file_except_obj_type all_blk_file_perms_except_mounton_and_execmod)
-(allow file_unconfined_subj_type file_except_obj_type all_chr_file_perms_except_mounton_and_execmod)
-
-(call file_rootfs_obj_type_transition_unknown (file_unconfined_subj_type))
-
-(call file_execmod_all_except_subj_type (file_unconfined_subj_type))

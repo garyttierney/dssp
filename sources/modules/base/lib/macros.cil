@@ -8,7 +8,7 @@
 	(typeattributeset lib_obj_type ARG1))
 
 (macro lib_read_lib ((type ARG1))
-	(call file_search_data (ARG1))
+	(call file.search_data (ARG1))
 	(allow ARG1 lib.lib_file read_file_perms)
 	(allow ARG1 lib.lib_file list_dir_perms)
 	(allow ARG1 lib.lib_file read_lnk_file_perms))
@@ -22,16 +22,16 @@
 	(allow ARG1 lib.lib_file delete_file_perms))
 
 (macro lib_read_lib_lnk_files ((type ARG1))
-	(call file_search_data (ARG1))
+	(call file.search_data (ARG1))
 	(call read_lnk_files_pattern (ARG1 lib.lib_file lib.lib_file)))
 
 (macro lib_search_lib ((type ARG1))
-	(call file_search_data (ARG1))
+	(call file.search_data (ARG1))
 	(allow ARG1 lib.lib_file read_lnk_file_perms)
 	(allow ARG1 lib.lib_file search_dir_perms))
 
 (macro lib_list_lib ((type ARG1))
-	(call file_search_data (ARG1))
+	(call file.search_data (ARG1))
 	(allow ARG1 lib.lib_file read_lnk_file_perms)
 	(allow ARG1 lib.lib_file list_dir_perms))
 
@@ -52,7 +52,7 @@
 	(allow ARG1 lib.lib_file create_lnk_file_perms))
 
 (macro lib_manage_lib ((type ARG1))
-	(call file_rw_data_dirs (ARG1))
+	(call file.rw_data_dirs (ARG1))
 	(allow ARG1 lib.lib_file manage_file_perms)
 	(allow ARG1 lib.lib_file manage_dir_perms)
 	(allow ARG1 lib.lib_file manage_lnk_file_perms))
@@ -67,18 +67,18 @@
 	(call lib_read_ld_so_cache_files (ARG1)))
 
 (macro lib_read_ld_so_cache_files ((type ARG1))
-	(call file_search_config (ARG1))
+	(call file.search_config (ARG1))
 	(allow ARG1 ld_so_cache.file read_file_perms))
 
 (macro lib_manage_ld_so_cache_files ((type ARG1))
-	(call file_rw_config_dirs (ARG1))
+	(call file.rw_config_dirs (ARG1))
 	(allow ARG1 ld_so_cache.file manage_file_perms))
 
 (macro lib_config_obj_type_transition_ld_so_cache_files ((type ARG1))
-	(call file_config_obj_type_transition (ARG1 ld_so_cache.file file "ld.so.cache"))
-	(call file_config_obj_type_transition (ARG1 ld_so_cache.file file "ld.so.cache~"))
-	(call file_config_obj_type_transition (ARG1 ld_so_cache.file file "ld.so.preload"))
-	(call file_config_obj_type_transition (ARG1 ld_so_cache.file file "ld.so.preload~")))
+	(call file.config_obj_type_transition (ARG1 ld_so_cache.file file "ld.so.cache"))
+	(call file.config_obj_type_transition (ARG1 ld_so_cache.file file "ld.so.cache~"))
+	(call file.config_obj_type_transition (ARG1 ld_so_cache.file file "ld.so.preload"))
+	(call file.config_obj_type_transition (ARG1 ld_so_cache.file file "ld.so.preload~")))
 
 (macro lib_use_all_libs ((type ARG1))
 	(call lib_list_lib (ARG1))

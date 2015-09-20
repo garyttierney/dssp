@@ -6,4 +6,4 @@
 (block shell
 	(blockinherit cmd_obj_blk))
 
-(call file_obj_type (cmd_obj_type))
+(call file.file_obj_type (cmd_obj_type))
