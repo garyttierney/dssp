@@ -50,8 +50,8 @@
 	(call fs.search_sysfs (common_subj_type_attribute))
 
 	(optional common_subj_type_optional_lib
-		(call lib_use_ld_so (common_subj_type_attribute))
-		(call lib_use_all_libs (common_subj_type_attribute)))
+		(call lib.use_ld_so (common_subj_type_attribute))
+		(call lib.use_all_libs (common_subj_type_attribute)))
 
 	(optional common_subj_type_optional_mcstransd
 		(call mcstransd.client_subj_type (common_subj_type_attribute)))
