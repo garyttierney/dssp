@@ -97,7 +97,7 @@
 				(eq r1 rbacsep_exempt_role))
 				(eq t1 rbacsep_exempt_subj_type))
 				(eq t2 rbacsep_exempt_obj_type))
-				(and (eq r2 rbacsep_exempt_role) (neq t2 subj_common_type)))
+				(and (eq r2 rbacsep_exempt_role) (neq t2 subj.common_subj_type_attribute)))
 				(and (eq t1 rbacsep_read_state_source_subj_type) (eq t2 rbacsep_read_state_target_subj_type))))
 
 		(constrain (lnk_file (create relabelto relabelfrom))
@@ -110,7 +110,7 @@
 				(eq r1 rbacsep_exempt_role))
 				(eq t1 rbacsep_exempt_subj_type))
 				(eq t2 rbacsep_exempt_obj_type))
-				(and (eq r2 rbacsep_exempt_role) (neq t2 subj_common_type)))
+				(and (eq r2 rbacsep_exempt_role) (neq t2 subj.common_subj_type_attribute)))
 				(and (eq t1 rbacsep_read_state_source_subj_type) (eq t2 rbacsep_read_state_target_subj_type))))
 
 		(constrain (file (create relabelto relabelfrom))
@@ -123,7 +123,7 @@
 				(eq r1 rbacsep_exempt_role))
 				(eq t1 rbacsep_exempt_subj_type))
 				(eq t2 rbacsep_exempt_obj_type))
-				(and (eq r2 rbacsep_exempt_role) (neq t2 subj_common_type)))
+				(and (eq r2 rbacsep_exempt_role) (neq t2 subj.common_subj_type_attribute)))
 				(and (eq t1 rbacsep_read_state_source_subj_type) (eq t2 rbacsep_read_state_target_subj_type))))
 
 		(constrain (tcp_socket (create relabelto relabelfrom))

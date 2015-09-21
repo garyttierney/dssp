@@ -24,7 +24,7 @@
 
 	(role role)
 
-	(blockinherit subj_common_blk)
+	(blockinherit subj.common_subj_blk)
 
 	(userrole id role)
 	(roletype role subj)
@@ -105,7 +105,7 @@
 		(call plymouthd.manage_var_lib_files (subj)))
 
 	(optional sys_optional_sd
-		(call subj_dynamic_subj_type_transition_type (subj))
+		(call subj.dynamic_type_transition_subj_type (subj))
 		(call sd.dynamic_subj_type_transition (subj))
 		(call sd.getattr_cmd_files (subj))
 		(call sd.mls (subj systemlow systemhigh))

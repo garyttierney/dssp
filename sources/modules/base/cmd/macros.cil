@@ -7,7 +7,7 @@
 (block cmd_obj_entry_subj_blk
 	(blockabstract cmd_obj_entry_subj_blk)
 	(macro cmd_obj_entry_subj ((type ARG1))
-		(call subj_entry (ARG1 cmd_file))))
+		(call subj.entry (ARG1 cmd_file))))
 
 (block getattr_cmd_files_blk
 	(blockabstract getattr_cmd_files_blk)
@@ -47,7 +47,7 @@
 	(allow ARG1 cmd.cmd_file list_dir_perms))
 
 (macro cmd_obj_entry_subj ((type ARG1))
-	(call subj_entry (ARG1 cmd.cmd_file)))
+	(call subj.entry (ARG1 cmd.cmd_file)))
 
 (macro cmd_auto_subj_type_transition ((type ARG1)(type ARG2))
 	(call cmd_manual_subj_type_transition (ARG1 ARG2))
@@ -85,7 +85,7 @@
 	(allow ARG1 cmd_obj_type (file (getattr))))
 
 (macro cmd_shell_obj_entry_subj ((type ARG1))
-	(call subj_entry (ARG1 shell.cmd_file)))
+	(call subj.entry (ARG1 shell.cmd_file)))
 
 (macro cmd_shell_auto_subj_type_transition ((type ARG1)(type ARG2))
 	(call cmd_shell_manual_subj_type_transition (ARG1 ARG2))
