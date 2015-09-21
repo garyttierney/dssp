@@ -91,7 +91,7 @@
 
 	(optional sys_optional_kmod
 		(call kmod.auto_subj_type_transition (subj))
-		(call kmod.mls (subj systemlow systemhigh)))
+		(call kmod_mls (subj systemlow systemhigh)))
 
 	(optional sys_optional_mount
 		(call mount.use_fd (subj))
@@ -108,16 +108,16 @@
 		(call subj.dynamic_type_transition_subj_type (subj))
 		(call sd.dynamic_subj_type_transition (subj))
 		(call sd.getattr_cmd_files (subj))
-		(call sd.mls (subj systemlow systemhigh))
+		(call sd_mls (subj systemlow systemhigh))
 		(call sd.send_signal (subj)))
 
 	(optional sys_optional_sd_cgagent
 		(call sd_cgagent.auto_subj_type_transition (subj))
-		(call sd_cgagent.mls (subj systemlow systemhigh)))
+		(call sd_cgagent_mls (subj systemlow systemhigh)))
 
 	(optional sys_optional_sd_coredump
 		(call sd_coredump.auto_subj_type_transition (subj))
-		(call sd_coredump.mls (subj systemlow systemhigh)))
+		(call sd_coredump_mls (subj systemlow systemhigh)))
 
 	(optional sys_optional_sd_machined
 		(call sd_machined.audit_access_var_lib_files (subj)))
