@@ -1,83 +1,84 @@
-(macro mls_file_read_to_clr_subj_type ((type ARG1))
-	(typeattributeset mls_file_read_to_clr_subj_type ARG1))
+(in mls
+	(macro file_read_to_clr_subj_type ((type ARG1))
+		(typeattributeset file_read_to_clr_subj_type_attribute ARG1))
 
-(macro mls_file_read_subj_type ((type ARG1))
-	(typeattributeset mls_file_read_subj_type ARG1))
+	(macro file_read_subj_type ((type ARG1))
+		(typeattributeset file_read_subj_type_attribute ARG1))
 
-(macro mls_file_write_to_clr_subj_type ((type ARG1))
-	(typeattributeset mls_file_write_to_clr_subj_type ARG1))
+	(macro file_write_to_clr_subj_type ((type ARG1))
+		(typeattributeset file_write_to_clr_subj_type_attribute ARG1))
 
-(macro mls_file_write_subj_type ((type ARG1))
-	(typeattributeset mls_file_write_subj_type ARG1))
+	(macro file_write_subj_type ((type ARG1))
+		(typeattributeset file_write_subj_type_attribute ARG1))
 
-(macro mls_file_upgrade_subj_type ((type ARG1))
-	(typeattributeset mls_file_upgrade_subj_type ARG1))
+	(macro file_upgrade_subj_type ((type ARG1))
+		(typeattributeset file_upgrade_subj_type_attribute ARG1))
 
-(macro mls_file_downgrade_subj_type ((type ARG1))
-	(typeattributeset mls_file_downgrade_subj_type ARG1))
+	(macro file_downgrade_subj_type ((type ARG1))
+		(typeattributeset file_downgrade_subj_type_attribute ARG1))
 
-(macro mls_file_write_in_range_subj_type ((type ARG1))
-	(typeattributeset mls_file_write_in_range_subj_type ARG1))
+	(macro file_write_in_range_subj_type ((type ARG1))
+		(typeattributeset file_write_in_range_subj_type_attribute ARG1))
 
-(macro mls_net_read_subj_type ((type ARG1))
-	(typeattributeset mls_net_read_subj_type ARG1))
+	(macro net_read_subj_type ((type ARG1))
+		(typeattributeset net_read_subj_type_attribute ARG1))
 
-(macro mls_net_read_to_clr_subj_type ((type ARG1))
-	(typeattributeset mls_net_read_to_clr_subj_type ARG1))
+	(macro net_read_to_clr_subj_type ((type ARG1))
+		(typeattributeset net_read_to_clr_subj_type_attribute ARG1))
 
-(macro mls_net_write_to_clr_subj_type ((type ARG1))
-	(typeattributeset mls_net_write_to_clr_subj_type ARG1))
+	(macro net_write_to_clr_subj_type ((type ARG1))
+		(typeattributeset net_write_to_clr_subj_type_attribute ARG1))
 
-(macro mls_net_write_subj_type ((type ARG1))
-	(typeattributeset mls_net_write_subj_type ARG1))
+	(macro net_write_subj_type ((type ARG1))
+		(typeattributeset net_write_subj_type_attribute ARG1))
 
-(macro mls_net_write_ranged_subj_type ((type ARG1))
-	(typeattributeset mls_net_write_ranged_subj_type ARG1))
+	(macro net_write_ranged_subj_type ((type ARG1))
+		(typeattributeset net_write_ranged_subj_type_attribute ARG1))
 
-(macro mls_net_inbound_subj_type ((type ARG1))
-	(typeattributeset mls_net_inbound_subj_type ARG1))
+	(macro net_inbound_subj_type ((type ARG1))
+		(typeattributeset net_inbound_subj_type_attribute ARG1))
 
-(macro mls_net_outbound_subj_type ((type ARG1))
-	(typeattributeset mls_net_outbound_subj_type ARG1))
+	(macro net_outbound_subj_type ((type ARG1))
+		(typeattributeset net_outbound_subj_type_attribute ARG1))
 
-(macro mls_ipc_read_to_clr_subj_type ((type ARG1))
-	(typeattributeset mls_ipc_read_to_clr_subj_type ARG1))
+	(macro ipc_read_to_clr_subj_type ((type ARG1))
+		(typeattributeset ipc_read_to_clr_subj_type_attribute ARG1))
 
-(macro mls_ipc_read_subj_type ((type ARG1))
-	(typeattributeset mls_ipc_read_subj_type ARG1))
+	(macro ipc_read_subj_type ((type ARG1))
+		(typeattributeset ipc_read_subj_type_attribute ARG1))
 
-(macro mls_ipc_write_to_clr_subj_type ((type ARG1))
-	(typeattributeset mls_ipc_write_to_clr_subj_type ARG1))
+	(macro ipc_write_to_clr_subj_type ((type ARG1))
+		(typeattributeset ipc_write_to_clr_subj_type_attribute ARG1))
 
-(macro mls_ipc_write_subj_type ((type ARG1))
-	(typeattributeset mls_ipc_write_subj_type ARG1))
+	(macro ipc_write_subj_type ((type ARG1))
+		(typeattributeset ipc_write_subj_type_attribute ARG1))
 
-(macro mls_priv_range_trans_subj_type ((type ARG1))
-	(typeattributeset mls_priv_range_trans_subj_type ARG1))
+	(macro priv_range_trans_subj_type ((type ARG1))
+		(typeattributeset priv_range_trans_subj_type_attribute ARG1))
 
-(macro mls_range_trans_subj_type ((type ARG1))
-	(typeattributeset mls_range_trans_subj_type ARG1))
+	(macro range_trans_subj_type ((type ARG1))
+		(typeattributeset range_trans_subj_type_attribute ARG1))
 
-(macro mls_proc_read_to_clr_subj_type ((type ARG1))
-	(typeattributeset mls_proc_read_to_clr_subj_type ARG1))
+	(macro proc_read_to_clr_subj_type ((type ARG1))
+		(typeattributeset proc_read_to_clr_subj_type_attribute ARG1))
 
-(macro mls_proc_read_subj_type ((type ARG1))
-	(typeattributeset mls_proc_read_subj_type ARG1))
+	(macro proc_read_subj_type ((type ARG1))
+		(typeattributeset proc_read_subj_type_attribute ARG1))
 
-(macro mls_proc_write_to_clr_subj_type ((type ARG1))
-	(typeattributeset mls_proc_write_to_clr_subj_type ARG1))
+	(macro proc_write_to_clr_subj_type ((type ARG1))
+		(typeattributeset proc_write_to_clr_subj_type_attribute ARG1))
 
-(macro mls_proc_write_subj_type ((type ARG1))
-	(typeattributeset mls_proc_write_subj_type ARG1))
+	(macro proc_write_subj_type ((type ARG1))
+		(typeattributeset proc_write_subj_type_attribute ARG1))
 
-(macro mls_proc_set_sl_subj_type ((type ARG1))
-	(typeattributeset mls_proc_set_sl_subj_type ARG1))
+	(macro proc_set_sl_subj_type ((type ARG1))
+		(typeattributeset proc_set_sl_subj_type_attribute ARG1))
 
-(macro mls_trusted_obj_type ((type ARG1))
-	(typeattributeset mls_trusted_obj_type ARG1))
+	(macro trusted_obj_type ((type ARG1))
+		(typeattributeset trusted_obj_type_attribute ARG1))
 
-(macro mls_fd_use_subj_type ((type ARG1))
-	(typeattributeset mls_fd_use_subj_type ARG1))
+	(macro fd_use_subj_type ((type ARG1))
+		(typeattributeset fd_use_subj_type_attribute ARG1))
 
-(macro mls_fd_share_subj_type ((type ARG1))
-	(typeattributeset mls_fd_share_subj_type ARG1))
+	(macro fd_share_subj_type ((type ARG1))
+		(typeattributeset fd_share_subj_type_attribute ARG1)))

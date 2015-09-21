@@ -50,7 +50,7 @@
 (block devtty
 	(blockinherit dev.obj_blk)
 
-	(call mls_trusted_obj_type (dev))
+	(call mls.trusted_obj_type (dev))
 
 	(call fs.associate_tmpfs (dev)))
 
@@ -69,7 +69,7 @@
 (block kvm
 	(blockinherit dev.obj_blk)
 
-	(call mls_trusted_obj_type (dev)))
+	(call mls.trusted_obj_type (dev)))
 
 (block loop_control
 	(blockinherit dev.obj_blk))
@@ -89,7 +89,7 @@
 (block null
 	(blockinherit dev.obj_blk)
 
-	(call mls_trusted_obj_type (dev))
+	(call mls.trusted_obj_type (dev))
 
 	(call fs.associate_tmpfs (dev)))
 
@@ -108,7 +108,7 @@
 (block ptmx
 	(blockinherit dev.obj_blk)
 
-	(call mls_trusted_obj_type (dev)))
+	(call mls.trusted_obj_type (dev)))
 
 (block random
 	(blockinherit dev.obj_blk)
@@ -147,7 +147,7 @@
 (block vhost
 	(blockinherit dev.obj_blk)
 
-	(call mls_trusted_obj_type (dev)))
+	(call mls.trusted_obj_type (dev)))
 
 (block watchdog
 	(blockinherit dev.obj_blk))
@@ -161,6 +161,6 @@
 (block zero
 	(blockinherit dev.obj_blk)
 
-	(call mls_trusted_obj_type (dev))
+	(call mls.trusted_obj_type (dev))
 
 	(call fs.associate_tmpfs (dev)))

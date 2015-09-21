@@ -116,7 +116,7 @@
 (block anon_inodefs
 	(blockinherit fs.obj_blk)
 
-	(call mls_trusted_obj_type (fs)))
+	(call mls.trusted_obj_type (fs)))
 
 (block autofs_fs
 	(blockinherit fs.obj_blk)
@@ -161,7 +161,7 @@
 
 	(call sys.mountpoint_obj_type (fs))
 
-	(call mls_trusted_obj_type (fs))
+	(call mls.trusted_obj_type (fs))
 
 	(call fs.associate_fs (fs)))
 

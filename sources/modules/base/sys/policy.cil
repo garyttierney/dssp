@@ -47,7 +47,7 @@
 	(call change_ring_buffer_level (subj))
 	(call request_load_module (subj))
 
-	(call mls_priv_range_trans_subj_type (subj))
+	(call mls.priv_range_trans_subj_type (subj))
 
 	(call dev.manage_all (subj))
 
