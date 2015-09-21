@@ -379,27 +379,27 @@
 		(allow ARG1 common_subj_type_attribute (process (sigstop))))
 
 	(macro set_execheap_boolean ((type ARG1))
-		(call sec_set_spec_boolean (ARG1 subj_execheap.bool))
+		(call sec.set_spec_boolean (ARG1 subj_execheap.bool))
 		(optional subj_set_execheap_boolean_optional_seutil
 			(call setsebool.exec (ARG1))))
 
 	(macro set_exemem_boolean ((type ARG1))
-		(call sec_set_spec_boolean (ARG1 subj_mem.bool))
+		(call sec.set_spec_boolean (ARG1 subj_mem.bool))
 		(optional subj_set_execmem_boolean_optional_seutil
 			(call setsebool.exec (ARG1))))
 
 	(macro set_execstack_boolean ((type ARG1))
-		(call sec_set_spec_boolean (ARG1 subj_execstack.bool))
+		(call sec.set_spec_boolean (ARG1 subj_execstack.bool))
 		(optional subj_set_execstack_boolean_optional_seutil
 			(call setsebool.exec (ARG1))))
 
 	(macro set_mmap_low_boolean ((type ARG1))
-		(call sec_set_spec_boolean (ARG1 subj_mmap_low.bool))
+		(call sec.set_spec_boolean (ARG1 subj_mmap_low.bool))
 		(optional subj_set_mmap_low_boolean_optional_seutil
 			(call setsebool.exec (ARG1))))
 
 	(macro set_ptrace_boolean ((type ARG1))
-		(call sec_set_spec_boolean (ARG1 subj_ptrace.bool))
+		(call sec.set_spec_boolean (ARG1 subj_ptrace.bool))
 		(optional subj_set_ptrace_boolean_optional_seutil
 			(call setsebool.exec (ARG1))))
 

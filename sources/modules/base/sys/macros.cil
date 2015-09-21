@@ -636,7 +636,7 @@
 		(allow ARG1 subj (fd (use))))
 
 	(macro set_load_kernel_module_boolean ((type ARG1))
-		(call sec_set_spec_boolean (ARG1 sys_load_kernel_module.bool))
+		(call sec.set_spec_boolean (ARG1 sys_load_kernel_module.bool))
 		(optional sys_set_load_kernel_module_boolean_optional_seutil
 			(call setsebool.exec (ARG1))))
 

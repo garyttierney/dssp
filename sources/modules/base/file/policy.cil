@@ -138,4 +138,4 @@
 	(call sys.mountpoint_obj_type (var_tmp_file)))
 
 (block file_execmod_all_except
-	(blockinherit sec_bool_obj_blk))
+	(blockinherit sec.bool_obj_blk))

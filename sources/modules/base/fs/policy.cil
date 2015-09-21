@@ -53,7 +53,7 @@
 	(allow unconfined_subj_type_attribute obj_type_attribute (filesystem (mount remount unmount getattr relabelfrom relabelto associate quotamod quotaget))))
 
 (block fs_use_dosfs
-	(blockinherit sec_bool_obj_blk)
+	(blockinherit sec.bool_obj_blk)
 
 	(booleanif fs_use_dosfs
 		(true
@@ -63,7 +63,7 @@
 			(call fs.getattr_dosfs_fs (fs.manage_dosfs_subj_type_attribute)))))
 
 (block fs_use_cifs
-	(blockinherit sec_bool_obj_blk)
+	(blockinherit sec.bool_obj_blk)
 
 	(booleanif fs_use_cifs
 		(true
@@ -73,7 +73,7 @@
 			(call fs.getattr_cifs_fs (fs.manage_cifs_subj_type_attribute)))))
 
 (block fs_use_fuse
-	(blockinherit sec_bool_obj_blk)
+	(blockinherit sec.bool_obj_blk)
 
 	(booleanif fs_use_fuse
 		(true
@@ -83,7 +83,7 @@
 			(call fs.getattr_fuse_fs (fs.manage_fuse_subj_type_attribute)))))
 
 (block fs_use_iso9660
-	(blockinherit sec_bool_obj_blk)
+	(blockinherit sec.bool_obj_blk)
 
 	(booleanif fs_use_iso9660
 		(true
@@ -91,7 +91,7 @@
 			(call fs.getattr_iso9660_fs (fs.read_iso9660_subj_type_attribute)))))
 
 (block fs_use_nfs
-	(blockinherit sec_bool_obj_blk)
+	(blockinherit sec.bool_obj_blk)
 
 	(booleanif fs_use_nfs
 		(true
@@ -101,7 +101,7 @@
 			(call fs.getattr_nfs_fs (fs.manage_nfs_subj_type_attribute)))))
 
 (block fs_use_removable
-	(blockinherit sec_bool_obj_blk)
+	(blockinherit sec.bool_obj_blk)
 
 	(booleanif fs_use_removable
 		(true

@@ -4894,7 +4894,7 @@
 		(allow ARG1 except_obj_type_attribute (file (execmod))))
 
 	(macro set_execmod_all_except_boolean ((type ARG1))
-		(call sec_set_spec_boolean (ARG1 file_execmod_all_except.bool))
+		(call sec.set_spec_boolean (ARG1 file_execmod_all_except.bool))
 		(optional file_set_execmod_all_except_boolean_optional_seutil
 			(call setsebool.exec (ARG1))))
 

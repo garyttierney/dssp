@@ -194,16 +194,16 @@
 	(allow unconfined_subj_type_attribute entry_obj_type_attribute (file (entrypoint))))
 
 (block subj_execheap
-	(blockinherit sec_bool_obj_blk))
+	(blockinherit sec.bool_obj_blk))
 
 (block subj_execmem
-	(blockinherit sec_bool_obj_blk))
+	(blockinherit sec.bool_obj_blk))
 
 (block subj_execstack
-	(blockinherit sec_bool_obj_blk))
+	(blockinherit sec.bool_obj_blk))
 
 (block subj_mmap_low
-	(blockinherit sec_bool_obj_blk))
+	(blockinherit sec.bool_obj_blk))
 
 (block subj_ptrace
-	(blockinherit sec_bool_obj_blk))
+	(blockinherit sec.bool_obj_blk))

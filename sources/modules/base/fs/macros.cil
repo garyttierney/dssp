@@ -806,32 +806,32 @@
 		(allow ARG1 obj_type_attribute (filesystem (unmount))))
 
 	(macro set_use_cifs_boolean ((type ARG1))
-		(call sec_set_spec_boolean (ARG1 fs_use_cifs.bool))
+		(call sec.set_spec_boolean (ARG1 fs_use_cifs.bool))
 		(optional fs_set_use_cifs_boolean_optional_seutil
 			(call setsebool.exec (ARG1))))
 
 	(macro set_use_dosfs_boolean ((type ARG1))
-		(call sec_set_spec_boolean (ARG1 fs_use_dosfs.bool))
+		(call sec.set_spec_boolean (ARG1 fs_use_dosfs.bool))
 		(optional fs_set_use_dosfs_boolean_optional_seutil
 			(call setsebool.exec (ARG1))))
 
 	(macro set_use_fuse_boolean ((type ARG1))
-		(call sec_set_spec_boolean (ARG1 fs_use_fuse.bool))
+		(call sec.set_spec_boolean (ARG1 fs_use_fuse.bool))
 		(optional fs_set_use_fuse_boolean_optional_seutil
 			(call setsebool.exec (ARG1))))
 
 	(macro set_use_iso9660_boolean ((type ARG1))
-		(call sec_set_spec_boolean (ARG1 fs_use_iso9660.bool))
+		(call sec.set_spec_boolean (ARG1 fs_use_iso9660.bool))
 		(optional fs_set_use_iso9660_boolean_optional_seutil
 			(call setsebool.exec (ARG1))))
 
 	(macro set_use_nfs_boolean ((type ARG1))
-		(call sec_set_spec_boolean (ARG1 fs_use_nfs.bool))
+		(call sec.set_spec_boolean (ARG1 fs_use_nfs.bool))
 		(optional fs_set_use_nfs_boolean_optional_seutil
 			(call setsebool.exec (ARG1))))
 
 	(macro set_use_removable_boolean ((type ARG1))
-		(call sec_set_spec_boolean (ARG1 fs_use_removable.bool))
+		(call sec.set_spec_boolean (ARG1 fs_use_removable.bool))
 		(optional fs_set_use_removable_boolean_optional_seutil
 			(call setsebool.exec (ARG1))))
 

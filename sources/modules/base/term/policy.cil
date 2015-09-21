@@ -9,7 +9,7 @@
 	(call fs.associate_devpts (pty_obj_type_attribute)))
 
 (block term_console_login
-	(blockinherit sec_bool_obj_blk))
+	(blockinherit sec.bool_obj_blk))
 
 (block console
 	(blockinherit dev.obj_blk))

@@ -74,8 +74,8 @@
 	(call fs.read_debugfs (subj))
 	(call fs.search_tmpfs (subj))
 
-	(call sec_compute_create_context (subj))
-	(call sec_list_fs (subj))
+	(call sec.compute_create_context (subj))
+	(call sec.list_fs (subj))
 
 	(call term.devtmpfs_obj_type_transition_unallocated_tty (subj))
 
@@ -334,7 +334,7 @@
         (blockinherit sys.sysfs_obj_blk))
 
 (block sys_load_kernel_module
-	(blockinherit sec_bool_obj_blk)
+	(blockinherit sec.bool_obj_blk)
 
 	(booleanif (sys_load_kernel_module) (true (allow sys.load_kernel_module_subj_type_attribute self
 		(capability (sys_nice sys_module)))
