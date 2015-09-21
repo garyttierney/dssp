@@ -28,10 +28,10 @@
 		(typeattributeset subj_type_attribute ARG1))
 
 	(macro sys_role ((role ARG1))
-		(roleattributeset sys_role ARG1))
+		(roleattributeset sys_role_attribute ARG1))
 
 	(macro roleallow_role ((role ARG1))
-		(roleattributeset roleallow_role ARG1))
+		(roleattributeset roleallow_role_attribute ARG1))
 
 	(macro audit_client_subj_type ((type ARG1))
 		(typeattributeset audit_client_subj_type_attribute ARG1))

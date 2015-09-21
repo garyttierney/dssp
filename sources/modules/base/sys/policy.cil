@@ -17,8 +17,8 @@
 	(typeattribute audit_client_subj_type_attribute)
 	(typeattribute unconfined_subj_type_attribute)
 
-	(roleattribute sys_role)
-	(roleattribute roleallow_role)
+	(roleattribute sys_role_attribute)
+	(roleattribute roleallow_role_attribute)
 
 	(user id)
 
@@ -32,7 +32,7 @@
 	(userlevel id systemlow)
 	(userrange id (systemlow systemhigh))
 
-	(roleallow role roleallow_role)
+	(roleallow role roleallow_role_attribute)
 
 	(blockinherit file.var_log_obj_blk)
 
@@ -167,7 +167,7 @@
 	(typeattributeset not_security_or_usermodehelper_sysctl_obj_type_attribute
 		(and (sysctl_obj_type_attribute) (not (security_or_usermodehelper_sysctl_obj_type_attribute))))
 
-	(roletype sys_role obj_type_attribute)
+	(roletype sys_role_attribute obj_type_attribute)
 
 	(allow unconfined_subj_type_attribute not_security_or_usermodehelper_sysctl_obj_type_attribute rw_file_perms)
 
