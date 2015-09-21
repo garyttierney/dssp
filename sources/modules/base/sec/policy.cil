@@ -14,7 +14,7 @@
 (block sec_load_policy
 	(blockinherit sec_bool_obj_blk))
 
-(call sys_obj_type (sec_bool_obj_type))
+(call sys.sys_obj_type (sec_bool_obj_type))
 
 (typeattribute sec_load_policy_subj_type)
 (typeattribute sec_not_load_policy_subj_type_or_sec_unconfined_subj_type)

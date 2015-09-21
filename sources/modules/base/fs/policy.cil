@@ -33,7 +33,7 @@
 
 	(typeattribute trace_client_subj_type_attribute)
 
-	(call sys_obj_type (obj_type_attribute))
+	(call sys.sys_obj_type (obj_type_attribute))
 
 	(allow obj_type_attribute self (filesystem (associate)))
 
@@ -121,7 +121,7 @@
 (block autofs_fs
 	(blockinherit fs.obj_blk)
 
-	(call sys_mountpoint_obj_type (fs)))
+	(call sys.mountpoint_obj_type (fs)))
 
 (block bdev
 	(blockinherit fs.obj_blk))
@@ -129,37 +129,37 @@
 (block binfmt_misc
 	(blockinherit fs.obj_blk)
 
-	(call sys_mountpoint_obj_type (fs)))
+	(call sys.mountpoint_obj_type (fs)))
 
 (block cifs
 	(blockinherit fs.obj_blk)
 
-	(call sys_mountpoint_obj_type (fs)))
+	(call sys.mountpoint_obj_type (fs)))
 
 (block cgroup
 	(blockinherit fs.obj_blk)
 
-	(call sys_mountpoint_obj_type (fs)))
+	(call sys.mountpoint_obj_type (fs)))
 
 (block configfs
 	(blockinherit fs.obj_blk)
 
-	(call sys_mountpoint_obj_type (fs)))
+	(call sys.mountpoint_obj_type (fs)))
 
 (block debugfs
 	(blockinherit fs.obj_blk)
 
-	(call sys_mountpoint_obj_type (fs)))
+	(call sys.mountpoint_obj_type (fs)))
 
 (block devpts
 	(blockinherit fs.obj_blk)
 
-	(call sys_mountpoint_obj_type (fs)))
+	(call sys.mountpoint_obj_type (fs)))
 
 (block devtmpfs
 	(blockinherit fs.obj_blk)
 
-	(call sys_mountpoint_obj_type (fs))
+	(call sys.mountpoint_obj_type (fs))
 
 	(call mls_trusted_obj_type (fs))
 
@@ -168,7 +168,7 @@
 (block dosfs
 	(blockinherit fs.obj_blk)
 
-	(call sys_mountpoint_obj_type (fs)))
+	(call sys.mountpoint_obj_type (fs)))
 
 (block drm
 	(blockinherit fs.obj_blk))
@@ -176,44 +176,44 @@
 (block efivarfs
 	(blockinherit fs.obj_blk)
 
-	(call sys_mountpoint_obj_type (fs)))
+	(call sys.mountpoint_obj_type (fs)))
 
 (block fuse_fs
 	(blockinherit fs.obj_blk)
 
-	(call sys_mountpoint_obj_type (fs)))
+	(call sys.mountpoint_obj_type (fs)))
 
 (block hugetlbfs
 	(blockinherit fs.obj_blk)
 
-	(call sys_mountpoint_obj_type (fs)))
+	(call sys.mountpoint_obj_type (fs)))
 
 (block iso9660
 	(blockinherit fs.obj_blk)
 
-	(call sys_mountpoint_obj_type (fs)))
+	(call sys.mountpoint_obj_type (fs)))
 
 (block nfs
 	(blockinherit fs.obj_blk)
 
-	(call sys_mountpoint_obj_type (fs)))
+	(call sys.mountpoint_obj_type (fs)))
 
 (block nfsd
 	(blockinherit fs.obj_blk)
 
-	(call sys_mountpoint_obj_type (fs)))
+	(call sys.mountpoint_obj_type (fs)))
 
 (block proc
 	(blockinherit fs.obj_blk)
 
-	(call sys_mountpoint_obj_type (fs))
+	(call sys.mountpoint_obj_type (fs))
 
 	(call fs.associate_fs (fs)))
 
 (block pstore
 	(blockinherit fs.obj_blk)
 
-	(call sys_mountpoint_obj_type (fs)))
+	(call sys.mountpoint_obj_type (fs)))
 
 (block removable_fs
 	(blockinherit fs.obj_blk))
@@ -221,30 +221,30 @@
 (block rootfs
 	(blockinherit fs.obj_blk)
 
-	(call sys_mountpoint_obj_type (fs))
+	(call sys.mountpoint_obj_type (fs))
 
 	(call fs.associate_fs (fs)))
 
 (block rpc_pipefs
 	(blockinherit fs.obj_blk)
 
-	(call sys_mountpoint_obj_type (fs)))
+	(call sys.mountpoint_obj_type (fs)))
 
 (block sysfs
 	(blockinherit fs.obj_blk)
 
-	(call sys_mountpoint_obj_type (fs))
+	(call sys.mountpoint_obj_type (fs))
 
 	(call fs.associate_fs (fs)))
 
 (block tmpfs
 	(blockinherit fs.obj_blk)
 
-	(call sys_mountpoint_obj_type (fs))
+	(call sys.mountpoint_obj_type (fs))
 
 	(call fs.associate_fs (fs)))
 
 (block tracefs
 	(blockinherit fs.obj_blk)
 
-	(call sys_mountpoint_obj_type (fs)))
+	(call sys.mountpoint_obj_type (fs)))

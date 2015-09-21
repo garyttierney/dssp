@@ -4665,21 +4665,21 @@
 		(call obj_type_transition_pattern (ARG1 home.file ARG2 ARG3 ARG4)))
 
 	(macro manage_lost_found_files ((type ARG1))
-		(call sys_search_mountpoints (ARG1))
+		(call sys.search_mountpoints (ARG1))
 		(call manage_files_pattern (ARG1 lost_found.file lost_found.file)))
 
 	(macro manage_lost_found_dirs ((type ARG1))
-		(call sys_rw_mountpoint_dirs (ARG1))
+		(call sys.rw_mountpoint_dirs (ARG1))
 		(call manage_dirs_pattern (ARG1 lost_found.file lost_found.file)))
 
 	(macro manage_lost_found ((type ARG1))
-		(call sys_rw_mountpoint_dirs (ARG1))
+		(call sys.rw_mountpoint_dirs (ARG1))
 		(allow ARG1 lost_found.file manage_file_perms)
 		(allow ARG1 lost_found.file manage_dir_perms)
 		(allow ARG1 lost_found.file manage_lnk_file_perms))
 
 	(macro mountpoint_obj_type_transition_lost_found ((type ARG1))
-		(call sys_mountpoint_obj_type_transition (ARG1 lost_found.file dir "lost+found")))
+		(call sys.mountpoint_obj_type_transition (ARG1 lost_found.file dir "lost+found")))
 
 	(macro search_mnt ((type ARG1))
 		(allow ARG1 mnt.file search_dir_perms))

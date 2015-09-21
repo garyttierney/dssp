@@ -27,7 +27,7 @@
 
 	(typeattribute unconfined_subj_type_attribute)
 
-	(call sys_obj_type (obj_type_attribute))
+	(call sys.sys_obj_type (obj_type_attribute))
 
 	(call fs.associate_fs (obj_type_attribute))
 
@@ -56,22 +56,22 @@
 (block boot
 	(blockinherit file.boot_obj_blk)
 
-	(call sys_mountpoint_obj_type (boot_file)))
+	(call sys.mountpoint_obj_type (boot_file)))
 
 (block config
 	(blockinherit file.config_obj_blk)
 
-	(call sys_mountpoint_obj_type (config_file)))
+	(call sys.mountpoint_obj_type (config_file)))
 
 (block data
 	(blockinherit file.data_obj_blk)
 
-	(call sys_mountpoint_obj_type (data_file)))
+	(call sys.mountpoint_obj_type (data_file)))
 
 (block home
 	(blockinherit file.obj_blk)
 
-	(call sys_mountpoint_obj_type (file)))
+	(call sys.mountpoint_obj_type (file)))
 
 (block lost_found
 	(blockinherit file.obj_blk))
@@ -79,12 +79,12 @@
 (block mnt
 	(blockinherit file.obj_blk)
 
-	(call sys_mountpoint_obj_type (file)))
+	(call sys.mountpoint_obj_type (file)))
 
 (block runtime
 	(blockinherit file.runtime_obj_blk)
 
-	(call sys_mountpoint_obj_type (runtime_file)))
+	(call sys.mountpoint_obj_type (runtime_file)))
 
 (block runtime_config
 	(blockinherit file.runtime_config_obj_blk))
@@ -92,12 +92,12 @@
 (block runtime_lock
 	(blockinherit file.runtime_lock_obj_blk)
 
-	(call sys_mountpoint_obj_type (runtime_lock_file)))
+	(call sys.mountpoint_obj_type (runtime_lock_file)))
 
 (block runtime_user
 	(blockinherit file.runtime_obj_blk)
 
-	(call sys_mountpoint_obj_type (runtime_file)))
+	(call sys.mountpoint_obj_type (runtime_file)))
 
 (block unknown
 	(blockinherit file.obj_blk))
@@ -105,37 +105,37 @@
 (block var
 	(blockinherit file.var_obj_blk)
 
-	(call sys_mountpoint_obj_type (var_file)))
+	(call sys.mountpoint_obj_type (var_file)))
 
 (block var_cache
 	(blockinherit file.var_cache_obj_blk)
 
-	(call sys_mountpoint_obj_type (var_cache_file)))
+	(call sys.mountpoint_obj_type (var_cache_file)))
 
 (block var_db
 	(blockinherit file.var_db_obj_blk)
 
-	(call sys_mountpoint_obj_type (var_db_file)))
+	(call sys.mountpoint_obj_type (var_db_file)))
 
 (block var_lib
 	(blockinherit file.var_lib_obj_blk)
 
-	(call sys_mountpoint_obj_type (var_lib_file)))
+	(call sys.mountpoint_obj_type (var_lib_file)))
 
 (block var_log
 	(blockinherit file.var_log_obj_blk)
 
-	(call sys_mountpoint_obj_type (var_log_file)))
+	(call sys.mountpoint_obj_type (var_log_file)))
 
 (block var_spool
 	(blockinherit file.var_spool_obj_blk)
 
-	(call sys_mountpoint_obj_type (var_spool_file)))
+	(call sys.mountpoint_obj_type (var_spool_file)))
 
 (block var_tmp
 	(blockinherit file.var_tmp_obj_blk)
 
-	(call sys_mountpoint_obj_type (var_tmp_file)))
+	(call sys.mountpoint_obj_type (var_tmp_file)))
 
 (block file_execmod_all_except
 	(blockinherit sec_bool_obj_blk))

@@ -1,9 +1,12 @@
 (boolean term_console_login false)
 
-(typeattribute term_pty_obj_type)
-(typeattribute term_serial_obj_type)
-(typeattribute term_server_pty_obj_type)
-(typeattribute term_tty_obj_type)
+(block term
+	(typeattribute pty_obj_type_attribute)
+	(typeattribute serial_obj_type_attribute)
+	(typeattribute server_pty_obj_type_attribute)
+	(typeattribute tty_obj_type_attribute)
+
+	(call fs.associate_devpts (pty_obj_type_attribute)))
 
 (block term_console_login
 	(blockinherit sec_bool_obj_blk))
@@ -12,9 +15,7 @@
 	(blockinherit dev.obj_blk))
 
 (block tty
-	(blockinherit term_serial_obj_blk))
+	(blockinherit term.serial_obj_blk))
 
 (block virtio
-	(blockinherit term_serial_obj_blk))
-
-(call fs.associate_devpts (term_pty_obj_type))
+	(blockinherit term.serial_obj_blk))

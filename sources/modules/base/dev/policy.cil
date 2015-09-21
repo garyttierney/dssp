@@ -6,7 +6,7 @@
 
 	(typeattribute unconfined_subj_type_attribute)
 
-	(call sys_obj_type (obj_type_attribute))
+	(call sys.sys_obj_type (obj_type_attribute))
 	(call fs.associate_devtmpfs (obj_type_attribute))
 
 	(typeattribute read_memory_subj_type_attribute)

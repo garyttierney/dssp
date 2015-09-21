@@ -43,11 +43,11 @@
 (block peer
 	(blockinherit net_peer_obj_blk))
 
-(call sys_obj_type (net_if_obj_type))
-(call sys_obj_type (net_node_obj_type))
-(call sys_obj_type (net_packet_obj_type))
-(call sys_obj_type (net_peer_obj_type))
-(call sys_obj_type (net_port_obj_type))
+(call sys.sys_obj_type (net_if_obj_type))
+(call sys.sys_obj_type (net_node_obj_type))
+(call sys.sys_obj_type (net_packet_obj_type))
+(call sys.sys_obj_type (net_peer_obj_type))
+(call sys.sys_obj_type (net_port_obj_type))
 
 (allow net_unconfined_subj_type net_node_obj_type (node (recvfrom sendto)))
 (allow net_unconfined_subj_type net_if_obj_type (netif (ingress egress)))
@@ -63,9 +63,9 @@
 (allow net_unconfined_subj_type net_node_obj_type (rawip_socket (node_bind)))
 (allow net_unconfined_subj_type net_node_obj_type (dccp_socket (node_bind)))
 
-(call sys_recvfrom_unlabeled_tcp_sockets (net_unconfined_subj_type))
-(call sys_recvfrom_unlabeled_udp_sockets (net_unconfined_subj_type))
-(call sys_recvfrom_unlabeled_rawip_sockets (net_unconfined_subj_type))
-(call sys_recvfrom_unlabeled_dccp_sockets (net_unconfined_subj_type))
+(call sys.recvfrom_unlabeled_tcp_sockets (net_unconfined_subj_type))
+(call sys.recvfrom_unlabeled_udp_sockets (net_unconfined_subj_type))
+(call sys.recvfrom_unlabeled_rawip_sockets (net_unconfined_subj_type))
+(call sys.recvfrom_unlabeled_dccp_sockets (net_unconfined_subj_type))
 
-(call sys_recv_unlabeled_peers (net_unconfined_subj_type))
+(call sys.recv_unlabeled_peers (net_unconfined_subj_type))
