@@ -22,19 +22,19 @@
 		(call fs.search_devtmpfs (ARG1))
 		(allow ARG1 except_storage_obj_type_attribute (chr_file (getattr)))
 		(optional dev_getattr_all_optional_storage
-			(call storage_getattr_all (ARG1))))
+			(call storage.getattr_all (ARG1))))
 
 	(macro relabel_all ((type ARG1))
 		(call fs.search_devtmpfs (ARG1))
 		(allow ARG1 except_storage_obj_type_attribute relabel_chr_file_perms)
 		(optional dev_relabel_all_optional_storage
-			(call storage_relabel_all (ARG1))))
+			(call storage.relabel_all (ARG1))))
 
 	(macro relabelto_all ((type ARG1))
 		(call fs.search_devtmpfs (ARG1))
 		(allow ARG1 except_storage_obj_type_attribute relabelto_chr_file_perms)
 		(optional dev_relabelto_all_optional_storage
-			(call storage_relabelto_all (ARG1))))
+			(call storage.relabelto_all (ARG1))))
 
 	(macro manage_all ((type ARG1))
 		(call fs.rw_devtmpfs_dirs (ARG1))
@@ -42,7 +42,7 @@
 		(typeattributeset read_memory_subj_type_attribute ARG1)
 		(typeattributeset write_memory_subj_type_attribute ARG1)
 		(optional dev_manage_all_optional_storage
-			(call storage_manage_all (ARG1))))
+			(call storage.manage_all (ARG1))))
 
 	(macro rw_all ((type ARG1))
 		(call fs.search_devtmpfs (ARG1))
@@ -50,20 +50,20 @@
 		(typeattributeset read_memory_subj_type_attribute ARG1)
 		(typeattributeset write_memory_subj_type_attribute ARG1)
 		(optional dev_rw_all_optional_storage
-		(call storage_rw_all (ARG1))))
+			(call storage.rw_all (ARG1))))
 
 	(macro write_all ((type ARG1))
 		(call fs.search_devtmpfs (ARG1))
 		(allow ARG1 except_storage_obj_type_attribute write_chr_file_perms)
 		(typeattributeset dev_write_memory_subj_type ARG1)
 		(optional dev_write_all_optional_storage
-			(call storage_write_all (ARG1))))
+			(call storage.write_all (ARG1))))
 
 	(macro setattr_all ((type ARG1))
 		(call fs.search_devtmpfs (ARG1))
 		(allow ARG1 except_storage_obj_type_attribute (chr_file (setattr)))
 		(optional dev_setattr_all_optional_storage
-			(call storage_setattr_all (ARG1))))
+			(call storage.setattr_all (ARG1))))
 
 	(macro getattr_dri ((type ARG1))
 		(call fs.search_devtmpfs (ARG1))
