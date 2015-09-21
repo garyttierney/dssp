@@ -212,15 +212,15 @@
 
 (macro sys_read_dev_sysctl_files ((type ARG1))
 	(call sys_search_sysctl (ARG1))
-	(call read_files_pattern (ARG1 dev.sysctl dev.sysctl)))
+	(call read_files_pattern (ARG1 dev_sysctl.sysctl dev_sysctl.sysctl)))
 
 (macro sys_rw_dev_sysctl_files ((type ARG1))
 	(call sys_search_sysctl (ARG1))
-	(call rw_files_pattern (ARG1 dev.sysctl dev.sysctl)))
+	(call rw_files_pattern (ARG1 dev_sysctl.sysctl dev_sysctl.sysctl)))
 
 (macro sys_write_dev_sysctl_files ((type ARG1))
 	(call sys_search_sysctl (ARG1))
-	(call write_files_pattern (ARG1 dev.sysctl dev.sysctl)))
+	(call write_files_pattern (ARG1 dev_sysctl.sysctl dev_sysctl.sysctl)))
 
 (macro sys_search_crypto_sysctl ((type ARG1))
 	(call sys_search_sysctl (ARG1))

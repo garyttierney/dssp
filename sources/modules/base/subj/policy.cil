@@ -56,9 +56,9 @@
 
 (call cmd_search_cmd (subj_common_type))
 
-(call dev_rw_devtty (subj_common_type))
-(call dev_rw_null (subj_common_type))
-(call dev_rw_zero (subj_common_type))
+(call dev.rw_devtty (subj_common_type))
+(call dev.rw_null (subj_common_type))
+(call dev.rw_zero (subj_common_type))
 
 (call fs.read_proc (subj_common_type))
 (call fs.search_sysfs (subj_common_type))

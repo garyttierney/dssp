@@ -87,7 +87,7 @@
 	(call term_tty_obj_type (tty_dev)))
 
 (macro term_pty_obj_type ((type ARG1))
-	(call dev_obj_type (ARG1))
+	(call dev.dev_obj_type (ARG1))
 	(typeattributeset term_pty_obj_type ARG1))
 
 (macro term_login_pty_obj_type ((type ARG1))
@@ -95,7 +95,7 @@
 	(typeattributeset term_server_pty_obj_type ARG1))
 
 (macro term_serial_obj_type ((type ARG1))
-	(call dev_obj_type (ARG1))
+	(call dev.dev_obj_type (ARG1))
 	(typeattributeset term_serial_obj_type ARG1))
 
 (macro term_tty_obj_type ((type ARG1))
@@ -103,7 +103,7 @@
 	(typeattributeset term_tty_obj_type ARG1))
 
 (macro term_create_pty ((type ARG1)(type ARG2))
-	(call dev_rw_ptmx (ARG1))
+	(call dev.rw_ptmx (ARG1))
 	(call fs.getattr_devpts_fs (ARG1))
 	(call fs.devpts_obj_type_transition (ARG1 ARG2 chr_file "*")))
 

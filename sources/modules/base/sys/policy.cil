@@ -49,20 +49,20 @@
 
 	(call mls_priv_range_trans_subj_type (subj))
 
-	(call dev_manage_all (subj))
+	(call dev.manage_all (subj))
 
-	(call dev_devtmpfs_obj_type_transition_clock (subj))
-	(call dev_devtmpfs_obj_type_transition_event (subj))
-	(call dev_devtmpfs_obj_type_transition_kvm (subj))
-	(call dev_devtmpfs_obj_type_transition_mei_misc (subj))
-	(call dev_devtmpfs_obj_type_transition_mouse (subj))
-	(call dev_devtmpfs_obj_type_transition_printer (subj))
-	(call dev_devtmpfs_obj_type_transition_sound (subj))
-	(call dev_devtmpfs_obj_type_transition_tpm (subj))
-	(call dev_devtmpfs_obj_type_transition_usb (subj))
-	(call dev_devtmpfs_obj_type_transition_v4l (subj))
-	(call dev_devtmpfs_obj_type_transition_watchdog (subj))
-	(call dev_devtmpfs_obj_type_transition_wireless (subj))
+	(call dev.devtmpfs_obj_type_transition_clock (subj))
+	(call dev.devtmpfs_obj_type_transition_event (subj))
+	(call dev.devtmpfs_obj_type_transition_kvm (subj))
+	(call dev.devtmpfs_obj_type_transition_mei_misc (subj))
+	(call dev.devtmpfs_obj_type_transition_mouse (subj))
+	(call dev.devtmpfs_obj_type_transition_printer (subj))
+	(call dev.devtmpfs_obj_type_transition_sound (subj))
+	(call dev.devtmpfs_obj_type_transition_tpm (subj))
+	(call dev.devtmpfs_obj_type_transition_usb (subj))
+	(call dev.devtmpfs_obj_type_transition_v4l (subj))
+	(call dev.devtmpfs_obj_type_transition_watchdog (subj))
+	(call dev.devtmpfs_obj_type_transition_wireless (subj))
 
 	(call file.read_data_files (subj))
 
@@ -193,7 +193,7 @@
 (block crypto
 	(blockinherit sys_sysctl_obj_blk))
 
-(block dev
+(block dev_sysctl
 	(blockinherit sys_sysctl_obj_blk))
 
 (block fs_sysctl

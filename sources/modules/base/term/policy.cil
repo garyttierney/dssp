@@ -9,7 +9,7 @@
 	(blockinherit sec_bool_obj_blk))
 
 (block console
-	(blockinherit dev_obj_blk))
+	(blockinherit dev.obj_blk))
 
 (block tty
 	(blockinherit term_serial_obj_blk))

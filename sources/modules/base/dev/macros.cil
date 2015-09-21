@@ -1,473 +1,474 @@
-(block dev_obj_blk
-	(blockabstract dev_obj_blk)
+(in dev
+	(block obj_blk
+		(blockabstract obj_blk)
 
-	(type dev)
-	(call dev_obj_type (dev)))
+		(type dev)
+		(call dev.dev_obj_type (dev)))
 
-(block dev_storage_obj_blk
-	(blockabstract dev_storage_obj_blk)
+	(block storage_obj_blk
+		(blockabstract storage_obj_blk)
 
-	(type storage_dev)
-	(call dev_storage_obj_type (storage_dev)))
+		(type storage_dev)
+		(call dev.storage_obj_type (storage_dev)))
 
-(macro dev_obj_type ((type ARG1))
-	(typeattributeset dev_obj_type ARG1))
+	(macro dev_obj_type ((type ARG1))
+		(typeattributeset obj_type_attribute ARG1))
 
-(macro dev_storage_obj_type ((type ARG1))
-	(call dev_obj_type (ARG1))
-	(typeattributeset dev_storage_obj_type ARG1))
+	(macro storage_obj_type ((type ARG1))
+		(call dev_obj_type (ARG1))
+		(typeattributeset storage_obj_type_attribute ARG1))
 
-(macro dev_getattr_all ((type ARG1))
-	(call fs.search_devtmpfs (ARG1))
-	(allow ARG1 dev_except_storage_obj_type (chr_file (getattr)))
-	(optional dev_getattr_all_optional_storage
-		(call storage_getattr_all (ARG1))))
+	(macro getattr_all ((type ARG1))
+		(call fs.search_devtmpfs (ARG1))
+		(allow ARG1 except_storage_obj_type_attribute (chr_file (getattr)))
+		(optional dev_getattr_all_optional_storage
+			(call storage_getattr_all (ARG1))))
 
-(macro dev_relabel_all ((type ARG1))
-	(call fs.search_devtmpfs (ARG1))
-	(allow ARG1 dev_except_storage_obj_type relabel_chr_file_perms)
-	(optional dev_relabel_all_optional_storage
-		(call storage_relabel_all (ARG1))))
+	(macro relabel_all ((type ARG1))
+		(call fs.search_devtmpfs (ARG1))
+		(allow ARG1 except_storage_obj_type_attribute relabel_chr_file_perms)
+		(optional dev_relabel_all_optional_storage
+			(call storage_relabel_all (ARG1))))
 
-(macro dev_relabelto_all ((type ARG1))
-	(call fs.search_devtmpfs (ARG1))
-	(allow ARG1 dev_except_storage_obj_type relabelto_chr_file_perms)
-	(optional dev_relabelto_all_optional_storage
-		(call storage_relabelto_all (ARG1))))
+	(macro relabelto_all ((type ARG1))
+		(call fs.search_devtmpfs (ARG1))
+		(allow ARG1 except_storage_obj_type_attribute relabelto_chr_file_perms)
+		(optional dev_relabelto_all_optional_storage
+			(call storage_relabelto_all (ARG1))))
 
-(macro dev_manage_all ((type ARG1))
-	(call fs.rw_devtmpfs_dirs (ARG1))
-	(allow ARG1 dev_except_storage_obj_type manage_chr_file_perms)
-	(typeattributeset dev_read_memory_subj_type ARG1)
-	(typeattributeset dev_write_memory_subj_type ARG1)
-	(optional dev_manage_all_optional_storage
-		(call storage_manage_all (ARG1))))
+	(macro manage_all ((type ARG1))
+		(call fs.rw_devtmpfs_dirs (ARG1))
+		(allow ARG1 except_storage_obj_type_attribute manage_chr_file_perms)
+		(typeattributeset read_memory_subj_type_attribute ARG1)
+		(typeattributeset write_memory_subj_type_attribute ARG1)
+		(optional dev_manage_all_optional_storage
+			(call storage_manage_all (ARG1))))
 
-(macro dev_rw_all ((type ARG1))
-	(call fs.search_devtmpfs (ARG1))
-	(allow ARG1 dev_except_storage_obj_type rw_chr_file_perms)
-	(typeattributeset dev_read_memory_subj_type ARG1)
-	(typeattributeset dev_write_memory_subj_type ARG1)
-	(optional dev_rw_all_optional_storage
+	(macro rw_all ((type ARG1))
+		(call fs.search_devtmpfs (ARG1))
+		(allow ARG1 except_storage_obj_type_attribute rw_chr_file_perms)
+		(typeattributeset read_memory_subj_type_attribute ARG1)
+		(typeattributeset write_memory_subj_type_attribute ARG1)
+		(optional dev_rw_all_optional_storage
 		(call storage_rw_all (ARG1))))
 
-(macro dev_write_all ((type ARG1))
-	(call fs.search_devtmpfs (ARG1))
-	(allow ARG1 dev_except_storage_obj_type write_chr_file_perms)
-	(typeattributeset dev_write_memory_subj_type ARG1)
-	(optional dev_write_all_optional_storage
-		(call storage_write_all (ARG1))))
-
-(macro dev_setattr_all ((type ARG1))
-	(call fs.search_devtmpfs (ARG1))
-	(allow ARG1 dev_except_storage_obj_type (chr_file (setattr)))
-	(optional dev_setattr_all_optional_storage
-		(call storage_setattr_all (ARG1))))
-
-(macro dev_getattr_dri ((type ARG1))
-	(call fs.search_devtmpfs (ARG1))
-	(allow ARG1 dri.dev (chr_file (getattr))))
-
-(macro dev_getattr_kvm ((type ARG1))
-	(call fs.search_devtmpfs (ARG1))
-	(allow ARG1 kvm.dev (chr_file (getattr))))
-
-(macro dev_getattr_random ((type ARG1))
-	(call fs.search_devtmpfs (ARG1))
-	(allow ARG1 random.dev (chr_file (getattr))))
-
-(macro dev_getattr_sound ((type ARG1))
-	(call fs.search_devtmpfs (ARG1))
-	(allow ARG1 sound.dev (chr_file (getattr))))
-
-(macro dev_getattr_tun_tap ((type ARG1))
-	(call fs.search_devtmpfs (ARG1))
-	(allow ARG1 tun_tap.dev (chr_file (getattr))))
-
-(macro dev_getattr_wireless ((type ARG1))
-	(call fs.search_devtmpfs (ARG1))
-	(allow ARG1 wireless.dev (chr_file (getattr))))
-
-(macro dev_getattr_urandom ((type ARG1))
-	(call fs.search_devtmpfs (ARG1))
-	(allow ARG1 urandom.dev (chr_file (getattr))))
-
-(macro dev_getattr_v4l ((type ARG1))
-	(call fs.search_devtmpfs (ARG1))
-	(allow ARG1 v4l.dev (chr_file (getattr))))
-
-(macro dev_create_devtty ((type ARG1))
-	(allow ARG1 self (capability (mknod)))
-	(call fs.add_entry_devtmpfs (ARG1))
-	(allow ARG1 devtty.dev create_chr_file_perms))
-
-(macro dev_tmpfs_obj_type_transition_devtty ((type ARG1))
-	(call fs.tmpfs_obj_type_transition (ARG1 devtty.dev chr_file "tty")))
-
-(macro dev_create_null ((type ARG1))
-	(allow ARG1 self (capability (mknod)))
-	(call fs.add_entry_devtmpfs (ARG1))
-	(allow ARG1 null.dev create_chr_file_perms))
-
-(macro dev_tmpfs_obj_type_transition_null ((type ARG1))
-	(call fs.tmpfs_obj_type_transition (ARG1 null.dev chr_file "full"))
-	(call fs.tmpfs_obj_type_transition (ARG1 null.dev chr_file "null")))
-
-(macro dev_create_event ((type ARG1))
-	(allow ARG1 self (capability (mknod)))
-	(call fs.add_entry_devtmpfs (ARG1))
-	(allow ARG1 event.dev create_chr_file_perms))
-
-(macro dev_devtmpfs_obj_type_transition_event ((type ARG1))
-	(call fs.devtmpfs_obj_type_transition (ARG1 event.dev chr_file "event0"))
-	(call fs.devtmpfs_obj_type_transition (ARG1 event.dev chr_file "event1"))
-	(call fs.devtmpfs_obj_type_transition (ARG1 event.dev chr_file "event2"))
-	(call fs.devtmpfs_obj_type_transition (ARG1 event.dev chr_file "event3"))
-	(call fs.devtmpfs_obj_type_transition (ARG1 event.dev chr_file "event4"))
-	(call fs.devtmpfs_obj_type_transition (ARG1 event.dev chr_file "event5"))
-	(call fs.devtmpfs_obj_type_transition (ARG1 event.dev chr_file "event6"))
-	(call fs.devtmpfs_obj_type_transition (ARG1 event.dev chr_file "event7"))
-	(call fs.devtmpfs_obj_type_transition (ARG1 event.dev chr_file "event8"))
-	(call fs.devtmpfs_obj_type_transition (ARG1 event.dev chr_file "event9"))
-	(call fs.devtmpfs_obj_type_transition (ARG1 event.dev chr_file "event10"))
-	(call fs.devtmpfs_obj_type_transition (ARG1 event.dev chr_file "event11"))
-	(call fs.devtmpfs_obj_type_transition (ARG1 event.dev chr_file "event12"))
-	(call fs.devtmpfs_obj_type_transition (ARG1 event.dev chr_file "event13"))
-	(call fs.devtmpfs_obj_type_transition (ARG1 event.dev chr_file "event14"))
-	(call fs.devtmpfs_obj_type_transition (ARG1 event.dev chr_file "event15")))
-
-(macro dev_create_printer ((type ARG1))
-	(allow ARG1 self (capability (mknod)))
-	(call fs.add_entry_devtmpfs (ARG1))
-	(allow ARG1 printer.dev create_chr_file_perms))
-
-(macro dev_devtmpfs_obj_type_transition_printer ((type ARG1))
-	(call fs.devtmpfs_obj_type_transition (ARG1 printer.dev chr_file "parport0")))
-
-(macro dev_create_random ((type ARG1))
-	(allow ARG1 self (capability (mknod)))
-	(call fs.add_entry_devtmpfs (ARG1))
-	(allow ARG1 random.dev create_chr_file_perms))
-
-(macro dev_tmpfs_obj_type_transition_random ((type ARG1))
-	(call fs.tmpfs_obj_type_transition (ARG1 random.dev chr_file "hwrng"))
-	(call fs.tmpfs_obj_type_transition (ARG1 random.dev chr_file "random")))
-
-(macro dev_create_sound ((type ARG1))
-	(allow ARG1 self (capability (mknod)))
-	(call fs.add_entry_devtmpfs (ARG1))
-	(allow ARG1 sound.dev create_chr_file_perms))
-
-(macro dev_devtmpfs_obj_type_transition_sound ((type ARG1))
-	(call fs.devtmpfs_obj_type_transition (ARG1 sound.dev chr_file "hwC0D0"))
-	(call fs.devtmpfs_obj_type_transition (ARG1 sound.dev chr_file "hwC1D0"))
-	(call fs.devtmpfs_obj_type_transition (ARG1 sound.dev chr_file "hwC0D3"))
-	(call fs.devtmpfs_obj_type_transition (ARG1 sound.dev chr_file "pcmC0D0c"))
-	(call fs.devtmpfs_obj_type_transition (ARG1 sound.dev chr_file "pcmC0D0p"))
-	(call fs.devtmpfs_obj_type_transition (ARG1 sound.dev chr_file "pcmC0D3p"))
-	(call fs.devtmpfs_obj_type_transition (ARG1 sound.dev chr_file "pcmC0D7p"))
-	(call fs.devtmpfs_obj_type_transition (ARG1 sound.dev chr_file "pcmC0D8p"))
-	(call fs.devtmpfs_obj_type_transition (ARG1 sound.dev chr_file "pcmC1D0c"))
-	(call fs.devtmpfs_obj_type_transition (ARG1 sound.dev chr_file "pcmC1D0p"))
-	(call fs.devtmpfs_obj_type_transition (ARG1 sound.dev chr_file "pcmC1D3p"))
-	(call fs.devtmpfs_obj_type_transition (ARG1 sound.dev chr_file "pcmC1D7p"))
-	(call fs.devtmpfs_obj_type_transition (ARG1 sound.dev chr_file "pcmC1D8p"))
-	(call fs.devtmpfs_obj_type_transition (ARG1 sound.dev chr_file "pcmC1D9p"))
-	(call fs.devtmpfs_obj_type_transition (ARG1 sound.dev chr_file "pcmC2D0c"))
-	(call fs.devtmpfs_obj_type_transition (ARG1 sound.dev chr_file "pcmC2D0p"))
-	(call fs.devtmpfs_obj_type_transition (ARG1 sound.dev chr_file "controlC0"))
-	(call fs.devtmpfs_obj_type_transition (ARG1 sound.dev chr_file "controlC1"))
-	(call fs.devtmpfs_obj_type_transition (ARG1 sound.dev chr_file "controlC2"))
-	(call fs.devtmpfs_obj_type_transition (ARG1 sound.dev chr_file "controlC29")))
-
-(macro dev_create_urandom ((type ARG1))
-	(allow ARG1 self (capability (mknod)))
-	(call fs.add_entry_devtmpfs (ARG1))
-	(allow ARG1 urandom.dev create_chr_file_perms))
-
-(macro dev_tmpfs_obj_type_transition_urandom ((type ARG1))
-	(call fs.tmpfs_obj_type_transition (ARG1 urandom.dev chr_file "urandom")))
-
-(macro dev_create_usb ((type ARG1))
-	(allow ARG1 self (capability (mknod)))
-	(call fs.add_entry_devtmpfs (ARG1))
-	(allow ARG1 usb.dev create_chr_file_perms))
-
-(macro dev_devtmpfs_obj_type_transition_usb ((type ARG1))
-	(call fs.devtmpfs_obj_type_transition (ARG1 usb.dev chr_file "001"))
-	(call fs.devtmpfs_obj_type_transition (ARG1 usb.dev chr_file "002"))
-	(call fs.devtmpfs_obj_type_transition (ARG1 usb.dev chr_file "003"))
-	(call fs.devtmpfs_obj_type_transition (ARG1 usb.dev chr_file "004"))
-	(call fs.devtmpfs_obj_type_transition (ARG1 usb.dev chr_file "005"))
-	(call fs.devtmpfs_obj_type_transition (ARG1 usb.dev chr_file "006"))
-	(call fs.devtmpfs_obj_type_transition (ARG1 usb.dev chr_file "007"))
-	(call fs.devtmpfs_obj_type_transition (ARG1 usb.dev chr_file "008"))
-	(call fs.devtmpfs_obj_type_transition (ARG1 usb.dev chr_file "009"))
-	(call fs.devtmpfs_obj_type_transition (ARG1 usb.dev chr_file "010"))
-	(call fs.devtmpfs_obj_type_transition (ARG1 usb.dev chr_file "011"))
-	(call fs.devtmpfs_obj_type_transition (ARG1 usb.dev chr_file "012"))
-	(call fs.devtmpfs_obj_type_transition (ARG1 usb.dev chr_file "013"))
-	(call fs.devtmpfs_obj_type_transition (ARG1 usb.dev chr_file "014"))
-	(call fs.devtmpfs_obj_type_transition (ARG1 usb.dev chr_file "hidraw0"))
-	(call fs.devtmpfs_obj_type_transition (ARG1 usb.dev chr_file "hidraw1"))
-	(call fs.devtmpfs_obj_type_transition (ARG1 usb.dev chr_file "hidraw2"))
-	(call fs.devtmpfs_obj_type_transition (ARG1 usb.dev chr_file "hidraw3")))
-
-(macro dev_create_v4l ((type ARG1))
-	(allow ARG1 self (capability (mknod)))
-	(call fs.add_entry_devtmpfs (ARG1))
-	(allow ARG1 v4l.dev create_chr_file_perms))
-
-(macro dev_devtmpfs_obj_type_transition_v4l ((type ARG1))
-	(call fs.devtmpfs_obj_type_transition (ARG1 v4l.dev chr_file "media0"))
-	(call fs.devtmpfs_obj_type_transition (ARG1 v4l.dev chr_file "media1"))
-	(call fs.devtmpfs_obj_type_transition (ARG1 v4l.dev chr_file "media3"))
-	(call fs.devtmpfs_obj_type_transition (ARG1 v4l.dev chr_file "video0"))
-	(call fs.devtmpfs_obj_type_transition (ARG1 v4l.dev chr_file "video1"))
-	(call fs.devtmpfs_obj_type_transition (ARG1 v4l.dev chr_file "video2")))
-
-(macro dev_create_watchdog ((type ARG1))
-	(allow ARG1 self (capability (mknod)))
-	(call fs.add_entry_devtmpfs (ARG1))
-	(allow ARG1 watchdog.dev create_chr_file_perms))
-
-(macro dev_devtmpfs_obj_type_transition_watchdog ((type ARG1))
-	(call fs.devtmpfs_obj_type_transition (ARG1 watchdog.dev chr_file "watchdog"))
-	(call fs.devtmpfs_obj_type_transition (ARG1 watchdog.dev chr_file "watchdog0"))
-	(call fs.devtmpfs_obj_type_transition (ARG1 watchdog.dev chr_file "watchdog1")))
-
-(macro dev_create_zero ((type ARG1))
-	(allow ARG1 self (capability (mknod)))
-	(call fs.add_entry_devtmpfs (ARG1))
-	(allow ARG1 zero.dev create_chr_file_perms))
-
-(macro dev_tmpfs_obj_type_transition_zero ((type ARG1))
-	(call fs.tmpfs_obj_type_transition (ARG1 zero.dev chr_file "zero")))
-
-(macro dev_read_autofs ((type ARG1))
-	(call fs.search_devtmpfs (ARG1))
-	(allow ARG1 autofs_dev.dev read_chr_file_perms))
-
-(macro dev_read_clock ((type ARG1))
-	(call fs.search_devtmpfs (ARG1))
-	(allow ARG1 clock.dev read_chr_file_perms))
-
-(macro dev_create_clock ((type ARG1))
-	(allow ARG1 self (capability (mknod)))
-	(call fs.add_entry_devtmpfs (ARG1))
-	(allow ARG1 clock.dev create_chr_file_perms))
-
-(macro dev_devtmpfs_obj_type_transition_clock ((type ARG1))
-	(call fs.devtmpfs_obj_type_transition (ARG1 clock.dev chr_file "ptp0"))
-	(call fs.devtmpfs_obj_type_transition (ARG1 clock.dev chr_file "ptp1"))
-	(call fs.devtmpfs_obj_type_transition (ARG1 clock.dev chr_file "ptp3")))
-
-(macro dev_read_cpu ((type ARG1))
-	(call fs.search_devtmpfs (ARG1))
-	(allow ARG1 cpu.dev read_chr_file_perms))
-
-(macro dev_read_event ((type ARG1))
-	(call fs.search_devtmpfs (ARG1))
-	(allow ARG1 event.dev read_chr_file_perms))
-
-(macro dev_read_kmsg ((type ARG1))
-	(call fs.search_devtmpfs (ARG1))
-	(allow ARG1 kmsg_dev.dev read_chr_file_perms))
-
-(macro dev_read_loop_control ((type ARG1))
-	(call fs.search_devtmpfs (ARG1))
-	(allow ARG1 loop_control.dev read_chr_file_perms))
-
-(macro dev_read_memory ((type ARG1))
-	(allow ARG1 self (capability (sys_rawio)))
-	(call fs.search_devtmpfs (ARG1))
-	(allow ARG1 memory.dev read_chr_file_perms)
-	(typeattributeset dev_read_memory_subj_type ARG1))
-
-(macro dev_create_mouse ((type ARG1))
-	(allow ARG1 self (capability (mknod)))
-	(call fs.add_entry_devtmpfs (ARG1))
-	(allow ARG1 mouse.dev create_chr_file_perms))
-
-(macro dev_devtmpfs_obj_type_transition_mouse ((type ARG1))
-	(call fs.devtmpfs_obj_type_transition (ARG1 mouse.dev chr_file "mouse0"))
-	(call fs.devtmpfs_obj_type_transition (ARG1 mouse.dev chr_file "mouse1"))
-	(call fs.devtmpfs_obj_type_transition (ARG1 mouse.dev chr_file "mouse2")))
-
-(macro dev_read_random ((type ARG1))
-	(call fs.search_devtmpfs (ARG1))
-	(allow ARG1 random.dev read_chr_file_perms))
-
-(macro dev_read_urandom ((type ARG1))
-	(call fs.search_devtmpfs (ARG1))
-	(allow ARG1 urandom.dev read_chr_file_perms))
-
-(macro dev_read_usbmon ((type ARG1))
-	(call fs.search_devtmpfs (ARG1))
-	(allow ARG1 usbmon.dev read_chr_file_perms))
-
-(macro dev_read_wireless ((type ARG1))
-	(call fs.search_devtmpfs (ARG1))
-	(allow ARG1 wireless.dev read_chr_file_perms))
-
-(macro dev_create_wireless ((type ARG1))
-	(allow ARG1 self (capability (mknod)))
-	(call fs.add_entry_devtmpfs (ARG1))
-	(allow ARG1 wireless.dev create_chr_file_perms))
-
-(macro dev_devtmpfs_obj_type_transition_wireless ((type ARG1))
-	(call fs.devtmpfs_obj_type_transition (ARG1 wireless.dev chr_file "rfkill")))
-
-(macro dev_rw_cpu ((type ARG1))
-	(call fs.search_devtmpfs (ARG1))
-	(allow ARG1 cpu.dev rw_chr_file_perms))
-
-(macro dev_rw_devtty ((type ARG1))
-	(call fs.search_devtmpfs (ARG1))
-	(allow ARG1 devtty.dev rw_chr_file_perms))
-
-(macro dev_rw_dri ((type ARG1))
-	(call fs.search_devtmpfs (ARG1))
-	(allow ARG1 dri.dev rw_chr_file_perms))
-
-(macro dev_rw_inherited_dri ((type ARG1))
-	(call fs.search_devtmpfs (ARG1))
-	(allow ARG1 dri.dev rw_inherited_chr_file_perms))
-
-(macro dev_rw_event ((type ARG1))
-	(call fs.search_devtmpfs (ARG1))
-	(allow ARG1 event.dev rw_chr_file_perms))
-
-(macro dev_rw_inherited_event ((type ARG1))
-	(call fs.search_devtmpfs (ARG1))
-	(allow ARG1 event.dev rw_inherited_chr_file_perms))
-
-(macro dev_rw_framebuf ((type ARG1))
-	(call fs.search_devtmpfs (ARG1))
-	(allow ARG1 framebuf.dev rw_chr_file_perms))
-
-(macro dev_rw_kmsg ((type ARG1))
-	(call fs.search_devtmpfs (ARG1))
-	(allow ARG1 kmsg_dev.dev rw_chr_file_perms))
-
-(macro dev_rw_kvm ((type ARG1))
-	(call fs.search_devtmpfs (ARG1))
-	(allow ARG1 kvm.dev rw_chr_file_perms))
-
-(macro dev_create_kvm ((type ARG1))
-	(allow ARG1 self (capability (mknod)))
-	(call fs.add_entry_devtmpfs (ARG1))
-	(allow ARG1 kvm.dev create_chr_file_perms))
-
-(macro dev_devtmpfs_obj_type_transition_kvm ((type ARG1))
-	(call fs.devtmpfs_obj_type_transition (ARG1 kvm.dev chr_file "kvm")))
-
-(macro dev_rw_loop_control ((type ARG1))
-	(call fs.search_devtmpfs (ARG1))
-	(allow ARG1 loop_control.dev rw_chr_file_perms))
-
-(macro dev_rw_lvm_control ((type ARG1))
-	(call fs.search_devtmpfs (ARG1))
-	(allow ARG1 lvm_control.dev rw_chr_file_perms))
-
-(macro dev_rw_null ((type ARG1))
-	(call fs.search_devtmpfs (ARG1))
-	(allow ARG1 null.dev rw_chr_file_perms))
-
-(macro dev_rw_ptmx ((type ARG1))
-	(call fs.search_devtmpfs (ARG1))
-	(allow ARG1 ptmx.dev rw_chr_file_perms))
-
-(macro dev_rw_inherited_ptmx ((type ARG1))
-	(call fs.search_devtmpfs (ARG1))
-	(allow ARG1 ptmx.dev rw_inherited_chr_file_perms))
-
-(macro dev_rw_sound ((type ARG1))
-	(call fs.search_devtmpfs (ARG1))
-	(allow ARG1 sound.dev rw_chr_file_perms))
-
-(macro dev_rw_tpm ((type ARG1))
-	(call fs.search_devtmpfs (ARG1))
-	(allow ARG1 tpm.dev rw_chr_file_perms))
-
-(macro dev_create_tpm ((type ARG1))
-	(allow ARG1 self (capability (mknod)))
-	(call fs.add_entry_devtmpfs (ARG1))
-	(allow ARG1 tpm.dev create_chr_file_perms))
-
-(macro dev_devtmpfs_obj_type_transition_tpm ((type ARG1))
-	(call fs.devtmpfs_obj_type_transition (ARG1 wireless.dev chr_file "tpm0")))
-
-(macro dev_rw_tun_tap ((type ARG1))
-	(call fs.search_devtmpfs (ARG1))
-	(allow ARG1 tun_tap.dev rw_chr_file_perms))
-
-(macro dev_rw_urandom ((type ARG1))
-	(call fs.search_devtmpfs (ARG1))
-	(allow ARG1 urandom.dev rw_chr_file_perms))
-
-(macro dev_rw_usb ((type ARG1))
-	(call fs.search_devtmpfs (ARG1))
-	(allow ARG1 usb.dev rw_chr_file_perms))
-
-(macro dev_rw_v4l ((type ARG1))
-	(call fs.search_devtmpfs (ARG1))
-	(allow ARG1 v4l.dev rw_chr_file_perms))
-
-(macro dev_rw_wireless ((type ARG1))
-	(call fs.search_devtmpfs (ARG1))
-	(allow ARG1 wireless.dev rw_chr_file_perms))
-
-(macro dev_rw_xserver_misc ((type ARG1))
-	(call fs.search_devtmpfs (ARG1))
-	(allow ARG1 xserver_misc.dev rw_chr_file_perms))
-
-(macro dev_rw_zero ((type ARG1))
-	(call fs.search_devtmpfs (ARG1))
-	(allow ARG1 zero.dev rw_chr_file_perms))
-
-(macro dev_setattr_dri ((type ARG1))
-	(allow ARG1 dri.dev (chr_file (setattr))))
-
-(macro dev_setattr_kvm ((type ARG1))
-	(allow ARG1 kvm.dev (chr_file (setattr))))
-
-(macro dev_setattr_null ((type ARG1))
-	(allow ARG1 null.dev (chr_file (setattr))))
-
-(macro dev_setattr_sound ((type ARG1))
-	(allow ARG1 sound.dev (chr_file (setattr))))
-
-(macro dev_setattr_wireless ((type ARG1))
-	(allow ARG1 wireless.dev (chr_file (setattr))))
-
-(macro dev_setattr_v4l ((type ARG1))
-	(allow ARG1 v4l.dev (chr_file (setattr))))
-
-(macro dev_dontaudit_write_kmsg ((type ARG1))
-	(dontaudit ARG1 kmsg_dev.dev write_chr_file_perms))
-
-(macro dev_write_kmsg ((type ARG1))
-	(call fs.search_devtmpfs (ARG1))
-	(allow ARG1 kmsg_dev.dev write_chr_file_perms))
-
-(macro dev_create_mei_misc ((type ARG1))
-	(allow ARG1 self (capability (mknod)))
-	(call fs.add_entry_devtmpfs (ARG1))
-	(allow ARG1 mei_misc.dev create_chr_file_perms))
-
-(macro dev_devtmpfs_obj_type_transition_mei_misc ((type ARG1))
-	(call fs.devtmpfs_obj_type_transition (ARG1 mei_misc.dev chr_file "mei0")))
-
-(macro dev_write_memory ((type ARG1))
-	(allow ARG1 self (capability (sys_rawio)))
-	(call fs.search_devtmpfs (ARG1))
-	(allow ARG1 memory.dev write_chr_file_perms)
-	(typeattributeset dev_write_memory_subj_type ARG1))
-
-(macro dev_write_watchdog ((type ARG1))
-	(call fs.search_devtmpfs (ARG1))
-	(allow ARG1 watchdog.dev write_chr_file_perms))
-
-(macro dev_unconfined_subj_type ((type ARG1))
-	(typeattributeset dev_unconfined_subj_type ARG1))
+	(macro write_all ((type ARG1))
+		(call fs.search_devtmpfs (ARG1))
+		(allow ARG1 except_storage_obj_type_attribute write_chr_file_perms)
+		(typeattributeset dev_write_memory_subj_type ARG1)
+		(optional dev_write_all_optional_storage
+			(call storage_write_all (ARG1))))
+
+	(macro setattr_all ((type ARG1))
+		(call fs.search_devtmpfs (ARG1))
+		(allow ARG1 except_storage_obj_type_attribute (chr_file (setattr)))
+		(optional dev_setattr_all_optional_storage
+			(call storage_setattr_all (ARG1))))
+
+	(macro getattr_dri ((type ARG1))
+		(call fs.search_devtmpfs (ARG1))
+		(allow ARG1 dri.dev (chr_file (getattr))))
+
+	(macro getattr_kvm ((type ARG1))
+		(call fs.search_devtmpfs (ARG1))
+		(allow ARG1 kvm.dev (chr_file (getattr))))
+
+	(macro getattr_random ((type ARG1))
+		(call fs.search_devtmpfs (ARG1))
+		(allow ARG1 random.dev (chr_file (getattr))))
+
+	(macro getattr_sound ((type ARG1))
+		(call fs.search_devtmpfs (ARG1))
+		(allow ARG1 sound.dev (chr_file (getattr))))
+
+	(macro getattr_tun_tap ((type ARG1))
+		(call fs.search_devtmpfs (ARG1))
+		(allow ARG1 tun_tap.dev (chr_file (getattr))))
+
+	(macro getattr_wireless ((type ARG1))
+		(call fs.search_devtmpfs (ARG1))
+		(allow ARG1 wireless.dev (chr_file (getattr))))
+
+	(macro getattr_urandom ((type ARG1))
+		(call fs.search_devtmpfs (ARG1))
+		(allow ARG1 urandom.dev (chr_file (getattr))))
+
+	(macro getattr_v4l ((type ARG1))
+		(call fs.search_devtmpfs (ARG1))
+		(allow ARG1 v4l.dev (chr_file (getattr))))
+
+	(macro create_devtty ((type ARG1))
+		(allow ARG1 self (capability (mknod)))
+		(call fs.add_entry_devtmpfs (ARG1))
+		(allow ARG1 devtty.dev create_chr_file_perms))
+
+	(macro tmpfs_obj_type_transition_devtty ((type ARG1))
+		(call fs.tmpfs_obj_type_transition (ARG1 devtty.dev chr_file "tty")))
+
+	(macro create_null ((type ARG1))
+		(allow ARG1 self (capability (mknod)))
+		(call fs.add_entry_devtmpfs (ARG1))
+		(allow ARG1 null.dev create_chr_file_perms))
+
+	(macro tmpfs_obj_type_transition_null ((type ARG1))
+		(call fs.tmpfs_obj_type_transition (ARG1 null.dev chr_file "full"))
+		(call fs.tmpfs_obj_type_transition (ARG1 null.dev chr_file "null")))
+
+	(macro create_event ((type ARG1))
+		(allow ARG1 self (capability (mknod)))
+		(call fs.add_entry_devtmpfs (ARG1))
+		(allow ARG1 event.dev create_chr_file_perms))
+
+	(macro devtmpfs_obj_type_transition_event ((type ARG1))
+		(call fs.devtmpfs_obj_type_transition (ARG1 event.dev chr_file "event0"))
+		(call fs.devtmpfs_obj_type_transition (ARG1 event.dev chr_file "event1"))
+		(call fs.devtmpfs_obj_type_transition (ARG1 event.dev chr_file "event2"))
+		(call fs.devtmpfs_obj_type_transition (ARG1 event.dev chr_file "event3"))
+		(call fs.devtmpfs_obj_type_transition (ARG1 event.dev chr_file "event4"))
+		(call fs.devtmpfs_obj_type_transition (ARG1 event.dev chr_file "event5"))
+		(call fs.devtmpfs_obj_type_transition (ARG1 event.dev chr_file "event6"))
+		(call fs.devtmpfs_obj_type_transition (ARG1 event.dev chr_file "event7"))
+		(call fs.devtmpfs_obj_type_transition (ARG1 event.dev chr_file "event8"))
+		(call fs.devtmpfs_obj_type_transition (ARG1 event.dev chr_file "event9"))
+		(call fs.devtmpfs_obj_type_transition (ARG1 event.dev chr_file "event10"))
+		(call fs.devtmpfs_obj_type_transition (ARG1 event.dev chr_file "event11"))
+		(call fs.devtmpfs_obj_type_transition (ARG1 event.dev chr_file "event12"))
+		(call fs.devtmpfs_obj_type_transition (ARG1 event.dev chr_file "event13"))
+		(call fs.devtmpfs_obj_type_transition (ARG1 event.dev chr_file "event14"))
+		(call fs.devtmpfs_obj_type_transition (ARG1 event.dev chr_file "event15")))
+
+	(macro create_printer ((type ARG1))
+		(allow ARG1 self (capability (mknod)))
+		(call fs.add_entry_devtmpfs (ARG1))
+		(allow ARG1 printer.dev create_chr_file_perms))
+
+	(macro devtmpfs_obj_type_transition_printer ((type ARG1))
+		(call fs.devtmpfs_obj_type_transition (ARG1 printer.dev chr_file "parport0")))
+
+	(macro create_random ((type ARG1))
+		(allow ARG1 self (capability (mknod)))
+		(call fs.add_entry_devtmpfs (ARG1))
+		(allow ARG1 random.dev create_chr_file_perms))
+
+	(macro tmpfs_obj_type_transition_random ((type ARG1))
+		(call fs.tmpfs_obj_type_transition (ARG1 random.dev chr_file "hwrng"))
+		(call fs.tmpfs_obj_type_transition (ARG1 random.dev chr_file "random")))
+
+	(macro create_sound ((type ARG1))
+		(allow ARG1 self (capability (mknod)))
+		(call fs.add_entry_devtmpfs (ARG1))
+		(allow ARG1 sound.dev create_chr_file_perms))
+
+	(macro devtmpfs_obj_type_transition_sound ((type ARG1))
+		(call fs.devtmpfs_obj_type_transition (ARG1 sound.dev chr_file "hwC0D0"))
+		(call fs.devtmpfs_obj_type_transition (ARG1 sound.dev chr_file "hwC1D0"))
+		(call fs.devtmpfs_obj_type_transition (ARG1 sound.dev chr_file "hwC0D3"))
+		(call fs.devtmpfs_obj_type_transition (ARG1 sound.dev chr_file "pcmC0D0c"))
+		(call fs.devtmpfs_obj_type_transition (ARG1 sound.dev chr_file "pcmC0D0p"))
+		(call fs.devtmpfs_obj_type_transition (ARG1 sound.dev chr_file "pcmC0D3p"))
+		(call fs.devtmpfs_obj_type_transition (ARG1 sound.dev chr_file "pcmC0D7p"))
+		(call fs.devtmpfs_obj_type_transition (ARG1 sound.dev chr_file "pcmC0D8p"))
+		(call fs.devtmpfs_obj_type_transition (ARG1 sound.dev chr_file "pcmC1D0c"))
+		(call fs.devtmpfs_obj_type_transition (ARG1 sound.dev chr_file "pcmC1D0p"))
+		(call fs.devtmpfs_obj_type_transition (ARG1 sound.dev chr_file "pcmC1D3p"))
+		(call fs.devtmpfs_obj_type_transition (ARG1 sound.dev chr_file "pcmC1D7p"))
+		(call fs.devtmpfs_obj_type_transition (ARG1 sound.dev chr_file "pcmC1D8p"))
+		(call fs.devtmpfs_obj_type_transition (ARG1 sound.dev chr_file "pcmC1D9p"))
+		(call fs.devtmpfs_obj_type_transition (ARG1 sound.dev chr_file "pcmC2D0c"))
+		(call fs.devtmpfs_obj_type_transition (ARG1 sound.dev chr_file "pcmC2D0p"))
+		(call fs.devtmpfs_obj_type_transition (ARG1 sound.dev chr_file "controlC0"))
+		(call fs.devtmpfs_obj_type_transition (ARG1 sound.dev chr_file "controlC1"))
+		(call fs.devtmpfs_obj_type_transition (ARG1 sound.dev chr_file "controlC2"))
+		(call fs.devtmpfs_obj_type_transition (ARG1 sound.dev chr_file "controlC29")))
+
+	(macro create_urandom ((type ARG1))
+		(allow ARG1 self (capability (mknod)))
+		(call fs.add_entry_devtmpfs (ARG1))
+		(allow ARG1 urandom.dev create_chr_file_perms))
+
+	(macro tmpfs_obj_type_transition_urandom ((type ARG1))
+		(call fs.tmpfs_obj_type_transition (ARG1 urandom.dev chr_file "urandom")))
+
+	(macro create_usb ((type ARG1))
+		(allow ARG1 self (capability (mknod)))
+		(call fs.add_entry_devtmpfs (ARG1))
+		(allow ARG1 usb.dev create_chr_file_perms))
+
+	(macro devtmpfs_obj_type_transition_usb ((type ARG1))
+		(call fs.devtmpfs_obj_type_transition (ARG1 usb.dev chr_file "001"))
+		(call fs.devtmpfs_obj_type_transition (ARG1 usb.dev chr_file "002"))
+		(call fs.devtmpfs_obj_type_transition (ARG1 usb.dev chr_file "003"))
+		(call fs.devtmpfs_obj_type_transition (ARG1 usb.dev chr_file "004"))
+		(call fs.devtmpfs_obj_type_transition (ARG1 usb.dev chr_file "005"))
+		(call fs.devtmpfs_obj_type_transition (ARG1 usb.dev chr_file "006"))
+		(call fs.devtmpfs_obj_type_transition (ARG1 usb.dev chr_file "007"))
+		(call fs.devtmpfs_obj_type_transition (ARG1 usb.dev chr_file "008"))
+		(call fs.devtmpfs_obj_type_transition (ARG1 usb.dev chr_file "009"))
+		(call fs.devtmpfs_obj_type_transition (ARG1 usb.dev chr_file "010"))
+		(call fs.devtmpfs_obj_type_transition (ARG1 usb.dev chr_file "011"))
+		(call fs.devtmpfs_obj_type_transition (ARG1 usb.dev chr_file "012"))
+		(call fs.devtmpfs_obj_type_transition (ARG1 usb.dev chr_file "013"))
+		(call fs.devtmpfs_obj_type_transition (ARG1 usb.dev chr_file "014"))
+		(call fs.devtmpfs_obj_type_transition (ARG1 usb.dev chr_file "hidraw0"))
+		(call fs.devtmpfs_obj_type_transition (ARG1 usb.dev chr_file "hidraw1"))
+		(call fs.devtmpfs_obj_type_transition (ARG1 usb.dev chr_file "hidraw2"))
+		(call fs.devtmpfs_obj_type_transition (ARG1 usb.dev chr_file "hidraw3")))
+
+	(macro create_v4l ((type ARG1))
+		(allow ARG1 self (capability (mknod)))
+		(call fs.add_entry_devtmpfs (ARG1))
+		(allow ARG1 v4l.dev create_chr_file_perms))
+
+	(macro devtmpfs_obj_type_transition_v4l ((type ARG1))
+		(call fs.devtmpfs_obj_type_transition (ARG1 v4l.dev chr_file "media0"))
+		(call fs.devtmpfs_obj_type_transition (ARG1 v4l.dev chr_file "media1"))
+		(call fs.devtmpfs_obj_type_transition (ARG1 v4l.dev chr_file "media3"))
+		(call fs.devtmpfs_obj_type_transition (ARG1 v4l.dev chr_file "video0"))
+		(call fs.devtmpfs_obj_type_transition (ARG1 v4l.dev chr_file "video1"))
+		(call fs.devtmpfs_obj_type_transition (ARG1 v4l.dev chr_file "video2")))
+
+	(macro create_watchdog ((type ARG1))
+		(allow ARG1 self (capability (mknod)))
+		(call fs.add_entry_devtmpfs (ARG1))
+		(allow ARG1 watchdog.dev create_chr_file_perms))
+
+	(macro devtmpfs_obj_type_transition_watchdog ((type ARG1))
+		(call fs.devtmpfs_obj_type_transition (ARG1 watchdog.dev chr_file "watchdog"))
+		(call fs.devtmpfs_obj_type_transition (ARG1 watchdog.dev chr_file "watchdog0"))
+		(call fs.devtmpfs_obj_type_transition (ARG1 watchdog.dev chr_file "watchdog1")))
+
+	(macro create_zero ((type ARG1))
+		(allow ARG1 self (capability (mknod)))
+		(call fs.add_entry_devtmpfs (ARG1))
+		(allow ARG1 zero.dev create_chr_file_perms))
+
+	(macro tmpfs_obj_type_transition_zero ((type ARG1))
+		(call fs.tmpfs_obj_type_transition (ARG1 zero.dev chr_file "zero")))
+
+	(macro read_autofs ((type ARG1))
+		(call fs.search_devtmpfs (ARG1))
+		(allow ARG1 autofs_dev.dev read_chr_file_perms))
+
+	(macro read_clock ((type ARG1))
+		(call fs.search_devtmpfs (ARG1))
+		(allow ARG1 clock.dev read_chr_file_perms))
+
+	(macro create_clock ((type ARG1))
+		(allow ARG1 self (capability (mknod)))
+		(call fs.add_entry_devtmpfs (ARG1))
+		(allow ARG1 clock.dev create_chr_file_perms))
+
+	(macro devtmpfs_obj_type_transition_clock ((type ARG1))
+		(call fs.devtmpfs_obj_type_transition (ARG1 clock.dev chr_file "ptp0"))
+		(call fs.devtmpfs_obj_type_transition (ARG1 clock.dev chr_file "ptp1"))
+		(call fs.devtmpfs_obj_type_transition (ARG1 clock.dev chr_file "ptp3")))
+
+	(macro read_cpu ((type ARG1))
+		(call fs.search_devtmpfs (ARG1))
+		(allow ARG1 cpu.dev read_chr_file_perms))
+
+	(macro read_event ((type ARG1))
+		(call fs.search_devtmpfs (ARG1))
+		(allow ARG1 event.dev read_chr_file_perms))
+
+	(macro read_kmsg ((type ARG1))
+		(call fs.search_devtmpfs (ARG1))
+		(allow ARG1 kmsg_dev.dev read_chr_file_perms))
+
+	(macro read_loop_control ((type ARG1))
+		(call fs.search_devtmpfs (ARG1))
+		(allow ARG1 loop_control.dev read_chr_file_perms))
+
+	(macro read_memory ((type ARG1))
+		(allow ARG1 self (capability (sys_rawio)))
+		(call fs.search_devtmpfs (ARG1))
+		(allow ARG1 memory.dev read_chr_file_perms)
+		(typeattributeset read_memory_subj_type_attribute ARG1))
+
+	(macro create_mouse ((type ARG1))
+		(allow ARG1 self (capability (mknod)))
+		(call fs.add_entry_devtmpfs (ARG1))
+		(allow ARG1 mouse.dev create_chr_file_perms))
+
+	(macro devtmpfs_obj_type_transition_mouse ((type ARG1))
+		(call fs.devtmpfs_obj_type_transition (ARG1 mouse.dev chr_file "mouse0"))
+		(call fs.devtmpfs_obj_type_transition (ARG1 mouse.dev chr_file "mouse1"))
+		(call fs.devtmpfs_obj_type_transition (ARG1 mouse.dev chr_file "mouse2")))
+
+	(macro read_random ((type ARG1))
+		(call fs.search_devtmpfs (ARG1))
+		(allow ARG1 random.dev read_chr_file_perms))
+
+	(macro read_urandom ((type ARG1))
+		(call fs.search_devtmpfs (ARG1))
+		(allow ARG1 urandom.dev read_chr_file_perms))
+
+	(macro read_usbmon ((type ARG1))
+		(call fs.search_devtmpfs (ARG1))
+		(allow ARG1 usbmon.dev read_chr_file_perms))
+
+	(macro read_wireless ((type ARG1))
+		(call fs.search_devtmpfs (ARG1))
+		(allow ARG1 wireless.dev read_chr_file_perms))
+
+	(macro create_wireless ((type ARG1))
+		(allow ARG1 self (capability (mknod)))
+		(call fs.add_entry_devtmpfs (ARG1))
+		(allow ARG1 wireless.dev create_chr_file_perms))
+
+	(macro devtmpfs_obj_type_transition_wireless ((type ARG1))
+		(call fs.devtmpfs_obj_type_transition (ARG1 wireless.dev chr_file "rfkill")))
+
+	(macro rw_cpu ((type ARG1))
+		(call fs.search_devtmpfs (ARG1))
+		(allow ARG1 cpu.dev rw_chr_file_perms))
+
+	(macro rw_devtty ((type ARG1))
+		(call fs.search_devtmpfs (ARG1))
+		(allow ARG1 devtty.dev rw_chr_file_perms))
+
+	(macro rw_dri ((type ARG1))
+		(call fs.search_devtmpfs (ARG1))
+		(allow ARG1 dri.dev rw_chr_file_perms))
+
+	(macro rw_inherited_dri ((type ARG1))
+		(call fs.search_devtmpfs (ARG1))
+		(allow ARG1 dri.dev rw_inherited_chr_file_perms))
+
+	(macro rw_event ((type ARG1))
+		(call fs.search_devtmpfs (ARG1))
+		(allow ARG1 event.dev rw_chr_file_perms))
+
+	(macro rw_inherited_event ((type ARG1))
+		(call fs.search_devtmpfs (ARG1))
+		(allow ARG1 event.dev rw_inherited_chr_file_perms))
+
+	(macro rw_framebuf ((type ARG1))
+		(call fs.search_devtmpfs (ARG1))
+		(allow ARG1 framebuf.dev rw_chr_file_perms))
+
+	(macro rw_kmsg ((type ARG1))
+		(call fs.search_devtmpfs (ARG1))
+		(allow ARG1 kmsg_dev.dev rw_chr_file_perms))
+
+	(macro rw_kvm ((type ARG1))
+		(call fs.search_devtmpfs (ARG1))
+		(allow ARG1 kvm.dev rw_chr_file_perms))
+
+	(macro create_kvm ((type ARG1))
+		(allow ARG1 self (capability (mknod)))
+		(call fs.add_entry_devtmpfs (ARG1))
+		(allow ARG1 kvm.dev create_chr_file_perms))
+
+	(macro devtmpfs_obj_type_transition_kvm ((type ARG1))
+		(call fs.devtmpfs_obj_type_transition (ARG1 kvm.dev chr_file "kvm")))
+
+	(macro rw_loop_control ((type ARG1))
+		(call fs.search_devtmpfs (ARG1))
+		(allow ARG1 loop_control.dev rw_chr_file_perms))
+
+	(macro rw_lvm_control ((type ARG1))
+		(call fs.search_devtmpfs (ARG1))
+		(allow ARG1 lvm_control.dev rw_chr_file_perms))
+
+	(macro rw_null ((type ARG1))
+		(call fs.search_devtmpfs (ARG1))
+		(allow ARG1 null.dev rw_chr_file_perms))
+
+	(macro rw_ptmx ((type ARG1))
+		(call fs.search_devtmpfs (ARG1))
+		(allow ARG1 ptmx.dev rw_chr_file_perms))
+
+	(macro rw_inherited_ptmx ((type ARG1))
+		(call fs.search_devtmpfs (ARG1))
+		(allow ARG1 ptmx.dev rw_inherited_chr_file_perms))
+
+	(macro rw_sound ((type ARG1))
+		(call fs.search_devtmpfs (ARG1))
+		(allow ARG1 sound.dev rw_chr_file_perms))
+
+	(macro rw_tpm ((type ARG1))
+		(call fs.search_devtmpfs (ARG1))
+		(allow ARG1 tpm.dev rw_chr_file_perms))
+
+	(macro create_tpm ((type ARG1))
+		(allow ARG1 self (capability (mknod)))
+		(call fs.add_entry_devtmpfs (ARG1))
+		(allow ARG1 tpm.dev create_chr_file_perms))
+
+	(macro devtmpfs_obj_type_transition_tpm ((type ARG1))
+		(call fs.devtmpfs_obj_type_transition (ARG1 wireless.dev chr_file "tpm0")))
+
+	(macro rw_tun_tap ((type ARG1))
+		(call fs.search_devtmpfs (ARG1))
+		(allow ARG1 tun_tap.dev rw_chr_file_perms))
+
+	(macro rw_urandom ((type ARG1))
+		(call fs.search_devtmpfs (ARG1))
+		(allow ARG1 urandom.dev rw_chr_file_perms))
+
+	(macro rw_usb ((type ARG1))
+		(call fs.search_devtmpfs (ARG1))
+		(allow ARG1 usb.dev rw_chr_file_perms))
+
+	(macro rw_v4l ((type ARG1))
+		(call fs.search_devtmpfs (ARG1))
+		(allow ARG1 v4l.dev rw_chr_file_perms))
+
+	(macro rw_wireless ((type ARG1))
+		(call fs.search_devtmpfs (ARG1))
+		(allow ARG1 wireless.dev rw_chr_file_perms))
+
+	(macro rw_xserver_misc ((type ARG1))
+		(call fs.search_devtmpfs (ARG1))
+		(allow ARG1 xserver_misc.dev rw_chr_file_perms))
+
+	(macro rw_zero ((type ARG1))
+		(call fs.search_devtmpfs (ARG1))
+		(allow ARG1 zero.dev rw_chr_file_perms))
+
+	(macro setattr_dri ((type ARG1))
+		(allow ARG1 dri.dev (chr_file (setattr))))
+
+	(macro setattr_kvm ((type ARG1))
+		(allow ARG1 kvm.dev (chr_file (setattr))))
+
+	(macro setattr_null ((type ARG1))
+		(allow ARG1 null.dev (chr_file (setattr))))
+
+	(macro setattr_sound ((type ARG1))
+		(allow ARG1 sound.dev (chr_file (setattr))))
+
+	(macro setattr_wireless ((type ARG1))
+		(allow ARG1 wireless.dev (chr_file (setattr))))
+
+	(macro setattr_v4l ((type ARG1))
+		(allow ARG1 v4l.dev (chr_file (setattr))))
+
+	(macro dontaudit_write_kmsg ((type ARG1))
+		(dontaudit ARG1 kmsg_dev.dev write_chr_file_perms))
+
+	(macro write_kmsg ((type ARG1))
+		(call fs.search_devtmpfs (ARG1))
+		(allow ARG1 kmsg_dev.dev write_chr_file_perms))
+
+	(macro create_mei_misc ((type ARG1))
+		(allow ARG1 self (capability (mknod)))
+		(call fs.add_entry_devtmpfs (ARG1))
+		(allow ARG1 mei_misc.dev create_chr_file_perms))
+
+	(macro devtmpfs_obj_type_transition_mei_misc ((type ARG1))
+		(call fs.devtmpfs_obj_type_transition (ARG1 mei_misc.dev chr_file "mei0")))
+
+	(macro write_memory ((type ARG1))
+		(allow ARG1 self (capability (sys_rawio)))
+		(call fs.search_devtmpfs (ARG1))
+		(allow ARG1 memory.dev write_chr_file_perms)
+		(typeattributeset write_memory_subj_type_attribute ARG1))
+
+	(macro write_watchdog ((type ARG1))
+		(call fs.search_devtmpfs (ARG1))
+		(allow ARG1 watchdog.dev write_chr_file_perms))
+
+	(macro unconfined_subj_type ((type ARG1))
+		(typeattributeset unconfined_subj_type_attribute ARG1)))

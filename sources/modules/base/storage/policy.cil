@@ -1,16 +1,16 @@
 (typeattribute storage_unconfined_subj_type)
 
 (block fixed_disk
-	(blockinherit dev_storage_obj_blk))
+	(blockinherit dev.storage_obj_blk))
 
 (block fuse_storage
-	(blockinherit dev_storage_obj_blk))
+	(blockinherit dev.storage_obj_blk))
 
 (block removable_storage
-	(blockinherit dev_storage_obj_blk))
+	(blockinherit dev.storage_obj_blk))
 
 (block scsi_generic
-	(blockinherit dev_storage_obj_blk))
+	(blockinherit dev.storage_obj_blk))
 
 (typeattribute storage_read_fixed_disk_subj_type)
 (typeattribute storage_not_read_fixed_disk_subj_type_or_storage_unconfined_subj_type)
