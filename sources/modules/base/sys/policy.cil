@@ -82,7 +82,7 @@
 	(tunableif enable_rbacsep
 		(true
 			(call sys_role (role))
-			(call rbacsep_exempt_role (role)))
+			(call rbacsep.exempt_role (role)))
 		(false
 			(userrole id object_r)))
 

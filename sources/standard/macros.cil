@@ -1,45 +1,46 @@
-(macro standard_obj_change_exemption_subj_type ((type ARG1))
-	(call standard_obj_id_change_exemption_subj_type (ARG1))
+(in standard
+	(macro obj_change_exemption_subj_type ((type ARG1))
+		(call obj_id_change_exemption_subj_type (ARG1))
 
-	(tunableif enable_rbacsep
-		(true
-			(call rbacsep_obj_role_change_exemption_subj_type (ARG1)))))
+		(tunableif enable_rbacsep
+			(true
+				(call rbacsep.obj_role_change_exemption_subj_type (ARG1)))))
 
-(macro standard_obj_id_change_exemption_subj_type ((type ARG1))
-	(typeattributeset standard_obj_id_change_exemption_subj_type ARG1))
+	(macro obj_id_change_exemption_subj_type ((type ARG1))
+		(typeattributeset obj_id_change_exemption_subj_type_attribute ARG1))
 
-(macro standard_uncond_exemption_subj_type ((type ARG1))
-	(typeattributeset standard_uncond_exempt_subj_type ARG1))
+	(macro uncond_exemption_subj_type ((type ARG1))
+		(typeattributeset uncond_exempt_subj_type_attribute ARG1))
 
-(macro standard_sys_change_exemption_subj_type ((type ARG1))
-	(call standard_sys_id_change_exemption_subj_type (ARG1))
-	(call standard_sys_role_change_exemption_subj_type (ARG1)))
+	(macro sys_change_exemption_subj_type ((type ARG1))
+		(call sys_id_change_exemption_subj_type (ARG1))
+		(call sys_role_change_exemption_subj_type (ARG1)))
 
-(macro standard_sys_id_change_exemption_subj_type ((type ARG1))
-	(typeattributeset standard_sys_id_change_exemption_subj_type ARG1))
+	(macro sys_id_change_exemption_subj_type ((type ARG1))
+		(typeattributeset sys_id_change_exemption_subj_type_attribute ARG1))
 
-(macro standard_sys_role_change_exemption_subj_type ((type ARG1))
-	(typeattributeset standard_sys_role_change_exemption_subj_type ARG1))
+	(macro sys_role_change_exemption_subj_type ((type ARG1))
+		(typeattributeset sys_role_change_exemption_subj_type_attribute ARG1))
 
-(macro standard_obj_sys_change_exemption_subj_type ((type ARG1))
-	(call standard_obj_sys_id_change_exemption_subj_type (ARG1))
+	(macro obj_sys_change_exemption_subj_type ((type ARG1))
+		(call obj_sys_id_change_exemption_subj_type (ARG1))
 
-	(tunableif enable_rbacsep
-		(true
-			(call rbacsep_obj_sys_role_change_exemption_subj_type (ARG1)))))
+		(tunableif enable_rbacsep
+			(true
+				(call rbacsep.obj_sys_role_change_exemption_subj_type (ARG1)))))
 
-(macro standard_obj_sys_id_change_exemption_subj_type ((type ARG1))
-	(typeattributeset standard_obj_sys_id_change_exemption_subj_type ARG1))
+	(macro obj_sys_id_change_exemption_subj_type ((type ARG1))
+		(typeattributeset obj_sys_id_change_exemption_subj_type_attribute ARG1))
 
-(macro standard_change_exemption_subj_type ((type ARG1))
-	(call standard_id_change_exemption_subj_type (ARG1))
-	(call standard_role_change_exemption_subj_type (ARG1)))
+	(macro change_exemption_subj_type ((type ARG1))
+		(call id_change_exemption_subj_type (ARG1))
+		(call role_change_exemption_subj_type (ARG1)))
 
-(macro standard_id_change_exemption_subj_type ((type ARG1))
-	(typeattributeset standard_id_change_exemption_subj_type ARG1))
+	(macro id_change_exemption_subj_type ((type ARG1))
+		(typeattributeset id_change_exemption_subj_type_attribute ARG1))
 
-(macro standard_role_change_exemption_subj_type ((type ARG1))
-	(typeattributeset standard_role_change_exemption_subj_type ARG1))
+	(macro role_change_exemption_subj_type ((type ARG1))
+		(typeattributeset role_change_exemption_subj_type_attribute ARG1))
 
-(macro standard_user_exemption_target_subj_type ((type ARG1))
-	(typeattributeset standard_user_exemption_target_subj_type ARG1))
+	(macro user_exemption_target_subj_type ((type ARG1))
+		(typeattributeset user_exemption_target_subj_type_attribute ARG1)))

@@ -188,8 +188,8 @@
 	(call execstack_subj_type (unconfined_subj_type_attribute))
 	(call mmap_low_subj_type (unconfined_subj_type_attribute))
 
-	(call standard_uncond_exemption_subj_type (unconfined_subj_type_attribute))
-	(call standard_obj_change_exemption_subj_type (unconfined_subj_type_attribute))
+	(call standard.uncond_exemption_subj_type (unconfined_subj_type_attribute))
+	(call standard.obj_change_exemption_subj_type (unconfined_subj_type_attribute))
 
 	(allow unconfined_subj_type_attribute entry_obj_type_attribute (file (entrypoint))))
 

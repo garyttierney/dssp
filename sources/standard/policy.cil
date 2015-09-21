@@ -1,16 +1,17 @@
-(typeattribute standard_obj_id_change_exemption_subj_type)
+(block standard
+	(typeattribute obj_id_change_exemption_subj_type_attribute)
 
-(typeattribute standard_id_change_exemption_subj_type)
-(typeattribute standard_role_change_exemption_subj_type)
+	(typeattribute id_change_exemption_subj_type_attribute)
+	(typeattribute role_change_exemption_subj_type_attribute)
 
-(typeattribute standard_obj_sys_id_change_exemption_subj_type)
+	(typeattribute obj_sys_id_change_exemption_subj_type_attribute)
 
-(typeattribute standard_sys_id_change_exemption_subj_type)
-(typeattribute standard_sys_role_change_exemption_subj_type)
+	(typeattribute sys_id_change_exemption_subj_type_attribute)
+	(typeattribute sys_role_change_exemption_subj_type_attribute)
 
-(typeattribute standard_user_exemption_target_subj_type)
+	(typeattribute user_exemption_target_subj_type_attribute)
 
-(typeattribute standard_uncond_exempt_subj_type)
+	(typeattribute uncond_exempt_subj_type_attribute))
 
 (tunableif (and (not enable_mls) (not enable_mcs))
 	(true

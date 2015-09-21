@@ -1,13 +1,14 @@
-(roleattribute rbacsep_exempt_role)
+(block rbacsep
+	(roleattribute exempt_role_attribute)
 
-(typeattribute rbacsep_read_state_source_subj_type)
-(typeattribute rbacsep_read_state_target_subj_type)
+	(typeattribute read_state_source_subj_type_attribute)
+	(typeattribute read_state_target_subj_type_attribute)
 
-(typeattribute rbacsep_exempt_obj_type)
-(typeattribute rbacsep_exempt_subj_type)
+	(typeattribute exempt_obj_type_attribute)
+	(typeattribute exempt_subj_type_attribute)
 
-(typeattribute rbacsep_obj_role_change_exemption_subj_type)
-(typeattribute rbacsep_obj_sys_role_change_exemption_subj_type)
+	(typeattribute obj_role_change_exemption_subj_type_attribute)
+	(typeattribute obj_sys_role_change_exemption_subj_type_attribute))
 
 (tunableif enable_rbacsep
 	(true
@@ -20,4 +21,4 @@
 		(defaultrole fifo_file source))
 	(false
 		(role object_r)
-		(call sys_role (object_r))))
+		(call sys.sys_role (object_r))))
