@@ -51,7 +51,7 @@
 	(allow ARG1 sys.subj (system (ipc_info))))
 
 (macro sys_getattr_core_if ((type ARG1))
-	(call fs_search_proc (ARG1))
+	(call fs.search_proc (ARG1))
 	(allow ARG1 kcore.proc (file (getattr))))
 
 (macro sys_read_ring_buffer ((type ARG1))
@@ -64,7 +64,7 @@
 
 (macro sys_dump_kernel_subj_type ((type ARG1))
 	(allow ARG1 self (capability (sys_rawio)))
-	(call fs_search_proc (ARG1))
+	(call fs.search_proc (ARG1))
 	(allow ARG1 kcore.proc read_file_perms)
 	(typeattributeset sys_dump_kernel_subj_type ARG1))
 
@@ -72,7 +72,7 @@
 	(typeattributeset sys_load_kernel_module_subj_type ARG1))
 
 (macro sys_read_kernel_message_subj_type ((type ARG1))
-	(call fs_search_proc (ARG1))
+	(call fs.search_proc (ARG1))
 	(allow ARG1 kmsg_proc.proc read_file_perms)
 	(typeattributeset sys_read_kernel_message_subj_type ARG1))
 
@@ -143,7 +143,7 @@
 	(dontaudit ARG1 sysctl.sysctl (dir (audit_access))))
 
 (macro sys_list_sysctl ((type ARG1))
-	(call fs_search_proc (ARG1))
+	(call fs.search_proc (ARG1))
 	(allow ARG1 sysctl.sysctl list_dir_perms))
 
 (macro sys_setattr_sysctl_dirs ((type ARG1))
@@ -179,7 +179,7 @@
 	(call file.var_log_obj_type_transition (ARG1 sys.var_log_file file "boot.log")))
 
 (macro sys_search_sysctl ((type ARG1))
-	(call fs_search_proc (ARG1))
+	(call fs.search_proc (ARG1))
 	(allow ARG1 sysctl.sysctl search_dir_perms))
 
 (macro sys_read_sysctl_files ((type ARG1))
@@ -371,7 +371,7 @@
 	(dontaudit ARG1 sys_sysctl_obj_type read_lnk_file_perms))
 
 (macro sys_read_all_sysctl ((type ARG1))
-	(call fs_search_proc (ARG1))
+	(call fs.search_proc (ARG1))
 	(allow ARG1 sys_sysctl_obj_type read_file_perms)
 	(allow ARG1 sys_sysctl_obj_type list_dir_perms)
 	(allow ARG1 sys_sysctl_obj_type read_lnk_file_perms))
@@ -383,7 +383,7 @@
 	(call getattr_lnk_files_pattern (ARG1 sys_sysctl_obj_type sys_sysctl_obj_type)))
 
 (macro sys_list_all_sysctl ((type ARG1))
-	(call fs_search_proc (ARG1))
+	(call fs.search_proc (ARG1))
 	(call list_dirs_pattern (ARG1 sys_sysctl_obj_type sys_sysctl_obj_type)))
 
 (macro sys_read_all_sysctl_files ((type ARG1))
@@ -415,23 +415,23 @@
 	(call sys_rw_vm_overcommit_sysctl_files (ARG1)))
 
 (macro sys_read_cpuinfo_proc_files ((type ARG1))
-	(call fs_search_proc (ARG1))
+	(call fs.search_proc (ARG1))
 	(allow ARG1 cpuinfo.proc read_file_perms))
 
 (macro sys_read_iomem_proc_files ((type ARG1))
-	(call fs_search_proc (ARG1))
+	(call fs.search_proc (ARG1))
 	(allow ARG1 iomem.proc read_file_perms))
 
 (macro sys_read_kallsyms_proc_files ((type ARG1))
-	(call fs_search_proc (ARG1))
+	(call fs.search_proc (ARG1))
 	(allow ARG1 kallsyms.proc read_file_perms))
 
 (macro sys_read_mdstat_proc_files ((type ARG1))
-	(call fs_search_proc (ARG1))
+	(call fs.search_proc (ARG1))
 	(allow ARG1 mdstat.proc read_file_perms))
 
 (macro sys_search_net_proc ((type ARG1))
-	(call fs_search_proc (ARG1))
+	(call fs.search_proc (ARG1))
 	(allow ARG1 net_proc.proc search_dir_perms))
 
 (macro sys_read_net_proc_files ((type ARG1))
@@ -443,7 +443,7 @@
 	(allow ARG1 net_proc.proc rw_file_perms))
 
 (macro sys_write_mtrr_proc_files ((type ARG1))
-	(call fs_search_proc (ARG1))
+	(call fs.search_proc (ARG1))
 	(allow ARG1 mtrr.proc write_file_perms))
 
 (macro sys_dontaudit_manage_all_proc_files ((type ARG1))
@@ -453,21 +453,21 @@
 	(dontaudit ARG1 sys_proc_obj_type read_file_perms))
 
 (macro sys_read_all_proc_files ((type ARG1))
-	(call fs_search_proc (ARG1))
+	(call fs.search_proc (ARG1))
 	(call read_files_pattern (ARG1 sys_proc_obj_type sys_proc_obj_type))
 	(typeattributeset sys_dump_kernel_subj_type ARG1)
 	(typeattributeset sys_read_kernel_message_subj_type ARG1))
 
 (macro sys_search_all_proc ((type ARG1))
-	(call fs_search_proc (ARG1))
+	(call fs.search_proc (ARG1))
 	(allow ARG1 sys_proc_obj_type search_dir_perms))
 
 (macro sys_getattr_all_proc_files ((type ARG1))
-	(call fs_search_proc (ARG1))
+	(call fs.search_proc (ARG1))
 	(call getattr_files_pattern (ARG1 sys_proc_obj_type sys_proc_obj_type)))
 
 (macro sys_getattr_all_proc_lnk_files ((type ARG1))
-	(call fs_search_proc (ARG1))
+	(call fs.search_proc (ARG1))
 	(call getattr_lnk_files_pattern (ARG1 sys_proc_obj_type sys_proc_obj_type)))
 
 (macro sys_dontaudit_read_all_sysfs ((type ARG1))
@@ -476,17 +476,17 @@
 	(dontaudit ARG1 sys_sysfs_obj_type read_lnk_file_perms))
 
 (macro sys_read_all_sysfs ((type ARG1))
-	(call fs_search_sysfs (ARG1))
+	(call fs.search_sysfs (ARG1))
 	(allow ARG1 sys_sysfs_obj_type read_file_perms)
 	(allow ARG1 sys_sysfs_obj_type list_dir_perms)
 	(allow ARG1 sys_sysfs_obj_type read_lnk_file_perms))
 
 (macro sys_search_cpu_sysfs ((type ARG1))
-	(call fs_search_sysfs (ARG1))
+	(call fs.search_sysfs (ARG1))
 	(allow ARG1 cpu_sysfs.sysfs search_dir_perms))
 
 (macro sys_list_cpu_sysfs ((type ARG1))
-	(call fs_search_sysfs (ARG1))
+	(call fs.search_sysfs (ARG1))
 	(allow ARG1 cpu_sysfs.sysfs list_dir_perms))
 
 (macro sys_read_cpu_sysfs_files ((type ARG1))
@@ -498,31 +498,31 @@
 	(allow ARG1 cpu_sysfs.sysfs rw_file_perms))
 
 (macro sys_read_cpu_online_sysfs_files ((type ARG1))
-	(call fs_search_sysfs (ARG1))
+	(call fs.search_sysfs (ARG1))
 	(call read_files_pattern (ARG1 cpu_sysfs.sysfs cpu_online_sysfs.sysfs)))
 
 (macro sys_search_memory_sysfs ((type ARG1))
-	(call fs_search_sysfs (ARG1))
+	(call fs.search_sysfs (ARG1))
 	(allow ARG1 memory_sysfs.sysfs search_dir_perms))
 
 (macro sys_list_memory_sysfs ((type ARG1))
-	(call fs_search_sysfs (ARG1))
+	(call fs.search_sysfs (ARG1))
 	(allow ARG1 memory_sysfs.sysfs list_dir_perms))
 
 (macro sys_read_memory_sysfs_files ((type ARG1))
-	(call fs_search_sysfs (ARG1))
+	(call fs.search_sysfs (ARG1))
 	(call read_files_pattern (ARG1 memory_sysfs.sysfs memory_sysfs.sysfs)))
 
 (macro sys_rw_memory_sysfs_files ((type ARG1))
-	(call fs_search_sysfs (ARG1))
+	(call fs.search_sysfs (ARG1))
 	(call rw_files_pattern (ARG1 memory_sysfs.sysfs memory_sysfs.sysfs)))
 
 (macro sys_search_node_sysfs ((type ARG1))
-	(call fs_search_sysfs (ARG1))
+	(call fs.search_sysfs (ARG1))
 	(allow ARG1 node_sysfs.sysfs search_dir_perms))
 
 (macro sys_list_node_sysfs ((type ARG1))
-	(call fs_search_sysfs (ARG1))
+	(call fs.search_sysfs (ARG1))
 	(allow ARG1 node_sysfs.sysfs list_dir_perms))
 
 (macro sys_read_node_sysfs_files ((type ARG1))
@@ -534,15 +534,15 @@
 	(allow ARG1 node_sysfs.sysfs rw_file_perms))
 
 (macro sys_read_node_online_sysfs_files ((type ARG1))
-	(call fs_search_sysfs (ARG1))
+	(call fs.search_sysfs (ARG1))
 	(call read_files_pattern (ARG1 node_sysfs.sysfs node_online_sysfs.sysfs)))
 
 (macro sys_read_state_files ((type ARG1))
-	(call fs_search_proc (ARG1))
+	(call fs.search_proc (ARG1))
 	(call read_files_pattern (ARG1 sys.subj sys.subj)))
 
 (macro sys_read_state_invalid ((type ARG1))
-	(call fs_search_proc (ARG1))
+	(call fs.search_proc (ARG1))
 	(allow ARG1 invalid.isid read_file_perms)
 	(allow ARG1 invalid.isid list_dir_perms)
 	(allow ARG1 invalid.isid read_lnk_file_perms))

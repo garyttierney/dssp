@@ -7,25 +7,25 @@
 (block relabel_ptys_blk
 	(blockabstract relabel_ptys_blk)
 	(macro relabel_ptys ((type ARG1))
-		(call fs_search_devpts (ARG1))
+		(call fs.search_devpts (ARG1))
 		(allow ARG1 pty_dev relabel_chr_file_perms)))
 
 (block setattr_ptys_blk
 	(blockabstract setattr_ptys_blk)
 	(macro setattr_ptys ((type ARG1))
-		(call fs_search_devpts (ARG1))
+		(call fs.search_devpts (ARG1))
 		(allow ARG1 pty_dev (chr_file (setattr)))))
 
 (block getattr_ptys_blk
 	(blockabstract getattr_ptys_blk)
 	(macro getattr_ptys ((type ARG1))
-		(call fs_search_devpts (ARG1))
+		(call fs.search_devpts (ARG1))
 		(allow ARG1 pty_dev (chr_file (getattr)))))
 
 (block use_ptys_blk
 	(blockabstract use_ptys_blk)
 	(macro use_ptys ((type ARG1))
-		(call fs_search_devpts (ARG1))
+		(call fs.search_devpts (ARG1))
 		(allow ARG1 pty_dev rw_term_perms)))
 
 (block use_inherited_ptys_blk
@@ -42,13 +42,13 @@
 (block setattr_login_ptys_blk
 	(blockabstract setattr_login_ptys_blk)
 	(macro setattr_login_ptys ((type ARG1))
-		(call fs_search_devpts (ARG1))
+		(call fs.search_devpts (ARG1))
 		(allow ARG1 login_pty_dev (chr_file (setattr)))))
 
 (block use_login_ptys_blk
 	(blockabstract use_login_ptys_blk)
 	(macro use_login_ptys ((type ARG1))
-		(call fs_search_devpts (ARG1))
+		(call fs.search_devpts (ARG1))
 		(allow ARG1 login_pty_dev rw_term_perms)))
 
 (block use_inherited_login_ptys_blk
@@ -59,19 +59,19 @@
 (block relabel_login_ptys_blk
 	(blockabstract relabel_login_ptys_blk)
 	(macro relabel_login_ptys ((type ARG1))
-		(call fs_search_devpts (ARG1))
+		(call fs.search_devpts (ARG1))
 		(allow ARG1 login_pty_dev relabel_chr_file_perms)))
 
 (block relabelfrom_login_ptys_blk
 	(blockabstract relabelfrom_login_ptys_blk)
 	(macro relabelfrom_login_ptys ((type ARG1))
-		(call fs_search_devpts (ARG1))
+		(call fs.search_devpts (ARG1))
 		(allow ARG1 login_pty_dev relabelfrom_chr_file_perms)))
 
 (block relabelto_login_ptys_blk
 	(blockabstract relabelto_login_ptys_blk)
 	(macro relabelto_login_ptys ((type ARG1))
-		(call fs_search_devpts (ARG1))
+		(call fs.search_devpts (ARG1))
 		(allow ARG1 login_pty_dev relabelto_chr_file_perms)))
 
 (block term_serial_obj_blk
@@ -104,67 +104,67 @@
 
 (macro term_create_pty ((type ARG1)(type ARG2))
 	(call dev_rw_ptmx (ARG1))
-	(call fs_getattr_devpts_fs (ARG1))
-	(call fs_devpts_obj_type_transition (ARG1 ARG2 chr_file "*")))
+	(call fs.getattr_devpts_fs (ARG1))
+	(call fs.devpts_obj_type_transition (ARG1 ARG2 chr_file "*")))
 
 (macro term_dontaudit_use_console ((type ARG1))
 	(dontaudit ARG1 console.dev rw_term_perms))
 
 (macro term_use_console ((type ARG1))
-	(call fs_search_devtmpfs (ARG1))
+	(call fs.search_devtmpfs (ARG1))
 	(allow ARG1 console.dev rw_term_perms))
 
 (macro term_use_inherited_console ((type ARG1))
 	(allow ARG1 console.dev rw_inherited_term_perms))
 
 (macro term_relabel_console ((type ARG1))
-	(call fs_search_devtmpfs (ARG1))
+	(call fs.search_devtmpfs (ARG1))
 	(allow ARG1 console.dev relabel_chr_file_perms))
 
 (macro term_relabelfrom_console ((type ARG1))
-	(call fs_search_devtmpfs (ARG1))
+	(call fs.search_devtmpfs (ARG1))
 	(allow ARG1 console.dev relabelfrom_chr_file_perms))
 
 (macro term_relabelto_console ((type ARG1))
-	(call fs_search_devtmpfs (ARG1))
+	(call fs.search_devtmpfs (ARG1))
 	(allow ARG1 console.dev relabelto_chr_file_perms))
 
 (macro term_setattr_console ((type ARG1))
-	(call fs_search_devtmpfs (ARG1))
+	(call fs.search_devtmpfs (ARG1))
 	(allow ARG1 console.dev (chr_file (setattr))))
 
 (macro term_write_console ((type ARG1))
-	(call fs_search_devtmpfs (ARG1))
+	(call fs.search_devtmpfs (ARG1))
 	(allow ARG1 console.dev write_chr_file_perms))
 
 (macro term_use_virtio ((type ARG1))
-	(call fs_search_devtmpfs (ARG1))
+	(call fs.search_devtmpfs (ARG1))
 	(allow ARG1 virtio.serial_dev rw_term_perms))
 
 (macro term_use_inherited_virtio ((type ARG1))
 	(allow ARG1 virtio.serial_dev rw_inherited_term_perms))
 
 (macro term_relabel_unallocated_ttys ((type ARG1))
-	(call fs_search_devtmpfs (ARG1))
+	(call fs.search_devtmpfs (ARG1))
 	(allow ARG1 tty.serial_dev relabel_chr_file_perms))
 
 (macro term_relabelfrom_unallocated_ttys ((type ARG1))
-	(call fs_search_devtmpfs (ARG1))
+	(call fs.search_devtmpfs (ARG1))
 	(allow ARG1 tty.serial_dev relabelfrom_chr_file_perms))
 
 (macro term_relabelto_unallocated_ttys ((type ARG1))
-	(call fs_search_devtmpfs (ARG1))
+	(call fs.search_devtmpfs (ARG1))
 	(allow ARG1 tty.serial_dev relabelto_chr_file_perms))
 
 (macro term_setattr_unallocated_ttys ((type ARG1))
-	(call fs_search_devtmpfs (ARG1))
+	(call fs.search_devtmpfs (ARG1))
 	(allow ARG1 tty.serial_dev (chr_file (setattr))))
 
 (macro term_use_inherited_unallocated_ttys ((type ARG1))
 	(allow ARG1 tty.serial_dev rw_inherited_term_perms))
 
 (macro term_use_unallocated_ttys ((type ARG1))
-	(call fs_search_devtmpfs (ARG1))
+	(call fs.search_devtmpfs (ARG1))
 	(allow ARG1 tty.serial_dev rw_term_perms))
 
 (macro term_user_pty ((type ARG1)(type ARG2))
@@ -175,22 +175,22 @@
 	(booleanif term_console_login (true (typechange ARG1 console.dev chr_file ARG2))))
 
 (macro term_devtmpfs_obj_type_transition_unallocated_tty ((type ARG1))
-	(call fs_devtmpfs_obj_type_transition (ARG1 tty.serial_dev chr_file "vcs"))
-	(call fs_devtmpfs_obj_type_transition (ARG1 tty.serial_dev chr_file "vcs1"))
-	(call fs_devtmpfs_obj_type_transition (ARG1 tty.serial_dev chr_file "vcs2"))
-	(call fs_devtmpfs_obj_type_transition (ARG1 tty.serial_dev chr_file "vcs3"))
-	(call fs_devtmpfs_obj_type_transition (ARG1 tty.serial_dev chr_file "vcs4"))
-	(call fs_devtmpfs_obj_type_transition (ARG1 tty.serial_dev chr_file "vcs5"))
-	(call fs_devtmpfs_obj_type_transition (ARG1 tty.serial_dev chr_file "vcs6"))
-	(call fs_devtmpfs_obj_type_transition (ARG1 tty.serial_dev chr_file "vcs63"))
-	(call fs_devtmpfs_obj_type_transition (ARG1 tty.serial_dev chr_file "vcsa"))
-	(call fs_devtmpfs_obj_type_transition (ARG1 tty.serial_dev chr_file "vcsa1"))
-	(call fs_devtmpfs_obj_type_transition (ARG1 tty.serial_dev chr_file "vcsa2"))
-	(call fs_devtmpfs_obj_type_transition (ARG1 tty.serial_dev chr_file "vcsa3"))
-	(call fs_devtmpfs_obj_type_transition (ARG1 tty.serial_dev chr_file "vcsa4"))
-	(call fs_devtmpfs_obj_type_transition (ARG1 tty.serial_dev chr_file "vcsa5"))
-	(call fs_devtmpfs_obj_type_transition (ARG1 tty.serial_dev chr_file "vcsa6"))
-	(call fs_devtmpfs_obj_type_transition (ARG1 tty.serial_dev chr_file "vcsa63")))
+	(call fs.devtmpfs_obj_type_transition (ARG1 tty.serial_dev chr_file "vcs"))
+	(call fs.devtmpfs_obj_type_transition (ARG1 tty.serial_dev chr_file "vcs1"))
+	(call fs.devtmpfs_obj_type_transition (ARG1 tty.serial_dev chr_file "vcs2"))
+	(call fs.devtmpfs_obj_type_transition (ARG1 tty.serial_dev chr_file "vcs3"))
+	(call fs.devtmpfs_obj_type_transition (ARG1 tty.serial_dev chr_file "vcs4"))
+	(call fs.devtmpfs_obj_type_transition (ARG1 tty.serial_dev chr_file "vcs5"))
+	(call fs.devtmpfs_obj_type_transition (ARG1 tty.serial_dev chr_file "vcs6"))
+	(call fs.devtmpfs_obj_type_transition (ARG1 tty.serial_dev chr_file "vcs63"))
+	(call fs.devtmpfs_obj_type_transition (ARG1 tty.serial_dev chr_file "vcsa"))
+	(call fs.devtmpfs_obj_type_transition (ARG1 tty.serial_dev chr_file "vcsa1"))
+	(call fs.devtmpfs_obj_type_transition (ARG1 tty.serial_dev chr_file "vcsa2"))
+	(call fs.devtmpfs_obj_type_transition (ARG1 tty.serial_dev chr_file "vcsa3"))
+	(call fs.devtmpfs_obj_type_transition (ARG1 tty.serial_dev chr_file "vcsa4"))
+	(call fs.devtmpfs_obj_type_transition (ARG1 tty.serial_dev chr_file "vcsa5"))
+	(call fs.devtmpfs_obj_type_transition (ARG1 tty.serial_dev chr_file "vcsa6"))
+	(call fs.devtmpfs_obj_type_transition (ARG1 tty.serial_dev chr_file "vcsa63")))
 
 (macro term_set_console_login_boolean ((type ARG1))
 	(call sec_set_spec_boolean (ARG1 term_console_login.bool))

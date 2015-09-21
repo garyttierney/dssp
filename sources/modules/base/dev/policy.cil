@@ -22,7 +22,7 @@
 
 	(call mls_trusted_obj_type (dev))
 
-	(call fs_associate_tmpfs (dev)))
+	(call fs.associate_tmpfs (dev)))
 
 (block dri
 	(blockinherit dev_obj_blk))
@@ -61,7 +61,7 @@
 
 	(call mls_trusted_obj_type (dev))
 
-	(call fs_associate_tmpfs (dev)))
+	(call fs.associate_tmpfs (dev)))
 
 (block nvram
 	(blockinherit dev_obj_blk))
@@ -83,7 +83,7 @@
 (block random
 	(blockinherit dev_obj_blk)
 
-	(call fs_associate_tmpfs (dev)))
+	(call fs.associate_tmpfs (dev)))
 
 (block sound
 	(blockinherit dev_obj_blk))
@@ -100,7 +100,7 @@
 (block urandom
 	(blockinherit dev_obj_blk)
 
-	(call fs_associate_tmpfs (dev)))
+	(call fs.associate_tmpfs (dev)))
 
 (block usb
 	(blockinherit dev_obj_blk))
@@ -133,10 +133,10 @@
 
 	(call mls_trusted_obj_type (dev))
 
-	(call fs_associate_tmpfs (dev)))
+	(call fs.associate_tmpfs (dev)))
 
 (call sys_obj_type (dev_obj_type))
-(call fs_associate_devtmpfs (dev_obj_type))
+(call fs.associate_devtmpfs (dev_obj_type))
 
 (typeattribute dev_read_memory_subj_type)
 (typeattribute dev_not_read_memory_subj_type_or_dev_unconfined_subj_type)

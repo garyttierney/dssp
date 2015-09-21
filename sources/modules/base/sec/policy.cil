@@ -7,7 +7,7 @@
 (typeattribute sec_unconfined_subj_type)
 
 (block securityfs
-	(blockinherit fs_obj_blk)
+	(blockinherit fs.obj_blk)
 
 	(call sec_bool_obj_type (fs)))
 

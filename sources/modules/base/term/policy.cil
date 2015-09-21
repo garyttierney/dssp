@@ -17,4 +17,4 @@
 (block virtio
 	(blockinherit term_serial_obj_blk))
 
-(call fs_associate_devpts (term_pty_obj_type))
+(call fs.associate_devpts (term_pty_obj_type))

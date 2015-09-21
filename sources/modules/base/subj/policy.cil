@@ -41,7 +41,7 @@
 
 (call sys_subj_type (subj_common_type))
 
-(call fs_search_rootfs (subj_type))
+(call fs.search_rootfs (subj_type))
 
 (optional subj_type_optional_sd
 	(call sd.send_sigchld (subj_type)))
@@ -60,8 +60,8 @@
 (call dev_rw_null (subj_common_type))
 (call dev_rw_zero (subj_common_type))
 
-(call fs_read_proc (subj_common_type))
-(call fs_search_sysfs (subj_common_type))
+(call fs.read_proc (subj_common_type))
+(call fs.search_sysfs (subj_common_type))
 
 (optional subj_common_type_optional_lib
 	(call lib_use_ld_so (subj_common_type))

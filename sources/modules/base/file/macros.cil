@@ -282,7 +282,7 @@
 	(block manage_boot_flag_files_blk
 		(blockabstract manage_boot_flag_files_blk)
 		(macro manage_boot_flag_files ((type ARG1))
-			(call fs_rw_rootfs_dirs (ARG1))
+			(call fs.rw_rootfs_dirs (ARG1))
 			(allow ARG1 boot_flag_file manage_file_perms)))
 
 	(block relabel_boot_flag_files_blk
@@ -303,7 +303,7 @@
 	(block manage_all_boot_flag_files_blk
 		(blockabstract manage_all_boot_flag_files_blk)
 		(macro manage_all_boot_flag_files ((type ARG1))
-			(call fs_rw_rootfs_dirs (ARG1))
+			(call fs.rw_rootfs_dirs (ARG1))
 			(allow ARG1 boot_flag_obj_type_attribute manage_file_perms)))
 
 	(block relabel_all_boot_flag_files_blk
@@ -3273,97 +3273,97 @@
 	(block list_tmpfs_blk
 		(blockabstract list_tmpfs_blk)
 		(macro list_tmpfs ((type ARG1))
-			(call fs_search_tmpfs (ARG1))
+			(call fs.search_tmpfs (ARG1))
 			(allow ARG1 tmpfs_file list_dir_perms)))
 
 	(block rw_tmpfs_dirs_blk
 		(blockabstract rw_tmpfs_dirs_blk)
 		(macro rw_tmpfs_dirs ((type ARG1))
-			(call fs_search_tmpfs (ARG1))
+			(call fs.search_tmpfs (ARG1))
 			(allow ARG1 tmpfs_file rw_dir_perms)))
 
 	(block search_tmpfs_blk
 		(blockabstract search_tmpfs_blk)
 		(macro search_tmpfs ((type ARG1))
-			(call fs_search_tmpfs (ARG1))
+			(call fs.search_tmpfs (ARG1))
 			(allow ARG1 tmpfs_file search_dir_perms)))
 
 	(block read_tmpfs_files_blk
 		(blockabstract read_tmpfs_files_blk)
 		(macro read_tmpfs_files ((type ARG1))
-			(call fs_search_tmpfs (ARG1))
+			(call fs.search_tmpfs (ARG1))
 			(call read_files_pattern (ARG1 tmpfs_file tmpfs_file))))
 
 	(block rw_tmpfs_files_blk
 		(blockabstract rw_tmpfs_files_blk)
 		(macro rw_tmpfs_files ((type ARG1))
-			(call fs_search_tmpfs (ARG1))
+			(call fs.search_tmpfs (ARG1))
 			(call rw_files_pattern (ARG1 tmpfs_file tmpfs_file))))
 
 	(block manage_tmpfs_files_blk
 		(blockabstract manage_tmpfs_files_blk)
 		(macro manage_tmpfs_files ((type ARG1))
-			(call fs_rw_tmpfs_dirs (ARG1))
+			(call fs.rw_tmpfs_dirs (ARG1))
 			(call manage_files_pattern (ARG1 tmpfs_file tmpfs_file))))
 
 	(block relabel_tmpfs_files_blk
 		(blockabstract relabel_tmpfs_files_blk)
 		(macro relabel_tmpfs_files ((type ARG1))
-			(call fs_search_tmpfs (ARG1))
+			(call fs.search_tmpfs (ARG1))
 			(call relabel_files_pattern (ARG1 tmpfs_file tmpfs_file))))
 
 	(block read_tmpfs_fifo_files_blk
 		(blockabstract read_tmpfs_fifo_files_blk)
 		(macro read_tmpfs_fifo_files ((type ARG1))
-			(call fs_search_tmpfs (ARG1))
+			(call fs.search_tmpfs (ARG1))
 			(call read_fifo_files_pattern (ARG1 tmpfs_file tmpfs_file))))
 
 	(block manage_tmpfs_fifo_files_blk
 		(blockabstract manage_tmpfs_fifo_files_blk)
 		(macro manage_tmpfs_fifo_files ((type ARG1))
-			(call fs_rw_tmpfs_dirs (ARG1))
+			(call fs.rw_tmpfs_dirs (ARG1))
 			(call manage_fifo_files_pattern (ARG1 tmpfs_file tmpfs_file))))
 
 	(block relabel_tmpfs_fifo_files_blk
 		(blockabstract relabel_tmpfs_fifo_files_blk)
 		(macro relabel_tmpfs_fifo_files ((type ARG1))
-			(call fs_search_tmpfs (ARG1))
+			(call fs.search_tmpfs (ARG1))
 			(call relabel_fifo_files_pattern (ARG1 tmpfs_file tmpfs_file))))
 
 	(block read_tmpfs_lnk_files_blk
 		(blockabstract read_tmpfs_lnk_files_blk)
 		(macro read_tmpfs_lnk_files ((type ARG1))
-			(call fs_search_tmpfs (ARG1))
+			(call fs.search_tmpfs (ARG1))
 			(call read_lnk_files_pattern (ARG1 tmpfs_file tmpfs_file))))
 
 	(block manage_tmpfs_lnk_files_blk
 		(blockabstract manage_tmpfs_lnk_files_blk)
 		(macro manage_tmpfs_lnk_files ((type ARG1))
-			(call fs_rw_tmpfs_dirs (ARG1))
+			(call fs.rw_tmpfs_dirs (ARG1))
 			(call manage_lnk_files_pattern (ARG1 tmpfs_file tmpfs_file))))
 
 	(block read_tmpfs_sock_files_blk
 		(blockabstract read_tmpfs_sock_files_blk)
 		(macro read_tmpfs_sock_files ((type ARG1))
-			(call fs_search_tmpfs (ARG1))
+			(call fs.search_tmpfs (ARG1))
 			(call read_sock_files_pattern (ARG1 tmpfs_file tmpfs_file))))
 
 	(block manage_tmpfs_sock_files_blk
 		(blockabstract manage_tmpfs_sock_files_blk)
 		(macro manage_tmpfs_sock_files ((type ARG1))
-			(call fs_rw_tmpfs_dirs (ARG1))
+			(call fs.rw_tmpfs_dirs (ARG1))
 			(call manage_sock_files_pattern (ARG1 tmpfs_file tmpfs_file))))
 
 	(block relabel_tmpfs_sock_files_blk
 		(blockabstract relabel_tmpfs_sock_files_blk)
 		(macro relabel_tmpfs_sock_files ((type ARG1))
-			(call fs_search_tmpfs (ARG1))
+			(call fs.search_tmpfs (ARG1))
 			(call relabel_sock_files_pattern (ARG1 tmpfs_file tmpfs_file))))
 
 	(block read_tmpfs_blk
 		(blockabstract read_tmpfs_blk)
 		(macro read_tmpfs ((type ARG1))
-			(call fs_search_tmpfs (ARG1))
+			(call fs.search_tmpfs (ARG1))
 			(allow ARG1 tmpfs_file read_file_perms)
 			(allow ARG1 tmpfs_file read_fifo_file_perms)
 			(allow ARG1 tmpfs_file list_dir_perms)
@@ -3373,7 +3373,7 @@
 	(block manage_tmpfs_blk
 		(blockabstract manage_tmpfs_blk)
 		(macro manage_tmpfs ((type ARG1))
-			(call fs_rw_tmpfs_dirs (ARG1))
+			(call fs.rw_tmpfs_dirs (ARG1))
 			(allow ARG1 tmpfs_file manage_file_perms)
 			(allow ARG1 tmpfs_file manage_fifo_file_perms)
 			(allow ARG1 tmpfs_file manage_dir_perms)
@@ -3383,7 +3383,7 @@
 	(block relabel_tmpfs_blk
 		(blockabstract relabel_tmpfs_blk)
 		(macro relabel_tmpfs ((type ARG1))
-			(call fs_search_tmpfs (ARG1))
+			(call fs.search_tmpfs (ARG1))
 			(allow ARG1 tmpfs_file relabel_file_perms)
 			(allow ARG1 tmpfs_file relabel_fifo_file_perms)
 			(allow ARG1 tmpfs_file relabel_dir_perms)
@@ -3393,97 +3393,97 @@
 	(block list_all_tmpfs_blk
 		(blockabstract list_all_tmpfs_blk)
 		(macro list_all_tmpfs ((type ARG1))
-			(call fs_search_tmpfs (ARG1))
+			(call fs.search_tmpfs (ARG1))
 			(allow ARG1 tmpfs_obj_type_attribute list_dir_perms)))
 
 	(block rw_all_tmpfs_dirs_blk
 		(blockabstract rw_all_tmpfs_dirs_blk)
 		(macro rw_all_tmpfs_dirs ((type ARG1))
-			(call fs_search_tmpfs (ARG1))
+			(call fs.search_tmpfs (ARG1))
 			(allow ARG1 tmpfs_obj_type_attribute rw_dir_perms)))
 
 	(block search_all_tmpfs_blk
 		(blockabstract search_all_tmpfs_blk)
 		(macro search_all_tmpfs ((type ARG1))
-			(call fs_search_tmpfs (ARG1))
+			(call fs.search_tmpfs (ARG1))
 			(allow ARG1 tmpfs_obj_type_attribute search_dir_perms)))
 
 	(block read_all_tmpfs_files_blk
 		(blockabstract read_all_tmpfs_files_blk)
 		(macro read_all_tmpfs_files ((type ARG1))
-			(call fs_search_tmpfs (ARG1))
+			(call fs.search_tmpfs (ARG1))
 			(call read_files_pattern (ARG1 tmpfs_obj_type_attribute tmpfs_obj_type_attribute))))
 
 	(block rw_all_tmpfs_files_blk
 		(blockabstract rw_all_tmpfs_files_blk)
 		(macro rw_all_tmpfs_files ((type ARG1))
-			(call fs_search_tmpfs (ARG1))
+			(call fs.search_tmpfs (ARG1))
 			(call rw_files_pattern (ARG1 tmpfs_obj_type_attribute tmpfs_obj_type_attribute))))
 
 	(block manage_all_tmpfs_files_blk
 		(blockabstract manage_all_tmpfs_files_blk)
 		(macro manage_all_tmpfs_files ((type ARG1))
-			(call fs_rw_tmpfs_dirs (ARG1))
+			(call fs.rw_tmpfs_dirs (ARG1))
 			(call manage_files_pattern (ARG1 tmpfs_obj_type_attribute tmpfs_obj_type_attribute))))
 
 	(block relabel_all_tmpfs_files_blk
 		(blockabstract relabel_all_tmpfs_files_blk)
 		(macro relabel_all_tmpfs_files ((type ARG1))
-			(call fs_search_tmpfs (ARG1))
+			(call fs.search_tmpfs (ARG1))
 			(call relabel_files_pattern (ARG1 tmpfs_obj_type_attribute tmpfs_obj_type_attribute))))
 
 	(block read_all_tmpfs_fifo_files_blk
 		(blockabstract read_all_tmpfs_fifo_files_blk)
 		(macro read_all_tmpfs_fifo_files ((type ARG1))
-			(call fs_search_tmpfs (ARG1))
+			(call fs.search_tmpfs (ARG1))
 			(call read_fifo_files_pattern (ARG1 tmpfs_obj_type_attribute tmpfs_obj_type_attribute))))
 
 	(block manage_all_tmpfs_fifo_files_blk
 		(blockabstract manage_all_tmpfs_fifo_files_blk)
 		(macro manage_all_tmpfs_fifo_files ((type ARG1))
-			(call fs_rw_tmpfs_dirs (ARG1))
+			(call fs.rw_tmpfs_dirs (ARG1))
 			(call manage_fifo_files_pattern (ARG1 tmpfs_obj_type_attribute tmpfs_obj_type_attribute))))
 
 	(block relabel_all_tmpfs_fifo_files_blk
 		(blockabstract relabel_all_tmpfs_fifo_files_blk)
 		(macro relabel_all_tmpfs_fifo_files ((type ARG1))
-			(call fs_search_tmpfs (ARG1))
+			(call fs.search_tmpfs (ARG1))
 			(call relabel_fifo_files_pattern (ARG1 tmpfs_obj_type_attribute tmpfs_obj_type_attribute))))
 
 	(block read_all_tmpfs_lnk_files_blk
 		(blockabstract read_all_tmpfs_lnk_files_blk)
 		(macro read_all_tmpfs_lnk_files ((type ARG1))
-			(call fs_search_tmpfs (ARG1))
+			(call fs.search_tmpfs (ARG1))
 			(call read_lnk_files_pattern (ARG1 tmpfs_obj_type_attribute tmpfs_obj_type_attribute))))
 
 	(block manage_all_tmpfs_lnk_files_blk
 		(blockabstract manage_all_tmpfs_lnk_files_blk)
 		(macro manage_all_tmpfs_lnk_files ((type ARG1))
-			(call fs_rw_tmpfs_dirs (ARG1))
+			(call fs.rw_tmpfs_dirs (ARG1))
 			(call manage_lnk_files_pattern (ARG1 tmpfs_obj_type_attribute tmpfs_obj_type_attribute))))
 
 	(block read_all_tmpfs_sock_files_blk
 		(blockabstract read_all_tmpfs_sock_files_blk)
 		(macro read_all_tmpfs_sock_files ((type ARG1))
-			(call fs_search_tmpfs (ARG1))
+			(call fs.search_tmpfs (ARG1))
 			(call read_sock_files_pattern (ARG1 tmpfs_obj_type_attribute tmpfs_obj_type_attribute))))
 
 	(block manage_all_tmpfs_sock_files_blk
 		(blockabstract manage_all_tmpfs_sock_files_blk)
 		(macro manage_all_tmpfs_sock_files ((type ARG1))
-			(call fs_rw_tmpfs_dirs (ARG1))
+			(call fs.rw_tmpfs_dirs (ARG1))
 			(call manage_sock_files_pattern (ARG1 tmpfs_obj_type_attribute tmpfs_obj_type_attribute))))
 
 	(block relabel_all_tmpfs_sock_files_blk
 		(blockabstract relabel_all_tmpfs_sock_files_blk)
 		(macro relabel_all_tmpfs_sock_files ((type ARG1))
-			(call fs_search_tmpfs (ARG1))
+			(call fs.search_tmpfs (ARG1))
 			(call relabel_sock_files_pattern (ARG1 tmpfs_obj_type_attribute tmpfs_obj_type_attribute))))
 
 	(block read_all_tmpfs_blk
 		(blockabstract read_all_tmpfs_blk)
 		(macro read_all_tmpfs ((type ARG1))
-			(call fs_search_tmpfs (ARG1))
+			(call fs.search_tmpfs (ARG1))
 			(allow ARG1 tmpfs_obj_type_attribute read_file_perms)
 			(allow ARG1 tmpfs_obj_type_attribute read_fifo_file_perms)
 			(allow ARG1 tmpfs_obj_type_attribute list_dir_perms)
@@ -3493,7 +3493,7 @@
 	(block manage_all_tmpfs_blk
 		(blockabstract manage_all_tmpfs_blk)
 		(macro manage_all_tmpfs ((type ARG1))
-			(call fs_rw_tmpfs_dirs (ARG1))
+			(call fs.rw_tmpfs_dirs (ARG1))
 			(allow ARG1 tmpfs_obj_type_attribute manage_file_perms)
 			(allow ARG1 tmpfs_obj_type_attribute manage_fifo_file_perms)
 			(allow ARG1 tmpfs_obj_type_attribute manage_dir_perms)
@@ -3503,7 +3503,7 @@
 	(block relabel_all_tmpfs_blk
 		(blockabstract relabel_all_tmpfs_blk)
 		(macro relabel_all_tmpfs ((type ARG1))
-			(call fs_search_tmpfs (ARG1))
+			(call fs.search_tmpfs (ARG1))
 			(allow ARG1 tmpfs_obj_type_attribute relabel_file_perms)
 			(allow ARG1 tmpfs_obj_type_attribute relabel_fifo_file_perms)
 			(allow ARG1 tmpfs_obj_type_attribute relabel_dir_perms)
@@ -3553,7 +3553,7 @@
 		(allow ARG1 boot.boot_file read_lnk_file_perms))
 
 	(macro manage_boot ((type ARG1))
-		(call fs_rw_rootfs_dirs (ARG1))
+		(call fs.rw_rootfs_dirs (ARG1))
 		(allow ARG1 boot.boot_file manage_file_perms)
 		(allow ARG1 boot.boot_file manage_dir_perms)
 		(allow ARG1 boot.boot_file manage_fifo_file_perms)
@@ -3583,7 +3583,7 @@
 		(allow ARG1 boot_obj_type_attribute read_lnk_file_perms))
 
 	(macro manage_all_boot ((type ARG1))
-		(call fs_rw_rootfs_dirs (ARG1))
+		(call fs.rw_rootfs_dirs (ARG1))
 		(allow ARG1 boot_obj_type_attribute manage_file_perms)
 		(allow ARG1 boot_obj_type_attribute manage_dir_perms)
 		(allow ARG1 boot_obj_type_attribute manage_fifo_file_perms)
@@ -3601,7 +3601,7 @@
 		(allow ARG1 boot_flag_obj_type_attribute read_file_perms))
 
 	(macro manage_all_boot_flag_files ((type ARG1))
-		(call fs_rw_rootfs_dirs (ARG1))
+		(call fs.rw_rootfs_dirs (ARG1))
 		(allow ARG1 boot_flag_obj_type_attribute manage_file_perms))
 
 	(macro config_obj_type ((type ARG1))
@@ -3649,7 +3649,7 @@
 		(allow ARG1 config.config_file read_lnk_file_perms))
 
 	(macro manage_config ((type ARG1))
-		(call fs_rw_rootfs_dirs (ARG1))
+		(call fs.rw_rootfs_dirs (ARG1))
 		(allow ARG1 config.config_file manage_file_perms)
 		(allow ARG1 config.config_file manage_dir_perms)
 		(allow ARG1 config.config_file manage_fifo_file_perms)
@@ -3679,7 +3679,7 @@
 		(allow ARG1 config_obj_type_attribute read_lnk_file_perms))
 
 	(macro manage_all_config ((type ARG1))
-		(call fs_rw_rootfs_dirs (ARG1))
+		(call fs.rw_rootfs_dirs (ARG1))
 		(allow ARG1 config_obj_type_attribute manage_file_perms)
 		(allow ARG1 config_obj_type_attribute manage_dir_perms)
 		(allow ARG1 config_obj_type_attribute manage_fifo_file_perms)
@@ -3713,7 +3713,7 @@
 		(allow ARG1 data.data_file read_lnk_file_perms))
 
 	(macro manage_data ((type ARG1))
-		(call fs_rw_rootfs_dirs (ARG1))
+		(call fs.rw_rootfs_dirs (ARG1))
 		(allow ARG1 data.data_file manage_file_perms)
 		(allow ARG1 data.data_file manage_dir_perms)
 		(allow ARG1 data.data_file manage_fifo_file_perms)
@@ -3743,7 +3743,7 @@
 		(allow ARG1 data_obj_type_attribute read_lnk_file_perms))
 
 	(macro manage_all_data ((type ARG1))
-		(call fs_rw_rootfs_dirs (ARG1))
+		(call fs.rw_rootfs_dirs (ARG1))
 		(allow ARG1 data_obj_type_attribute manage_file_perms)
 		(allow ARG1 data_obj_type_attribute manage_dir_perms)
 		(allow ARG1 data_obj_type_attribute manage_fifo_file_perms)
@@ -3790,7 +3790,7 @@
 		(allow ARG1 runtime.runtime_file read_lnk_file_perms))
 
 	(macro manage_runtime ((type ARG1))
-		(call fs_rw_rootfs_dirs (ARG1))
+		(call fs.rw_rootfs_dirs (ARG1))
 		(allow ARG1 runtime.runtime_file manage_file_perms)
 		(allow ARG1 runtime.runtime_file manage_dir_perms)
 		(allow ARG1 runtime.runtime_file manage_fifo_file_perms)
@@ -3836,7 +3836,7 @@
 		(allow ARG1 runtime_obj_type_attribute read_lnk_file_perms))
 
 	(macro manage_all_runtime ((type ARG1))
-		(call fs_rw_rootfs_dirs (ARG1))
+		(call fs.rw_rootfs_dirs (ARG1))
 		(allow ARG1 runtime_obj_type_attribute manage_file_perms)
 		(allow ARG1 runtime_obj_type_attribute manage_dir_perms)
 		(allow ARG1 runtime_obj_type_attribute manage_fifo_file_perms)
@@ -4084,7 +4084,7 @@
 		(allow ARG1 var_obj_type_attribute read_lnk_file_perms))
 
 	(macro manage_all_var ((type ARG1))
-		(call fs_rw_rootfs_dirs (ARG1))
+		(call fs.rw_rootfs_dirs (ARG1))
 		(allow ARG1 var_obj_type_attribute manage_file_perms)
 		(allow ARG1 var_obj_type_attribute manage_dir_perms)
 		(allow ARG1 var_obj_type_attribute manage_fifo_file_perms)
@@ -4603,27 +4603,27 @@
 		(typeattributeset tmpfs_obj_type_attribute ARG1))
 
 	(macro search_all_tmpfs ((type ARG1))
-		(call fs_search_tmpfs (ARG1))
+		(call fs.search_tmpfs (ARG1))
 		(allow ARG1 tmpfs_obj_type_attribute search_dir_perms))
 
 	(macro list_all_tmpfs ((type ARG1))
-		(call fs_search_tmpfs (ARG1))
+		(call fs.search_tmpfs (ARG1))
 		(allow ARG1 tmpfs_obj_type_attribute list_dir_perms))
 
 	(macro getattr_all_tmpfs_files ((type ARG1))
-		(call fs_search_tmpfs (ARG1))
+		(call fs.search_tmpfs (ARG1))
 		(call getattr_files_pattern (ARG1 tmpfs_obj_type_attribute tmpfs_obj_type_attribute)))
 
 	(macro read_all_tmpfs_files ((type ARG1))
-		(call fs_search_tmpfs (ARG1))
+		(call fs.search_tmpfs (ARG1))
 		(call read_files_pattern (ARG1 tmpfs_obj_type_attribute tmpfs_obj_type_attribute)))
 
 	(macro read_all_tmpfs_lnk_files ((type ARG1))
-		(call fs_search_tmpfs (ARG1))
+		(call fs.search_tmpfs (ARG1))
 		(call read_lnk_files_pattern (ARG1 tmpfs_obj_type_attribute tmpfs_obj_type_attribute)))
 
 	(macro read_all_tmpfs ((type ARG1))
-		(call fs_search_tmpfs (ARG1))
+		(call fs.search_tmpfs (ARG1))
 		(allow ARG1 tmpfs_obj_type_attribute read_file_perms)
 		(allow ARG1 tmpfs_obj_type_attribute list_dir_perms)
 		(allow ARG1 tmpfs_obj_type_attribute read_fifo_file_perms)
@@ -4631,7 +4631,7 @@
 		(allow ARG1 tmpfs_obj_type_attribute read_lnk_file_perms))
 
 	(macro delete_all_tmpfs ((type ARG1))
-		(call fs_del_entry_tmpfs_dirs (ARG1))
+		(call fs.del_entry_tmpfs_dirs (ARG1))
 		(allow ARG1 tmpfs_obj_type_attribute delete_file_perms)
 		(allow ARG1 tmpfs_obj_type_attribute delete_dir_perms)
 		(allow ARG1 tmpfs_obj_type_attribute delete_fifo_perms)
@@ -4639,7 +4639,7 @@
 		(allow ARG1 tmpfs_obj_type_attribute delete_lnk_file_perms))
 
 	(macro manage_all_tmpfs ((type ARG1))
-		(call fs_rw_tmpfs_dirs (ARG1))
+		(call fs.rw_tmpfs_dirs (ARG1))
 		(allow ARG1 tmpfs_obj_type_attribute manage_file_perms)
 		(allow ARG1 tmpfs_obj_type_attribute manage_dir_perms)
 		(allow ARG1 tmpfs_obj_type_attribute manage_fifo_perms)
@@ -4696,7 +4696,7 @@
 		(allow ARG1 mnt.file read_lnk_file_perms))
 
 	(macro manage_mnt ((type ARG1))
-		(call fs_rw_rootfs_dirs (ARG1))
+		(call fs.rw_rootfs_dirs (ARG1))
 		(allow ARG1 mnt.file manage_dir_perms)
 		(allow ARG1 mnt.file manage_file_perms)
 		(allow ARG1 mnt.file manage_lnk_file_perms))
@@ -4705,7 +4705,7 @@
 		(allow ARG1 mnt.file rw_dir_perms))
 
 	(macro manage_mnt_dirs ((type ARG1))
-		(call fs_rw_rootfs_dirs (ARG1))
+		(call fs.rw_rootfs_dirs (ARG1))
 		(allow ARG1 mnt.file manage_dir_perms))
 
 	(macro setattr_mnt_dirs ((type ARG1))
@@ -4774,7 +4774,7 @@
 		(allow ARG1 unknown.file read_sock_file_perms))
 
 	(macro manage_unknown ((type ARG1))
-		(call fs_rw_rootfs_dirs (ARG1))
+		(call fs.rw_rootfs_dirs (ARG1))
 		(allow ARG1 unknown.file manage_file_perms)
 		(allow ARG1 unknown.file manage_dir_perms)
 		(allow ARG1 unknown.file manage_fifo_file_perms)
@@ -4782,13 +4782,13 @@
 		(allow ARG1 unknown.file manage_sock_file_perms))
 
 	(macro rootfs_obj_type_transition_unknown ((type ARG1))
-		(call fs_rootfs_obj_type_transition (ARG1 unknown.file file "*"))
-		(call fs_rootfs_obj_type_transition (ARG1 unknown.file dir "*"))
-		(call fs_rootfs_obj_type_transition (ARG1 unknown.file fifo_file "*"))
-		(call fs_rootfs_obj_type_transition (ARG1 unknown.file lnk_file "*"))
-		(call fs_rootfs_obj_type_transition (ARG1 unknown.file sock_file "*"))
-		(call fs_rootfs_obj_type_transition (ARG1 unknown.file blk_file "*"))
-		(call fs_rootfs_obj_type_transition (ARG1 unknown.file chr_file "*")))
+		(call fs.rootfs_obj_type_transition (ARG1 unknown.file file "*"))
+		(call fs.rootfs_obj_type_transition (ARG1 unknown.file dir "*"))
+		(call fs.rootfs_obj_type_transition (ARG1 unknown.file fifo_file "*"))
+		(call fs.rootfs_obj_type_transition (ARG1 unknown.file lnk_file "*"))
+		(call fs.rootfs_obj_type_transition (ARG1 unknown.file sock_file "*"))
+		(call fs.rootfs_obj_type_transition (ARG1 unknown.file blk_file "*"))
+		(call fs.rootfs_obj_type_transition (ARG1 unknown.file chr_file "*")))
 
 	(macro list_all ((type ARG1))
 		(allow ARG1 obj_type_attribute list_dir_perms))

@@ -66,13 +66,13 @@
 
 	(call file.read_data_files (subj))
 
-	(call fs_dontaudit_write_devtmpfs_chr_files (subj))
-	(call fs_list_rootfs (subj))
-	(call fs_manage_devtmpfs_dirs (subj))
-	(call fs_manage_devtmpfs_lnk_files (subj))
-	(call fs_mounton_rootfs_dirs (subj))
-	(call fs_read_debugfs (subj))
-	(call fs_search_tmpfs (subj))
+	(call fs.dontaudit_write_devtmpfs_chr_files (subj))
+	(call fs.list_rootfs (subj))
+	(call fs.manage_devtmpfs_dirs (subj))
+	(call fs.manage_devtmpfs_lnk_files (subj))
+	(call fs.mounton_rootfs_dirs (subj))
+	(call fs.read_debugfs (subj))
+	(call fs.search_tmpfs (subj))
 
 	(call sec_compute_create_context (subj))
 	(call sec_list_fs (subj))
@@ -143,9 +143,9 @@
 
 	(call sys_mountpoint_obj_type (isid))
 
-	(call fs_associate_fs (isid))
-	(call fs_associate_tmpfs (isid))
-	(call fs_search_proc (isid))
+	(call fs.associate_fs (isid))
+	(call fs.associate_tmpfs (isid))
+	(call fs.search_proc (isid))
 
 	(tunableif enable_rbacsep
 		(false
@@ -156,9 +156,9 @@
 
 	(call sys_obj_type (isid))
 
-	(call fs_associate_devtmpfs (isid))
-	(call fs_associate_fs (isid))
-	(call fs_associate_tmpfs (isid)))
+	(call fs.associate_devtmpfs (isid))
+	(call fs.associate_fs (isid))
+	(call fs.associate_tmpfs (isid)))
 
 (block cpuinfo
 	(blockinherit sys_proc_obj_blk))

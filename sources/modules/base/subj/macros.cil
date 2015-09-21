@@ -59,7 +59,7 @@
 (block read_state_blk
 	(blockabstract read_state_blk)
 	(macro read_state ((type ARG1))
-		(call fs_search_proc (ARG1))
+		(call fs.search_proc (ARG1))
 		(allow ARG1 subj read_file_perms)
 		(allow ARG1 subj list_dir_perms)
 		(allow ARG1 subj read_lnk_file_perms)))
@@ -188,7 +188,7 @@
 (block read_state_all_blk
 	(blockabstract read_state_all_blk)
 	(macro read_state_all_subj ((type ARG1))
-		(call fs_search_proc (ARG1))
+		(call fs.search_proc (ARG1))
 		(allow ARG1 subj_type_attribute read_file_perms)
 		(allow ARG1 subj_type_attribute list_dir_perms)
 		(allow ARG1 subj_type_attribute read_lnk_file_perms)))
@@ -348,7 +348,7 @@
 	(dontaudit ARG1 subj_common_type read_lnk_file_perms))
 
 (macro subj_read_common_subj_state ((type ARG1))
-	(call fs_search_proc (ARG1))
+	(call fs.search_proc (ARG1))
 	(allow ARG1 subj_common_type read_file_perms)
 	(allow ARG1 subj_common_type list_dir_perms)
 	(allow ARG1 subj_common_type read_lnk_file_perms))

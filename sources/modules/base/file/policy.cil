@@ -29,12 +29,12 @@
 
 	(call sys_obj_type (obj_type_attribute))
 
-	(call fs_associate_fs (obj_type_attribute))
+	(call fs.associate_fs (obj_type_attribute))
 
-	(call fs_associate_tmpfs (runtime_obj_type_attribute))
-	(call fs_associate_tmpfs (runtime_lock_obj_type_attribute))
+	(call fs.associate_tmpfs (runtime_obj_type_attribute))
+	(call fs.associate_tmpfs (runtime_lock_obj_type_attribute))
 
-	(call fs_associate_tmpfs (tmpfs_obj_type_attribute))
+	(call fs.associate_tmpfs (tmpfs_obj_type_attribute))
 
 	(typeattribute except_obj_type_attribute)
 	(typeattribute exception_obj_type_attribute)
