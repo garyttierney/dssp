@@ -15,7 +15,7 @@
 	(typeattribute interactive_fd_subj_type_attribute)
 	(typeattribute use_interactive_fd_subj_type_attribute)
 
-	(call cmd_obj_type (entry_obj_type_attribute))
+	(call cmd.cmd_obj_type (entry_obj_type_attribute))
 
 	(allow use_interactive_fd_subj_type_attribute interactive_fd_subj_type_attribute (fd (use)))
 
@@ -40,7 +40,7 @@
 	(call sys.read_vm_overcommit_sysctl_files (common_subj_type_attribute))
 	(call sys.search_invalid (common_subj_type_attribute))
 
-	(call cmd_search_cmd (common_subj_type_attribute))
+	(call cmd.search_cmd (common_subj_type_attribute))
 
 	(call dev.rw_devtty (common_subj_type_attribute))
 	(call dev.rw_null (common_subj_type_attribute))
