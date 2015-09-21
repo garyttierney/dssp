@@ -3,69 +3,70 @@
 (sid netmsg)
 (sid node)
 
-(typeattribute net_if_obj_type)
-(typeattribute net_node_obj_type)
-(typeattribute net_packet_obj_type)
-(typeattribute net_peer_obj_type)
-(typeattribute net_port_obj_type)
+(block net
+	(typeattribute if_obj_type_attribute)
+	(typeattribute node_obj_type_attribute)
+	(typeattribute packet_obj_type_attribute)
+	(typeattribute peer_obj_type_attribute)
+	(typeattribute port_obj_type_attribute)
 
-(typeattribute net_ephemeral_port_obj_type)
-(typeattribute net_reserved_port_obj_type)
-(typeattribute net_rpc_port_obj_type)
-(typeattribute net_unreserved_port_obj_type)
+	(typeattribute ephemeral_port_obj_type_attribute)
+	(typeattribute reserved_port_obj_type_attribute)
+	(typeattribute rpc_port_obj_type_attribute)
+	(typeattribute unreserved_port_obj_type_attribute)
 
-(typeattribute net_unconfined_subj_type)
+	(typeattribute unconfined_subj_type_attribute)
+
+	(call sys.sys_obj_type (if_obj_type_attribute))
+	(call sys.sys_obj_type (node_obj_type_attribute))
+	(call sys.sys_obj_type (packet_obj_type_attribute))
+	(call sys.sys_obj_type (peer_obj_type_attribute))
+	(call sys.sys_obj_type (port_obj_type_attribute))
+
+	(allow unconfined_subj_type_attribute node_obj_type_attribute (node (recvfrom sendto)))
+	(allow unconfined_subj_type_attribute if_obj_type_attribute (netif (ingress egress)))
+	(allow unconfined_subj_type_attribute packet_obj_type_attribute (packet (send recv relabelto forward_in forward_out)))
+
+	(allow unconfined_subj_type_attribute port_obj_type_attribute (tcp_socket (name_bind name_connect)))
+	(allow unconfined_subj_type_attribute port_obj_type_attribute (udp_socket (name_bind)))
+	(allow unconfined_subj_type_attribute port_obj_type_attribute (rawip_socket (name_bind)))
+	(allow unconfined_subj_type_attribute port_obj_type_attribute (dccp_socket (name_bind name_connect)))
+
+	(allow unconfined_subj_type_attribute node_obj_type_attribute (tcp_socket (node_bind)))
+	(allow unconfined_subj_type_attribute node_obj_type_attribute (udp_socket (node_bind)))
+	(allow unconfined_subj_type_attribute node_obj_type_attribute (rawip_socket (node_bind)))
+	(allow unconfined_subj_type_attribute node_obj_type_attribute (dccp_socket (node_bind)))
+
+	(call sys.recvfrom_unlabeled_tcp_sockets (unconfined_subj_type_attribute))
+	(call sys.recvfrom_unlabeled_udp_sockets (unconfined_subj_type_attribute))
+	(call sys.recvfrom_unlabeled_rawip_sockets (unconfined_subj_type_attribute))
+	(call sys.recvfrom_unlabeled_dccp_sockets (unconfined_subj_type_attribute))
+
+	(call sys.recv_unlabeled_peers (unconfined_subj_type_attribute)))
 
 (block port
-	(blockinherit net_port_obj_blk))
+	(blockinherit net.port_obj_blk))
 
 (block ephemeral
-	(blockinherit net_ephemeral_port_obj_blk))
+	(blockinherit net.ephemeral_port_obj_blk))
 
 (block hi_reserved
-	(blockinherit net_hi_reserved_port_obj_blk))
+	(blockinherit net.hi_reserved_port_obj_blk))
 
 (block reserved
-	(blockinherit net_reserved_port_obj_blk))
+	(blockinherit net.reserved_port_obj_blk))
 
 (block unreserved
-	(blockinherit net_unreserved_port_obj_blk))
+	(blockinherit net.unreserved_port_obj_blk))
 
 (block node
-	(blockinherit net_node_obj_blk))
+	(blockinherit net.node_obj_blk))
 
 (block if
-	(blockinherit net_if_obj_blk))
+	(blockinherit net.if_obj_blk))
 
 (block packet
-	(blockinherit net_packet_obj_blk))
+	(blockinherit net.packet_obj_blk))
 
 (block peer
-	(blockinherit net_peer_obj_blk))
-
-(call sys.sys_obj_type (net_if_obj_type))
-(call sys.sys_obj_type (net_node_obj_type))
-(call sys.sys_obj_type (net_packet_obj_type))
-(call sys.sys_obj_type (net_peer_obj_type))
-(call sys.sys_obj_type (net_port_obj_type))
-
-(allow net_unconfined_subj_type net_node_obj_type (node (recvfrom sendto)))
-(allow net_unconfined_subj_type net_if_obj_type (netif (ingress egress)))
-(allow net_unconfined_subj_type net_packet_obj_type (packet (send recv relabelto forward_in forward_out)))
-
-(allow net_unconfined_subj_type net_port_obj_type (tcp_socket (name_bind name_connect)))
-(allow net_unconfined_subj_type net_port_obj_type (udp_socket (name_bind)))
-(allow net_unconfined_subj_type net_port_obj_type (rawip_socket (name_bind)))
-(allow net_unconfined_subj_type net_port_obj_type (dccp_socket (name_bind name_connect)))
-
-(allow net_unconfined_subj_type net_node_obj_type (tcp_socket (node_bind)))
-(allow net_unconfined_subj_type net_node_obj_type (udp_socket (node_bind)))
-(allow net_unconfined_subj_type net_node_obj_type (rawip_socket (node_bind)))
-(allow net_unconfined_subj_type net_node_obj_type (dccp_socket (node_bind)))
-
-(call sys.recvfrom_unlabeled_tcp_sockets (net_unconfined_subj_type))
-(call sys.recvfrom_unlabeled_udp_sockets (net_unconfined_subj_type))
-(call sys.recvfrom_unlabeled_rawip_sockets (net_unconfined_subj_type))
-(call sys.recvfrom_unlabeled_dccp_sockets (net_unconfined_subj_type))
-
-(call sys.recv_unlabeled_peers (net_unconfined_subj_type))
+	(blockinherit net.peer_obj_blk))
