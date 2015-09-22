@@ -343,12 +343,12 @@
 	(macro getattr_common_subj ((type ARG1))
 		(allow ARG1 common_subj_type_attribute (process (getattr))))
 
-	(macro dontaudit_read_common_subj_state ((type ARG1))
+	(macro dontaudit_read_state_common_subj ((type ARG1))
 		(dontaudit ARG1 common_subj_type_attribute read_file_perms)
 		(dontaudit ARG1 common_subj_type_attribute list_dir_perms)
 		(dontaudit ARG1 common_subj_type_attribute read_lnk_file_perms))
 
-	(macro read_common_subj_state ((type ARG1))
+	(macro read_state_common_subj ((type ARG1))
 		(call fs.search_proc (ARG1))
 		(allow ARG1 common_subj_type_attribute read_file_perms)
 		(allow ARG1 common_subj_type_attribute list_dir_perms)
