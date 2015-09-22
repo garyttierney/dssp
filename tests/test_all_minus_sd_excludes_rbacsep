@@ -1,4 +1,7 @@
 sources/modules/contrib/sd
+sources/modules/contrib/roles/user_sduser
+sources/modules/contrib/roles/wheel_sduser
+sources/modules/contrib/roles/sysadm_sduser
 sources.d
 sources/global_tunables.cil
 tests/tunables/mcs.cil
