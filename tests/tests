@@ -1,5 +1,14 @@
 #!/bin/bash
 
+if [ "$#" == "0" ]
+then
+	echo "Takes one, and optionally two params. Path to policy source and path to secilc compiler respectively"
+	echo "Examples:"
+	echo "bash tests/tests -p ~/Workspace/dssp"
+	echo "bash tests/tests -p ~/Workspace/dssp -i ~/bin/secilc"
+	exit
+fi
+
 # @param1 : path to printexcludes script
 # @param2 : path to exclude file
 
