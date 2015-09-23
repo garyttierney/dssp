@@ -118,15 +118,18 @@
 
 	(allow unconfined_subj_type_attribute subj_type_attribute
 		all_process_perms_except_transition_dyntransition_setcurrent_execmem_execstack_and_execheap)
-	(allow unconfined_subj_type_attribute subj_type_attribute rw_file_perms)
-	(allow unconfined_subj_type_attribute subj_type_attribute list_dir_perms)
-	(allow unconfined_subj_type_attribute subj_type_attribute read_lnk_file_perms)
+	(allow unconfined_subj_type_attribute subj_type_attribute (file (getattr open read write ioctl append lock)))
+	(allow unconfined_subj_type_attribute subj_type_attribute (dir (getattr search open read lock ioctl)))
+	(allow unconfined_subj_type_attribute subj_type_attribute (lnk_file (getattr read)))
 	(allow unconfined_subj_type_attribute subj_type_attribute (fd (use)))
 	(allow unconfined_subj_type_attribute subj_type_attribute (socket (ioctl read write create getattr setattr lock relabelfrom relabelto append
 		bind connect listen accept getopt setopt shutdown recvfrom sendto name_bind)))
-	(allow unconfined_subj_type_attribute subj_type_attribute create_tcp_stream_socket_perms)
-	(allow unconfined_subj_type_attribute subj_type_attribute create_udp_socket_perms)
-	(allow unconfined_subj_type_attribute subj_type_attribute create_rawip_socket_perms)
+	(allow unconfined_subj_type_attribute subj_type_attribute (tcp_socket (create ioctl read getattr write setattr append bind connect getopt
+		setopt shutdown)))
+	(allow unconfined_subj_type_attribute subj_type_attribute (udp_socket (create ioctl read getattr write setattr append bind connect getopt
+		setopt shutdown)))
+	(allow unconfined_subj_type_attribute subj_type_attribute (rawip_socket (create ioctl read getattr write setattr append bind connect getopt
+		setopt shutdown)))
 	(allow unconfined_subj_type_attribute subj_type_attribute (netlink_socket (ioctl read write create getattr setattr lock relabelfrom relabelto append
 		bind connect listen accept getopt setopt shutdown recvfrom sendto name_bind)))
 	(allow unconfined_subj_type_attribute subj_type_attribute (packet_socket (ioctl read write create getattr setattr lock relabelfrom relabelto append
@@ -160,7 +163,8 @@
 	(allow unconfined_subj_type_attribute subj_type_attribute (appletalk_socket (ioctl read write create getattr setattr lock relabelfrom relabelto
 		append bind connect listen accept getopt setopt shutdown recvfrom sendto name_bind)))
 	(allow unconfined_subj_type_attribute subj_type_attribute (key (view read write search link setattr create)))
-	(allow unconfined_subj_type_attribute subj_type_attribute create_dccp_stream_socket_perms)
+	(allow unconfined_subj_type_attribute subj_type_attribute (dccp_socket (create ioctl read getattr write setattr append bind connect getopt
+		setopt shutdown)))
 	(allow unconfined_subj_type_attribute subj_type_attribute (tun_socket (ioctl read write create getattr setattr lock relabelfrom relabelto append
 		bind connect listen accept getopt setopt shutdown recvfrom sendto name_bind)))
 	(allow unconfined_subj_type_attribute subj_type_attribute (binder (impersonate call set_context_mgr transfer)))
