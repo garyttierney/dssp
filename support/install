@@ -215,14 +215,20 @@ elif [ -d /etc/selinux/"$TYPE" -a -d /etc/selinux/"$TYPE"/contexts -a -d /etc/se
 then
 	if [ -f "$SPATH"/policy/policy."$VERSION" -a -f "$SPATH"/contexts/files/file_contexts -a -f "$SPATH"/contexts/files/file_contexts.homedirs ]
 	then
-		/bin/sudo -E /bin/bash "$SPATH"/support/checksha256sum "$SPATH"/policy/policy."$VERSION" /etc/selinux/"$TYPE"/policy/policy."$VERSION"
-
-		if [ "$?" == "193" ]
+		if [ -f /etc/selinux/"$TYPE"/policy/policy."$VERSION" ]
 		then
-			/bin/sudo -E \cp -f "$SPATH"/policy/policy."$VERSION" /etc/selinux/"$TYPE"/policy/
+			/bin/sudo -E /bin/bash "$SPATH"/support/checksha256sum "$SPATH"/policy/policy."$VERSION" /etc/selinux/"$TYPE"/policy/policy."$VERSION"
+
+			if [ "$?" == "193" ]
+			then
+				/bin/sudo -E \cp -f "$SPATH"/policy/policy."$VERSION" /etc/selinux/"$TYPE"/policy/
+			else
+				echo "nothing to update"
+				exit 0
+			fi
+
 		else
-			echo "nothing to update"
-			exit 0
+			/bin/sudo -E /bin/cp "$SPATH"/policy/policy."$VERSION" /etc/selinux/"$TYPE"/policy/
 		fi
 
 		/bin/sudo /bin/bash "$SPATH"/support/checksha256sum "$SPATH"/contexts/files/file_contexts /etc/selinux/"$TYPE"/contexts/files/file_contexts
