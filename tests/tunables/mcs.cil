@@ -1,3 +1,4 @@
 (tunable enable_mls false)
 (tunable enable_mcs true)
 (tunable enable_rbacsep false)
+(tunable enable_ioctl_whitelisting false)
