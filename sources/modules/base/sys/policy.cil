@@ -86,6 +86,9 @@
 		(false
 			(userrole id object_r)))
 
+	(optional sys_optional_dracut_initramfs
+		(call dracut_initramfs.search_runtime (subj)))
+
 	(optional sys_optional_fstools
 		(call fstools.use_fd (subj)))
 
