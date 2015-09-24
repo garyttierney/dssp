@@ -600,6 +600,9 @@
 	(macro search_sysfs ((type ARG1))
 		(allow ARG1 sysfs.fs search_dir_perms))
 
+	(macro audit_write_access_sysfs_dirs ((type ARG1))
+		(dontaudit ARG1 sysfs.fs (dir (write))))
+
 	(macro dontaudit_audit_access_sysfs_dirs ((type ARG1))
 		(dontaudit ARG1 sysfs.fs (dir (audit_access))))
 
