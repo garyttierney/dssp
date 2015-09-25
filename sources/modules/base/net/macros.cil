@@ -5,11 +5,25 @@
 		(type if)
 		(call net.if_obj_type (if))
 
-		(tunableif enable_rbacsep
+		(tunableif enable_mls
 			(true
-				(context if_obj_context (sys.id sys.role if (systemlow systemlow))))
+				(tunableif enable_rbacsep
+					(true
+						(context if_obj_context (sys.id sys.role if (systemhigh systemhigh))))))
 			(false
-				(context if_obj_context (sys.id object_r if (systemlow systemlow))))))
+				(tunableif (not enable_rbacsep)
+					(true
+						(context if_obj_context (sys.id object_r if (systemhigh systemhigh)))))))
+
+		(tunableif (not enable_mls)
+			(true
+				(tunableif enable_rbacsep
+					(true
+						(context if_obj_context (sys.id sys.role if (systemlow systemlow))))))
+			(false
+				(tunableif (not enable_rbacsep)
+					(true
+						(context if_obj_context (sys.id object_r if (systemlow systemlow))))))))
 
 	(block node_obj_blk
 		(blockabstract node_obj_blk)
@@ -17,11 +31,25 @@
 		(type node)
 		(call net.node_obj_type (node))
 
-		(tunableif enable_rbacsep
+		(tunableif enable_mls
 			(true
-				(context node_obj_context (sys.id sys.role node (systemlow systemlow))))
+				(tunableif enable_rbacsep
+					(true
+						(context node_obj_context (sys.id sys.role node (systemhigh systemhigh))))))
 			(false
-				(context node_obj_context (sys.id object_r node (systemlow systemlow))))))
+				(tunableif (not enable_rbacsep)
+					(true
+						(context node_obj_context (sys.id object_r node (systemhigh systemhigh)))))))
+
+		(tunableif (not enable_mls)
+			(true
+				(tunableif enable_rbacsep
+					(true
+						(context node_obj_context (sys.id sys.role node (systemlow systemlow))))))
+			(false
+				(tunableif (not enable_rbacsep)
+					(true
+						(context node_obj_context (sys.id object_r node (systemlow systemlow))))))))
 
 	(block packet_obj_blk
 		(blockabstract packet_obj_blk)
