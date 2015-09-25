@@ -7,7 +7,6 @@
 	(typeattribute if_obj_type_attribute)
 	(typeattribute node_obj_type_attribute)
 	(typeattribute packet_obj_type_attribute)
-	(typeattribute peer_obj_type_attribute)
 	(typeattribute port_obj_type_attribute)
 
 	(typeattribute ephemeral_port_obj_type_attribute)
@@ -20,8 +19,9 @@
 	(call sys.sys_obj_type (if_obj_type_attribute))
 	(call sys.sys_obj_type (node_obj_type_attribute))
 	(call sys.sys_obj_type (packet_obj_type_attribute))
-	(call sys.sys_obj_type (peer_obj_type_attribute))
 	(call sys.sys_obj_type (port_obj_type_attribute))
+
+	(allow unconfined_subj_type_attribute peer.peer (peer (recv)))
 
 	(allow unconfined_subj_type_attribute node_obj_type_attribute (node (recvfrom sendto)))
 	(allow unconfined_subj_type_attribute if_obj_type_attribute (netif (ingress egress)))
@@ -69,4 +69,5 @@
 	(blockinherit net.packet_obj_blk))
 
 (block peer
-	(blockinherit net.peer_obj_blk))
+	(type peer)
+	(call sys.sys_obj_type (peer)))

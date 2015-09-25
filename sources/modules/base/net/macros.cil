@@ -35,18 +35,6 @@
 			(false
 				(context packet_obj_context (sys.id object_r packet (systemlow systemlow))))))
 
-	(block peer_obj_blk
-		(blockabstract peer_obj_blk)
-
-		(type peer)
-		(call net.peer_obj_type (peer))
-
-		(tunableif enable_rbacsep
-			(true
-				(context peer_obj_context (sys.id sys.role peer (systemlow systemlow))))
-			(false
-				(context peer_obj_context (sys.id object_r peer (systemlow systemlow))))))
-
 	(block port_obj_blk
 		(blockabstract port_obj_blk)
 
@@ -142,9 +130,6 @@
 
 	(macro packet_obj_type ((type ARG1))
 		(typeattributeset packet_obj_type_attribute ARG1))
-
-	(macro peer_obj_type ((type ARG1))
-		(typeattributeset peer_obj_type_attribute ARG1))
 
 	(macro port_obj_type ((type ARG1))
 		(typeattributeset port_obj_type_attribute ARG1))
