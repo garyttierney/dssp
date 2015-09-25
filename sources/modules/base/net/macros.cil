@@ -3,31 +3,61 @@
 		(blockabstract if_obj_blk)
 
 		(type if)
-		(call net.if_obj_type (if)))
+		(call net.if_obj_type (if))
+
+		(tunableif enable_rbacsep
+			(true
+				(context if_obj_context (sys.id sys.role if (systemlow systemlow))))
+			(false
+				(context if_obj_context (sys.id object_r if (systemlow systemlow))))))
 
 	(block node_obj_blk
 		(blockabstract node_obj_blk)
 
 		(type node)
-		(call net.node_obj_type (node)))
+		(call net.node_obj_type (node))
+
+		(tunableif enable_rbacsep
+			(true
+				(context node_obj_context (sys.id sys.role node (systemlow systemlow))))
+			(false
+				(context node_obj_context (sys.id object_r node (systemlow systemlow))))))
 
 	(block packet_obj_blk
 		(blockabstract packet_obj_blk)
 
 		(type packet)
-		(call net.packet_obj_type (packet)))
+		(call net.packet_obj_type (packet))
+
+		(tunableif enable_rbacsep
+			(true
+				(context packet_obj_context (sys.id sys.role packet (systemlow systemlow))))
+			(false
+				(context packet_obj_context (sys.id object_r packet (systemlow systemlow))))))
 
 	(block peer_obj_blk
 		(blockabstract peer_obj_blk)
 
 		(type peer)
-		(call net.peer_obj_type (peer)))
+		(call net.peer_obj_type (peer))
+
+		(tunableif enable_rbacsep
+			(true
+				(context peer_obj_context (sys.id sys.role peer (systemlow systemlow))))
+			(false
+				(context peer_obj_context (sys.id object_r peer (systemlow systemlow))))))
 
 	(block port_obj_blk
 		(blockabstract port_obj_blk)
 
 		(type port)
-		(call net.port_obj_type (port)))
+		(call net.port_obj_type (port))
+
+		(tunableif enable_rbacsep
+			(true
+				(context port_obj_context (sys.id sys.role port (systemlow systemlow))))
+			(false
+				(context port_obj_context (sys.id object_r port (systemlow systemlow))))))
 
 	(block tcp_connect_port_blk
 		(blockabstract tcp_connect_port_blk)
@@ -38,19 +68,37 @@
 		(blockabstract ephemeral_port_obj_blk)
 
 		(type port)
-		(call net.ephemeral_port_obj_type (port)))
+		(call net.ephemeral_port_obj_type (port))
+
+		(tunableif enable_rbacsep
+			(true
+				(context port_obj_context (sys.id sys.role port (systemlow systemlow))))
+			(false
+				(context port_obj_context (sys.id object_r port (systemlow systemlow))))))
 
 	(block hi_reserved_port_obj_blk
 		(blockabstract hi_reserved_port_obj_blk)
 
 		(type port)
-		(call net.hi_reserved_port_obj_type (port)))
+		(call net.hi_reserved_port_obj_type (port))
+
+		(tunableif enable_rbacsep
+			(true
+				(context port_obj_context (sys.id sys.role port (systemlow systemlow))))
+			(false
+				(context port_obj_context (sys.id object_r port (systemlow systemlow))))))
 
 	(block reserved_port_obj_blk
 		(blockabstract reserved_port_obj_blk)
 
 		(type port)
-		(call net.reserved_port_obj_type (port)))
+		(call net.reserved_port_obj_type (port))
+
+		(tunableif enable_rbacsep
+			(true
+				(context port_obj_context (sys.id sys.role port (systemlow systemlow))))
+			(false
+				(context port_obj_context (sys.id object_r port (systemlow systemlow))))))
 
 	(block tcp_bind_reserved_port_blk
 		(blockabstract tcp_bind_reserved_port_blk)
@@ -68,7 +116,13 @@
 		(blockabstract unreserved_port_obj_blk)
 
 		(type port)
-		(call net.unreserved_port_obj_type (port)))
+		(call net.unreserved_port_obj_type (port))
+
+		(tunableif enable_rbacsep
+			(true
+				(context port_obj_context (sys.id sys.role port (systemlow systemlow))))
+			(false
+				(context port_obj_context (sys.id object_r port (systemlow systemlow))))))
 
 	(block tcp_bind_unreserved_port_blk
 		(blockabstract tcp_bind_unreserved_port_blk)

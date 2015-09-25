@@ -3,7 +3,13 @@
 		(blockabstract obj_blk)
 
 		(type lib_file)
-		(call lib.lib_obj_type (lib_file)))
+		(call lib.lib_obj_type (lib_file))
+
+		(tunableif enable_rbacsep
+			(true
+				(context lib_file_context (sys.id sys.role lib_file (systemlow systemlow))))
+			(false
+				(context lib_file_context (sys.id object_r lib_file (systemlow systemlow))))))
 
 	(macro lib_obj_type ((type ARG1))
 		(typeattributeset obj_type_attribute ARG1))

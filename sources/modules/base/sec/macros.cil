@@ -3,7 +3,13 @@
 		(blockabstract bool_obj_blk)
 
 		(type bool)
-		(call sec.bool_obj_type (bool)))
+		(call sec.bool_obj_type (bool))
+
+		(tunableif enable_rbacsep
+			(true
+				(context bool_obj_context (sys.id sys.role bool (systemlow systemlow))))
+			(false
+				(context bool_obj_context (sys.id object_r bool (systemlow systemlow))))))
 
 	(macro bool_obj_type ((type ARG1))
 		(typeattributeset bool_obj_type_attribute ARG1))

@@ -3,13 +3,25 @@
 		(blockabstract obj_blk)
 
 		(type dev)
-		(call dev.dev_obj_type (dev)))
+		(call dev.dev_obj_type (dev))
+
+		(tunableif enable_rbacsep
+			(true
+				(context dev_file_context (sys.id sys.role dev (systemlow systemlow))))
+			(false
+				(context dev_file_context (sys.id object_r dev (systemlow systemlow))))))
 
 	(block storage_obj_blk
 		(blockabstract storage_obj_blk)
 
 		(type storage_dev)
-		(call dev.storage_obj_type (storage_dev)))
+		(call dev.storage_obj_type (storage_dev))
+
+		(tunableif enable_rbacsep
+			(true
+				(context storage_dev_file_context (sys.id sys.role storage_dev (systemlow systemlow))))
+			(false
+				(context storage_dev_file_context (sys.id object_r storage_dev (systemlow systemlow))))))
 
 	(macro dev_obj_type ((type ARG1))
 		(typeattributeset obj_type_attribute ARG1))

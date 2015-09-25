@@ -1,3 +1,6 @@
+(in sys
+	(filecon "/var/log/boot\.log" file var_log_file_context))
+
 (tunableif enable_rbacsep
 	(true
 		(context cpu_online_sysfs (sys.id sys.role cpu_online_sysfs.sysfs (systemlow systemlow)))
@@ -22,7 +25,6 @@
 		(context sysctl (sys.id sys.role sysctl.sysctl (systemlow systemlow)))
 		(context sys_load_kernel_module (sys.id sys.role sys_load_kernel_module.bool (systemlow systemlow)))
 		(context sysrq (sys.id sys.role sysrq.proc (systemlow systemlow)))
-		(context sys_var_log_file (sys.id sys.role sys.var_log_file (systemlow systemlow)))
 		(context unlabeled (sys.id sys.role unlabeled.isid (systemlow systemlow)))
 		(context usermodehelper (sys.id sys.role usermodehelper.sysctl (systemlow systemlow)))
 		(context vm_overcommit (sys.id sys.role vm_overcommit.sysctl (systemlow systemlow)))
@@ -50,7 +52,6 @@
 		(context sysctl (sys.id object_r sysctl.sysctl (systemlow systemlow)))
 		(context sys_load_kernel_module (sys.id object_r sys_load_kernel_module.bool (systemlow systemlow)))
 		(context sysrq (sys.id object_r sysrq.proc (systemlow systemlow)))
-		(context sys_var_log_file (sys.id object_r sys.var_log_file (systemlow systemlow)))
 		(context unlabeled (sys.id object_r unlabeled.isid (systemlow systemlow)))
 		(context usermodehelper (sys.id object_r usermodehelper.sysctl (systemlow systemlow)))
 		(context vm_overcommit (sys.id object_r vm_overcommit.sysctl (systemlow systemlow)))
@@ -87,8 +88,6 @@
 				(context kcore (sys.id object_r kcore.proc (systemlow systemlow)))
 				(context kmsg_proc (sys.id object_r kmsg_proc.proc (systemlow systemlow)))
 				(context sys (sys.id sys.role sys.subj (systemlow systemlow)))))))
-
-(filecon "/var/log/boot\.log" file sys_var_log_file)
 
 (genfscon "proc" "/cpuinfo" cpuinfo)
 (genfscon "proc" "/iomem" iomem)

@@ -3,25 +3,49 @@
 		(blockabstract obj_blk)
 
 		(type file)
-		(call file.file_obj_type (file)))
+		(call file.file_obj_type (file))
+
+		(tunableif enable_rbacsep
+			(true
+				(context file_file_context (sys.id sys.role file (systemlow systemlow))))
+			(false
+				(context file_file_context (sys.id object_r file (systemlow systemlow))))))
 
 	(block auth_obj_blk
 		(blockabstract auth_obj_blk)
 
 		(type auth_file)
-		(call file.auth_obj_type (auth_file)))
+		(call file.auth_obj_type (auth_file))
+
+		(tunableif enable_rbacsep
+			(true
+				(context auth_file_context (sys.id sys.role auth_file (systemlow systemlow))))
+			(false
+				(context auth_file_context (sys.id object_r auth_file (systemlow systemlow))))))
 
 	(block sec_obj_blk
 		(blockabstract sec_obj_blk)
 
 		(type sec_file)
-		(call file.sec_obj_type (sec_file)))
+		(call file.sec_obj_type (sec_file))
+
+		(tunableif enable_rbacsep
+			(true
+				(context sec_file_context (sys.id sys.role sec_file (systemlow systemlow))))
+			(false
+				(context sec_file_context (sys.id object_r sec_file (systemlow systemlow))))))
 
 	(block boot_obj_blk
 		(blockabstract boot_obj_blk)
 
 		(type boot_file)
-		(call file.boot_obj_type (boot_file)))
+		(call file.boot_obj_type (boot_file))
+
+		(tunableif enable_rbacsep
+			(true
+				(context boot_file_context (sys.id sys.role boot_file (systemlow systemlow))))
+			(false
+				(context boot_file_context (sys.id object_r boot_file (systemlow systemlow))))))
 
 	(block list_boot_blk
 		(blockabstract list_boot_blk)
@@ -267,7 +291,13 @@
 		(blockabstract boot_flag_obj_blk)
 
 		(type boot_flag_file)
-		(call file.boot_flag_obj_type (boot_flag_file)))
+		(call file.boot_flag_obj_type (boot_flag_file))
+
+		(tunableif enable_rbacsep
+			(true
+				(context boot_flag_file_context (sys.id sys.role boot_flag_file (systemlow systemlow))))
+			(false
+				(context boot_flag_file_context (sys.id object_r boot_flag_file (systemlow systemlow))))))
 
 	(block read_boot_flag_files_blk
 		(blockabstract read_boot_flag_files_blk)
@@ -315,7 +345,13 @@
 		(blockabstract config_obj_blk)
 
 		(type config_file)
-		(call file.config_obj_type (config_file)))
+		(call file.config_obj_type (config_file))
+
+		(tunableif enable_rbacsep
+			(true
+				(context config_file_context (sys.id sys.role config_file (systemlow systemlow))))
+			(false
+				(context config_file_context (sys.id object_r config_file (systemlow systemlow))))))
 
 	(block list_config_blk
 		(blockabstract list_config_blk)
@@ -561,7 +597,13 @@
 		(blockabstract data_obj_blk)
 
 		(type data_file)
-		(call file.data_obj_type (data_file)))
+		(call file.data_obj_type (data_file))
+
+		(tunableif enable_rbacsep
+			(true
+				(context data_file_context (sys.id sys.role data_file (systemlow systemlow))))
+			(false
+				(context data_file_context (sys.id object_r data_file (systemlow systemlow))))))
 
 	(block list_data_blk
 		(blockabstract list_data_blk)
@@ -807,8 +849,13 @@
 		(blockabstract runtime_obj_blk)
 
 		(type runtime_file)
-		(call file.runtime_obj_type (runtime_file)))
+		(call file.runtime_obj_type (runtime_file))
 
+		(tunableif enable_rbacsep
+			(true
+				(context runtime_file_context (sys.id sys.role runtime_file (systemlow systemlow))))
+			(false
+				(context runtime_file_context (sys.id object_r runtime_file (systemlow systemlow))))))
 
 	(block list_runtime_blk
 		(blockabstract list_runtime_blk)
@@ -1054,7 +1101,13 @@
 		(blockabstract runtime_config_obj_blk)
 
 		(type runtime_config_file)
-		(call file.runtime_config_obj_type (runtime_config_file)))
+		(call file.runtime_config_obj_type (runtime_config_file))
+
+		(tunableif enable_rbacsep
+			(true
+				(context runtime_config_file_context (sys.id sys.role runtime_config_file (systemlow systemlow))))
+			(false
+				(context runtime_config_file_context (sys.id object_r runtime_config_file (systemlow systemlow))))))
 
 	(block list_runtime_config_blk
 		(blockabstract list_runtime_config_blk)
@@ -1300,7 +1353,13 @@
 		(blockabstract runtime_lock_obj_blk)
 
 		(type runtime_lock_file)
-		(call file.runtime_lock_obj_type (runtime_lock_file)))
+		(call file.runtime_lock_obj_type (runtime_lock_file))
+
+		(tunableif enable_rbacsep
+			(true
+				(context runtime_lock_file_context (sys.id sys.role runtime_lock_file (systemlow systemlow))))
+			(false
+				(context runtime_lock_file_context (sys.id object_r runtime_lock_file (systemlow systemlow))))))
 
 	(block list_runtime_lock_blk
 		(blockabstract list_runtime_lock_blk)
@@ -1546,7 +1605,13 @@
 		(blockabstract var_obj_blk)
 
 		(type var_file)
-		(call file.var_obj_type (var_file)))
+		(call file.var_obj_type (var_file))
+
+		(tunableif enable_rbacsep
+			(true
+				(context var_file_context (sys.id sys.role var_file (systemlow systemlow))))
+			(false
+				(context var_file_context (sys.id object_r var_file (systemlow systemlow))))))
 
 	(block list_var_blk
 		(blockabstract list_var_blk)
@@ -1792,7 +1857,13 @@
 		(blockabstract var_cache_obj_blk)
 
 		(type var_cache_file)
-		(call file.var_cache_obj_type (var_cache_file)))
+		(call file.var_cache_obj_type (var_cache_file))
+
+		(tunableif enable_rbacsep
+			(true
+				(context var_cache_file_context (sys.id sys.role var_cache_file (systemlow systemlow))))
+			(false
+				(context var_cache_file_context (sys.id object_r var_cache_file (systemlow systemlow))))))
 
 	(block list_var_cache_blk
 		(blockabstract list_var_cache_blk)
@@ -2038,7 +2109,13 @@
 		(blockabstract var_db_obj_blk)
 
 		(type var_db_file)
-		(call file.var_db_obj_type (var_db_file)))
+		(call file.var_db_obj_type (var_db_file))
+
+		(tunableif enable_rbacsep
+			(true
+				(context var_db_file_context (sys.id sys.role var_db_file (systemlow systemlow))))
+			(false
+				(context var_db_file_context (sys.id object_r var_db_file (systemlow systemlow))))))
 
 	(block list_var_db_blk
 		(blockabstract list_var_db_blk)
@@ -2284,7 +2361,13 @@
 		(blockabstract var_lib_obj_blk)
 
 		(type var_lib_file)
-		(call file.var_lib_obj_type (var_lib_file)))
+		(call file.var_lib_obj_type (var_lib_file))
+
+		(tunableif enable_rbacsep
+			(true
+				(context var_lib_file_context (sys.id sys.role var_lib_file (systemlow systemlow))))
+			(false
+				(context var_lib_file_context (sys.id object_r var_lib_file (systemlow systemlow))))))
 
 	(block list_var_lib_blk
 		(blockabstract list_var_lib_blk)
@@ -2530,7 +2613,13 @@
 		(blockabstract var_log_obj_blk)
 
 		(type var_log_file)
-		(call file.var_log_obj_type (var_log_file)))
+		(call file.var_log_obj_type (var_log_file))
+
+		(tunableif enable_rbacsep
+			(true
+				(context var_log_file_context (sys.id sys.role var_log_file (systemlow systemlow))))
+			(false
+				(context var_log_file_context (sys.id object_r var_log_file (systemlow systemlow))))))
 
 	(block list_var_log_blk
 		(blockabstract list_var_log_blk)
@@ -2776,7 +2865,13 @@
 		(blockabstract var_spool_obj_blk)
 
 		(type var_spool_file)
-		(call file.var_spool_obj_type (var_spool_file)))
+		(call file.var_spool_obj_type (var_spool_file))
+
+		(tunableif enable_rbacsep
+			(true
+				(context var_spool_file_context (sys.id sys.role var_spool_file (systemlow systemlow))))
+			(false
+				(context var_spool_file_context (sys.id object_r var_spool_file (systemlow systemlow))))))
 
 	(block list_var_spool_blk
 		(blockabstract list_var_spool_blk)
@@ -3022,7 +3117,13 @@
 		(blockabstract var_tmp_obj_blk)
 
 		(type var_tmp_file)
-		(call file.var_tmp_obj_type (var_tmp_file)))
+		(call file.var_tmp_obj_type (var_tmp_file))
+
+		(tunableif enable_rbacsep
+			(true
+				(context var_tmp_file_context (sys.id sys.role var_tmp_file (systemlow systemlow))))
+			(false
+				(context var_tmp_file_context (sys.id object_r var_tmp_file (systemlow systemlow))))))
 
 	(block list_var_tmp_blk
 		(blockabstract list_var_tmp_blk)
@@ -3268,7 +3369,13 @@
 		(blockabstract tmpfs_obj_blk)
 
 		(type tmpfs_file)
-		(call file.tmpfs_obj_type (tmpfs_file)))
+		(call file.tmpfs_obj_type (tmpfs_file))
+
+		(tunableif enable_rbacsep
+			(true
+				(context tmpfs_file_context (sys.id sys.role tmpfs_file (systemlow systemlow))))
+			(false
+				(context tmpfs_file_context (sys.id object_r tmpfs_file (systemlow systemlow))))))
 
 	(block list_tmpfs_blk
 		(blockabstract list_tmpfs_blk)

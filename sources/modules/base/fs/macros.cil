@@ -3,7 +3,13 @@
 		(blockabstract obj_blk)
 
 		(type fs)
-		(call fs.fs_obj_type (fs)))
+		(call fs.fs_obj_type (fs))
+
+		(tunableif enable_rbacsep
+			(true
+				(context fs_obj_context (sys.id sys.role fs (systemlow systemlow))))
+			(false
+				(context fs_obj_context (sys.id object_r fs (systemlow systemlow))))))
 
 	(macro trace_client_subj_type ((type ARG1))
 		(typeattributeset trace_client_subj_type_attribute ARG1))

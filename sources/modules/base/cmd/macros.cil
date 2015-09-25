@@ -3,7 +3,13 @@
 		(blockabstract obj_blk)
 
 		(type cmd_file)
-		(call cmd.cmd_obj_type (cmd_file)))
+		(call cmd.cmd_obj_type (cmd_file))
+
+		(tunableif enable_rbacsep
+			(true
+				(context cmd_file_context (sys.id sys.role cmd_file (systemlow systemlow))))
+			(false
+				(context cmd_file_context (sys.id object_r cmd_file (systemlow systemlow))))))
 
 	(block obj_entry_subj_blk
 		(blockabstract obj_entry_subj_blk)
