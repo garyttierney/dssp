@@ -42,28 +42,23 @@
 				(context lost_found (sys.id sys.role lost_found.file (systemhigh systemhigh)))
 				(context runtime_user (sys.id sys.role runtime_user.runtime_file (systemlow systemhigh)))
 				(context var_log (sys.id sys.role var_log.var_log_file (systemlow systemhigh)))
-				(context var_tmp (sys.id sys.role var_tmp.var_tmp_file (systemlow systemhigh))))))
-	(false
-		(tunableif (not enable_rbacsep)
-			(true
+				(context var_tmp (sys.id sys.role var_tmp.var_tmp_file (systemlow systemhigh))))
+			(false
 				(context home (sys.id object_r home.file (systemlow systemhigh)))
 				(context lost_found (sys.id object_r lost_found.file (systemhigh systemhigh)))
 				(context runtime_user (sys.id object_r runtime_user.runtime_file (systemlow systemhigh)))
 				(context var_log (sys.id object_r var_log.var_log_file (systemlow systemhigh)))
-				(context var_tmp (sys.id object_r var_tmp.var_tmp_file (systemlow systemhigh)))))))
+				(context var_tmp (sys.id object_r var_tmp.var_tmp_file (systemlow systemhigh))))))
 
-(tunableif (not enable_mls)
-	(true
+	(false
 		(tunableif enable_rbacsep
 			(true
 				(context home (sys.id sys.role home.file (systemlow systemlow)))
 				(context lost_found (sys.id sys.role lost_found.file (systemlow systemlow)))
 				(context runtime_user (sys.id sys.role runtime_user.runtime_file (systemlow systemlow)))
 				(context var_log (sys.id sys.role var_log.var_log_file (systemlow systemlow)))
-				(context var_tmp (sys.id sys.role var_tmp.var_tmp_file (systemlow systemlow))))))
-	(false
-		(tunableif (not enable_rbacsep)
-			(true
+				(context var_tmp (sys.id sys.role var_tmp.var_tmp_file (systemlow systemlow))))
+			(false
 				(context home (sys.id object_r home.file (systemlow systemlow)))
 				(context lost_found (sys.id object_r lost_found.file (systemlow systemlow)))
 				(context runtime_user (sys.id object_r runtime_user.runtime_file (systemlow systemlow)))

@@ -64,26 +64,21 @@
 				(context invalid (sys.id sys.role invalid.isid (systemhigh systemhigh)))
 				(context kcore (sys.id sys.role kcore.proc (systemhigh systemhigh)))
 				(context kmsg_proc (sys.id sys.role kmsg_proc.proc (systemhigh systemhigh)))
-				(context sys (sys.id sys.role sys.subj (systemhigh systemhigh))))))
-	(false
-		(tunableif (not enable_rbacsep)
-			(true
+				(context sys (sys.id sys.role sys.subj (systemhigh systemhigh))))
+			(false
 				(context invalid (sys.id object_r invalid.isid (systemhigh systemhigh)))
 				(context kcore (sys.id object_r kcore.proc (systemhigh systemhigh)))
 				(context kmsg_proc (sys.id object_r kmsg_proc.proc (systemhigh systemhigh)))
-				(context sys (sys.id sys.role sys.subj (systemhigh systemhigh)))))))
+				(context sys (sys.id sys.role sys.subj (systemhigh systemhigh))))))
 
-(tunableif (not enable_mls)
-	(true
+	(false
 		(tunableif enable_rbacsep
 			(true
 				(context invalid (sys.id sys.role invalid.isid (systemlow systemlow)))
 				(context kcore (sys.id sys.role kcore.proc (systemlow systemlow)))
 				(context kmsg_proc (sys.id sys.role kmsg_proc.proc (systemlow systemlow)))
-				(context sys (sys.id sys.role sys.subj (systemlow systemlow))))))
-	(false
-		(tunableif (not enable_rbacsep)
-			(true
+				(context sys (sys.id sys.role sys.subj (systemlow systemlow))))
+			(false
 				(context invalid (sys.id object_r invalid.isid (systemlow systemlow)))
 				(context kcore (sys.id object_r kcore.proc (systemlow systemlow)))
 				(context kmsg_proc (sys.id object_r kmsg_proc.proc (systemlow systemlow)))

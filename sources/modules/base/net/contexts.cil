@@ -18,24 +18,18 @@
 			(true
 				(context if (sys.id sys.role if.if (systemlow systemhigh)))
 				(context node (sys.id sys.role node.node (systemlow systemhigh)))
-				(context peer (sys.id sys.role peer.peer (systemhigh systemhigh))))))
-	(false
-		(tunableif (not enable_rbacsep)
-			(true
+				(context peer (sys.id sys.role peer.peer (systemhigh systemhigh))))
+			(false
 				(context if (sys.id object_r if.if (systemlow systemhigh)))
 				(context node (sys.id object_r node.node (systemlow systemhigh)))
-				(context peer (sys.id object_r peer.peer (systemhigh systemhigh)))))))
-
-(tunableif (not enable_mls)
-	(true
+				(context peer (sys.id object_r peer.peer (systemhigh systemhigh))))))
+	(false
 		(tunableif enable_rbacsep
 			(true
 				(context if (sys.id sys.role if.if (systemlow systemlow)))
 				(context node (sys.id sys.role node.node (systemlow systemlow)))
-				(context peer (sys.id sys.role peer.peer (systemlow systemlow))))))
-	(false
-		(tunableif (not enable_rbacsep)
-			(true
+				(context peer (sys.id sys.role peer.peer (systemlow systemlow))))
+			(false
 				(context if (sys.id object_r if.if (systemlow systemlow)))
 				(context node (sys.id object_r node.node (systemlow systemlow)))
 				(context peer (sys.id object_r peer.peer (systemlow systemlow)))))))

@@ -10,20 +10,14 @@
 	(true
 		(tunableif enable_rbacsep
 			(true
-				(context security_sidcon (sys.id sys.role securityfs.fs (systemhigh systemhigh))))))
+				(context security_sidcon (sys.id sys.role securityfs.fs (systemhigh systemhigh))))
+			(false
+				(context security_sidcon (sys.id object_r securityfs.fs (systemhigh systemhigh))))))
 	(false
-		(tunableif (not enable_rbacsep)
-			(true
-				(context security_sidcon (sys.id object_r securityfs.fs (systemhigh systemhigh)))))))
-
-(tunableif (not enable_mls)
-	(true
 		(tunableif enable_rbacsep
 			(true
-				(context security_sidcon (sys.id sys.role securityfs.fs (systemlow systemlow))))))
-	(false
-		(tunableif (not enable_rbacsep)
-			(true
+				(context security_sidcon (sys.id sys.role securityfs.fs (systemlow systemlow))))
+			(false
 				(context security_sidcon (sys.id object_r securityfs.fs (systemlow systemlow)))))))
 
 (genfscon "securityfs" "/" securityfs)

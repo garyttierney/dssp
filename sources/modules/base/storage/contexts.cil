@@ -12,20 +12,15 @@
 	(true
 		(tunableif enable_rbacsep
 			(true
-				(context fixed_disk (sys.id sys.role fixed_disk.storage_dev (systemhigh systemhigh))))))
-	(false
-		(tunableif (not enable_rbacsep)
-			(true
-				(context fixed_disk (sys.id object_r fixed_disk.storage_dev (systemhigh systemhigh)))))))
+				(context fixed_disk (sys.id sys.role fixed_disk.storage_dev (systemhigh systemhigh))))
+			(false
+				(context fixed_disk (sys.id object_r fixed_disk.storage_dev (systemhigh systemhigh))))))
 
-(tunableif (not enable_mls)
-	(true
+	(false
 		(tunableif enable_rbacsep
 			(true
-				(context fixed_disk (sys.id sys.role fixed_disk.storage_dev (systemlow systemlow))))))
-	(false
-		(tunableif (not enable_rbacsep)
-			(true
+				(context fixed_disk (sys.id sys.role fixed_disk.storage_dev (systemlow systemlow))))
+			(false
 				(context fixed_disk (sys.id object_r fixed_disk.storage_dev (systemlow systemlow)))))))
 
 (filecon "/dev/bsg/.+" char scsi_generic)

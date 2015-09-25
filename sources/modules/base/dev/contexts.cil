@@ -74,24 +74,18 @@
 			(true
 				(context kmsg (sys.id sys.role kmsg_dev.dev (systemhigh systemhigh)))
 				(context memory (sys.id sys.role memory.dev (systemhigh systemhigh)))
-				(context nvram (sys.id sys.role nvram.dev (systemhigh systemhigh))))))
-	(false
-		(tunableif (not enable_rbacsep)
-			(true
+				(context nvram (sys.id sys.role nvram.dev (systemhigh systemhigh))))
+			(false
 				(context kmsg (sys.id object_r kmsg_dev.dev (systemhigh systemhigh)))
 				(context memory (sys.id object_r memory.dev (systemhigh systemhigh)))
-				(context nvram (sys.id object_r nvram.dev (systemhigh systemhigh)))))))
-
-(tunableif (not enable_mls)
-	(true
+				(context nvram (sys.id object_r nvram.dev (systemhigh systemhigh))))))
+	(false
 		(tunableif enable_rbacsep
 			(true
 				(context kmsg (sys.id sys.role kmsg_dev.dev (systemlow systemlow)))
 				(context memory (sys.id sys.role memory.dev (systemlow systemlow)))
-				(context nvram (sys.id sys.role nvram.dev (systemlow systemlow))))))
-	(false
-		(tunableif (not enable_rbacsep)
-			(true
+				(context nvram (sys.id sys.role nvram.dev (systemlow systemlow))))
+			(false
 				(context kmsg (sys.id object_r kmsg_dev.dev (systemlow systemlow)))
 				(context memory (sys.id object_r memory.dev (systemlow systemlow)))
 				(context nvram (sys.id object_r nvram.dev (systemlow systemlow)))))))
