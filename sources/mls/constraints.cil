@@ -559,11 +559,6 @@
 			(and (eq t1 mls.net_read_to_clr_subj_type_attribute) (dom h1 l2)))
 			(eq t1 mls.net_read_subj_type_attribute)))
 
-		(mlsconstrain (netlink_socket (read getattr listen accept getopt))
-			(or (or (dom l1 l2)
-			(and (eq t1 mls.net_read_to_clr_subj_type_attribute) (dom h1 l2)))
-			(eq t1 mls.net_read_subj_type_attribute)))
-
 		(mlsconstrain (tun_socket (read getattr listen accept getopt))
 			(or (or (dom l1 l2)
 			(and (eq t1 mls.net_read_to_clr_subj_type_attribute) (dom h1 l2)))
@@ -720,12 +715,6 @@
 			(eq t1 mls.net_write_subj_type_attribute)))
 
 		(mlsconstrain (netlink_selinux_socket (write setattr relabelfrom connect setopt shutdown))
-			(or (or (or (eq l1 l2)
-			(and (and (eq t1 mls.net_write_ranged_subj_type_attribute) (dom l1 l2)) (domby l1 h2)))
-			(and (and (eq t1 mls.net_write_to_clr_subj_type_attribute) (dom h1 l2)) (domby l1 l2)))
-			(eq t1 mls.net_write_subj_type_attribute)))
-
-		(mlsconstrain (netlink_socket (write setattr relabelfrom connect setopt shutdown))
 			(or (or (or (eq l1 l2)
 			(and (and (eq t1 mls.net_write_ranged_subj_type_attribute) (dom l1 l2)) (domby l1 h2)))
 			(and (and (eq t1 mls.net_write_to_clr_subj_type_attribute) (dom h1 l2)) (domby l1 l2)))
