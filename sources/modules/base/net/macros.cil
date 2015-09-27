@@ -12,7 +12,6 @@
 						(context if_obj_context (sys.id sys.role if (systemhigh systemhigh))))
 					(false
 						(context if_obj_context (sys.id object_r if (systemhigh systemhigh))))))
-
 			(false
 				(tunableif enable_rbacsep
 					(true
