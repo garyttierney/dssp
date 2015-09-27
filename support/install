@@ -215,7 +215,7 @@ elif [ -d /etc/selinux/"$TYPE" -a -d /etc/selinux/"$TYPE"/contexts -a -d /etc/se
 then
 	if [ -f "$SPATH"/policy/policy."$VERSION" -a -f "$SPATH"/contexts/files/file_contexts -a -f "$SPATH"/contexts/files/file_contexts.homedirs ]
 	then
-		if [ -f /etc/selinux/"$TYPE"/policy/policy."$VERSION" ]
+		if [ `/bin/sudo -E test -f /etc/selinux/"$TYPE"/policy/policy."$VERSION"` ]
 		then
 			/bin/sudo -E /bin/bash "$SPATH"/support/checksha256sum "$SPATH"/policy/policy."$VERSION" /etc/selinux/"$TYPE"/policy/policy."$VERSION"
 
