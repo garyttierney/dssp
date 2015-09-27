@@ -93,7 +93,10 @@
 		(call fstools.use_fd (subj)))
 
 	(optional sys_optional_kmod
-		(call kmod.auto_subj_type_transition (subj)))
+		(call kmod.auto_subj_type_transition (subj))
+		(tunableif enable_mls
+			(true
+				(call kmod.auto_range_transition (subj systemhigh systemhigh)))))
 
 	(optional sys_optional_mount
 		(call mount.use_fd (subj))
@@ -110,13 +113,22 @@
 		(call subj.dynamic_type_transition_subj_type (subj))
 		(call sd.dynamic_subj_type_transition (subj))
 		(call sd.getattr_cmd_files (subj))
-		(call sd.send_signal (subj)))
+		(call sd.send_signal (subj))
+		(tunableif enable_mls
+			(true
+				(call sd.auto_range_transition (subj systemhigh systemhigh)))))
 
 	(optional sys_optional_sd_cgagent
-		(call sd_cgagent.auto_subj_type_transition (subj)))
+		(call sd_cgagent.auto_subj_type_transition (subj))
+		(tunableif enable_mls
+			(true
+				(call sd_cgagent.auto_range_transition (subj systemhigh systemhigh)))))
 
 	(optional sys_optional_sd_coredump
-		(call sd_coredump.auto_subj_type_transition (subj)))
+		(call sd_coredump.auto_subj_type_transition (subj))
+		(tunableif enable_mls
+			(true
+				(call sd_coredump.auto_range_transition (subj systemhigh systemhigh)))))
 
 	(optional sys_optional_sd_machined
 		(call sd_machined.audit_access_var_lib_files (subj)))
