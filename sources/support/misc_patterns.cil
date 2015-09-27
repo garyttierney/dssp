@@ -20,7 +20,7 @@
 	(allow ARG3 ARG1 rw_inherited_fifo_file_perms)
 	(allow ARG3 ARG1 (process (sigchld))))
 
-(macro auto_range_transition_pattern ((type ARG1)(type ARG2)(level ARG3)(level ARG4))
+(macro auto_subj_range_transition_pattern ((type ARG1)(type ARG2)(level ARG3)(level ARG4))
 	(rangetransition ARG1 ARG2 process (ARG3 ARG4)))
 
 (macro dynamic_subj_type_transition_pattern ((type ARG1)(type ARG2))
