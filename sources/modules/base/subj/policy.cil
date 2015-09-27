@@ -130,8 +130,6 @@
 		setopt shutdown)))
 	(allow unconfined_subj_type_attribute subj_type_attribute (rawip_socket (create ioctl read getattr write setattr append bind connect getopt
 		setopt shutdown)))
-	(allow unconfined_subj_type_attribute subj_type_attribute (netlink_socket (ioctl read write create getattr setattr lock relabelfrom relabelto append
-		bind connect listen accept getopt setopt shutdown recvfrom sendto name_bind)))
 	(allow unconfined_subj_type_attribute subj_type_attribute (packet_socket (ioctl read write create getattr setattr lock relabelfrom relabelto append
 		bind connect listen accept getopt setopt shutdown recvfrom sendto name_bind)))
 	(allow unconfined_subj_type_attribute subj_type_attribute (unix_stream_socket (ioctl read write create getattr setattr lock relabelfrom relabelto append
