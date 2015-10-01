@@ -496,7 +496,13 @@
 
 	(macro rw_cpu_sysfs_files ((type ARG1))
 		(call read_cpu_online_sysfs_files (ARG1))
-		(allow ARG1 cpu_sysfs.sysfs rw_file_perms))
+		(allow ARG1 cpu_sysfs.sysfs write_file_perms))
+
+	(macro read_cpu_sysfs ((type ARG1))
+		(call fs.search_sysfs (ARG1))
+		(allow ARG1 cpu_sysfs.sysfs read_file_perms)
+		(allow ARG1 cpu_sysfs.sysfs list_dir_perms)
+		(allow ARG1 cpu_sysfs.sysfs read_lnk_file_perms))
 
 	(macro read_cpu_online_sysfs_files ((type ARG1))
 		(call fs.search_sysfs (ARG1))
