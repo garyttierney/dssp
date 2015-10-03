@@ -79,19 +79,19 @@
 
 	(call term.devtmpfs_obj_type_transition_unallocated_tty (subj))
 
-	;(tunableif enable_mls
-	;	(true
-	;		(optional sys_enable_mls_optional_kmod
-	;			(call kmod.auto_subj_range_transition (subj systemhigh systemhigh)))
+	(tunableif enable_mls
+		(true
+			(optional sys_enable_mls_optional_kmod
+				(call kmod.auto_subj_range_transition (subj systemhigh systemhigh)))
 
-	;		(optional sys_enable_mls_optional_sd
-	;			(call sd.auto_subj_range_transition (subj systemhigh systemhigh)))
+			(optional sys_enable_mls_optional_sd
+				(call sd.auto_subj_range_transition (subj systemhigh systemhigh)))
 
-	;		(optional sys_enable_mls_optional_sd_cgagent
-	;			(call sd_cgagent.auto_subj_range_transition (subj systemhigh systemhigh)))
+			(optional sys_enable_mls_optional_sd_cgagent
+				(call sd_cgagent.auto_subj_range_transition (subj systemhigh systemhigh)))
 
-	;		(optional sys_enable_mls_optional_sd_coredump
-	;			(call sd_coredump.auto_subj_range_transition (subj systemhigh systemhigh)))))
+			(optional sys_enable_mls_optional_sd_coredump
+				(call sd_coredump.auto_subj_range_transition (subj systemhigh systemhigh)))))
 
 	(tunableif enable_rbacsep
 		(true
