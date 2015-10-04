@@ -223,10 +223,9 @@ then
 			then
 				/bin/sudo -E \cp -f "$SPATH"/policy/policy."$VERSION" /etc/selinux/"$TYPE"/policy/
 			else
-				echo "nothing to update"
-				exit 0
+				NOUPDATE=true
+				echo "no changes in /etc/selinux/"$TYPE"/policy/policy."$VERSION", skipping"
 			fi
-
 		else
 			/bin/sudo -E /bin/cp "$SPATH"/policy/policy."$VERSION" /etc/selinux/"$TYPE"/policy/
 		fi
@@ -236,6 +235,8 @@ then
 		if [ "$?" == "193" ]
 		then
 			/bin/sudo -E \cp -f "$SPATH"/contexts/files/file_contexts /etc/selinux/"$TYPE"/contexts/files/
+		else
+			echo "no changes in /etc/selinux/"$TYPE"/contexts/files/file_contexts, skipping"
 		fi
 
 		/bin/sudo /bin/bash "$SPATH"/support/checksha256sum "$SPATH"/contexts/files/file_contexts.homedirs /etc/selinux/"$TYPE"/contexts/files/file_contexts.homedirs
@@ -243,6 +244,8 @@ then
 		if [ "$?" == "193" ]
 		then
 			/bin/sudo -E \cp -f "$SPATH"/contexts/files/file_contexts.homedirs /etc/selinux/"$TYPE"/contexts/files/
+		else
+			echo "no changes in /etc/selinux/"$TYPE"/contexts/files/file_contexts.homedirs, skipping"
 		fi
 
 		if [ -f "$SPATH"/contexts/files/file_contexts.subs_dist ]
@@ -254,14 +257,17 @@ then
 				if [ "$?" == "193" ]
 				then
 					/bin/sudo \cp -f "$SPATH"/contexts.d/files/file_contexts.subs_dist /etc/selinux/"$TYPE"/contexts/files/
+				else
+					echo "no changes in /etc/selinux/"$TYPE"/contexts/files/file_contexts.subs_dist, skipping"
 				fi
-
 			else
 				/bin/sudo -E /bin/bash "$SPATH"/support/checksha256sum "$SPATH"/contexts/files/file_contexts.subs_dist /etc/selinux/"$TYPE"/contexts/files/file_contexts.subs_dist
 
 				if [ "$?" == "193" ]
 				then
 					/bin/sudo -E \cp -f "$SPATH"/contexts/files/file_contexts.subs_dist /etc/selinux/"$TYPE"/contexts/files/
+				else
+					echo "no changes in /etc/selinux/"$TYPE"/contexts/files/file_contexts.subs_dist, skipping"
 				fi
 			fi
 		fi
@@ -273,6 +279,8 @@ then
 			if [ "$?" == "193" ]
 			then
 				/bin/sudo \cp -f "$SPATH"/contexts/files/file_contexts.bin /etc/selinux/"$TYPE"/contexts/files/
+			else
+				echo "no changes in /etc/selinux/"$TYPE"/contexts/files/file_contexts.bin, skipping"
 			fi
 		fi
 
@@ -283,6 +291,8 @@ then
 			if [ "$?" == "193" ]
 			then
 				/bin/sudo -E \cp -f "$SPATH"/contexts/files/file_contexts.homedirs.bin /etc/selinux/"$TYPE"/contexts/files/
+			else
+				echo "no changes in /etc/selinux/"$TYPE"/contexts/files/file_contexts.homedirs.bin, skipping"
 			fi
 		fi
 
@@ -302,6 +312,8 @@ then
 					if [ "$?" == "193" ]
 					then
 						/bin/sudo -E \cp -f "$SPATH"/contexts.d/files/"$entry" /etc/selinux/"$TYPE"/contexts/files/"$strippedentry"
+					else
+						echo "no changes in /etc/selinux/"$TYPE"/contexts/files/"$strippedentry", skipping"
 					fi
 				else
 					strippedentry="`/bin/basename "$entry" ".${MODEL}"`"
@@ -311,11 +323,12 @@ then
 					if [ "$?" == "193" ]
 					then
 						/bin/sudo -E \cp -f "$SPATH"/contexts/files/"$entry" /etc/selinux/"$TYPE"/contexts/files/"$strippedentry"
+					else
+						echo "no changes in /etc/selinux/"$TYPE"/contexts/files/"$strippedentry", skipping"
 					fi
 				fi
 			fi
 		done
-
 
 		for entry in `/bin/ls "$SPATH"/contexts/users/ | /bin/grep ".${MODEL}$"`
 		do
@@ -330,6 +343,8 @@ then
 					if [ "$?" == "193" ]
 					then
 						/bin/sudo -E \cp -f "$SPATH"/contexts.d/users/"$entry" /etc/selinux/"$TYPE"/contexts/users/"$strippedentry"
+					else
+						echo "no changes in /etc/selinux/"$TYPE"/contexts/users/"$strippedentry", skipping"
 					fi
 				else
 					strippedentry="`/bin/basename "$entry" ".${MODEL}"`"
@@ -339,6 +354,8 @@ then
 					if [ "$?" == "193" ]
 					then
 						/bin/sudo -E \cp -f "$SPATH"/contexts/users/"$entry" /etc/selinux/"$TYPE"/contexts/users/"$strippedentry"
+					else
+						echo "no changes in /etc/selinux/"$TYPE"/contexts/users/"$strippedentry", skipping"
 					fi
 				fi
 			fi
@@ -357,6 +374,8 @@ then
 					if [ "$?" == "193" ]
 					then
 						/bin/sudo -E \cp -f "$SPATH"/contexts.d/"$entry" /etc/selinux/"$TYPE"/contexts/"$strippedentry"
+					else
+						echo "no changes in /etc/selinux/"$TYPE"/contexts/"$strippedentry", skipping"
 					fi
 				else
 					strippedentry="`/bin/basename "$entry" ".${MODEL}"`"
@@ -366,6 +385,8 @@ then
 					if [ "$?" == "193" ]
 					then
 						/bin/sudo -E \cp -f "$SPATH"/contexts/"$entry" /etc/selinux/"$TYPE"/contexts/"$strippedentry"
+					else
+						echo "no changes in /etc/selinux/"$TYPE"/contexts/"$strippedentry", skipping"
 					fi
 				fi
 			fi
@@ -380,6 +401,8 @@ then
 				if [ "$?" == "193" ]
 				then
 					/bin/sudo -E \cp -f "$SPATH"/contexts.d/dbus_contexts /etc/selinux/"$TYPE"/contexts/
+				else
+					echo "no changes in /etc/selinux/"$TYPE"/contexts/dbus_contexts, skipping"
 				fi
 			else
 				/bin/sudo -E /bin/bash "$SPATH"/support/checksha256sum "$SPATH"/contexts/dbus_contexts /etc/selinux/"$TYPE"/contexts/dbus_contexts
@@ -387,6 +410,8 @@ then
 				if [ "$?" == "193" ]
 				then
 					/bin/sudo -E \cp -f "$SPATH"/contexts/dbus_contexts /etc/selinux/"$TYPE"/contexts/
+				else
+					echo "no changes in /etc/selinux/"$TYPE"/contexts/dbus_contexts, skipping"
 				fi
 			fi
 		fi
@@ -400,6 +425,8 @@ then
 				if [ "$?" == "193" ]
 				then
 					/bin/sudo -E \cp -f "$SPATH"/contexts.d/openssh_contexts /etc/selinux/"$TYPE"/contexts/
+				else
+					echo "no changes in /etc/selinux/"$TYPE"/contexts/openssh_contexts, skipping"
 				fi
 			else
 				/bin/sudo -E /bin/bash "$SPATH"/support/checksha256sum "$SPATH"/contexts/openssh_contexts /etc/selinux/"$TYPE"/contexts/openssh_contexts
@@ -407,6 +434,8 @@ then
 				if [ "$?" == "193" ]
 				then
 					/bin/sudo -E \cp -f "$SPATH"/contexts/openssh_contexts /etc/selinux/"$TYPE"/contexts/
+				else
+					echo "no changes in /etc/selinux/"$TYPE"/contexts/openssh_contexts, skipping"
 				fi
 			fi
 		fi
@@ -417,10 +446,9 @@ then
 
 			if [ "$?" == "193" ]
 			then
-				if [ -f "$SPATH"/seusers.local ]
-				then
-					/bin/sudo -E \cp -f "$SPATH"/seusers.local /etc/selinux/"$TYPE"/seusers
-				fi
+				/bin/sudo -E \cp -f "$SPATH"/seusers.local /etc/selinux/"$TYPE"/seusers
+			else
+				echo "no changes in /etc/selinux/"$TYPE"/seusers, skipping"
 			fi
 		else
 			for entry in `/bin/ls "$SPATH"/ | /bin/grep ^seusers | /bin/grep ".${MODEL}$"`
@@ -434,6 +462,8 @@ then
 					if [ -f "$SPATH"/"$entry" ]
 					then
 						/bin/sudo -E \cp -f "$SPATH"/"$entry" /etc/selinux/"$TYPE"/"$strippedentry"
+					else
+						echo "no changes in /etc/selinux/"$TYPE"/"$strippedentry", skipping"
 					fi
 				fi
 			done
@@ -441,12 +471,15 @@ then
 
 		if [ "`/bin/grep ^SELINUXTYPE /etc/selinux/config | /bin/awk -F "=" '{print $2}'`" == "$TYPE" ]
 		then
+			if [ -z $NOUPDATE ]
+			then
 			echo "
 updated existing policy configuration!
 
 1. execute /sbin/load_policy to apply changes
 2. file contexts changes may require that you relabel and restart affected processes
 			"
+			fi
 		else
 			echo "
 policy model change!
