@@ -195,7 +195,13 @@ fi
 ( /bin/cd "$SPATH" && "$SECILC" --policyvers="$VERSION" `echo "$VERBOSE" "$DONTAUDIT" "$UNKNOWN" ${modulestocompile[@]}` \
 	-o "$SPATH"/policy/policy."$VERSION" -f "$SPATH"/contexts/files/file_contexts )
 
-log "built "$SPATH"/policy/policy."$VERSION""
+if [ "$?" == "254" ]
+then
+	log "built failed"
+	exit 254
+else
+	log "built "$SPATH"/policy/policy."$VERSION""
+fi
 
 usernames+=`/bin/bash "$SPATH"/support/printrealusers`
 
