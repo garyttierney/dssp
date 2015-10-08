@@ -431,6 +431,9 @@
 		(call fs.search_devtmpfs (ARG1))
 		(allow ARG1 wireless.dev rw_chr_file_perms))
 
+	(macro rw_inherited_wireless ((type ARG1))
+		(allow ARG1 wireless.dev rw_inherited_chr_file_perms))
+
 	(macro rw_xserver_misc ((type ARG1))
 		(call fs.search_devtmpfs (ARG1))
 		(allow ARG1 xserver_misc.dev rw_chr_file_perms))
