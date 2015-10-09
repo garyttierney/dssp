@@ -138,6 +138,10 @@
 		(call fs.search_devtmpfs (ARG1))
 		(allow ARG1 console.dev write_chr_file_perms))
 
+	(macro getattr_virtio ((type ARG1))
+		(call fs.search_devtmpfs (ARG1))
+		(allow ARG1 virtio.serial_dev (chr_file (getattr))))
+
 	(macro use_virtio ((type ARG1))
 		(call fs.search_devtmpfs (ARG1))
 		(allow ARG1 virtio.serial_dev rw_term_perms))
