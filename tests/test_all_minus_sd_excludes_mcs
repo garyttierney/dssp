@@ -1,6 +1,8 @@
 sources/modules/contrib/sd
 sources/modules/contrib/roles/wheel_analyze
 sources/modules/contrib/roles/sysadm_analyze
+sources/modules/contrib/roles/wheel_cgtop
+sources/modules/contrib/roles/sysadm_cgtop
 sources/modules/contrib/roles/wheel_busctl
 sources/modules/contrib/roles/sysadm_busctl
 sources/modules/contrib/roles/wheel_hostnamectl
