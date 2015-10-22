@@ -25,8 +25,7 @@
 
 (macro dynamic_subj_type_transition_pattern ((type ARG1)(type ARG2))
 	(allow ARG1 self (process (setcurrent)))
-	(allow ARG1 ARG2 (process (dyntransition)))
-	(allow ARG2 ARG1 (process (sigchld))))
+	(allow ARG1 ARG2 (process (dyntransition))))
 
 (macro obj_type_transition_add_pattern ((type ARG1)(type ARG2)(type ARG3)(class ARG4)(name ARG5))
 	(allow ARG1 ARG2 add_entry_dir_perms)
