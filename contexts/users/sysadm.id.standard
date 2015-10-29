@@ -2,4 +2,4 @@ sysadm.role:sysadm.subj sysadm.role:sysadm.subj
 sysadm.role:sysadm_sudo.subj sysadm.role:sysadm.subj
 sys.role:login.subj sysadm.role:sysadm.subj
 sys.role:sd.subj sysadm.role:sysadm_sduser.subj
-sys.role:sshd.subj sysadm.role:sysadm.subj
+sys.role:sshd.sshd.subj sysadm.role:sysadm.subj

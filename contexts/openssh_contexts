@@ -1,1 +1,1 @@
-privsep_preauth=sshd_net.subj
+privsep_preauth=sshd.sshd_net.subj

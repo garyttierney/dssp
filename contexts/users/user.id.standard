@@ -1,4 +1,4 @@
 user.role:user.subj user.role:user.subj
 sys.role:login.subj user.role:user.subj
 sys.role:sd.subj user.role:user_sduser.subj
-sys.role:sshd.subj user.role:user.subj
+sys.role:sshd.sshd.subj user.role:user.subj
