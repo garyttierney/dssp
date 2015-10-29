@@ -11,10 +11,6 @@ then
 	[[ -r "$sourcefile" ]] || exit 1
 	[[ -s "$sourcefile" ]] || exit 1
 
-	[[ -f "$targetfile" ]] || exit 1
-	[[ -w "$targetfile" ]] || exit 1
-	[[ -s "$targetfile" ]] || exit 1
-
 	sumsource="`/bin/sha256sum "$sourcefile" | /bin/awk '{print $1}'`"
 	sumtarget="`/bin/sha256sum "$targetfile" | /bin/awk '{print $1}'`"
 
