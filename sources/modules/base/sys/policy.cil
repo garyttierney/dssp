@@ -251,7 +251,10 @@
 
 	(tunableif enable_rbacsep
 		(false
-			(roletype object_r isid))))
+			(roletype object_r isid)))
+
+	(optional invalid_optional_sd
+		(call sd.send_sigchld (isid))))
 
 (block unlabeled
 	(blockinherit sys.isid_blk)

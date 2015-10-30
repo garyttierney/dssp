@@ -590,6 +590,9 @@
 	(macro relabelfrom_invalid_dirs ((type ARG1))
 		(allow ARG1 invalid.isid relabelfrom_dir_perms))
 
+	(macro send_signull_invalid ((type ARG1))
+		(allow ARG1 invalid.isid (process (signull))))
+
 	(macro search_unlabeled ((type ARG1))
 		(allow ARG1 unlabeled.isid search_dir_perms))
 
