@@ -69,6 +69,11 @@
 		(macro tcp_connect_port ((type ARG1))
 			(allow ARG1 port (tcp_socket (name_connect)))))
 
+	(block tcp_connect_all_port_blk
+		(blockabstract tcp_connect_all_port_blk)
+		(macro tcp_connect_all_port ((type ARG1))
+			(allow ARG1 port_obj_type_attribute (tcp_socket (name_connect)))))
+
 	(block ephemeral_port_obj_blk
 		(blockabstract ephemeral_port_obj_blk)
 
@@ -110,6 +115,12 @@
 		(macro tcp_bind_reserved_port ((type ARG1))
 			(allow ARG1 self (capability (net_bind_service)))
 			(allow ARG1 port (tcp_socket (name_bind)))))
+
+	(block tcp_bind_all_reserved_port_blk
+		(blockabstract tcp_bind_all_reserved_port_blk)
+		(macro tcp_bind_all_reserved_port ((type ARG1))
+			(allow ARG1 self (capability (net_bind_service)))
+			(allow ARG1 port_obj_type_attribute (tcp_socket (name_bind)))))
 
 	(block udp_bind_reserved_port_blk
 		(blockabstract udp_bind_reserved_port_blk)
