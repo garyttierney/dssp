@@ -69,10 +69,42 @@
 		(macro tcp_connect_port ((type ARG1))
 			(allow ARG1 port (tcp_socket (name_connect)))))
 
-	(block tcp_connect_all_port_blk
-		(blockabstract tcp_connect_all_port_blk)
-		(macro tcp_connect_all_port ((type ARG1))
+	(block tcp_connect_all_ports_blk
+		(blockabstract tcp_connect_all_ports_blk)
+		(macro tcp_connect_all_ports ((type ARG1))
 			(allow ARG1 port_obj_type_attribute (tcp_socket (name_connect)))))
+
+	(block tcp_bind_all_ports_blk
+		(blockabstract tcp_bind_all_ports_blk)
+		(macro tcp_bind_all_ports ((type ARG1))
+			(allow ARG1 port_obj_type_attribute (tcp_socket (name_bind)))))
+
+	(block tcp_bind_port_blk
+		(blockabstract tcp_bind_port_blk)
+		(macro tcp_bind_port ((type ARG1))
+			(allow ARG1 port (tcp_socket (name_bind)))))
+
+	(block tcp_bind_reserved_port_blk
+		(blockabstract tcp_bind_reserved_port_blk)
+		(macro tcp_bind_reserved_port ((type ARG1))
+			(allow ARG1 self (capability (net_bind_service)))
+			(allow ARG1 port (tcp_socket (name_bind)))))
+
+	(block udp_bind_port_blk
+		(blockabstract udp_bind_port_blk)
+		(macro udp_bind_port ((type ARG1))
+			(allow ARG1 port (udp_socket (name_bind)))))
+
+	(block udp_bind_reserved_port_blk
+		(blockabstract udp_bind_reserved_port_blk)
+		(macro udp_bind_reserved_port ((type ARG1))
+			(allow ARG1 self (capability (net_bind_service)))
+			(allow ARG1 port (udp_socket (name_bind)))))
+
+	(block udp_bind_all_ports_blk
+		(blockabstract udp_bind_all_ports_blk)
+		(macro udp_bind_all_ports ((type ARG1))
+			(allow ARG1 port_obj_type_attribute (udp_socket (name_bind)))))
 
 	(block ephemeral_port_obj_blk
 		(blockabstract ephemeral_port_obj_blk)
@@ -110,24 +142,6 @@
 			(false
 				(context port_obj_context (sys.id object_r port (systemlow systemlow))))))
 
-	(block tcp_bind_reserved_port_blk
-		(blockabstract tcp_bind_reserved_port_blk)
-		(macro tcp_bind_reserved_port ((type ARG1))
-			(allow ARG1 self (capability (net_bind_service)))
-			(allow ARG1 port (tcp_socket (name_bind)))))
-
-	(block tcp_bind_all_reserved_port_blk
-		(blockabstract tcp_bind_all_reserved_port_blk)
-		(macro tcp_bind_all_reserved_port ((type ARG1))
-			(allow ARG1 self (capability (net_bind_service)))
-			(allow ARG1 port_obj_type_attribute (tcp_socket (name_bind)))))
-
-	(block udp_bind_reserved_port_blk
-		(blockabstract udp_bind_reserved_port_blk)
-		(macro udp_bind_reserved_port ((type ARG1))
-			(allow ARG1 self (capability (net_bind_service)))
-			(allow ARG1 port (udp_socket (name_bind)))))
-
 	(block unreserved_port_obj_blk
 		(blockabstract unreserved_port_obj_blk)
 
@@ -139,21 +153,6 @@
 				(context port_obj_context (sys.id sys.role port (systemlow systemlow))))
 			(false
 				(context port_obj_context (sys.id object_r port (systemlow systemlow))))))
-
-	(block tcp_bind_unreserved_port_blk
-		(blockabstract tcp_bind_unreserved_port_blk)
-		(macro tcp_bind_unreserved_port ((type ARG1))
-			(allow ARG1 port (tcp_socket (name_bind)))))
-
-	(block tcp_bind_all_unreserved_port_blk
-		(blockabstract tcp_bind_all_unreserved_port_blk)
-		(macro tcp_bind_all_unreserved_port ((type ARG1))
-			(allow ARG1 port_obj_type_attribute (tcp_socket (name_bind)))))
-
-	(block udp_bind_unreserved_port_blk
-		(blockabstract udp_bind_unreserved_port_blk)
-		(macro udp_bind_unreserved_port ((type ARG1))
-			(allow ARG1 port (udp_socket (name_bind)))))
 
 	(macro if_obj_type ((type ARG1))
 		(typeattributeset if_obj_type_attribute ARG1))
