@@ -145,6 +145,11 @@
 		(macro tcp_bind_unreserved_port ((type ARG1))
 			(allow ARG1 port (tcp_socket (name_bind)))))
 
+	(block tcp_bind_all_unreserved_port_blk
+		(blockabstract tcp_bind_all_unreserved_port_blk)
+		(macro tcp_bind_all_unreserved_port ((type ARG1))
+			(allow ARG1 port_obj_type_attribute (tcp_socket (name_bind)))))
+
 	(block udp_bind_unreserved_port_blk
 		(blockabstract udp_bind_unreserved_port_blk)
 		(macro udp_bind_unreserved_port ((type ARG1))
