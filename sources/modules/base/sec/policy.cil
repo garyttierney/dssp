@@ -37,12 +37,36 @@
 
 	(typeattribute bool_obj_type_except_sec_load_policy_obj_type_attribute)
 
-	(typeattributeset bool_obj_type_except_sec_load_policy_obj_type_attribute (and (bool_obj_type_attribute) (not (sec_load_policy.bool))))
+	(typeattributeset bool_obj_type_except_sec_load_policy_obj_type_attribute
+		(and (bool_obj_type_attribute) (not (sec_load_policy.bool))))
 
 	(allow unconfined_subj_type_attribute bool_obj_type_attribute read_file_perms)
 	(allow unconfined_subj_type_attribute bool_obj_type_except_sec_load_policy_obj_type_attribute (file (append write)))
 
-	(allow unconfined_subj_type_attribute securityfs.fs all_security_perms_except_load_policy_and_setenforce))
+	(allow unconfined_subj_type_attribute securityfs.fs all_security_perms_except_load_policy_and_setenforce)
+
+	(typeattribute setsecparam_setenforce_and_load_policy_subj_type_attribute)
+
+	(typeattributeset setsecparam_setenforce_and_load_policy_subj_type_attribute setsecparam_subj_type_attribute)
+	(typeattributeset setsecparam_setenforce_and_load_policy_subj_type_attribute setenforce_subj_type_attribute)
+	(typeattributeset setsecparam_setenforce_and_load_policy_subj_type_attribute load_policy_subj_type_attribute)
+
+	(call fs.search_sysfs (setsecparam_setenforce_and_load_policy_subj_type_attribute))
+
+	(call rw_files_pattern (setsecparam_setenforce_and_load_policy_subj_type_attribute securityfs.fs securityfs.fs))
+
+	(allow setsecparam_subj_type_attribute securityfs.fs (security (setsecparam)))
+	(auditallow setsecparam_subj_type_attribute securityfs.fs (security (setsecparam)))
+
+	(typeattribute load_policy_and_unconfined_subj_type_attribute)
+
+	(typeattributeset load_policy_and_unconfined_subj_type_attribute load_policy_subj_type_attribute)
+	(typeattributeset load_policy_and_unconfined_subj_type_attribute unconfined_subj_type_attribute)
+
+	(typeattribute setenforce_and_unconfined_subj_type_attribute)
+
+	(typeattributeset setenforce_and_unconfined_subj_type_attribute setenforce_subj_type_attribute)
+	(typeattributeset setenforce_and_unconfined_subj_type_attribute unconfined_subj_type_attribute))
 
 (block securityfs
 	(blockinherit fs.obj_blk)
@@ -52,5 +76,8 @@
 (block sec_load_policy
 	(blockinherit sec.bool_obj_blk)
 
-	(booleanif sec_load_policy (true (allow sec.unconfined_subj_type_attribute securityfs.fs (security (load_policy setenforce)))
-		(allow sec.unconfined_subj_type_attribute securityfs.fs (file (append write))))))
+	(booleanif sec_load_policy
+		(true
+			(allow sec.setenforce_and_unconfined_subj_type_attribute securityfs.fs (security (setenforce)))
+			(allow sec.load_policy_and_unconfined_subj_type_attribute securityfs.fs (security (load_policy)))
+			(allow sec.unconfined_subj_type_attribute sec_load_policy.bool (file (append write))))))

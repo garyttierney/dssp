@@ -59,10 +59,7 @@
 		(call read_files_pattern (ARG1 securityfs.fs securityfs.fs)))
 
 	(macro load_policy_subj_type ((type ARG1))
-		(call fs.search_sysfs (ARG1))
-		(call rw_files_pattern (ARG1 securityfs.fs securityfs.fs))
-		(typeattributeset load_policy_subj_type_attribute ARG1)
-		(booleanif (sec_load_policy) (true (allow ARG1 securityfs.fs (security (load_policy))))))
+		(typeattributeset load_policy_subj_type_attribute ARG1))
 
 	(macro read_policy ((type ARG1))
 		(call fs.search_sysfs (ARG1))
@@ -94,16 +91,9 @@
 		(allow ARG1 securityfs.fs (security (setcheckreqprot))))
 
 	(macro set_enforce_mode ((type ARG1))
-		(call fs.search_sysfs (ARG1))
-		(call rw_files_pattern (ARG1 securityfs.fs securityfs.fs))
-		(typeattributeset setenforce_subj_type_attribute ARG1)
-		(booleanif (sec_load_policy) (true (allow ARG1 securityfs.fs (security (setenforce))))))
+		(typeattributeset setenforce_subj_type_attribute ARG1))
 
 	(macro set_params ((type ARG1))
-		(call fs.search_sysfs (ARG1))
-		(call rw_files_pattern (ARG1 securityfs.fs securityfs.fs))
-		(allow ARG1 securityfs.fs (security (setsecparam)))
-		(auditallow ARG1 securityfs.fs (security (setsecparam)))
 		(typeattributeset setsecparam_subj_type_attribute ARG1))
 
 	(macro validate_context ((type ARG1))
