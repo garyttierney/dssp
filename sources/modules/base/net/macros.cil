@@ -208,6 +208,9 @@
 	(macro tcp_connect_unreserved_port ((type ARG1))
 		(allow ARG1 unreserved.port (tcp_socket (name_connect))))
 
+	(macro tcp_connect_ephemeral_port ((type ARG1))
+		(allow ARG1 ephemeral.port (tcp_socket (name_connect))))
+
 	(macro udp_bind_generic_node ((type ARG1))
 		(allow ARG1 node.node (udp_socket (node_bind))))
 
