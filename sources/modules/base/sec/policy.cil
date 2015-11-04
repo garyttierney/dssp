@@ -45,26 +45,27 @@
 
 	(allow unconfined_subj_type_attribute securityfs.fs all_security_perms_except_load_policy_and_setenforce)
 
-	(typeattribute setsecparam_setenforce_and_load_policy_subj_type_attribute)
+	(typeattribute setsecparam_subj_type_setenforce_subj_type_and_load_policy_subj_type_attribute)
 
-	(typeattributeset setsecparam_setenforce_and_load_policy_subj_type_attribute
+	(typeattributeset setsecparam_subj_type_setenforce_subj_type_and_load_policy_subj_type_attribute
 		(setsecparam_subj_type_attribute setenforce_subj_type_attribute load_policy_subj_type_attribute))
 
-	(call fs.search_sysfs (setsecparam_setenforce_and_load_policy_subj_type_attribute))
+	(call fs.search_sysfs (setsecparam_subj_type_setenforce_subj_type_and_load_policy_subj_type_attribute))
 
-	(call rw_files_pattern (setsecparam_setenforce_and_load_policy_subj_type_attribute securityfs.fs securityfs.fs))
+	(call rw_files_pattern (setsecparam_subj_type_setenforce_subj_type_and_load_policy_subj_type_attribute
+		securityfs.fs securityfs.fs))
 
 	(allow setsecparam_subj_type_attribute securityfs.fs (security (setsecparam)))
 	(auditallow setsecparam_subj_type_attribute securityfs.fs (security (setsecparam)))
 
-	(typeattribute load_policy_and_unconfined_subj_type_attribute)
+	(typeattribute load_policy_subj_type_and_unconfined_subj_type_attribute)
 
-	(typeattributeset load_policy_and_unconfined_subj_type_attribute
+	(typeattributeset load_policy_subj_type_and_unconfined_subj_type_attribute
 		(load_policy_subj_type_attribute unconfined_subj_type_attribute))
 
-	(typeattribute setenforce_and_unconfined_subj_type_attribute)
+	(typeattribute setenforce_subj_type_and_unconfined_subj_type_attribute)
 
-	(typeattributeset setenforce_and_unconfined_subj_type_attribute
+	(typeattributeset setenforce_subj_type_and_unconfined_subj_type_attribute
 		(setenforce_subj_type_attribute unconfined_subj_type_attribute)))
 
 (block securityfs
@@ -77,6 +78,6 @@
 
 	(booleanif sec_load_policy
 		(true
-			(allow sec.setenforce_and_unconfined_subj_type_attribute securityfs.fs (security (setenforce)))
-			(allow sec.load_policy_and_unconfined_subj_type_attribute securityfs.fs (security (load_policy)))
-			(allow sec.unconfined_subj_type_attribute sec_load_policy.bool (file (append write))))))
+			(allow sec.setenforce_subj_type_and_unconfined_subj_type_attribute securityfs.fs (security (setenforce)))
+			(allow sec.load_policy_subj_type_and_unconfined_subj_type_attribute securityfs.fs (security (load_policy)))
+			(allow sec.unconfined_subj_type_attribute bool (file (append write))))))
