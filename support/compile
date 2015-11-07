@@ -63,7 +63,7 @@ do
 
 		if ! [[ $MODELTOBUILD == standard ]] && ! [[ $MODELTOBUILD == mcs ]] && ! [[ $MODELTOBUILD == mls ]]
 		then
-			printf "%s\n" "invalid model $MODELTOBUILD specified, must be one of: standard, mcs, or mls"
+			printf "%s\n" "invalid model \"$MODELTOBUILD\"specified, must be one of: standard, mcs, or mls"
 			exit 1
 		fi
 		;;
@@ -91,7 +91,7 @@ do
 
 		if ! [[ $UNKNOWNHANDLING == allow ]] || ! [[ $UNKNOWNHANDLING == deny ]] || ! [[ $UNKNOWNHANDLING == reject ]]
 		then
-			printf "%s\n" "invalid unknown handling $UNKNOWNHANDLING specified, must be one of: allow, deny, or reject"
+			printf "%s\n" "invalid unknown handling \"$UNKNOWNHANDLING\" specified, must be one of: allow, deny, or reject"
 			exit 1
 		fi
 		;;
@@ -134,7 +134,7 @@ do
 
 		elif (( $POLICYVERION > "`/bin/cat /sys/fs/selinux/policyvers 2>/dev/null`" ))
 		then
-			printf "%s\n" "invalid policy version $POLICYVERSION specified"
+			printf "%s\n" "invalid policy version \"$POLICYVERSION\" specified"
 			exit 1
 
 		else
@@ -168,7 +168,7 @@ then
 
 		if [[ -z $POLICYVERSION ]] && [[ ! $POLICYVERSION =~ "^[0-9]+$" ]]
 		then
-			printf "%s\n" "invalid policy version $POLICYVERSION specified"
+			printf "%s\n" "invalid policy version \"$POLICYVERSION\" specified"
 			exit 1
 		fi
 
