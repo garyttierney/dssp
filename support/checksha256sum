@@ -1,29 +1,156 @@
 #!/bin/bash
 
-if [ $# -eq 2 ]
+declare PATHTOFUNCTIONSRELATIVETODSSP="support/functions"
+
+usage () {
+	echo "$0 - wraps around sha256sum to provide custom debug and exit code functionality
+
+mandatory options
+
+-p	: path to dssp sources
+-s	: path to source
+-t	: path to target
+
+discretionary options
+
+-d	: enable debugging
+
+exit codes
+
+0	: success
+1	: general fault
+193	: file is not accessible
+194	: file is not readable
+195	: file is a zero-byte file
+199	: files are identical
+200	: files are not identical"
+	exit
+}
+
+! (( $# > 0 )) && usage || :
+
+while (( $# > 0 ))
+do
+	case $1 in
+		\-p)
+		shift
+
+		if ! (( $# > 0 ))
+		then
+			printf "%s\n" "option -p expects one parameter: path to dssp source"
+			exit
+		fi
+
+		PATHTODSSP=$1
+		;;
+		\-s)
+		shift
+
+		if ! (( $# > 0 ))
+		then
+			printf "%s\n" "option -s expects one parameter: path to source"
+			exit
+		fi
+
+		PATHTOSOURCE=$1
+		;;
+		\-t)
+		shift
+
+		if ! (( $# > 0 ))
+		then
+			printf "%s\n" "option -t expects one parameter: path to target"
+			exit
+		fi
+
+		PATHTOTARGET=$1
+		;;
+		\-d)
+		DEBUG=1
+		;;
+		*) break
+		;;
+		esac
+	shift
+done
+
+if ! [[ -d $PATHTODSSP ]] || [[ -z $PATHTODSSP ]] || [[ -z $PATHTOSOURCE ]] || [[ -z $PATHTOTARGET ]] || ! [[ -x /bin/sha256sum ]]
 then
-	test -x /bin/sha256sum || exit 192
+	usage
+fi
 
-	sourcefile="$1"
-	targetfile="$2"
+if ! [[ -r ${PATHTODSSP}/${PATHTOFUNCTIONSRELATIVETODSSP} ]]
+then
+	debug "unable to source functions"
+	exit 1
+fi
 
-	[[ -f "$sourcefile" ]] || exit 1
-	[[ -r "$sourcefile" ]] || exit 1
-	[[ -s "$sourcefile" ]] || exit 1
+source ${PATHTODSSP}/${PATHTOFUNCTIONSRELATIVETODSSP} 2>/dev/null
 
-	sumsource="`/bin/sha256sum "$sourcefile" | /bin/awk '{print $1}'`"
-	sumtarget="`/bin/sha256sum "$targetfile" | /bin/awk '{print $1}'`"
+filetestandresult -f ${PATHTOSOURCE}
 
-	if [ "$sumsource" == "$sumtarget" ]
-	then
-		exit 194
-	else
-		exit 193
-	fi
+retval=$?
+
+! [[ $retval == 0 ]] && exit `echo $retval`
+
+filetestandresult -r ${PATHTOSOURCE}
+
+retval=$?
+
+! [[ $retval == 0 ]] && exit `echo $retval`
+
+filetestandresult -s ${PATHTOSOURCE}
+
+retval=$?
+
+! [[ $retval == 0 ]] && exit `echo $retval`
+
+filetestandresult -f ${PATHTOTARGET}
+
+retval=$?
+
+! [[ $retval == 0 ]] && exit `echo $retval`
+
+filetestandresult -r ${PATHTOTARGET}
+
+retval=$?
+
+! [[ $retval == 0 ]] && exit `echo $retval`
+
+filetestandresult -s ${PATHTOTARGET}
+
+retval=$?
+
+! [[ $retval == 0 ]] && exit `echo $retval`
+
+SUMSOURCE="`/bin/sudo -E /bin/sha256sum $PATHTOSOURCE | /bin/awk '{ print $1 }' 2>/dev/null`"
+
+if [[ -z $SUMSOURCE ]]
+then
+	debug "failed to get source sum"
+	exit 1
+fi
+
+SUMTARGET="`/bin/sudo -E /bin/sha256sum $PATHTOTARGET | /bin/awk '{ print $1 }' 2>/dev/null`"
+
+if [[ -z $SUMTARGET ]]
+then
+	debug "failed to get target sum"
+	exit 1
+fi
+
+if [[ $SUMSOURCE == $SUMTARGET ]]
+then
+	exit 199
+
+elif ! [[ $SUMSOURCE == $SUMTARGET ]]
+then
+	exit 200
+
 else
-	exit 192
+	debug "unhandled exception"
+	exit 1
 fi
 
 exit
-
 #EOF

@@ -1,651 +1,814 @@
 #!/bin/bash
 
-while (($# > 0))
-do
-	 case $1 in
-		\-a)
-		shift
-		UNKNOWN=$1
-			if [ "$UNKNOWN" != "allow" -o "$UNKNOWN" != "deny" -o "$UNKNOWN" != "reject" ]
-			then
-				echo "option -a expects a single paremeter: allow, deny or reject"
-				exit 192
-			fi
+declare PATHTOCONTEXTSRELATIVETODSSP="contexts/files/file_contexts"
+declare PATHTOFUNCTIONSRELATIVETODSSP="support/functions"
+declare PATHTOHOMEDIRCONTEXTSRELATIVETODSSP="contexts/files/file_contexts.homedirs"
+declare PATHTOPRINTDEFAULTHOMEDIRTEMPLATERELATIVETODSSP="support/printdefaulthomedirtemplate"
+declare PATHTOPRINTEXCLUDESRELATIVETODSSP="support/printexcludes"
+declare PATHTOPRINTHOMEDIRTEMPLATERELATIVETODSSP="support/printhomedirtemplate"
+declare PATHTOPRINTMODULESRELATIVETODSSP="support/printmodules"
+declare PATHTOPRINTREALUSERSRELATIVETODSSP="support/printrealusers"
+declare PATHTOPRINTSEUSERTUPLERELATIVETODSSP="support/printseusertuple"
+declare PATHTOPRINTSPOOLFILETEMPLATERELATIVETODSSP="support/printspoolfiletemplate"
+declare PATHTOSECILC="/usr/bin/secilc"
+declare PATHTOSEUSERSLOCALRELATIVETODSSP="seusers.local"
+declare PATHTOSEUSERSMCSRELATIVETODSSP="seusers.mcs"
+declare PATHTOSEUSERSMLSRELATIVETODSSP="seusers.mls"
+declare PATHTOSEUSERSSTANDARDRELATIVETODSSP="seusers.standard"
 
-			case "$UNKNOWN" in
-				allow)
-					UNKNOWN="--handle-unknown=allow"
-					;;
-				deny)
-					UNKNOWN="--handle-unknown=deny"
-					;;
-				reject)
-					UNKNOWN="--handle-unknown=reject"
-					;;
-				*)
-					echo "unhandled exception in option -a"
-					exit 192
-					;;
-			esac
-		;;
-		\-d)
-		DONTAUDIT="-D"
-		;;
-		\-n)
-		shift
-		VERSION="$1"
-			if [ ! -r /sys/fs/selinux/policyvers ]
-			then
-				echo "unable to determine max policy version"
-				exit
-			elif [ "$VERSION" -gt "`/bin/cat /sys/fs/selinux/policyvers`" ]
-			then
-				echo "option -n expects a single parameter: policy version less than or equal to max policy version"
-				exit 192
-			fi
-		;;
+usage () {
+	echo "$0 - compile DSSP
+
+mandatory options
+
+-m	: model to build
+-p	: path to dssp sources
+
+discretionary options
+
+-d	: disable dontaudit
+-i	: path to secilc
+-n	: policy version
+-r	: disable RBACSEP
+-u	: unknown handling
+-v	: verbose mode
+
+exit codes
+
+TODO	: TODO"
+	exit
+}
+
+! (( $# > 0 )) && usage || :
+
+while (( $# > 0 ))
+do
+	case $1 in
 		\-m)
 		shift
-		MODEL="$1"
-			if [ "$MODEL" != "standard" -a "$MODEL" != "mcs" -a "$MODEL" != "mls" ]
-			then
-				echo "option -m expects a single parameter: standard, mcs or mls"
-				exit 192
-			fi
-		;;
-		\-h)
-			echo "
-$0 compile CIL SELinux security policy
 
--a		: allow unknown access vectors
--d		: disable dontaudit
--n   (version)	: specify a policy version to build
--m   (model)	: specify security model to build (standard, mcs or mls)
-			cannot be used to override policy configuration but must be used for proper file context generation
--i   (location)	: specify compiler location
--p   (path)	: specify source policy location
--r		: disable rbacsep
--v		: compile policy in verbose mode
-			"
+		if ! (( $# > 0 ))
+		then
+			printf "%s\n" "option -m expects one parameter: model to build"
 			exit
-		;;
-		\-i)
-		shift
-		SECILC="$1"
-			if [ ! -f "$SECILC" -a ! -x "$SECILC" -a ! -s "$SECILC" ]
-			then
-				echo "option -i expects a single parameter: accessible secilc location"
-				exit 192
-			fi
+		fi
+
+		MODELTOBUILD=$1
+
+		if ! [[ $MODELTOBUILD == standard ]] && ! [[ $MODELTOBUILD == mcs ]] && ! [[ $MODELTOBUILD == mls ]]
+		then
+			printf "%s\n" "invalid model $MODELTOBUILD specified, must be one of: standard, mcs, or mls"
+			exit 1
+		fi
 		;;
 		\-p)
 		shift
-		SPATH="$1"
-			if [ ! -d "$SPATH" -a  ! -w "$SPATH" ]
-			then
-				echo "option -p expects a single parameter: accessible path to source policy to build"
-				exit 192
-			fi
+
+		if ! (( $# > 0 ))
+		then
+			printf "%s\n" "option -p expects one parameter: path to dssp source"
+			exit
+		fi
+
+		PATHTODSSP=$1
+		;;
+		\-u)
+		shift
+
+		if ! (( $# > 0 ))
+		then
+			printf "%s\n" "option -u expects one parameter: unknown handling"
+			exit
+		fi
+
+		UNKNOWNHANDLING=$1
+
+		if ! [[ $UNKNOWNHANDLING == allow ]] || ! [[ $UNKNOWNHANDLING == deny ]] || ! [[ $UNKNOWNHANDLING == reject ]]
+		then
+			printf "%s\n" "invalid unknown handling $UNKNOWNHANDLING specified, must be one of: allow, deny, or reject"
+			exit 1
+		fi
+		;;
+		\-d)
+
+		DISABLEDONTAUDIT=1
+		;;
+		\-i)
+		shift
+
+		if ! (( $# > 0 ))
+		then
+			printf "%s\n" "option -i expects one parameter: path to secilc"
+			exit
+		fi
+
+		PATHTOSECILC=$1
+
+		if ! [[ -x $PATHTOSECIL ]]
+		then
+			printf "%s\n" "invalid path to secilc"
+			exit 1
+		fi
+		;;
+		\-n)
+		shift
+
+		if ! (( $# > 0 ))
+		then
+			printf "%s\n" "option -n expects one parameter: policy version"
+			exit
+		fi
+
+		POLICYVERSION=$1
+
+		if ! [[ -r /sys/fs/selinux/policyvers ]]
+		then
+			printf "%s\n" "unable to determine max policy version"
+			exit 1
+
+		elif (( $POLICYVERION > "`/bin/cat /sys/fs/selinux/policyvers 2>/dev/null`" ))
+		then
+			printf "%s\n" "invalid policy version $POLICYVERSION specified"
+			exit 1
+
+		else
+			printf "%s\n" "unhandled exception"
+			exit 1
+		fi
 		;;
 		\-r)
-		RBACSEP="0"
+
+		DISABLERBACSEP=1
 		;;
 		\-v)
-		VERBOSE="-v"
+		DEBUG=1
 		;;
 		*) break
 		;;
-	esac
+		esac
 	shift
 done
 
-if [ -z "$MODEL" ]
+if ! [[ -d $PATHTODSSP ]] || [[ -z $PATHTODSSP ]] || [[ -z $MODELTOBUILD ]] || ! [[ -x $PATHTOSECILC ]]
 then
-	echo "valid security model to build must be specified with -m"
-	exit 192
+	usage
 fi
 
-if [ -z "$SPATH" ]
+if [[ -z $POLICYVERSION ]]
 then
-	echo "valid path to source policy to build must be specified with -p"
-	exit 192
-fi
-
-if [ -z "$SECILC" ]
-then
-	if [ ! -f /usr/bin/secilc -a ! -x /usr/bin/secilc -a ! -s /usr/bin/secilc ]
+	if [[ -r /sys/fs/selinux/policyvers ]]
 	then
-		echo "valid SECILC location must be specified with -i"
-		exit 192
-	elif [ -f /usr/bin/secilc -a -x /usr/bin/secilc -a -s /usr/bin/secilc ]
-	then
-		SECILC="/usr/bin/secilc"
-	else
-		exit 192
-	fi
-fi
+		POLICYVERSION="`/bin/cat /sys/fs/selinux/policyvers 2>/dev/null`"
 
-if [ -z "$RBACSEP" ]
-then
-	RBACSEP="1"
-fi
+		if [[ -z $POLICYVERSION ]] && [[ ! $POLICYVERSION =~ "^[0-9]+$" ]]
+		then
+			printf "%s\n" "invalid policy version $POLICYVERSION specified"
+			exit 1
+		fi
 
-if [ -z "$VERSION" ]
-then
-	if [ -r /sys/fs/selinux/policyvers ]
-	then
-		VERSION="`/bin/cat /sys/fs/selinux/policyvers`"
 	else
 		echo "unable to determine max policy version"
-		exit 192
+		exit 1
 	fi
 fi
 
-log ()
-{
-	if [ $# -ge 1 -a "$VERBOSE" == "-v" ]
-	then
-		echo "$*"
-	elif [ "$VERBOSE" == "-v" ]
-	then
-		while read line; do
-			echo "$line"
-		done
-	fi
-}
-
-if [ -f "$SPATH"/exclude -a -r "$SPATH"/exclude -a -s "$SPATH"/exclude -a -f "$SPATH"/exclude.local -a -r "$SPATH"/exclude.local -a -s "$SPATH"/exclude.local ]
+if ! [[ -r ${PATHTODSSP}/${PATHTOFUNCTIONSRELATIVETODSSP} ]]
 then
-	excludes+="`/bin/bash "$SPATH"/support/printexcludes "$SPATH"/exclude "$SPATH"/exclude.local`"
-
-	log "identified upstream and local excludes to process"
-elif [ -f "$SPATH"/exclude -a -r "$SPATH"/exclude -a -s "$SPATH"/exclude ]
-then
-	excludes+="`/bin/bash "$SPATH"/support/printexcludes "$SPATH"/exclude`"
-
-	log "identified upstream excludes to process"
-elif [ -f "$SPATH"/exclude.local -a -r "$SPATH"/exclude.local -a -s "$SPATH"/exclude.local ]
-then
-	excludes+="`/bin/bash "$SPATH"/support/printexcludes "$SPATH"/exclude.local`"
-
-	log "identified local excludes to process"
+	debug "unable to source functions"
+	exit 1
 fi
 
-modules+=`/bin/bash "$SPATH"/support/printmodules "$SPATH"`
+source ${PATHTODSSP}/${PATHTOFUNCTIONSRELATIVETODSSP} 2>/dev/null
 
-if [ -n "$excludes" ]
+debug "fetching path entries to exclude from policy"
+
+EXCLUDES+=(`/bin/bash ${PATHTODSSP}/${PATHTOPRINTEXCLUDESRELATIVETODSSP} -p $PATHTODSSP`)
+
+retval=`echo $?`
+
+if ! [[ $retval == 0 ]] && ! [[ $retval == 201 ]]
 then
-	for exclude in "${excludes[*]}"
+	case $retval in
+		194) debug "file is not readable" ;;
+		195) debug "file is a zero-byte file" ;;
+		196) debug "file is not a directory" ;;
+		202) debug "no such file or directory" ;;
+		*) debug "unhandled exception" ;;
+	esac
+
+	exit `echo $retval`
+fi
+
+if [[ -z $EXCLUDES ]]
+then
+	if [[ $retval == 201 ]]
+	then
+		debug "no path entries to be excluded"
+
+	else
+		debug "unhandled exception"
+		exit 1
+	fi
+
+elif [[ -n $EXCLUDES ]]
+then
+	debug "path entries to be excluded"
+fi
+
+debug "fetching path entries to include with policy"
+
+MODULES+=(`/bin/bash ${PATHTODSSP}/${PATHTOPRINTMODULESRELATIVETODSSP} -p $PATHTODSSP`)
+
+retval=`echo $?`
+
+if ! [[ $retval == 0 ]] && ! [[ $retval == 203 ]]
+then
+	case $retval in
+		194) debug "file is not readable" ;;
+		195) debug "file is a zero-byte file" ;;
+		*) debug "unhandled exception" ;;
+	esac
+
+	exit `echo $retval`
+fi
+
+if [[ -z $MODULES ]]
+then
+	if [[ $retval == 203 ]]
+	then
+		debug "no path entries to be included"
+		exit `echo $retval`
+
+	else
+		debug "unhandled exception"
+		exit 1
+	fi
+
+elif [[ -n $MODULES ]]
+then
+	debug "path entries to be included"
+fi
+
+if [[ -n $EXCLUDES ]]
+then
+	for EXCLUDE in ${EXCLUDES[@]}
 	do
-		modulestocompile="`echo "${modules[@]}" | /bin/grep -v "$exclude"`"
-
-		log "excluding module "$exclude""
+		MODULESTOCOMPILE="`printf "%s\n" "${MODULES[@]}" | /bin/grep -v "$EXCLUDE" 2>/dev/null`"
 	done
-elif [ -z "$excludes" ]
-then
-	modulestocompile+=`echo ${modules[@]}`
 
-	log "nothing to exclude"
+elif [[ -z $EXCLUDES ]]
+then
+	MODULESTOCOMPILE+="`printf "%s\n" "${MODULES[@]}" 2>/dev/null`"
+
+	debug "nothing to exclude"
 
 else
-	echo "unhandled exception in modules to compile"
-	exit 192
+	debug "unhandled exception"
+	exit 1
 fi
 
-( /bin/cd "$SPATH" && "$SECILC" --policyvers="$VERSION" `echo "$VERBOSE" "$DONTAUDIT" "$UNKNOWN" ${modulestocompile[@]}` \
-	-o "$SPATH"/policy/policy."$VERSION" -f "$SPATH"/contexts/files/file_contexts )
+( /bin/cd $PATHTODSSP && $PATHTOSECILC --policyvers="$POLICYVERSION" $([[ -n $DEBUG ]] && printf "%s" "-v") $([[ -n $DISABLEDONTAUDIT ]] && printf "%s" "-D") $([[ -n $UNKNOWNHANDLING ]] && printf "%s" --handle-unknown="$UNKNOWNHANDLING") ${MODULESTOCOMPILE[@]} -o ${PATHTODSSP}/policy/policy.${POLICYVERSION} -f ${PATHTODSSP}/${PATHTOCONTEXTSRELATIVETODSSP} )
 
-if [ "$?" == "254" ]
+retval=`echo $?`
+
+if ! [[ $retval == 0 ]]
 then
-	log "built failed"
-	exit 254
+        debug "built failed with status $retval"
+        exit `echo $retval`
 else
-	log "built "$SPATH"/policy/policy."$VERSION""
+	debug "built ${PATHTODSSP}/policy/policy.${POLICYVERSION}"
 fi
 
-usernames+=`/bin/bash "$SPATH"/support/printrealusers`
+DEFAULTHOMEDIRTEMPLATE="`/bin/bash ${PATHTODSSP}/${PATHTOPRINTDEFAULTHOMEDIRTEMPLATERELATIVETODSSP} -p ${PATHTODSSP}`"
 
-homedirtemplate+="`/bin/bash "$SPATH"/support/printhomedirtemplate "$SPATH"/contexts/files/file_contexts`"
-spoolfiletemplate+="`/bin/bash "$SPATH"/support/printspoolfiletemplate "$SPATH"/contexts/files/file_contexts`"
-
-/bin/sed -i.bak '/HOME_DIR/d' "$SPATH"/contexts/files/file_contexts
-/bin/sed -i.bak '/USER_SPOOL/d' "$SPATH"/contexts/files/file_contexts
+/bin/sed -i.bak '/^DEFAULT_HOME_DIR/d' ${PATHTODSSP}/${PATHTOCONTEXTSRELATIVETODSSP} 2>/dev/null
 
 IFS=$'\n'
 
-echo > "$SPATH"/contexts/files/file_contexts.homedirs
+echo > ${PATHTODSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP}
 
-if [ -f "$SPATH"/seusers.local ]
+if [[ -r ${PATHTODSSP}/${PATHTOSEUSERSLOCALRELATIVETODSSP} ]] || [[ -s ${PATHTODSSP}/${PATHTOSEUSERSLOCALRELATIVETODSSP} ]]
 then
-	defaultseuseruserroletuple="`/bin/bash "$SPATH"/support/seusertuple "$SPATH"/seusers.local`"
+	DEFAULTSEUSERROLETUPLE="`/bin/bash ${PATHTODSSP}/${PATHTOPRINTSEUSERTUPLERELATIVETODSSP} -s ${PATHTOSEUSERSLOCALRELATIVETODSSP} -p ${PATHTODSSP}`"
+	DEFAULTSEUSERID="`printf "%s\n" "$DEFAULTSEUSERROLETUPLE" | /bin/awk -F":" '{ print $1 }' 2>/dev/null`"
+	DEFAULTSEUSERROLE="`printf "%s\n" "$DEFAULTSEUSERROLETUPLE" | /bin/awk -F":" '{ print $2 }' 2>/dev/null`"
 
-	defaultseuserid="`echo "$defaultseuseruserroletuple" | /bin/awk -F":" '{print $1}'`"
-	defaultseuserrole="`echo "$defaultseuseruserroletuple" | /bin/awk -F":" '{print $2}'`"
-
-	log "fetched seusers to process from "$SPATH"/seusers.local"
-
-	if [ "$MODEL" == "standard" ]
-	then
-		if [ "$RBACSEP" == "1" ]
+	for DEFAULTHOMEDIR in ${DEFAULTHOMEDIRTEMPLATE[*]}
+	do
+		if [[ -z $DISABLERBACSEP ]]
 		then
-			echo "/home(/.*)? -d "$defaultseuserid":"$defaultseuserrole":home_dir.file" >> "$SPATH"/contexts/files/file_contexts.homedirs
-			echo "/home/.*/.* "$defaultseuserid":"$defaultseuserrole":home_user.home_user_file" >> "$SPATH"/contexts/files/file_contexts.homedirs
-		elif [ "$RBACSEP" == "0" ]
+			NAME=`echo "${DEFAULTHOMEDIR//DEFAULT_HOME_DIR//home}"`
+			ID=`echo "${NAME//sys.id/$DEFAULTSEUSERID}"`
+			echo "${ID//sys.role/"$DEFAULTSEUSERROLE"}" >> ${PATHTODSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP}
+
+		elif [[ $DISABLERBACSEP == 1 ]]
 		then
-			echo "/home(/.*)? -d "$defaultseuserid":object_r:home_dir.file" >> "$SPATH"/contexts/files/file_contexts.homedirs
-			echo "/home/.*/.* "$defaultseuserid":object_r:home_user.home_user_file" >> "$SPATH"/contexts/files/file_contexts.homedirs
+			NAME=`echo "${DEFAULTHOMEDIR//DEFAULT_HOME_DIR//home}"`
+			echo "${NAME//sys.id/"$DEFAULTSEUSERID"}" >> ${PATHTODSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP}
+
 		else
-			exit 192
+			printf "%s\n" "unhandled exception"
+			exit 1
 		fi
-	elif [ "$MODEL" == "mcs" ]
-	then
-		if [ "$RBACSEP" == "1" ]
-		then
-			echo "/home(/.*)? -d "$defaultseuserid":"$defaultseuserrole":home_dir.file:s0" >> "$SPATH"/contexts/files/file_contexts.homedirs
-			echo "/home/.*/.* "$defaultseuserid":"$defaultseuserrole":home_user.home_user_file:s0" >> "$SPATH"/contexts/files/file_contexts.homedirs
-		elif [ "$RBACSEP" == "0" ]
-		then
-			echo "/home(/.*)? -d "$defaultseuserid":object_r:home_dir.file:s0" >> "$SPATH"/contexts/files/file_contexts.homedirs
-			echo "/home/.*/.* "$defaultseuserid":object_r:home_user.home_user_file:s0" >> "$SPATH"/contexts/files/file_contexts.homedirs
-		else
-			exit 192
-		fi
-	elif [ "$MODEL" == "mls" ]
-	then
-		if [ "$RBACSEP" == "1" ]
-		then
-			echo "/home(/.*)? -d "$defaultseuserid":"$defaultseuserrole":home_dir.file:s0-s15:c0.c1023" >> "$SPATH"/contexts/files/file_contexts.homedirs
-			echo "/home/.*/.* "$defaultseuserid":"$defaultseuserrole":home_user.home_user_file:s0" >> "$SPATH"/contexts/files/file_contexts.homedirs
-		elif [ "$RBACSEP" == "0" ]
-		then
-			echo "/home(/.*)? -d "$defaultseuserid":object_r:home_dir.file:s0-s15:c0.c1023" >> "$SPATH"/contexts/files/file_contexts.homedirs
-			echo "/home/.*/.* "$defaultseuserid":object_r:home_user.home_user_file:s0" >> "$SPATH"/contexts/files/file_contexts.homedirs
-		else
-			exit 192
-		fi
-	else
-		exit 192
-	fi
-elif [ "$MODEL" == "standard" ]
+	done
+
+elif [[ $MODELTOBUILD == standard ]]
 then
-	defaultseuseruserroletuple="`/bin/bash "$SPATH"/support/seusertuple "$SPATH"/seusers.standard`"
-
-	defaultseuserid="`echo "$defaultseuseruserroletuple" | /bin/awk -F":" '{print $1}'`"
-	defaultseuserrole="`echo "$defaultseuseruserroletuple" | /bin/awk -F":" '{print $2}'`"
-
-	log "fetched seusers to process from "$SPATH"/seusers.standard"
-
-	if [ "$RBACSEP" == "1" ]
+	if [[ -r ${PATHTODSSP}/${PATHTOSEUSERSSTANDARDRELATIVETODSSP} ]] || [[ -s ${PATHTODSSP}/${PATHTOSEUSERSSTANDARDRELATIVETODSSP} ]]
 	then
-		echo "/home(/.*)? -d "$defaultseuserid":"$defaultseuserrole":home_dir.file" >> "$SPATH"/contexts/files/file_contexts.homedirs
-		echo "/home/.*/.* "$defaultseuserid":"$defaultseuserrole":home_user.home_user_file" >> "$SPATH"/contexts/files/file_contexts.homedirs
-	elif [ "$RBACSEP" == "0" ]
-	then
-		echo "/home(/.*)? -d "$defaultseuserid":object_r:home_dir.file" >> "$SPATH"/contexts/files/file_contexts.homedirs
-		echo "/home/.*/.* "$defaultseuserid":object_r:home_user.home_user_file" >> "$SPATH"/contexts/files/file_contexts.homedirs
+		DEFAULTSEUSERROLETUPLE="`/bin/bash ${PATHTODSSP}/${PATHTOPRINTSEUSERTUPLERELATIVETODSSP} -s ${PATHTOSEUSERSSTANDARDRELATIVETODSSP} -p ${PATHTODSSP}`"
+		DEFAULTSEUSERID="`printf "%s\n" "$DEFAULTSEUSERROLETUPLE" | /bin/awk -F":" '{ print $1 }' 2>/dev/null`"
+		DEFAULTSEUSERROLE="`printf "%s\n" "$DEFAULTSEUSERROLETUPLE" | /bin/awk -F":" '{ print $2 }' 2>/dev/null`"
+
+		for DEFAULTHOMEDIR in ${DEFAULTHOMEDIRTEMPLATE[*]}
+		do
+			if [[ -z $DISABLERBACSEP ]]
+			then
+				NAME=`echo "${DEFAULTHOMEDIR//DEFAULT_HOME_DIR//home}"`
+				ID=`echo "${NAME//sys.id/$DEFAULTSEUSERID}"`
+				echo "${ID//sys.role/"$DEFAULTSEUSERROLE"}" >> ${PATHTODSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP}
+
+			elif [[ $DISABLERBACSEP == 1 ]]
+			then
+				NAME=`echo "${DEFAULTHOMEDIR//DEFAULT_HOME_DIR//home}"`
+				echo "${NAME//sys.id/"$DEFAULTSEUSERID"}" >> ${PATHTODSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP}
+
+			else
+				printf "%s\n" "unhandled exception"
+				exit 1
+			fi
+		done
+
 	else
-		exit 192
+		printf "%s\n" "unhandled exception"
+		exit 1
 	fi
-elif [ "$MODEL" == "mcs" ]
+
+elif [[ $MODELTOBUILD == mcs ]]
 then
-	defaultseuseruserroletuple="`/bin/bash "$SPATH"/support/seusertuple "$SPATH"/seusers.mcs`"
-
-	defaultseuserid="`echo "$defaultseuseruserroletuple" | /bin/awk -F":" '{print $1}'`"
-	defaultseuserrole="`echo "$defaultseuseruserroletuple" | /bin/awk -F":" '{print $2}'`"
-
-	log "fetched seusers to process from "$SPATH"/seusers.mcs"
-
-	if [ "$RBACSEP" == "1" ]
+	if [[ -r ${PATHTODSSP}/${PATHTOSEUSERSMCSRELATIVETODSSP} ]] || [[ -s ${PATHTODSSP}/${PATHTOSEUSERSMCSRELATIVETODSSP} ]]
 	then
-		echo "/home(/.*)? -d "$defaultseuserid":"$defaultseuserrole":home_dir.file:s0" >> "$SPATH"/contexts/files/file_contexts.homedirs
-		echo "/home/.*/.* "$defaultseuserid":"$defaultseuserrole":home_user.home_user_file:s0" >> "$SPATH"/contexts/files/file_contexts.homedirs
-	elif [ "$RBACSEP" == "0" ]
-	then
-		echo "/home(/.*)? -d "$defaultseuserid":object_r:home_dir.file:s0" >> "$SPATH"/contexts/files/file_contexts.homedirs
-		echo "/home/.*/.* "$defaultseuserid":object_r:home_user.home_user_file:s0" >> "$SPATH"/contexts/files/file_contexts.homedirs
+		DEFAULTSEUSERROLETUPLE="`/bin/bash ${PATHTODSSP}/${PATHTOPRINTSEUSERTUPLERELATIVETODSSP} -s ${PATHTOSEUSERSMCSRELATIVETODSSP} -p ${PATHTODSSP}`"
+		DEFAULTSEUSERID="`printf "%s\n" "$DEFAULTSEUSERROLETUPLE" | /bin/awk -F":" '{ print $1 }' 2>/dev/null`"
+		DEFAULTSEUSERROLE="`printf "%s\n" "$DEFAULTSEUSERROLETUPLE" | /bin/awk -F":" '{ print $2 }' 2>/dev/null`"
+
+		for DEFAULTHOMEDIR in ${DEFAULTHOMEDIRTEMPLATE[*]}
+		do
+			if [[ -z $DISABLERBACSEP ]]
+			then
+				NAME=`echo "${DEFAULTHOMEDIR//DEFAULT_HOME_DIR//home}"`
+				ID=`echo "${NAME//sys.id/$DEFAULTSEUSERID}"`
+				echo "${ID//sys.role/"$DEFAULTSEUSERROLE"}" >> ${PATHTODSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP}
+
+			elif [[ $DISABLERBACSEP == 1 ]]
+			then
+				NAME=`echo "${DEFAULTHOMEDIR//DEFAULT_HOME_DIR//home}"`
+				echo "${NAME//sys.id/"$DEFAULTSEUSERID"}" >> ${PATHTODSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP}
+
+			else
+				printf "%s\n" "unhandled exception"
+				exit 1
+			fi
+		done
+
 	else
-		exit 192
+		printf "%s\n" "unhandled exception"
+		exit 1
 	fi
-elif [ "$MODEL" == "mls" ]
+
+elif [[ $MODELTOBUILD == mls ]]
 then
-	defaultseuseruserroletuple="`/bin/bash "$SPATH"/support/seusertuple "$SPATH"/seusers.mls`"
-
-	defaultseuserid="`echo "$defaultseuseruserroletuple" | /bin/awk -F":" '{print $1}'`"
-	defaultseuserrole="`echo "$defaultseuseruserroletuple" | /bin/awk -F":" '{print $2}'`"
-
-	log "fetched seusers to process from "$SPATH"/seusers.mls"
-
-	if [ "$RBACSEP" == "1" ]
+	if [[ -r ${PATHTODSSP}/${PATHTOSEUSERSMLSRELATIVETODSSP} ]] || [[ -s ${PATHTODSSP}/${PATHTOSEUSERSMLSRELATIVETODSSP} ]]
 	then
-		echo "/home(/.*)? -d "$defaultseuserid":"$defaultseuserrole":home_dir.file:s0-s15:c0.c1023" >> "$SPATH"/contexts/files/file_contexts.homedirs
-		echo "/home/.*/.* "$defaultseuserid":"$defaultseuserrole":home_user.home_user_file:s0" >> "$SPATH"/contexts/files/file_contexts.homedirs
-	elif [ "$RBACSEP" == "0" ]
-	then
-		echo "/home(/.*)? -d "$defaultseuserid":object_r:home_dir.file:s0-s15:c0.c1023" >> "$SPATH"/contexts/files/file_contexts.homedirs
-		echo "/home/.*/.* "$defaultseuserid":object_:home_user.home_user_file:s0" >> "$SPATH"/contexts/files/file_contexts.homedirs
+		DEFAULTSEUSERROLETUPLE="`/bin/bash ${PATHTODSSP}/${PATHTOPRINTSEUSERTUPLERELATIVETODSSP} -s ${PATHTOSEUSERSMLSRELATIVETODSSP} -p ${PATHTODSSP}`"
+		DEFAULTSEUSERID="`printf "%s\n" "$DEFAULTSEUSERROLETUPLE" | /bin/awk -F":" '{ print $1 }' 2>/dev/null`"
+		DEFAULTSEUSERROLE="`printf "%s\n" "$DEFAULTSEUSERROLETUPLE" | /bin/awk -F":" '{ print $2 }' 2>/dev/null`"
+
+		for DEFAULTHOMEDIR in ${DEFAULTHOMEDIRTEMPLATE[*]}
+		do
+			if [[ -z $DISABLERBACSEP ]]
+			then
+				NAME=`echo "${DEFAULTHOMEDIR//DEFAULT_HOME_DIR//home}"`
+				ID=`echo "${NAME//sys.id/$DEFAULTSEUSERID}"`
+				echo "${ID//sys.role/"$DEFAULTSEUSERROLE"}" >> ${PATHTODSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP}
+
+			elif [[ $DISABLERBACSEP == 1 ]]
+			then
+				NAME=`echo "${DEFAULTHOMEDIR//DEFAULT_HOME_DIR//home}"`
+				echo "${NAME//sys.id/"$DEFAULTSEUSERID"}" >> ${PATHTODSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP}
+
+			else
+				printf "%s\n" "unhandled exception"
+				exit 1
+			fi
+		done
+
 	else
-		exit 192
+		printf "%s\n" "unhandled exception"
+		exit 1
 	fi
 fi
 
-for username in ${usernames[*]}
+USERNAMES="`/bin/bash ${PATHTODSSP}/${PATHTOPRINTREALUSERSRELATIVETODSSP} -p ${PATHTODSSP}`"
+HOMEDIRTEMPLATE="`/bin/bash ${PATHTODSSP}/${PATHTOPRINTHOMEDIRTEMPLATERELATIVETODSSP} -p ${PATHTODSSP}`"
+SPOOLFILETEMPLATE="`/bin/bash ${PATHTODSSP}/${PATHTOPRINTSPOOLFILETEMPLATERELATIVETODSSP} -p ${PATHTODSSP}`"
+
+/bin/sed -i.bak '/^HOME_DIR/d' ${PATHTODSSP}/${PATHTOCONTEXTSRELATIVETODSSP} 2>/dev/null
+/bin/sed -i.bak '/^USER_SPOOL/d' ${PATHTODSSP}/${PATHTOCONTEXTSRELATIVETODSSP} 2>/dev/null
+
+for USERNAME in ${USERNAMES[*]}
 do
-	if [ -f "$SPATH"/seusers.local ]
+	if [[ -r ${PATHTODSSP}/${PATHTOSEUSERSLOCALRELATIVETODSSP} ]] || [[ -s ${PATHTODSSP}/${PATHTOSEUSERSLOCALRELATIVETODSSP} ]]
 	then
-		if [ `/bin/grep "^$username:" "$SPATH"/seusers.local` ]
+		if [[ `/bin/grep "^$USERNAME:" ${PATHTODSSP}/${PATHTOSEUSERSLOCALRELATIVETODSSP}` ]]
 		then
-			seuseruserroletuple="`/bin/bash "$SPATH"/support/seusertuple "$SPATH"/seusers.local "$username"`"
+			SEUSERROLETUPLE="`/bin/bash ${PATHTODSSP}/${PATHTOPRINTSEUSERTUPLERELATIVETODSSP} -s ${PATHTOSEUSERSLOCALRELATIVETODSSP} -p ${PATHTODSSP} -u ${USERNAME}`"
+			SEUSERID="`printf "%s\n" "$SEUSERROLETUPLE" | /bin/awk -F":" '{ print $1 }' 2>/dev/null`"
+			SEUSERROLE="`printf "%s\n" "$SEUSERROLETUPLE" | /bin/awk -F":" '{ print $2 }' 2>/dev/null`"
 
-			seuserid="`echo "$seuseruserroletuple" | /bin/awk -F":" '{print $1}'`"
-			seuserrole="`echo "$seuseruserroletuple" | /bin/awk -F":" '{print $2}'`"
-
-			log "processing "$username" found in "$SPATH"/seusers.local"
-
-			for homedir in ${homedirtemplate[*]}
+			for HOMEDIR in ${HOMEDIRTEMPLATE[*]}
 			do
-				if [ "$RBACSEP" == "1" ]
+				if [[ -z $DISABLERBACSEP ]]
 				then
-					name=`echo "${homedir//HOME_DIR//home/"$username"}"`
-					id=`echo "${name//sys.id/$seuserid}"`
-					echo "${id//sys.role/"$seuserrole"}" >> "$SPATH"/contexts/files/file_contexts.homedirs
-				elif [ "$RBACSEP" == "0" ]
+					NAME=`echo "${HOMEDIR//HOME_DIR//home/"$USERNAME"}"`
+					ID=`echo "${NAME//sys.id/$SEUSERID}"`
+					echo "${ID//sys.role/"$SEUSERROLE"}" >> ${PATHTODSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP}
+
+				elif [[ $DISABLERBACSEP == 1 ]]
 				then
-					name=`echo "${homedir//HOME_DIR//home/"$username"}"`
-					echo "${name//sys.id/"$seuserid"}" >> "$SPATH"/contexts/files/file_contexts.homedirs
+					NAME=`echo "${HOMEDIR//HOME_DIR//home/"$USERNAME"}"`
+					echo "${NAME//sys.id/"$SEUSERID"}" >> ${PATHTODSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP}
+
 				else
-					exit 192
+					printf "%s\n" "unhandled exception"
+					exit 1
 				fi
 			done
 
-			for spoolfile in ${spoolfiletemplate[*]}
+			for SPOOLFILE in ${SPOOLFILETEMPLATE[*]}
 			do
-				if [ "$RBACSEP" == "1" ]
+				if [[ -z $DISABLERBACSEP ]]
 				then
-					name=`echo "${spoolfile//USER_SPOOL//var/spool/mail/"$username"}"`
-					id=`echo "${name//sys.id/$seuserid}"`
-					echo "${id//sys.role/"$seuserrole"}" >> "$SPATH"/contexts/files/file_contexts.homedirs
-				elif [ "$RBACSEP" == "0" ]
+					NAME=`echo "${SPOOLFILE//USER_SPOOL//var/spool/mail/"$USERNAME"}"`
+					ID=`echo "${NAME//sys.id/$SEUSERID}"`
+					echo "${ID//sys.role/"$SEUSERROLE"}" >> ${PATHTODSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP}
+
+				elif [[ $DISABLERBACSEP == 1 ]]
 				then
-					name=`echo "${spoolfile//USER_SPOOL//var/spool/mail/"$username"}"`
-					echo "${name//sys.id/"$seuserid"}" >> "$SPATH"/contexts/files/file_contexts.homedirs
+					NAME=`echo "${SPOOLFILE//USER_SPOOL//var/spool/mail/"$USERNAME"}"`
+					echo "${NAME//sys.id/"$SEUSERID"}" >> ${PATHTODSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP}
+
 				else
-					exit 192
+					printf "%s\n" "unhandled exception"
+					exit 1
 				fi
 			done
+
 		else
-			log "processing default user found in "$SPATH"/seusers.local"
+			DEFAULTSEUSERROLETUPLE="`/bin/bash ${PATHTODSSP}/${PATHTOPRINTSEUSERTUPLERELATIVETODSSP} -s ${PATHTOSEUSERSLOCALRELATIVETODSSP} -p ${PATHTODSSP}`"
+			DEFAULTSEUSERID="`printf "%s\n" "$DEFAULTSEUSERROLETUPLE" | /bin/awk -F":" '{ print $1 }' 2>/dev/null`"
+			DEFAULTSEUSERROLE="`printf "%s\n" "$DEFAULTSEUSERROLETUPLE" | /bin/awk -F":" '{ print $2 }' 2>/dev/null`"
 
-			for homedir in ${homedirtemplate[*]}
+			for HOMEDIR in ${HOMEDIRTEMPLATE[*]}
 			do
-				if [ "$RBACSEP" == "1" ]
+				if [[ -z $DISABLERBACSEP ]]
 				then
-					name=`echo "${homedir//HOME_DIR//home/"$username"}"`
-					id=`echo "${name//sys.id/$defaultseuserid}"`
-					echo "${id//sys.role/"$defaultseuserrole"}" >> "$SPATH"/contexts/files/file_contexts.homedirs
-				elif [ "$RBACSEP" == "0" ]
+					NAME=`echo "${HOMEDIR//HOME_DIR//home/"$USERNAME"}"`
+					ID=`echo "${NAME//sys.id/$DEFAULTSEUSERID}"`
+					echo "${ID//sys.role/"$DEFAULTSEUSERROLE"}" >> ${PATHTODSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP}
+
+				elif [[ $DISABLERBACSEP == 1 ]]
 				then
-					name=`echo "${homedir//HOME_DIR//home/"$username"}"`
-					echo "${name//sys.id/"$defaultseuserid"}" >> "$SPATH"/contexts/files/file_contexts.homedirs
+					NAME=`echo "${HOMEDIR//HOME_DIR//home/"$USERNAME"}"`
+					echo "${NAME//sys.id/"$DEFAULTSEUSERID"}" >> ${PATHTODSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP}
+
 				else
-					exit 192
+					printf "%s\n" "unhandled exception"
+					exit 1
 				fi
 			done
 
-			for spoolfile in ${spoolfiletemplate[*]}
+			for SPOOLFILE in ${SPOOLFILETEMPLATE[*]}
 			do
-				if [ "$RBACSEP" == "1" ]
+				if [[ -z $DISABLERBACSEP ]]
 				then
-					name=`echo "${spoolfile//USER_SPOOL//var/spool/mail/"$username"}"`
-					id=`echo "${name//sys.id/$defaultseuserid}"`
-					echo "${id//sys.role/"$defaultseuserrole"}" >> "$SPATH"/contexts/files/file_contexts.homedirs
-				elif [ "$RBACSEP" == "0" ]
+					NAME=`echo "${SPOOLFILE//USER_SPOOL//var/spool/mail/"$USERNAME"}"`
+					ID=`echo "${NAME//sys.id/$DEFAULTSEUSERID}"`
+					echo "${ID//sys.role/"$DEFAULTSEUSERROLE"}" >> ${PATHTODSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP}
+
+				elif [[ $DISABLERBACSEP == 1 ]]
 				then
-					name=`echo "${spoolfile//USER_SPOOL//var/spool/mail/"$username"}"`
-					echo "${name//sys.id/"$defaultseuserid"}" >> "$SPATH"/contexts/files/file_contexts.homedirs
+					NAME=`echo "${SPOOLFILE//USER_SPOOL//var/spool/mail/"$USERNAME"}"`
+					echo "${NAME//sys.id/"$DEFAULTSEUSERID"}" >> ${PATHTODSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP}
+
 				else
-					exit 192
+					printf "%s\n" "unhandled exception"
+					exit 1
 				fi
 			done
 		fi
-	elif [ "$MODEL" == "standard" ]
+
+	elif [[ $MODELTOBUILD == standard ]]
 	then
-		if [ `/bin/grep "^$username:" "$SPATH"/seusers.standard` ]
+		if [[ -r ${PATHTODSSP}/${PATHTOSEUSERSSTANDARDRELATIVETODSSP} ]] || [[ -s ${PATHTODSSP}/${PATHTOSEUSERSSTANDARDRELATIVETODSSP} ]]
 		then
-			seuseruserroletuple="`/bin/bash "$SPATH"/support/seusertuple "$SPATH"/seusers.standard "$username"`"
+			if [[ `/bin/grep "^$USERNAME:" ${PATHTODSSP}/${PATHTOSEUSERSSTANDARDRELATIVETODSSP}` ]]
+			then
+				SEUSERROLETUPLE="`/bin/bash ${PATHTODSSP}/${PATHTOPRINTSEUSERTUPLERELATIVETODSSP} -s ${PATHTOSEUSERSSTANDARDRELATIVETODSSP} -p ${PATHTODSSP} -u ${USERNAME}`"
+				SEUSERID="`printf "%s\n" "$SEUSERROLETUPLE" | /bin/awk -F":" '{ print $1 }' 2>/dev/null`"
+				SEUSERROLE="`printf "%s\n" "$SEUSERROLETUPLE" | /bin/awk -F":" '{ print $2 }' 2>/dev/null`"
 
-			seuserid="`echo "$seuseruserroletuple" | /bin/awk -F":" '{print $1}'`"
-			seuserrole="`echo "$seuseruserroletuple" | /bin/awk -F":" '{print $2}'`"
+				for HOMEDIR in ${HOMEDIRTEMPLATE[*]}
+				do
+					if [[ -z $DISABLERBACSEP ]]
+					then
+						NAME=`echo "${HOMEDIR//HOME_DIR//home/"$USERNAME"}"`
+						ID=`echo "${NAME//sys.id/$SEUSERID}"`
+						echo "${ID//sys.role/"$SEUSERROLE"}" >> ${PATHTODSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP}
 
-			log "processing "$username" found in "$SPATH"/seusers.standard"
+					elif [[ $DISABLERBACSEP == 1 ]]
+					then
+						NAME=`echo "${HOMEDIR//HOME_DIR//home/"$USERNAME"}"`
+						echo "${NAME//sys.id/"$SEUSERID"}" >> ${PATHTODSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP}
 
-			for homedir in ${homedirtemplate[*]}
-			do
-				if [ "$RBACSEP" == "1" ]
-				then
-					name=`echo "${homedir//HOME_DIR//home/"$username"}"`
-					id=`echo "${name//sys.id/$seuserid}"`
-					echo "${id//sys.role/"$seuserrole"}" >> "$SPATH"/contexts/files/file_contexts.homedirs
-				elif [ "$RBACSEP" == "0" ]
-				then
-					name=`echo "${homedir//HOME_DIR//home/"$username"}"`
-					echo "${name//sys.id/"$seuserid"}" >> "$SPATH"/contexts/files/file_contexts.homedirs
-				else
-					exit 192
-				fi
-			done
+					else
+						printf "%s\n" "unhandled exception"
+						exit 1
+					fi
+				done
 
-			for spoolfile in ${spoolfiletemplate[*]}
-			do
-				if [ "$RBACSEP" == "1" ]
-				then
-					name=`echo "${spoolfile//USER_SPOOL//var/spool/mail/"$username"}"`
-					id=`echo "${name//sys.id/$seuserid}"`
-					echo "${id//sys.role/"$seuserrole"}" >> "$SPATH"/contexts/files/file_contexts.homedirs
-				elif [ "$RBACSEP" == "0" ]
-				then
-					name=`echo "${spoolfile//USER_SPOOL//var/spool/mail/"$username"}"`
-					echo "${name//sys.id/"$seuserid"}" >> "$SPATH"/contexts/files/file_contexts.homedirs
-				else
-					exit 192
-				fi
-			done
+				for SPOOLFILE in ${SPOOLFILETEMPLATE[*]}
+				do
+					if [[ -z $DISABLERBACSEP ]]
+					then
+						NAME=`echo "${SPOOLFILE//USER_SPOOL//var/spool/mail/"$USERNAME"}"`
+						ID=`echo "${NAME//sys.id/$SEUSERID}"`
+						echo "${ID//sys.role/"$SEUSERROLE"}" >> ${PATHTODSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP}
+
+					elif [[ $DISABLERBACSEP == 1 ]]
+					then
+						NAME=`echo "${SPOOLFILE//USER_SPOOL//var/spool/mail/"$USERNAME"}"`
+						echo "${NAME//sys.id/"$SEUSERID"}" >> ${PATHTODSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP}
+
+					else
+						printf "%s\n" "unhandled exception"
+						exit 1
+					fi
+				done
+
+			else
+				DEFAULTSEUSERROLETUPLE="`/bin/bash ${PATHTODSSP}/${PATHTOPRINTSEUSERTUPLERELATIVETODSSP} -s ${PATHTOSEUSERSSTANDARDRELATIVETODSSP} -p ${PATHTODSSP}`"
+				DEFAULTSEUSERID="`printf "%s\n" "$DEFAULTSEUSERROLETUPLE" | /bin/awk -F":" '{ print $1 }' 2>/dev/null`"
+				DEFAULTSEUSERROLE="`printf "%s\n" "$DEFAULTSEUSERROLETUPLE" | /bin/awk -F":" '{ print $2 }' 2>/dev/null`"
+
+				for HOMEDIR in ${HOMEDIRTEMPLATE[*]}
+				do
+					if [[ -z $DISABLERBACSEP ]]
+					then
+						NAME=`echo "${HOMEDIR//HOME_DIR//home/"$USERNAME"}"`
+						ID=`echo "${NAME//sys.id/$DEFAULTSEUSERID}"`
+						echo "${ID//sys.role/"$DEFAULTSEUSERROLE"}" >> ${PATHTODSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP}
+
+					elif [[ $DISABLERBACSEP == 1 ]]
+					then
+						NAME=`echo "${HOMEDIR//HOME_DIR//home/"$USERNAME"}"`
+						echo "${NAME//sys.id/"$DEFAULTSEUSERID"}" >> ${PATHTODSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP}
+
+					else
+						printf "%s\n" "unhandled exception"
+						exit 1
+					fi
+				done
+
+				for SPOOLFILE in ${SPOOLFILETEMPLATE[*]}
+				do
+					if [[ -z $DISABLERBACSEP ]]
+					then
+						NAME=`echo "${SPOOLFILE//USER_SPOOL//var/spool/mail/"$USERNAME"}"`
+						ID=`echo "${NAME//sys.id/$DEFAULTSEUSERID}"`
+						echo "${ID//sys.role/"$DEFAULTSEUSERROLE"}" >> ${PATHTODSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP}
+
+					elif [[ $DISABLERBACSEP == 1 ]]
+					then
+						NAME=`echo "${SPOOLFILE//USER_SPOOL//var/spool/mail/"$USERNAME"}"`
+						echo "${NAME//sys.id/"$DEFAULTSEUSERID"}" >> ${PATHTODSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP}
+
+					else
+						printf "%s\n" "unhandled exception"
+						exit 1
+					fi
+				done
+			fi
+
 		else
-			log "processing default user found in "$SPATH"/seusers.standard"
-
-			for homedir in ${homedirtemplate[*]}
-			do
-				if [ "$RBACSEP" == "1" ]
-				then
-					name=`echo "${homedir//HOME_DIR//home/"$username"}"`
-					id=`echo "${name//sys.id/$defaultseuserid}"`
-					echo "${id//sys.role/"$defaultseuserrole"}" >> "$SPATH"/contexts/files/file_contexts.homedirs
-				elif [ "$RBACSEP" == "0" ]
-				then
-					name=`echo "${homedir//HOME_DIR//home/"$username"}"`
-					echo "${name//sys.id/"$defaultseuserid"}" >> "$SPATH"/contexts/files/file_contexts.homedirs
-				else
-					exit 192
-				fi
-			done
-
-			for spoolfile in ${spoolfiletemplate[*]}
-			do
-				if [ "$RBACSEP" == "1" ]
-				then
-					name=`echo "${spoolfile//USER_SPOOL//var/spool/mail/"$username"}"`
-					id=`echo "${name//sys.id/$defaultseuserid}"`
-					echo "${id//sys.role/"$defaultseuserrole"}" >> "$SPATH"/contexts/files/file_contexts.homedirs
-				elif [ "$RBACSEP" == "0" ]
-				then
-					name=`echo "${spoolfile//USER_SPOOL//var/spool/mail/"$username"}"`
-					echo "${name//sys.id/"$defaultseuserid"}" >> "$SPATH"/contexts/files/file_contexts.homedirs
-				else
-					exit 192
-				fi
-			done
+			printf "%s\n" "unhandled exception"
+			exit 1
 		fi
-	elif [ "$MODEL" == "mcs" ]
+
+	elif [[ $MODELTOBUILD == mcs ]]
 	then
-		if [ `/bin/grep "^$username:" "$SPATH"/seusers.mcs` ]
+		if [[ -r ${PATHTODSSP}/${PATHTOSEUSERSMCSRELATIVETODSSP} ]] || [[ -s ${PATHTODSSP}/${PATHTOSEUSERSMCSRELATIVETODSSP} ]]
 		then
-			seuseruserroletuple="`/bin/bash "$SPATH"/support/seusertuple "$SPATH"/seusers.mcs "$username"`"
+			if [[ `/bin/grep "^$USERNAME:" ${PATHTODSSP}/${PATHTOSEUSERSMCSRELATIVETODSSP}` ]]
+			then
+				SEUSERROLETUPLE="`/bin/bash ${PATHTODSSP}/${PATHTOPRINTSEUSERTUPLERELATIVETODSSP} -s ${PATHTOSEUSERSMCSRELATIVETODSSP} -p ${PATHTODSSP} -u ${USERNAME}`"
+				SEUSERID="`printf "%s\n" "$SEUSERROLETUPLE" | /bin/awk -F":" '{ print $1 }' 2>/dev/null`"
+				SEUSERROLE="`printf "%s\n" "$SEUSERROLETUPLE" | /bin/awk -F":" '{ print $2 }' 2>/dev/null`"
 
-			seuserid="`echo "$seuseruserroletuple" | /bin/awk -F":" '{print $1}'`"
-			seuserrole="`echo "$seuseruserroletuple" | /bin/awk -F":" '{print $2}'`"
+				for HOMEDIR in ${HOMEDIRTEMPLATE[*]}
+				do
+					if [[ -z $DISABLERBACSEP ]]
+					then
+						NAME=`echo "${HOMEDIR//HOME_DIR//home/"$USERNAME"}"`
+						ID=`echo "${NAME//sys.id/$SEUSERID}"`
+						echo "${ID//sys.role/"$SEUSERROLE"}" >> ${PATHTODSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP}
 
-			log "processing "$username" found in "$SPATH"/seusers.mcs"
+					elif [[ $DISABLERBACSEP == 1 ]]
+					then
+						NAME=`echo "${HOMEDIR//HOME_DIR//home/"$USERNAME"}"`
+						echo "${NAME//sys.id/"$SEUSERID"}" >> ${PATHTODSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP}
 
-			for homedir in ${homedirtemplate[*]}
-			do
-				if [ "$RBACSEP" == "1" ]
-				then
-					name=`echo "${homedir//HOME_DIR//home/"$username"}"`
-					id=`echo "${name//sys.id/$seuserid}"`
-					echo "${id//sys.role/"$seuserrole"}" >> "$SPATH"/contexts/files/file_contexts.homedirs
-				elif [ "$RBACSEP" == "0" ]
-				then
-					name=`echo "${homedir//HOME_DIR//home/"$username"}"`
-					echo "${name//sys.id/"$seuserid"}" >> "$SPATH"/contexts/files/file_contexts.homedirs
-				else
-					exit 192
-				fi
-			done
+					else
+						printf "%s\n" "unhandled exception"
+						exit 1
+					fi
+				done
 
-			for spoolfile in ${spoolfiletemplate[*]}
-			do
-				if [ "$RBACSEP" == "1" ]
-				then
-					name=`echo "${spoolfile//USER_SPOOL//var/spool/mail/"$username"}"`
-					id=`echo "${name//sys.id/$seuserid}"`
-					echo "${id//sys.role/"$seuserrole"}" >> "$SPATH"/contexts/files/file_contexts.homedirs
-				elif [ "$RBACSEP" == "0" ]
-				then
-					name=`echo "${spoolfile//USER_SPOOL//var/spool/mail/"$username"}"`
-					echo "${name//sys.id/"$seuserid"}" >> "$SPATH"/contexts/files/file_contexts.homedirs
-				else
-					exit 192
-				fi
-			done
+				for SPOOLFILE in ${SPOOLFILETEMPLATE[*]}
+				do
+					if [[ -z $DISABLERBACSEP ]]
+					then
+						NAME=`echo "${SPOOLFILE//USER_SPOOL//var/spool/mail/"$USERNAME"}"`
+						ID=`echo "${NAME//sys.id/$SEUSERID}"`
+						echo "${ID//sys.role/"$SEUSERROLE"}" >> ${PATHTODSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP}
+
+					elif [[ $DISABLERBACSEP == 1 ]]
+					then
+						NAME=`echo "${SPOOLFILE//USER_SPOOL//var/spool/mail/"$USERNAME"}"`
+						echo "${NAME//sys.id/"$SEUSERID"}" >> ${PATHTODSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP}
+
+					else
+						printf "%s\n" "unhandled exception"
+						exit 1
+					fi
+				done
+
+			else
+				DEFAULTSEUSERROLETUPLE="`/bin/bash ${PATHTODSSP}/${PATHTOPRINTSEUSERTUPLERELATIVETODSSP} -s ${PATHTOSEUSERSMCSRELATIVETODSSP} -p ${PATHTODSSP}`"
+				DEFAULTSEUSERID="`printf "%s\n" "$DEFAULTSEUSERROLETUPLE" | /bin/awk -F":" '{ print $1 }' 2>/dev/null`"
+				DEFAULTSEUSERROLE="`printf "%s\n" "$DEFAULTSEUSERROLETUPLE" | /bin/awk -F":" '{ print $2 }' 2>/dev/null`"
+
+				for HOMEDIR in ${HOMEDIRTEMPLATE[*]}
+				do
+					if [[ -z $DISABLERBACSEP ]]
+					then
+						NAME=`echo "${HOMEDIR//HOME_DIR//home/"$USERNAME"}"`
+						ID=`echo "${NAME//sys.id/$DEFAULTSEUSERID}"`
+						echo "${ID//sys.role/"$DEFAULTSEUSERROLE"}" >> ${PATHTODSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP}
+
+					elif [[ $DISABLERBACSEP == 1 ]]
+					then
+						NAME=`echo "${HOMEDIR//HOME_DIR//home/"$USERNAME"}"`
+						echo "${NAME//sys.id/"$DEFAULTSEUSERID"}" >> ${PATHTODSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP}
+
+					else
+						printf "%s\n" "unhandled exception"
+						exit 1
+					fi
+				done
+
+				for SPOOLFILE in ${SPOOLFILETEMPLATE[*]}
+				do
+					if [[ -z $DISABLERBACSEP ]]
+					then
+						NAME=`echo "${SPOOLFILE//USER_SPOOL//var/spool/mail/"$USERNAME"}"`
+						ID=`echo "${NAME//sys.id/$DEFAULTSEUSERID}"`
+						echo "${ID//sys.role/"$DEFAULTSEUSERROLE"}" >> ${PATHTODSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP}
+
+					elif [[ $DISABLERBACSEP == 1 ]]
+					then
+						NAME=`echo "${SPOOLFILE//USER_SPOOL//var/spool/mail/"$USERNAME"}"`
+						echo "${NAME//sys.id/"$DEFAULTSEUSERID"}" >> ${PATHTODSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP}
+
+					else
+						printf "%s\n" "unhandled exception"
+						exit 1
+					fi
+				done
+			fi
+
 		else
-			log "processing default user found in "$SPATH"/seusers.mcs"
-
-			for homedir in ${homedirtemplate[*]}
-			do
-				if [ "$RBACSEP" == "1" ]
-				then
-					name=`echo "${homedir//HOME_DIR//home/"$username"}"`
-					id=`echo "${name//sys.id/$defaultseuserid}"`
-					echo "${id//sys.role/"$defaultseuserrole"}" >> "$SPATH"/contexts/files/file_contexts.homedirs
-				elif [ "$RBACSEP" == "0" ]
-				then
-					name=`echo "${homedir//HOME_DIR//home/"$username"}"`
-					echo "${name//sys.id/"$defaultseuserid"}" >> "$SPATH"/contexts/files/file_contexts.homedirs
-				else
-					exit 192
-				fi
-			done
-
-			for spoolfile in ${spoolfiletemplate[*]}
-			do
-				if [ "$RBACSEP" == "1" ]
-				then
-					name=`echo "${spoolfile//USER_SPOOL//var/spool/mail/"$username"}"`
-					id=`echo "${name//sys.id/$defaultseuserid}"`
-					echo "${id//sys.role/"$defaultseuserrole"}" >> "$SPATH"/contexts/files/file_contexts.homedirs
-				elif [ "$RBACSEP" == "0" ]
-				then
-					name=`echo "${spoolfile//USER_SPOOL//var/spool/mail/"$username"}"`
-					echo "${name//sys.id/"$defaultseuserid"}" >> "$SPATH"/contexts/files/file_contexts.homedirs
-				else
-					exit 192
-				fi
-			done
+			printf "%s\n" "unhandled exception"
+			exit 1
 		fi
-	elif [ "$MODEL" == "mls" ]
+
+	elif [[ $MODELTOBUILD == mls ]]
 	then
-		if [ `/bin/grep "^$username:" "$SPATH"/seusers.mls` ]
+		if [[ -r ${PATHTODSSP}/${PATHTOSEUSERSMLSRELATIVETODSSP} ]] || [[ -s ${PATHTODSSP}/${PATHTOSEUSERSMLSRELATIVETODSSP} ]]
 		then
-			seuseruserroletuple="`/bin/bash "$SPATH"/support/seusertuple "$SPATH"/seusers.mls "$username"`"
+			if [[ `/bin/grep "^$USERNAME:" ${PATHTODSSP}/${PATHTOSEUSERSMLSRELATIVETODSSP}` ]]
+			then
+				SEUSERROLETUPLE="`/bin/bash ${PATHTODSSP}/${PATHTOPRINTSEUSERTUPLERELATIVETODSSP} -s ${PATHTOSEUSERSMLSRELATIVETODSSP} -p ${PATHTODSSP} -u ${USERNAME}`"
+				SEUSERID="`printf "%s\n" "$SEUSERROLETUPLE" | /bin/awk -F":" '{ print $1 }' 2>/dev/null`"
+				SEUSERROLE="`printf "%s\n" "$SEUSERROLETUPLE" | /bin/awk -F":" '{ print $2 }' 2>/dev/null`"
 
-			seuserid="`echo "$seuseruserroletuple" | /bin/awk -F":" '{print $1}'`"
-			seuserrole="`echo "$seuseruserroletuple" | /bin/awk -F":" '{print $2}'`"
+				for HOMEDIR in ${HOMEDIRTEMPLATE[*]}
+				do
+					if [[ -z $DISABLERBACSEP ]]
+					then
+						NAME=`echo "${HOMEDIR//HOME_DIR//home/"$USERNAME"}"`
+						ID=`echo "${NAME//sys.id/$SEUSERID}"`
+						echo "${ID//sys.role/"$SEUSERROLE"}" >> ${PATHTODSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP}
 
-			log "processing "$username" found in "$SPATH"/seusers.mls"
+					elif [[ $DISABLERBACSEP == 1 ]]
+					then
+						NAME=`echo "${HOMEDIR//HOME_DIR//home/"$USERNAME"}"`
+						echo "${NAME//sys.id/"$SEUSERID"}" >> ${PATHTODSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP}
 
-			for homedir in ${homedirtemplate[*]}
-			do
-				if [ "$RBACSEP" == "1" ]
-				then
-					name=`echo "${homedir//HOME_DIR//home/"$username"}"`
-					id=`echo "${name//sys.id/$seuserid}"`
-					echo "${id//sys.role/"$seuserrole"}" >> "$SPATH"/contexts/files/file_contexts.homedirs
-				elif [ "$RBACSEP" == "0" ]
-				then
-					name=`echo "${homedir//HOME_DIR//home/"$username"}"`
-					echo "${name//sys.id/"$seuserid"}" >> "$SPATH"/contexts/files/file_contexts.homedirs
-				else
-					exit 192
-				fi
-			done
+					else
+						printf "%s\n" "unhandled exception"
+						exit 1
+					fi
+				done
 
-			for spoolfile in ${spoolfiletemplate[*]}
-			do
-				if [ "$RBACSEP" == "1" ]
-				then
-					name=`echo "${spoolfile//USER_SPOOL//var/spool/mail/"$username"}"`
-					id=`echo "${name//sys.id/$seuserid}"`
-					echo "${id//sys.role/"$seuserrole"}" >> "$SPATH"/contexts/files/file_contexts.homedirs
-				elif [ "$RBACSEP" == "0" ]
-				then
-					name=`echo "${spoolfile//USER_SPOOL//var/spool/mail/"$username"}"`
-					echo "${name//sys.id/"$seuserid"}" >> "$SPATH"/contexts/files/file_contexts.homedirs
-				else
-					exit 192
-				fi
-			done
+				for SPOOLFILE in ${SPOOLFILETEMPLATE[*]}
+				do
+					if [[ -z $DISABLERBACSEP ]]
+					then
+						NAME=`echo "${SPOOLFILE//USER_SPOOL//var/spool/mail/"$USERNAME"}"`
+						ID=`echo "${NAME//sys.id/$SEUSERID}"`
+						echo "${ID//sys.role/"$SEUSERROLE"}" >> ${PATHTODSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP}
+
+					elif [[ $DISABLERBACSEP == 1 ]]
+					then
+						NAME=`echo "${SPOOLFILE//USER_SPOOL//var/spool/mail/"$USERNAME"}"`
+						echo "${NAME//sys.id/"$SEUSERID"}" >> ${PATHTODSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP}
+
+					else
+						printf "%s\n" "unhandled exception"
+						exit 1
+					fi
+				done
+
+			else
+				DEFAULTSEUSERROLETUPLE="`/bin/bash ${PATHTODSSP}/${PATHTOPRINTSEUSERTUPLERELATIVETODSSP} -s ${PATHTOSEUSERSMLSRELATIVETODSSP} -p ${PATHTODSSP}`"
+				DEFAULTSEUSERID="`printf "%s\n" "$DEFAULTSEUSERROLETUPLE" | /bin/awk -F":" '{ print $1 }' 2>/dev/null`"
+				DEFAULTSEUSERROLE="`printf "%s\n" "$DEFAULTSEUSERROLETUPLE" | /bin/awk -F":" '{ print $2 }' 2>/dev/null`"
+
+				for HOMEDIR in ${HOMEDIRTEMPLATE[*]}
+				do
+					if [[ -z $DISABLERBACSEP ]]
+					then
+						NAME=`echo "${HOMEDIR//HOME_DIR//home/"$USERNAME"}"`
+						ID=`echo "${NAME//sys.id/$DEFAULTSEUSERID}"`
+						echo "${ID//sys.role/"$DEFAULTSEUSERROLE"}" >> ${PATHTODSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP}
+
+					elif [[ $DISABLERBACSEP == 1 ]]
+					then
+						NAME=`echo "${HOMEDIR//HOME_DIR//home/"$USERNAME"}"`
+						echo "${NAME//sys.id/"$DEFAULTSEUSERID"}" >> ${PATHTODSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP}
+
+					else
+						printf "%s\n" "unhandled exception"
+						exit 1
+					fi
+				done
+
+				for SPOOLFILE in ${SPOOLFILETEMPLATE[*]}
+				do
+					if [[ -z $DISABLERBACSEP ]]
+					then
+						NAME=`echo "${SPOOLFILE//USER_SPOOL//var/spool/mail/"$USERNAME"}"`
+						ID=`echo "${NAME//sys.id/$DEFAULTSEUSERID}"`
+						echo "${ID//sys.role/"$DEFAULTSEUSERROLE"}" >> ${PATHTODSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP}
+
+					elif [[ $DISABLERBACSEP == 1 ]]
+					then
+						NAME=`echo "${SPOOLFILE//USER_SPOOL//var/spool/mail/"$USERNAME"}"`
+						echo "${NAME//sys.id/"$DEFAULTSEUSERID"}" >> ${PATHTODSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP}
+
+					else
+						printf "%s\n" "unhandled exception"
+						exit 1
+					fi
+				done
+			fi
+
 		else
-			log "processing default user found in "$SPATH"/seusers.mls"
-
-			for homedir in ${homedirtemplate[*]}
-			do
-				if [ "$RBACSEP" == "1" ]
-				then
-					name=`echo "${homedir//HOME_DIR//home/"$username"}"`
-					id=`echo "${name//sys.id/$defaultseuserid}"`
-					echo "${id//sys.role/"$defaultseuserrole"}" >> "$SPATH"/contexts/files/file_contexts.homedirs
-				elif [ "$RBACSEP" == "0" ]
-				then
-					name=`echo "${homedir//HOME_DIR//home/"$username"}"`
-					echo "${name//sys.id/"$defaultseuserid"}" >> "$SPATH"/contexts/files/file_contexts.homedirs
-				else
-					exit 192
-				fi
-			done
-
-			for spoolfile in ${spoolfiletemplate[*]}
-			do
-				if [ "$RBACSEP" == "1" ]
-				then
-					name=`echo "${spoolfile//USER_SPOOL//var/spool/mail/"$username"}"`
-					id=`echo "${name//sys.id/$defaultseuserid}"`
-					echo "${id//sys.role/"$defaultseuserrole"}" >> "$SPATH"/contexts/files/file_contexts.homedirs
-				elif [ "$RBACSEP" == "0" ]
-				then
-					name=`echo "${spoolfile//USER_SPOOL//var/spool/mail/"$username"}"`					id=`echo "${name//sys.id/$defaultseuserid}"`
-					echo "${name//sys.id/"$defaultseuserid"}" >> "$SPATH"/contexts/files/file_contexts.homedirs
-				else
-					exit 192
-				fi
-			done
+			printf "%s\n" "unhandled exception"
+			exit 1
 		fi
+
+	else
+		printf "%s\n" "unhandled exception"
+		exit 1
 	fi
 done
 
-if [ -x /sbin/sefcontext_compile ]
+if [[ -x /sbin/sefcontext_compile ]]
 then
-	/sbin/sefcontext_compile "$SPATH"/contexts/files/file_contexts && /sbin/sefcontext_compile "$SPATH"/contexts/files/file_contexts.homedirs
+	/sbin/sefcontext_compile ${PATHTODSSP}/${PATHTOCONTEXTSRELATIVETODSSP} && /sbin/sefcontext_compile ${PATHTODSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP}
 fi
 
 exit
-
 #EOF

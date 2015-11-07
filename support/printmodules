@@ -1,34 +1,107 @@
 #!/bin/bash
 
-if [ $# -eq 0 ]
+declare PATHSTOMODULESRELATIVETODSSP=('sources' 'sources.d')
+declare PATHTOFUNCTIONSRELATIVETODSSP="support/functions"
+
+usage () {
+	echo "$0 - prints a list of modules
+
+mandatory options
+
+-p	: path to dssp source
+
+discretionary options
+
+-d	: enable debugging
+
+exit codes
+
+0	: success
+1	: general fault
+194	: file is not readable
+195	: file is a zero-byte file
+203	: no modules to list"
+	exit
+}
+
+! (( $# > 0 )) && usage || :
+
+while (( $# > 0 ))
+do
+	case $1 in
+		\-p)
+		shift
+
+		if ! (( $# > 0 ))
+		then
+			printf "%s\n" "option -p expects one parameter: path to dssp source"
+			exit
+		fi
+
+		PATHTODSSP=$1
+		;;
+		\-d)
+		DEBUG=1
+		;;
+		*) break
+		;;
+		esac
+	shift
+done
+
+if [[ -z $PATHTODSSP ]] || ! [[ -d $PATHTODSSP ]] || ! [[ -x /bin/find ]]
 then
-	input+=`/bin/cat`
-else
-	input+=`echo $*`
+	usage
 fi
 
-for path in "${input[@]}"
+if ! [[ -r ${PATHTODSSP}/${PATHTOFUNCTIONSRELATIVETODSSP} ]]
+then
+	debug "unable to source functions"
+	exit 1
+fi
+
+source ${PATHTODSSP}/${PATHTOFUNCTIONSRELATIVETODSSP} 2>/dev/null
+
+for PATHTOMODULESRELATIVETODSSP in ${PATHSTOMODULESRELATIVETODSSP[@]}
 do
-modules+="`/bin/find /"$path" -type f \( -iname "*.cil" \) | /bin/cut -d/ -f2-`"
+	filetestandresult -d ${PATHTODSSP}/${PATHTOMODULESRELATIVETODSSP}
+
+	retval=$?
+
+	! [[ $retval == 0 ]] && exit `echo $retval`
+
+	MODULES+=(`/bin/find /${PATHTODSSP}/${PATHTOMODULESRELATIVETODSSP} -type f \( -iname "*.cil" \) | /bin/cut -d/ -f2-`)
 done
 
-for entry in ${modules[@]}
+if [[ -z $MODULES ]]
+then
+	debug "no modules to list"
+	exit 203
+fi
+
+for MODULE in ${MODULES[@]}
 do
-	test -f "$entry" || exit 1
-	test -r "$entry" || exit 1
-	test -s "$entry" || exit 1
+	filetestandresult -r $MODULE
+
+	retval=$?
+
+	! [[ $retval == 0 ]] && exit `echo $retval`
+
+	filetestandresult -s $MODULE
+
+	retval=$?
+
+	! [[ $retval == 0 ]] && exit `echo $retval`
 done
 
-if [ -z "$modules" ]
+if [[ -n $MODULES ]]
 then
-	exit 192
-elif [ -n "$modules" ]
-then
-	echo "${modules[@]}"
+	printf "%s\n" "${MODULES[@]}"
+
 else
+	debug "unhandled exception"
 	exit 1
 fi
 
 exit
-
 #EOF

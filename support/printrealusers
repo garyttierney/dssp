@@ -1,60 +1,192 @@
 #!/bin/bash
 
-test -d /home || exit 1
+declare PATHTOFUNCTIONSRELATIVETODSSP="support/functions"
+declare PATHTOLOGINDEFS="/etc/login.defs"
+declare PATHTOSHELLS="/etc/shells"
 
-test -f /etc/login.defs || exit 1
-test -r /etc/login.defs || exit 1
-test -s /etc/login.defs || exit 1
+usage () {
+	echo "$0 - prints a list with real user names
 
-test -f /etc/shells || exit 1
-test -r /etc/shells || exit 1
-test -s /etc/shells || exit 1
+mandatory options
 
-test -f /bin/getent || exit 1
-test -x /bin/getent || exit 1
-test -s /bin/getent || exit 1
+-p	: path to dssp source
 
-UID_MAX="`/bin/grep ^UID_MAX /etc/login.defs | /bin/awk -F" " '{print $2}'`"
-UID_MIN="`/bin/grep ^UID_MIN /etc/login.defs | /bin/awk -F" " '{print $2}'`"
+discretionary options
 
-LSHELLS+="`/bin/grep -v nologin /etc/shells`"
+-d	: enable debugging
 
-[[ ! "$UID_MAX" =~ "^[0-9]+$" ]] || exit 1
-[[ ! "$UID_MIN" =~ "^[0-9]+$" ]] || exit 1
+exit codes
+
+0	: success
+1	: general fault
+193	: file is not accessible
+194	: file is not readable
+195	: file is a zero-byte file
+204	: no real users to list"
+	exit
+}
+
+! (( $# > 0 )) && usage || :
+
+while (( $# > 0 ))
+do
+	case $1 in
+		\-p)
+		shift
+
+		if ! (( $# > 0 ))
+		then
+			printf "%s\n" "option -p expects one parameter: path to dssp source"
+			exit
+		fi
+
+		PATHTODSSP=$1
+		;;
+		\-d)
+		DEBUG=1
+		;;
+		*) break
+		;;
+		esac
+	shift
+done
+
+if [[ -z $PATHTODSSP ]] || ! [[ -d $PATHTODSSP ]] || ! [[ -x /bin/getent ]]
+then
+	usage
+fi
+
+if ! [[ -r ${PATHTODSSP}/${PATHTOFUNCTIONSRELATIVETODSSP} ]]
+then
+	debug "unable to source functions"
+	exit 1
+fi
+
+source ${PATHTODSSP}/${PATHTOFUNCTIONSRELATIVETODSSP} 2>/dev/null
+
+filetestandresult -f $PATHTOLOGINDEFS
+
+retval=$?
+
+! [[ $retval == 0 ]] && exit `echo $retval`
+
+filetestandresult -r $PATHTOLOGINDEFS
+
+retval=$?
+
+! [[ $retval == 0 ]] && exit `echo $retval`
+
+filetestandresult -s $PATHTOLOGINDEFS
+
+retval=$?
+
+! [[ $retval == 0 ]] && exit `echo $retval`
+
+UID_MAX="`/bin/grep ^UID_MAX $PATHTOLOGINDEFS | /bin/awk -F" " '{ print $2 }' 2>/dev/null`"
+
+if [[ $UID_MAX =~ "^[0-9]+$" ]]
+then
+	debug "invalid max uid: $UID_MAX"
+	exit 1
+fi
+
+UID_MIN="`/bin/grep ^UID_MIN $PATHTOLOGINDEFS | /bin/awk -F" " '{ print $2 }' 2>/dev/null`"
+
+if [[ $UID_MIN =~ "^[0-9]+$" ]]
+then
+	debug "invalid min uid: $UID_MIN"
+	exit 1
+fi
+
+filetestandresult -f $PATHTOSHELLS
+
+retval=$?
+
+! [[ $retval == 0 ]] && exit `echo $retval`
+
+filetestandresult -r $PATHTOSHELLS
+
+retval=$?
+
+! [[ $retval == 0 ]] && exit `echo $retval`
+
+filetestandresult -s $PATHTOSHELLS
+
+retval=$?
+
+! [[ $retval == 0 ]] && exit `echo $retval`
+
+LOGINSHELLS+=(`/bin/grep -v nologin $PATHTOSHELLS 2>/dev/null`)
+
+if [[ -z $LOGINSHELLS ]]
+then
+	debug "no login shells found"
+	exit 1
+fi
 
 IFS=$'\n'
 
-for ent in `/bin/getent passwd`
+for ENTRY in `/bin/getent passwd`
 do
-	id="`echo "$ent" | /bin/awk -F ":" '{print $3}'`"
+	ID="`printf "%s\n" "$ENTRY" | /bin/awk -F ":" '{ print $3 }' 2>/dev/null`"
 
-	if ! [[ "$id" -lt "$UID_MIN" ]] && ! [[ "$id" -gt "$UID_MAX" ]] && [[ "$id" -ne "0" ]]
+	if ! [[ $ID -lt $UID_MIN ]] && ! [[ $ID -gt $UID_MAX ]] && [[ $ID -ne 0 ]]
 	then
-		uname="`echo "$ent" | /bin/awk -F ":" '{print $1}'`"
+		UNAME="`printf "%s\n" "$ENTRY" | /bin/awk -F ":" '{ print $1 }' 2>/dev/null`"
 
-		ushell="`echo "$ent" | /bin/awk -F ":" '{print $7}'`"
+		if [[ -z $UNAME ]]
+		then
+			debug "unable to determine login name for $ENTRY"
+			exit 1
+		fi
 
-		unset hshell
+                USHELL="`printf "%s\n" "$ENTRY" | /bin/awk -F ":" '{ print $7 }' 2>/dev/null`"
 
-		for lshell in ${LSHELLS[@]}
+		if [[ -z $USHELL ]]
+		then
+			debug "unable to determine login shell for $ENTRY"
+			exit 1
+		fi
+
+                unset _HSHELL
+
+		for LOGINSHELL in ${LOGINSHELLS[@]}
 		do
-			[[ "$lshell" == "$ushell" ]] && hshell=true
+			[[ $LOGINSHELL == $USHELL ]] && _HSHELL=1
 		done
 
-		[[ "$hshell" == "true" ]] || exit 1
+		if ! [[ $_HSHELL == 1 ]]
+		then
+			debug "invalid shell $USHELL for $UNAME in $ENTRY"
+			exit 1
+		fi
 
-		uhome="`echo "$ent" | /bin/awk -F ":" '{print $6}'`"
+                UHOME="`printf "%s\n" "$ENTRY" | /bin/awk -F ":" '{ print $6 }' 2>/dev/null`"
 
-		[[ ${uhome%/*} == "/home" ]] || exit 1
+		filetestandresult -d $UHOME
 
-		unames+=($uname)
+		retval=$?
+
+		! [[ $retval == 0 ]] && exit `echo $retval`
+
+		UNAMES+=($UNAME)
 	fi
 done
 
-[[ -z "$unames" ]] && exit 192
+if [[ -z $UNAMES ]]
+then
+	debug "no real users to list"
+	exit 204
 
-echo "${unames[*]}"
+elif [[ -n $UNAMES ]]
+then
+	printf "%s\n" "${UNAMES[@]}"
+	exit
+
+else
+	debug "unhandled exception"
+	exit 1
+fi
 
 exit
-
 #EOF

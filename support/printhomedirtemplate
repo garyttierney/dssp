@@ -1,28 +1,102 @@
 #!/bin/bash
 
-if [ $# -eq 1 ]
+declare PATHTOCONTEXTSRELATIVETODSSP="contexts/files/file_contexts"
+declare PATHTOFUNCTIONSRELATIVETODSSP="support/functions"
+
+usage () {
+	echo "$0 - prints a user home directory file contexts template
+
+mandatory options
+
+-p	: path to dssp source
+
+discretionary options
+
+-d	: enable debugging
+
+exit codes
+
+0	: success
+1	: general fault
+193	: file is not accessible
+194	: file is not readable
+195	: file is a zero-byte file
+198	: no template to list"
+	exit
+}
+
+! (( $# > 0 )) && usage || :
+
+while (( $# > 0 ))
+do
+	case $1 in
+		\-p)
+		shift
+
+		if ! (( $# > 0 ))
+		then
+			printf "%s\n" "option -p expects one parameter: path to dssp source"
+			exit
+		fi
+
+		PATHTODSSP=$1
+		;;
+		\-d)
+		DEBUG=1
+		;;
+		*) break
+		;;
+		esac
+	shift
+done
+
+if [[ -z $PATHTODSSP ]] || ! [[ -d $PATHTODSSP ]]
 then
-	input="$1"
-else
+	usage
+fi
+
+if ! [[ -r ${PATHTODSSP}/${PATHTOFUNCTIONSRELATIVETODSSP} ]]
+then
+	debug "unable to source functions"
 	exit 1
 fi
 
-test -f "$input" || exit 1
-test -r "$input" || exit 1
-test -s "$input" || exit 1
+source ${PATHTODSSP}/${PATHTOFUNCTIONSRELATIVETODSSP} 2>/dev/null
 
-homedirtemplate+="`/bin/grep 'HOME_DIR' "$input"`"
+filetestandresult -f ${PATHTODSSP}/${PATHTOCONTEXTSRELATIVETODSSP}
 
-if [ -z "$homedirtemplate" ]
+retval=$?
+
+! [[ $retval == 0 ]] && exit `echo $retval`
+
+filetestandresult -r ${PATHTODSSP}/${PATHTOCONTEXTSRELATIVETODSSP}
+
+retval=$?
+
+! [[ $retval == 0 ]] && exit `echo $retval`
+
+filetestandresult -s ${PATHTODSSP}/${PATHTOCONTEXTSRELATIVETODSSP}
+
+retval=$?
+
+! [[ $retval == 0 ]] && exit `echo $retval`
+
+HOMEDIRTEMPLATE+="`/bin/grep '^HOME_DIR' ${PATHTODSSP}/${PATHTOCONTEXTSRELATIVETODSSP} 2>/dev/null`"
+
+if [[ -z $HOMEDIRTEMPLATE ]]
 then
-	exit 192
-elif [ -n "$homedirtemplate" ]
+	debug "no template to list"
+        exit 198
+
+elif [[ -n $HOMEDIRTEMPLATE ]]
 then
-	echo "${homedirtemplate[@]}"
+	printf "%s\n" "${HOMEDIRTEMPLATE[@]}"
+	exit
+
 else
+	debug "unhandled exception"
 	exit 1
 fi
 
 exit
-
 #EOF

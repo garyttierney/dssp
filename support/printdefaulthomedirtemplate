@@ -4,7 +4,7 @@ declare PATHTOCONTEXTSRELATIVETODSSP="contexts/files/file_contexts"
 declare PATHTOFUNCTIONSRELATIVETODSSP="support/functions"
 
 usage () {
-	echo "$0 - prints a user spool file contexts template
+	echo "$0 - prints a default user home directory file contexts template
 
 mandatory options
 
@@ -21,7 +21,7 @@ exit codes
 193	: file is not accessible
 194	: file is not readable
 195	: file is a zero-byte file
-198	: no template to list"
+198	: no default template to list"
 	exit
 }
 
@@ -81,16 +81,16 @@ retval=$?
 
 ! [[ $retval == 0 ]] && exit `echo $retval`
 
-SPOOLFILETEMPLATE+="`/bin/grep 'USER_SPOOL' ${PATHTODSSP}/${PATHTOCONTEXTSRELATIVETODSSP} 2>/dev/null`"
+DEFAULTHOMEDIRTEMPLATE+="`/bin/grep '^DEFAULT_HOME_DIR' ${PATHTODSSP}/${PATHTOCONTEXTSRELATIVETODSSP} 2>/dev/null`"
 
-if [[ -z $SPOOLFILETEMPLATE ]]
+if [[ -z $DEFAULTHOMEDIRTEMPLATE ]]
 then
-	debug "no template to list"
+	debug "no default template to list"
         exit 198
 
-elif [[ -n $SPOOLFILETEMPLATE ]]
+elif [[ -n $DEFAULTHOMEDIRTEMPLATE ]]
 then
-	printf "%s\n" "${SPOOLFILETEMPLATE[@]}"
+	printf "%s\n" "${DEFAULTHOMEDIRTEMPLATE[@]}"
 	exit
 
 else

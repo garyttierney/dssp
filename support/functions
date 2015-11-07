@@ -1,0 +1,193 @@
+#!/bin/bash
+
+PATH=/sbin:/bin:/usr/sbin:/usr/bin
+export PATH
+
+## @brief prints a debug message
+#
+# @param message to print
+# @retval 0 is always returned even if logging fails
+# @result prints a message if DEBUG is set to true
+
+debug () {
+	(( $# >= 1 )) && [[ $DEBUG == 1 ]] \
+		&& printf "%s\n" "+($0): ${FUNCNAME[-2]:+${FUNCNAME[-2]}(): $@}" || :
+}
+
+## @brief perform a specific file test on a specified file
+#
+# @param1 file test to perform
+# @param2 file to operate on
+# @retval 0 success
+# @retval 1 general fault
+# @retval 192 test failed
+
+filetest () {
+	local _FLAG=$1
+	local _FILE=$2
+
+	if ! (( $# == 2 ))
+	then
+		debug "expects two parameters: test flag, and file to test"
+		return 1
+	fi
+
+	if ! [[ $_FLAG == -f ]] && ! [[ $_FLAG == -r ]] && ! [[ $_FLAG == -s ]] && ! [[ $_FLAG == -d ]] && ! [[ $_FLAG == -w ]]
+	then
+		debug "expects a valid file test flag: -d, -f, -s, -d, or -w"
+		return 1
+
+	elif ! /bin/test $_FLAG $_FILE
+	then
+
+		if [[ $UID == 0 ]]
+		then
+			return 192
+		fi
+
+		if [[ -x /bin/sudo ]] && ! [[ $UID == 0 ]]
+		then
+			debug "trying sudo to perform file test $_FLAG on $_FILE"
+
+			/bin/sudo -E /bin/test $_FLAG $_FILE > /dev/null 2>&1
+
+		if [[ $? == 0 ]]
+		then
+			return 0
+
+		else
+			return 192
+		fi
+
+	else
+		debug "sudo cannot be executed"
+                return 1
+        fi
+
+	elif /bin/test $_FLAG $_FILE
+	then
+		return 0
+
+	else
+		debug "unhandled exception"
+		return 1
+	fi
+}
+
+## @brief evaluate filetest result
+#
+# @param1 file test to perform
+# @param2 file to operate on
+# @retval 0 success
+# @retval 1 general fault
+# @retval 193 file is not accessible
+# @retval 194 file is not readable
+# @retval 195 file is a zero-byte file
+# @retval 196 file is not a directory
+# @retval 197 file is not a writeable file
+
+filetestresult () {
+	local _STATUS=`echo $?`
+	local _FLAG=$1
+	local _FILE=$2
+
+	if ! (( $# == 2 ))
+	then
+		debug "expects two parameters: test flag, and file to test"
+		return 1
+	fi
+
+	if ! [[ $_FLAG == -f ]] && ! [[ $_FLAG == -r ]] && ! [[ $_FLAG == -s ]] && ! [[ $_FLAG == -d ]] && ! [[ $_FLAG == -w ]]
+	then
+		debug "expects a valid file test flag: -d, -f, -s, -d, or -w"
+		return 1
+
+	elif [[ $_STATUS == 0 ]]
+	then
+		case $_FLAG in
+			-f) debug "file $_FILE is a accessible file" && return 0 ;;
+			-r) debug "file $_FILE is a readable file" && return 0 ;;
+			-s) debug "file $_FILE is not a zero-byte file" && return 0 ;;
+			-d) debug "file $_FILE is a directory" && return 0 ;;
+			-w) debug "file $_FILE is a writeable file" && return 0 ;;
+			*) debug "unhandled exception" && return 1 ;;
+		esac
+
+	elif [[ $_STATUS == 192 ]]
+	then
+		case $_FLAG in
+			-f) debug "file $_FILE is not a accessible file" && return 193 ;;
+			-r) debug "file $_FILE is not a readable file" && return 194 ;;
+			-s) debug "file $_FILE is a zero-byte file" && return 195 ;;
+			-d) debug "file $_FILE is not a directory" && return 196 ;;
+			-w) debug "file $_FILE is not a writeable file" && return 197 ;;
+			*) debug "unhandled exception" && return 1 ;;
+		esac
+
+	elif [[ $_STATUS == 1 ]]
+	then
+		debug "cannot determine whether file $_FILE is accessible"
+		return 1
+
+	else
+		debug "unhandled exception"
+		return 1
+	fi
+}
+
+## @brief perform a specific file test on a specified file, and evaluate filetest result
+#
+# @param1 file test to perform
+# @param2 file to operate on
+# @retval 0 success
+# @retval 1 general fault
+# @retval 193 file is not accessible
+# @retval 194 file is not readable
+# @retval 195 file is a zero-byte file
+# @retval 196 file is not a directory
+# @retval 197 file is not a writeable file
+
+filetestandresult () {
+	debug "performing file test $1 on $2, and evaluating its results"
+	filetest $1 $2
+	filetestresult $1 $2
+}
+
+## @brief updates dssp
+#
+# @param1 path to dssp source
+# @retval 0 success
+# @retval 1 general fault
+# @retval 196 file is not a directory
+# @retval 207 unable to execute /bin/git
+
+updatetoupstream () {
+	if ! [[ -x /bin/git ]]
+	then
+		debug "unable to execute /bin/git"
+		return 207
+
+	elif ! (( $# == 1 ))
+		debug "expects a single parameter: path to dssp"
+		return 1
+
+	else
+		filetestandresult -d $1
+
+		_STATUS=`echo $?`
+
+		if [[ $_STATUS == 196 ]]
+		then
+			debug "file is not a directory"
+			exit `echo $_STATUS`
+
+		elif ! [[ $_STATUS == 0 ]]
+		then
+			debug "unhandled exception"
+			exit `echo $_STATUS`
+		fi
+
+		( /bin/cd $1 && /bin/git pull --recurse-submodules https://github.com/defensec/dssp \
+			&& /bin/git submodule update --recursive )
+	fi
+}

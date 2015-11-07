@@ -1,30 +1,156 @@
 #!/bin/bash
 
-if [ $# -eq 0 ]
-then
-	input+=`/bin/cat`
-else
-	input+=`echo $*`
-fi
+declare PATHSTOEXCLUDEFILESRELATIVETODSSP=('exclude' 'exclude.local')
+declare PATHTOFUNCTIONSRELATIVETODSSP="support/functions"
 
-for entry in ${input[@]}
+usage () {
+	echo "$0 - prints a list of path entries to exclude
+
+mandatory options
+
+-p	: path to dssp source
+
+discretionary options
+
+-d	: enable debugging
+
+exit codes
+
+0	: success
+1	: general fault
+193	: file is not accessible
+194	: file is not readable
+195	: file is a zero-byte file
+196	: file is not a directory
+201	: no path entries to list
+202	: no such file or directory"
+	exit
+}
+
+! (( $# > 0 )) && usage || :
+
+while (( $# > 0 ))
 do
-	test -f "$entry" || exit 1
-	test -r "$entry" || exit 1
+	case $1 in
+		\-p)
+		shift
+
+		if ! (( $# > 0 ))
+		then
+			printf "%s\n" "option -p expects one parameter: path to dssp source"
+			exit
+		fi
+
+		PATHTODSSP=$1
+		;;
+		\-d)
+		DEBUG=1
+		;;
+		*) break
+		;;
+		esac
+	shift
 done
 
-output+=`/bin/cat ${input[@]}`
+if [[ -z $PATHTODSSP ]] || ! [[ -d $PATHTODSSP ]]
+then
+	usage
+fi
 
-if [ -z "$output" ]
+if ! [[ -r ${PATHTODSSP}/${PATHTOFUNCTIONSRELATIVETODSSP} ]]
 then
-	exit 192
-elif [ -n "$output" ]
+	debug "unable to source functions"
+	exit 1
+fi
+
+source ${PATHTODSSP}/${PATHTOFUNCTIONSRELATIVETODSSP} 2>/dev/null
+
+for PATHTOEXCLUDEFILERELATIVETODSSP in ${PATHSTOEXCLUDEFILESRELATIVETODSSP[@]}
+do
+	filetestandresult -f ${PATHTODSSP}/${PATHTOEXCLUDEFILERELATIVETODSSP}
+
+	retval=$?
+
+	if [[ $retval == 1 ]]
+	then
+		debug "unhandled exception"
+		exit `echo $?`
+	fi
+
+	filetestandresult -r ${PATHTODSSP}/${PATHTOEXCLUDEFILERELATIVETODSSP}
+
+	retval=$?
+
+        if [[ $retval == 0 ]]
+        then
+		if /bin/test -s ${PATHTODSSP}/${PATHTOEXCLUDEFILERELATIVETODSSP}
+		then
+			ENTRIES+=(`/bin/cat ${PATHTODSSP}/${PATHTOEXCLUDEFILERELATIVETODSSP} 2>/dev/null`)
+		fi
+
+	elif [[ $retval == 1 ]]
+	then
+		debug "unhandled exception"
+		exit `echo $?`
+	fi
+done
+
+if [[ -z $ENTRIES ]]
 then
-	echo "${output[@]}"
+	debug "no path entries to list"
+	exit 201
+fi
+
+for ENTRY in ${ENTRIES[@]}
+do
+	filetestandresult -f ${PATHTODSSP}/${ENTRY}
+
+	retval=$?
+
+	if [[ $retval == 0 ]]
+	then
+		filetestandresult -r ${PATHTODSSP}/${ENTRY}
+
+		retval=$?
+
+		if [[ $retval == 194 ]]
+		then
+			exit `echo $retval`
+
+		elif ! [[ $retval == 0 ]]
+		then
+			exit `echo $retval`
+		fi
+
+	elif [[ $retval == 193 ]]
+	then
+		filetestandresult -d ${PATHTODSSP}/${ENTRY}
+
+		retval=$?
+
+		if [[ $retval == 196 ]]
+		then
+			debug "no such file or directory: ${PATHTODSSP}/${ENTRY}"
+			exit 202
+
+		elif ! [[ $retval == 0 ]]
+		then
+			exit `echo $retval`
+		fi
+
+	else
+		exit `echo $retval`
+	fi
+done
+
+if [[ -n $ENTRIES ]]
+then
+	printf "%s\n" "${ENTRIES[@]}"
+
 else
+	debug "unhandled exception"
 	exit 1
 fi
 
 exit
-
 #EOF
