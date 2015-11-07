@@ -186,6 +186,12 @@ fi
 
 source ${PATHTODSSP}/${PATHTOFUNCTIONSRELATIVETODSSP} 2>/dev/null
 
+if ! [[ -w $PATHTODSSP ]]
+then
+	debug "path to dssp \"$PATHTODSSP\" is not writeable"
+	exit 1
+fi
+
 debug "fetching path entries to exclude from policy"
 
 EXCLUDES+=(`/bin/bash ${PATHTODSSP}/${PATHTOPRINTEXCLUDESRELATIVETODSSP} -p $PATHTODSSP`)
