@@ -35,7 +35,13 @@ discretionary options
 
 exit codes
 
-TODO	: TODO"
+193	: file is not accessible
+194	: file is not readable
+195	: file is a zero-byte file
+196	: file is not a directory
+197 	: file is not a writeable file
+202	: no such file or directory
+203	: no path entries to be included"
 	exit
 }
 
@@ -189,6 +195,7 @@ retval=`echo $?`
 if ! [[ $retval == 0 ]] && ! [[ $retval == 201 ]]
 then
 	case $retval in
+		1) debug "general fault" ;;
 		194) debug "file is not readable" ;;
 		195) debug "file is a zero-byte file" ;;
 		196) debug "file is not a directory" ;;
@@ -224,6 +231,7 @@ retval=`echo $?`
 if ! [[ $retval == 0 ]] && ! [[ $retval == 203 ]]
 then
 	case $retval in
+		1) debug "general fault" ;;
 		194) debug "file is not readable" ;;
 		195) debug "file is a zero-byte file" ;;
 		*) debug "unhandled exception" ;;
@@ -260,10 +268,24 @@ elif [[ -z $EXCLUDES ]]
 then
 	MODULESTOCOMPILE+="`printf "%s\n" "${MODULES[@]}" 2>/dev/null`"
 
-	debug "nothing to exclude"
+	debug "no path entries to be excluded"
 
 else
 	debug "unhandled exception"
+	exit 1
+fi
+
+if [[ -n $MODULESTOCOMPILE ]]
+then
+	debug "modules to compile" "${MODULESTOCOMPILE[@]}"
+
+elif [[ -z $MODULESTOCOMPILE ]]
+then
+	debug "no modules to compile"
+	exit 1
+
+else
+	echo "unhandled exception"
 	exit 1
 fi
 
@@ -275,23 +297,96 @@ if ! [[ $retval == 0 ]]
 then
         debug "built failed with status $retval"
         exit `echo $retval`
+
 else
 	debug "built ${PATHTODSSP}/policy/policy.${POLICYVERSION}"
 fi
 
 DEFAULTHOMEDIRTEMPLATE="`/bin/bash ${PATHTODSSP}/${PATHTOPRINTDEFAULTHOMEDIRTEMPLATERELATIVETODSSP} -p ${PATHTODSSP}`"
 
-/bin/sed -i.bak '/^DEFAULT_HOME_DIR/d' ${PATHTODSSP}/${PATHTOCONTEXTSRELATIVETODSSP} 2>/dev/null
+retval=` echo $?`
+
+if ! [[ $retval == 0 ]] && ! [[ $retval == 198 ]]
+then
+	case $retval in
+		1) debug "general fault" ;;
+		193) debug "file is not accessible" ;;
+		194) debug "file is not readable" ;;
+		195) debug "file is a zero-byte file" ;;
+		198) debug "no default template to list" ;;
+		*) debug "unhandled exception" ;;
+	esac
+
+	exit `echo $retval`
+fi
+
+if [[ -z $DEFAULTHOMEDIRTEMPLATE ]]
+then
+	debug "no default home dir template"
+
+else
+	/bin/sed -i.bak '/^DEFAULT_HOME_DIR/d' ${PATHTODSSP}/${PATHTOCONTEXTSRELATIVETODSSP} 2>/dev/null
+
+	if [[ $? == 0 ]]
+	then
+		debug "removed default home dir template entries from ${PATHTODSSP}/${PATHTOCONTEXTSRELATIVETODSSP}"
+
+	else
+		debug "unable to remove default home dir template entries from ${PATHTODSSP}/${PATHTOCONTEXTSRELATIVETODSSP}"
+	fi
+fi
 
 IFS=$'\n'
 
 echo > ${PATHTODSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP}
 
+if [[ -s ${PATHTODSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP} ]]
+then
+	debug "cleared ${PATHTODSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP}"
+
+elif ! [[ -s ${PATHTODSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP} ]]
+then
+	debug "cleared to empty ${PATHTODSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP}"
+	exit 1
+
+else
+	printf "%s\n" "unhandled exception"
+	exit 1
+fi
+
 if [[ -r ${PATHTODSSP}/${PATHTOSEUSERSLOCALRELATIVETODSSP} ]] || [[ -s ${PATHTODSSP}/${PATHTOSEUSERSLOCALRELATIVETODSSP} ]]
 then
 	DEFAULTSEUSERROLETUPLE="`/bin/bash ${PATHTODSSP}/${PATHTOPRINTSEUSERTUPLERELATIVETODSSP} -s ${PATHTOSEUSERSLOCALRELATIVETODSSP} -p ${PATHTODSSP}`"
+
+	retval=` echo $?`
+
+	if ! [[ $retval == 0 ]] && ! [[ $retval == 205 ]]
+	then
+		case $retval in
+			1) debug "general fault" ;;
+			193) debug "file is not accessible" ;;
+			194) debug "file is not readable" ;;
+			195) debug "file is a zero-byte file" ;;
+			205) debug "no seuser tuple to list" ;;
+			*) debug "unhandled exception" ;;
+		esac
+
+		exit `echo $retval`
+	fi
+
 	DEFAULTSEUSERID="`printf "%s\n" "$DEFAULTSEUSERROLETUPLE" | /bin/awk -F":" '{ print $1 }' 2>/dev/null`"
+
+	if [[ -z $DEFAULTSEUSERID ]]
+	then
+		debug "unable to determine default selinux user identity"
+	fi
+
 	DEFAULTSEUSERROLE="`printf "%s\n" "$DEFAULTSEUSERROLETUPLE" | /bin/awk -F":" '{ print $2 }' 2>/dev/null`"
+
+	if [[ -z $DEFAULTSEUSERROLE ]]
+	then
+		debug "unable to determine default selinux user role"
+	fi
 
 	for DEFAULTHOMEDIR in ${DEFAULTHOMEDIRTEMPLATE[*]}
 	do
@@ -301,10 +396,22 @@ then
 			ID=`echo "${NAME//sys.id/$DEFAULTSEUSERID}"`
 			echo "${ID//sys.role/"$DEFAULTSEUSERROLE"}" >> ${PATHTODSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP}
 
+			if ! [[ $? == 0 ]]
+			then
+				debug "failed to append default home dir file context spec"
+				exit 1
+			fi
+
 		elif [[ $DISABLERBACSEP == 1 ]]
 		then
 			NAME=`echo "${DEFAULTHOMEDIR//DEFAULT_HOME_DIR//home}"`
 			echo "${NAME//sys.id/"$DEFAULTSEUSERID"}" >> ${PATHTODSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP}
+
+			if ! [[ $? == 0 ]]
+			then
+				debug "failed to append default home dir file context spec"
+				exit 1
+			fi
 
 		else
 			printf "%s\n" "unhandled exception"
@@ -317,8 +424,36 @@ then
 	if [[ -r ${PATHTODSSP}/${PATHTOSEUSERSSTANDARDRELATIVETODSSP} ]] || [[ -s ${PATHTODSSP}/${PATHTOSEUSERSSTANDARDRELATIVETODSSP} ]]
 	then
 		DEFAULTSEUSERROLETUPLE="`/bin/bash ${PATHTODSSP}/${PATHTOPRINTSEUSERTUPLERELATIVETODSSP} -s ${PATHTOSEUSERSSTANDARDRELATIVETODSSP} -p ${PATHTODSSP}`"
+
+		retval=` echo $?`
+
+		if ! [[ $retval == 0 ]] && ! [[ $retval == 205 ]]
+		then
+			case $retval in
+				1) debug "general fault" ;;
+				193) debug "file is not accessible" ;;
+				194) debug "file is not readable" ;;
+				195) debug "file is a zero-byte file" ;;
+				205) debug "no seuser tuple to list" ;;
+				*) debug "unhandled exception" ;;
+			esac
+
+			exit `echo $retval`
+		fi
+
 		DEFAULTSEUSERID="`printf "%s\n" "$DEFAULTSEUSERROLETUPLE" | /bin/awk -F":" '{ print $1 }' 2>/dev/null`"
+
+		if [[ -z $DEFAULTSEUSERID ]]
+		then
+			debug "unable to determine default selinux user identity"
+		fi
+
 		DEFAULTSEUSERROLE="`printf "%s\n" "$DEFAULTSEUSERROLETUPLE" | /bin/awk -F":" '{ print $2 }' 2>/dev/null`"
+
+		if [[ -z $DEFAULTSEUSERROLE ]]
+		then
+			debug "unable to determine default selinux user role"
+		fi
 
 		for DEFAULTHOMEDIR in ${DEFAULTHOMEDIRTEMPLATE[*]}
 		do
@@ -328,10 +463,22 @@ then
 				ID=`echo "${NAME//sys.id/$DEFAULTSEUSERID}"`
 				echo "${ID//sys.role/"$DEFAULTSEUSERROLE"}" >> ${PATHTODSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP}
 
+				if ! [[ $? == 0 ]]
+				then
+					debug "failed to append default home dir file context spec"
+					exit 1
+				fi
+
 			elif [[ $DISABLERBACSEP == 1 ]]
 			then
 				NAME=`echo "${DEFAULTHOMEDIR//DEFAULT_HOME_DIR//home}"`
 				echo "${NAME//sys.id/"$DEFAULTSEUSERID"}" >> ${PATHTODSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP}
+
+				if ! [[ $? == 0 ]]
+				then
+					debug "failed to append default home dir file context spec"
+					exit 1
+				fi
 
 			else
 				printf "%s\n" "unhandled exception"
@@ -349,8 +496,34 @@ then
 	if [[ -r ${PATHTODSSP}/${PATHTOSEUSERSMCSRELATIVETODSSP} ]] || [[ -s ${PATHTODSSP}/${PATHTOSEUSERSMCSRELATIVETODSSP} ]]
 	then
 		DEFAULTSEUSERROLETUPLE="`/bin/bash ${PATHTODSSP}/${PATHTOPRINTSEUSERTUPLERELATIVETODSSP} -s ${PATHTOSEUSERSMCSRELATIVETODSSP} -p ${PATHTODSSP}`"
+
+		if ! [[ $retval == 0 ]] && ! [[ $retval == 205 ]]
+		then
+			case $retval in
+				1) debug "general fault" ;;
+				193) debug "file is not accessible" ;;
+				194) debug "file is not readable" ;;
+				195) debug "file is a zero-byte file" ;;
+				205) debug "no seuser tuple to list" ;;
+				*) debug "unhandled exception" ;;
+			esac
+
+			exit `echo $retval`
+		fi
+
 		DEFAULTSEUSERID="`printf "%s\n" "$DEFAULTSEUSERROLETUPLE" | /bin/awk -F":" '{ print $1 }' 2>/dev/null`"
+
+		if [[ -z $DEFAULTSEUSERID ]]
+		then
+			debug "unable to determine default selinux user identity"
+		fi
+
 		DEFAULTSEUSERROLE="`printf "%s\n" "$DEFAULTSEUSERROLETUPLE" | /bin/awk -F":" '{ print $2 }' 2>/dev/null`"
+
+		if [[ -z $DEFAULTSEUSERROLE ]]
+		then
+			debug "unable to determine default selinux user role"
+		fi
 
 		for DEFAULTHOMEDIR in ${DEFAULTHOMEDIRTEMPLATE[*]}
 		do
@@ -360,10 +533,22 @@ then
 				ID=`echo "${NAME//sys.id/$DEFAULTSEUSERID}"`
 				echo "${ID//sys.role/"$DEFAULTSEUSERROLE"}" >> ${PATHTODSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP}
 
+				if ! [[ $? == 0 ]]
+				then
+					debug "failed to append default home dir file context spec"
+					exit 1
+				fi
+
 			elif [[ $DISABLERBACSEP == 1 ]]
 			then
 				NAME=`echo "${DEFAULTHOMEDIR//DEFAULT_HOME_DIR//home}"`
 				echo "${NAME//sys.id/"$DEFAULTSEUSERID"}" >> ${PATHTODSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP}
+
+				if ! [[ $? == 0 ]]
+				then
+					debug "failed to append default home dir file context spec"
+					exit 1
+				fi
 
 			else
 				printf "%s\n" "unhandled exception"
@@ -381,8 +566,34 @@ then
 	if [[ -r ${PATHTODSSP}/${PATHTOSEUSERSMLSRELATIVETODSSP} ]] || [[ -s ${PATHTODSSP}/${PATHTOSEUSERSMLSRELATIVETODSSP} ]]
 	then
 		DEFAULTSEUSERROLETUPLE="`/bin/bash ${PATHTODSSP}/${PATHTOPRINTSEUSERTUPLERELATIVETODSSP} -s ${PATHTOSEUSERSMLSRELATIVETODSSP} -p ${PATHTODSSP}`"
+
+		if ! [[ $retval == 0 ]] && ! [[ $retval == 205 ]]
+		then
+			case $retval in
+				1) debug "general fault" ;;
+				193) debug "file is not accessible" ;;
+				194) debug "file is not readable" ;;
+				195) debug "file is a zero-byte file" ;;
+				205) debug "no seuser tuple to list" ;;
+				*) debug "unhandled exception" ;;
+			esac
+
+			exit `echo $retval`
+		fi
+
 		DEFAULTSEUSERID="`printf "%s\n" "$DEFAULTSEUSERROLETUPLE" | /bin/awk -F":" '{ print $1 }' 2>/dev/null`"
+
+		if [[ -z $DEFAULTSEUSERID ]]
+		then
+			debug "unable to determine default selinux user identity"
+		fi
+
 		DEFAULTSEUSERROLE="`printf "%s\n" "$DEFAULTSEUSERROLETUPLE" | /bin/awk -F":" '{ print $2 }' 2>/dev/null`"
+
+		if [[ -z $DEFAULTSEUSERROLE ]]
+		then
+			debug "unable to determine default selinux user role"
+		fi
 
 		for DEFAULTHOMEDIR in ${DEFAULTHOMEDIRTEMPLATE[*]}
 		do
@@ -392,10 +603,22 @@ then
 				ID=`echo "${NAME//sys.id/$DEFAULTSEUSERID}"`
 				echo "${ID//sys.role/"$DEFAULTSEUSERROLE"}" >> ${PATHTODSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP}
 
+				if ! [[ $? == 0 ]]
+				then
+					debug "failed to append default home dir file context spec"
+					exit 1
+				fi
+
 			elif [[ $DISABLERBACSEP == 1 ]]
 			then
 				NAME=`echo "${DEFAULTHOMEDIR//DEFAULT_HOME_DIR//home}"`
 				echo "${NAME//sys.id/"$DEFAULTSEUSERID"}" >> ${PATHTODSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP}
+
+				if ! [[ $? == 0 ]]
+				then
+					debug "failed to append default home dir file context spec"
+					exit 1
+				fi
 
 			else
 				printf "%s\n" "unhandled exception"
@@ -410,11 +633,88 @@ then
 fi
 
 USERNAMES="`/bin/bash ${PATHTODSSP}/${PATHTOPRINTREALUSERSRELATIVETODSSP} -p ${PATHTODSSP}`"
+
+retval=` echo $?`
+
+if ! [[ $retval == 0 ]] && ! [[ $retval == 204 ]]
+then
+	case $retval in
+		1) debug "general fault" ;;
+		193) debug "file is not accessible" ;;
+		194) debug "file is not readable" ;;
+		195) debug "file is a zero-byte file" ;;
+		198) debug "no real users to list" ;;
+		*) debug "unhandled exception" ;;
+	esac
+
+	exit `echo $retval`
+fi
+
 HOMEDIRTEMPLATE="`/bin/bash ${PATHTODSSP}/${PATHTOPRINTHOMEDIRTEMPLATERELATIVETODSSP} -p ${PATHTODSSP}`"
+
+retval=` echo $?`
+
+if ! [[ $retval == 0 ]] && ! [[ $retval == 198 ]]
+then
+	case $retval in
+		1) debug "general fault" ;;
+		193) debug "file is not accessible" ;;
+		194) debug "file is not readable" ;;
+		195) debug "file is a zero-byte file" ;;
+		198) debug "no home dir template to list" ;;
+		*) debug "unhandled exception" ;;
+	esac
+
+	exit `echo $retval`
+fi
+
+if [[ -z $HOMEDIRTEMPLATE ]]
+then
+	debug "no home dir template"
+
+else
+	/bin/sed -i.bak '/^HOME_DIR/d' ${PATHTODSSP}/${PATHTOCONTEXTSRELATIVETODSSP} 2>/dev/null
+
+	if [[ $? == 0 ]]
+	then
+		debug "removed home dir template entries from ${PATHTODSSP}/${PATHTOCONTEXTSRELATIVETODSSP}"
+
+	else
+		debug "unable to remove home dir template entries from ${PATHTODSSP}/${PATHTOCONTEXTSRELATIVETODSSP}"
+	fi
+fi
+
 SPOOLFILETEMPLATE="`/bin/bash ${PATHTODSSP}/${PATHTOPRINTSPOOLFILETEMPLATERELATIVETODSSP} -p ${PATHTODSSP}`"
 
-/bin/sed -i.bak '/^HOME_DIR/d' ${PATHTODSSP}/${PATHTOCONTEXTSRELATIVETODSSP} 2>/dev/null
-/bin/sed -i.bak '/^USER_SPOOL/d' ${PATHTODSSP}/${PATHTOCONTEXTSRELATIVETODSSP} 2>/dev/null
+if ! [[ $retval == 0 ]] && ! [[ $retval == 198 ]]
+then
+	case $retval in
+		1) debug "general fault" ;;
+		193) debug "file is not accessible" ;;
+		194) debug "file is not readable" ;;
+		195) debug "file is a zero-byte file" ;;
+		198) debug "no spool file template to list" ;;
+		*) debug "unhandled exception" ;;
+	esac
+
+	exit `echo $retval`
+fi
+
+if [[ -z $SPOOLFILETEMPLATE ]]
+then
+	debug "no spool file template"
+
+else
+	/bin/sed -i.bak '/^USER_SPOOL/d' ${PATHTODSSP}/${PATHTOCONTEXTSRELATIVETODSSP} 2>/dev/null
+
+	if [[ $? == 0 ]]
+	then
+		debug "removed spool file template entries from ${PATHTODSSP}/${PATHTOCONTEXTSRELATIVETODSSP}"
+
+	else
+		debug "unable to remove spool file template entries from ${PATHTODSSP}/${PATHTOCONTEXTSRELATIVETODSSP}"
+	fi
+fi
 
 for USERNAME in ${USERNAMES[*]}
 do
@@ -423,8 +723,34 @@ do
 		if [[ `/bin/grep "^$USERNAME:" ${PATHTODSSP}/${PATHTOSEUSERSLOCALRELATIVETODSSP}` ]]
 		then
 			SEUSERROLETUPLE="`/bin/bash ${PATHTODSSP}/${PATHTOPRINTSEUSERTUPLERELATIVETODSSP} -s ${PATHTOSEUSERSLOCALRELATIVETODSSP} -p ${PATHTODSSP} -u ${USERNAME}`"
+
+			if ! [[ $retval == 0 ]] && ! [[ $retval == 205 ]]
+			then
+				case $retval in
+					1) debug "general fault" ;;
+					193) debug "file is not accessible" ;;
+					194) debug "file is not readable" ;;
+					195) debug "file is a zero-byte file" ;;
+					205) debug "no seuser tuple to list" ;;
+					*) debug "unhandled exception" ;;
+				esac
+
+				exit `echo $retval`
+			fi
+
 			SEUSERID="`printf "%s\n" "$SEUSERROLETUPLE" | /bin/awk -F":" '{ print $1 }' 2>/dev/null`"
+
+			if [[ -z $SEUSERID ]]
+			then
+				debug "unable to determine selinux user identity"
+			fi
+
 			SEUSERROLE="`printf "%s\n" "$SEUSERROLETUPLE" | /bin/awk -F":" '{ print $2 }' 2>/dev/null`"
+
+			if [[ -z $SEUSERROLE ]]
+			then
+				debug "unable to determine selinux user role"
+			fi
 
 			for HOMEDIR in ${HOMEDIRTEMPLATE[*]}
 			do
@@ -434,10 +760,22 @@ do
 					ID=`echo "${NAME//sys.id/$SEUSERID}"`
 					echo "${ID//sys.role/"$SEUSERROLE"}" >> ${PATHTODSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP}
 
+					if ! [[ $? == 0 ]]
+					then
+						debug "failed to append home dir file context spec"
+						exit 1
+					fi
+
 				elif [[ $DISABLERBACSEP == 1 ]]
 				then
 					NAME=`echo "${HOMEDIR//HOME_DIR//home/"$USERNAME"}"`
 					echo "${NAME//sys.id/"$SEUSERID"}" >> ${PATHTODSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP}
+
+					if ! [[ $? == 0 ]]
+					then
+						debug "failed to append home dir file context spec"
+						exit 1
+					fi
 
 				else
 					printf "%s\n" "unhandled exception"
@@ -453,10 +791,22 @@ do
 					ID=`echo "${NAME//sys.id/$SEUSERID}"`
 					echo "${ID//sys.role/"$SEUSERROLE"}" >> ${PATHTODSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP}
 
+					if ! [[ $? == 0 ]]
+					then
+						debug "failed to append spool file context spec"
+						exit 1
+					fi
+
 				elif [[ $DISABLERBACSEP == 1 ]]
 				then
 					NAME=`echo "${SPOOLFILE//USER_SPOOL//var/spool/mail/"$USERNAME"}"`
 					echo "${NAME//sys.id/"$SEUSERID"}" >> ${PATHTODSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP}
+
+					if ! [[ $? == 0 ]]
+					then
+						debug "failed to append spool file context spec"
+						exit 1
+					fi
 
 				else
 					printf "%s\n" "unhandled exception"
@@ -466,8 +816,34 @@ do
 
 		else
 			DEFAULTSEUSERROLETUPLE="`/bin/bash ${PATHTODSSP}/${PATHTOPRINTSEUSERTUPLERELATIVETODSSP} -s ${PATHTOSEUSERSLOCALRELATIVETODSSP} -p ${PATHTODSSP}`"
+
+			if ! [[ $retval == 0 ]] && ! [[ $retval == 205 ]]
+			then
+				case $retval in
+					1) debug "general fault" ;;
+					193) debug "file is not accessible" ;;
+					194) debug "file is not readable" ;;
+					195) debug "file is a zero-byte file" ;;
+					205) debug "no seuser tuple to list" ;;
+					*) debug "unhandled exception" ;;
+				esac
+
+				exit `echo $retval`
+			fi
+
 			DEFAULTSEUSERID="`printf "%s\n" "$DEFAULTSEUSERROLETUPLE" | /bin/awk -F":" '{ print $1 }' 2>/dev/null`"
+
+			if [[ -z $DEFAULTSEUSERID ]]
+			then
+				debug "unable to determine default selinux user identity"
+			fi
+
 			DEFAULTSEUSERROLE="`printf "%s\n" "$DEFAULTSEUSERROLETUPLE" | /bin/awk -F":" '{ print $2 }' 2>/dev/null`"
+
+			if [[ -z $DEFAULTSEUSERROLE ]]
+			then
+				debug "unable to determine default selinux user role"
+			fi
 
 			for HOMEDIR in ${HOMEDIRTEMPLATE[*]}
 			do
@@ -477,10 +853,22 @@ do
 					ID=`echo "${NAME//sys.id/$DEFAULTSEUSERID}"`
 					echo "${ID//sys.role/"$DEFAULTSEUSERROLE"}" >> ${PATHTODSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP}
 
+					if ! [[ $? == 0 ]]
+					then
+						debug "failed to append home dir file context spec"
+						exit 1
+					fi
+
 				elif [[ $DISABLERBACSEP == 1 ]]
 				then
 					NAME=`echo "${HOMEDIR//HOME_DIR//home/"$USERNAME"}"`
 					echo "${NAME//sys.id/"$DEFAULTSEUSERID"}" >> ${PATHTODSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP}
+
+					if ! [[ $? == 0 ]]
+					then
+						debug "failed to append home dir file context spec"
+						exit 1
+					fi
 
 				else
 					printf "%s\n" "unhandled exception"
@@ -496,10 +884,22 @@ do
 					ID=`echo "${NAME//sys.id/$DEFAULTSEUSERID}"`
 					echo "${ID//sys.role/"$DEFAULTSEUSERROLE"}" >> ${PATHTODSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP}
 
+					if ! [[ $? == 0 ]]
+					then
+						debug "failed to append spool file context spec"
+						exit 1
+					fi
+
 				elif [[ $DISABLERBACSEP == 1 ]]
 				then
 					NAME=`echo "${SPOOLFILE//USER_SPOOL//var/spool/mail/"$USERNAME"}"`
 					echo "${NAME//sys.id/"$DEFAULTSEUSERID"}" >> ${PATHTODSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP}
+
+					if ! [[ $? == 0 ]]
+					then
+						debug "failed to append spool file context spec"
+						exit 1
+					fi
 
 				else
 					printf "%s\n" "unhandled exception"
@@ -515,8 +915,34 @@ do
 			if [[ `/bin/grep "^$USERNAME:" ${PATHTODSSP}/${PATHTOSEUSERSSTANDARDRELATIVETODSSP}` ]]
 			then
 				SEUSERROLETUPLE="`/bin/bash ${PATHTODSSP}/${PATHTOPRINTSEUSERTUPLERELATIVETODSSP} -s ${PATHTOSEUSERSSTANDARDRELATIVETODSSP} -p ${PATHTODSSP} -u ${USERNAME}`"
+
+				if ! [[ $retval == 0 ]] && ! [[ $retval == 205 ]]
+				then
+					case $retval in
+						1) debug "general fault" ;;
+						193) debug "file is not accessible" ;;
+						194) debug "file is not readable" ;;
+						195) debug "file is a zero-byte file" ;;
+						205) debug "no seuser tuple to list" ;;
+						*) debug "unhandled exception" ;;
+					esac
+
+					exit `echo $retval`
+				fi
+
 				SEUSERID="`printf "%s\n" "$SEUSERROLETUPLE" | /bin/awk -F":" '{ print $1 }' 2>/dev/null`"
+
+				if [[ -z $SEUSERID ]]
+				then
+					debug "unable to determine selinux user identity"
+				fi
+
 				SEUSERROLE="`printf "%s\n" "$SEUSERROLETUPLE" | /bin/awk -F":" '{ print $2 }' 2>/dev/null`"
+
+				if [[ -z $SEUSERROLE ]]
+				then
+					debug "unable to determine selinux user role"
+				fi
 
 				for HOMEDIR in ${HOMEDIRTEMPLATE[*]}
 				do
@@ -526,10 +952,22 @@ do
 						ID=`echo "${NAME//sys.id/$SEUSERID}"`
 						echo "${ID//sys.role/"$SEUSERROLE"}" >> ${PATHTODSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP}
 
+						if ! [[ $? == 0 ]]
+						then
+							debug "failed to append home dir file context spec"
+							exit 1
+						fi
+
 					elif [[ $DISABLERBACSEP == 1 ]]
 					then
 						NAME=`echo "${HOMEDIR//HOME_DIR//home/"$USERNAME"}"`
 						echo "${NAME//sys.id/"$SEUSERID"}" >> ${PATHTODSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP}
+
+						if ! [[ $? == 0 ]]
+						then
+							debug "failed to append home dir file context spec"
+							exit 1
+						fi
 
 					else
 						printf "%s\n" "unhandled exception"
@@ -545,10 +983,22 @@ do
 						ID=`echo "${NAME//sys.id/$SEUSERID}"`
 						echo "${ID//sys.role/"$SEUSERROLE"}" >> ${PATHTODSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP}
 
+						if ! [[ $? == 0 ]]
+						then
+							debug "failed to append spool file context spec"
+							exit 1
+						fi
+
 					elif [[ $DISABLERBACSEP == 1 ]]
 					then
 						NAME=`echo "${SPOOLFILE//USER_SPOOL//var/spool/mail/"$USERNAME"}"`
 						echo "${NAME//sys.id/"$SEUSERID"}" >> ${PATHTODSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP}
+
+						if ! [[ $? == 0 ]]
+						then
+							debug "failed to append spool file context spec"
+							exit 1
+						fi
 
 					else
 						printf "%s\n" "unhandled exception"
@@ -558,8 +1008,34 @@ do
 
 			else
 				DEFAULTSEUSERROLETUPLE="`/bin/bash ${PATHTODSSP}/${PATHTOPRINTSEUSERTUPLERELATIVETODSSP} -s ${PATHTOSEUSERSSTANDARDRELATIVETODSSP} -p ${PATHTODSSP}`"
+
+				if ! [[ $retval == 0 ]] && ! [[ $retval == 205 ]]
+				then
+					case $retval in
+						1) debug "general fault" ;;
+						193) debug "file is not accessible" ;;
+						194) debug "file is not readable" ;;
+						195) debug "file is a zero-byte file" ;;
+						205) debug "no seuser tuple to list" ;;
+						*) debug "unhandled exception" ;;
+					esac
+
+					exit `echo $retval`
+				fi
+
 				DEFAULTSEUSERID="`printf "%s\n" "$DEFAULTSEUSERROLETUPLE" | /bin/awk -F":" '{ print $1 }' 2>/dev/null`"
+
+				if [[ -z $DEFAULTSEUSERID ]]
+				then
+					debug "unable to determine default selinux user identity"
+				fi
+
 				DEFAULTSEUSERROLE="`printf "%s\n" "$DEFAULTSEUSERROLETUPLE" | /bin/awk -F":" '{ print $2 }' 2>/dev/null`"
+
+				if [[ -z $DEFAULTSEUSERROLE ]]
+				then
+					debug "unable to determine default selinux user role"
+				fi
 
 				for HOMEDIR in ${HOMEDIRTEMPLATE[*]}
 				do
@@ -569,10 +1045,22 @@ do
 						ID=`echo "${NAME//sys.id/$DEFAULTSEUSERID}"`
 						echo "${ID//sys.role/"$DEFAULTSEUSERROLE"}" >> ${PATHTODSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP}
 
+						if ! [[ $? == 0 ]]
+						then
+							debug "failed to append home dir file context spec"
+							exit 1
+						fi
+
 					elif [[ $DISABLERBACSEP == 1 ]]
 					then
 						NAME=`echo "${HOMEDIR//HOME_DIR//home/"$USERNAME"}"`
 						echo "${NAME//sys.id/"$DEFAULTSEUSERID"}" >> ${PATHTODSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP}
+
+						if ! [[ $? == 0 ]]
+						then
+							debug "failed to append home dir file context spec"
+							exit 1
+						fi
 
 					else
 						printf "%s\n" "unhandled exception"
@@ -588,10 +1076,22 @@ do
 						ID=`echo "${NAME//sys.id/$DEFAULTSEUSERID}"`
 						echo "${ID//sys.role/"$DEFAULTSEUSERROLE"}" >> ${PATHTODSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP}
 
+						if ! [[ $? == 0 ]]
+						then
+							debug "failed to append spool file context spec"
+							exit 1
+						fi
+
 					elif [[ $DISABLERBACSEP == 1 ]]
 					then
 						NAME=`echo "${SPOOLFILE//USER_SPOOL//var/spool/mail/"$USERNAME"}"`
 						echo "${NAME//sys.id/"$DEFAULTSEUSERID"}" >> ${PATHTODSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP}
+
+						if ! [[ $? == 0 ]]
+						then
+							debug "failed to append spool file context spec"
+							exit 1
+						fi
 
 					else
 						printf "%s\n" "unhandled exception"
@@ -612,8 +1112,34 @@ do
 			if [[ `/bin/grep "^$USERNAME:" ${PATHTODSSP}/${PATHTOSEUSERSMCSRELATIVETODSSP}` ]]
 			then
 				SEUSERROLETUPLE="`/bin/bash ${PATHTODSSP}/${PATHTOPRINTSEUSERTUPLERELATIVETODSSP} -s ${PATHTOSEUSERSMCSRELATIVETODSSP} -p ${PATHTODSSP} -u ${USERNAME}`"
+
+				if ! [[ $retval == 0 ]] && ! [[ $retval == 205 ]]
+				then
+					case $retval in
+						1) debug "general fault" ;;
+						193) debug "file is not accessible" ;;
+						194) debug "file is not readable" ;;
+						195) debug "file is a zero-byte file" ;;
+						205) debug "no seuser tuple to list" ;;
+						*) debug "unhandled exception" ;;
+					esac
+
+					exit `echo $retval`
+				fi
+
 				SEUSERID="`printf "%s\n" "$SEUSERROLETUPLE" | /bin/awk -F":" '{ print $1 }' 2>/dev/null`"
+
+				if [[ -z $SEUSERID ]]
+				then
+					debug "unable to determine selinux user identity"
+				fi
+
 				SEUSERROLE="`printf "%s\n" "$SEUSERROLETUPLE" | /bin/awk -F":" '{ print $2 }' 2>/dev/null`"
+
+				if [[ -z $SEUSERROLE ]]
+				then
+					debug "unable to determine selinux user role"
+				fi
 
 				for HOMEDIR in ${HOMEDIRTEMPLATE[*]}
 				do
@@ -623,10 +1149,22 @@ do
 						ID=`echo "${NAME//sys.id/$SEUSERID}"`
 						echo "${ID//sys.role/"$SEUSERROLE"}" >> ${PATHTODSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP}
 
+						if ! [[ $? == 0 ]]
+						then
+							debug "failed to append home dir file context spec"
+							exit 1
+						fi
+
 					elif [[ $DISABLERBACSEP == 1 ]]
 					then
 						NAME=`echo "${HOMEDIR//HOME_DIR//home/"$USERNAME"}"`
 						echo "${NAME//sys.id/"$SEUSERID"}" >> ${PATHTODSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP}
+
+						if ! [[ $? == 0 ]]
+						then
+							debug "failed to append home dir file context spec"
+							exit 1
+						fi
 
 					else
 						printf "%s\n" "unhandled exception"
@@ -642,10 +1180,22 @@ do
 						ID=`echo "${NAME//sys.id/$SEUSERID}"`
 						echo "${ID//sys.role/"$SEUSERROLE"}" >> ${PATHTODSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP}
 
+						if ! [[ $? == 0 ]]
+						then
+							debug "failed to append spool file context spec"
+							exit 1
+						fi
+
 					elif [[ $DISABLERBACSEP == 1 ]]
 					then
 						NAME=`echo "${SPOOLFILE//USER_SPOOL//var/spool/mail/"$USERNAME"}"`
 						echo "${NAME//sys.id/"$SEUSERID"}" >> ${PATHTODSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP}
+
+						if ! [[ $? == 0 ]]
+						then
+							debug "failed to append spool file context spec"
+							exit 1
+						fi
 
 					else
 						printf "%s\n" "unhandled exception"
@@ -655,8 +1205,34 @@ do
 
 			else
 				DEFAULTSEUSERROLETUPLE="`/bin/bash ${PATHTODSSP}/${PATHTOPRINTSEUSERTUPLERELATIVETODSSP} -s ${PATHTOSEUSERSMCSRELATIVETODSSP} -p ${PATHTODSSP}`"
+
+				if ! [[ $retval == 0 ]] && ! [[ $retval == 205 ]]
+				then
+					case $retval in
+						1) debug "general fault" ;;
+						193) debug "file is not accessible" ;;
+						194) debug "file is not readable" ;;
+						195) debug "file is a zero-byte file" ;;
+						205) debug "no seuser tuple to list" ;;
+						*) debug "unhandled exception" ;;
+					esac
+
+					exit `echo $retval`
+				fi
+
 				DEFAULTSEUSERID="`printf "%s\n" "$DEFAULTSEUSERROLETUPLE" | /bin/awk -F":" '{ print $1 }' 2>/dev/null`"
+
+				if [[ -z $DEFAULTSEUSERID ]]
+				then
+					debug "unable to determine default selinux user identity"
+				fi
+
 				DEFAULTSEUSERROLE="`printf "%s\n" "$DEFAULTSEUSERROLETUPLE" | /bin/awk -F":" '{ print $2 }' 2>/dev/null`"
+
+				if [[ -z $DEFAULTSEUSERROLE ]]
+				then
+					debug "unable to determine default selinux user role"
+				fi
 
 				for HOMEDIR in ${HOMEDIRTEMPLATE[*]}
 				do
@@ -666,10 +1242,22 @@ do
 						ID=`echo "${NAME//sys.id/$DEFAULTSEUSERID}"`
 						echo "${ID//sys.role/"$DEFAULTSEUSERROLE"}" >> ${PATHTODSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP}
 
+						if ! [[ $? == 0 ]]
+						then
+							debug "failed to append home dir file context spec"
+							exit 1
+						fi
+
 					elif [[ $DISABLERBACSEP == 1 ]]
 					then
 						NAME=`echo "${HOMEDIR//HOME_DIR//home/"$USERNAME"}"`
 						echo "${NAME//sys.id/"$DEFAULTSEUSERID"}" >> ${PATHTODSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP}
+
+						if ! [[ $? == 0 ]]
+						then
+							debug "failed to append home dir file context spec"
+							exit 1
+						fi
 
 					else
 						printf "%s\n" "unhandled exception"
@@ -685,10 +1273,22 @@ do
 						ID=`echo "${NAME//sys.id/$DEFAULTSEUSERID}"`
 						echo "${ID//sys.role/"$DEFAULTSEUSERROLE"}" >> ${PATHTODSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP}
 
+						if ! [[ $? == 0 ]]
+						then
+							debug "failed to append spool file context spec"
+							exit 1
+						fi
+
 					elif [[ $DISABLERBACSEP == 1 ]]
 					then
 						NAME=`echo "${SPOOLFILE//USER_SPOOL//var/spool/mail/"$USERNAME"}"`
 						echo "${NAME//sys.id/"$DEFAULTSEUSERID"}" >> ${PATHTODSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP}
+
+						if ! [[ $? == 0 ]]
+						then
+							debug "failed to append spool file context spec"
+							exit 1
+						fi
 
 					else
 						printf "%s\n" "unhandled exception"
@@ -709,8 +1309,34 @@ do
 			if [[ `/bin/grep "^$USERNAME:" ${PATHTODSSP}/${PATHTOSEUSERSMLSRELATIVETODSSP}` ]]
 			then
 				SEUSERROLETUPLE="`/bin/bash ${PATHTODSSP}/${PATHTOPRINTSEUSERTUPLERELATIVETODSSP} -s ${PATHTOSEUSERSMLSRELATIVETODSSP} -p ${PATHTODSSP} -u ${USERNAME}`"
+
+				if ! [[ $retval == 0 ]] && ! [[ $retval == 205 ]]
+				then
+					case $retval in
+						1) debug "general fault" ;;
+						193) debug "file is not accessible" ;;
+						194) debug "file is not readable" ;;
+						195) debug "file is a zero-byte file" ;;
+						205) debug "no seuser tuple to list" ;;
+						*) debug "unhandled exception" ;;
+					esac
+
+					exit `echo $retval`
+				fi
+
 				SEUSERID="`printf "%s\n" "$SEUSERROLETUPLE" | /bin/awk -F":" '{ print $1 }' 2>/dev/null`"
+
+				if [[ -z $SEUSERID ]]
+				then
+					debug "unable to determine selinux user identity"
+				fi
+
 				SEUSERROLE="`printf "%s\n" "$SEUSERROLETUPLE" | /bin/awk -F":" '{ print $2 }' 2>/dev/null`"
+
+				if [[ -z $SEUSERROLE ]]
+				then
+					debug "unable to determine selinux user role"
+				fi
 
 				for HOMEDIR in ${HOMEDIRTEMPLATE[*]}
 				do
@@ -720,10 +1346,22 @@ do
 						ID=`echo "${NAME//sys.id/$SEUSERID}"`
 						echo "${ID//sys.role/"$SEUSERROLE"}" >> ${PATHTODSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP}
 
+						if ! [[ $? == 0 ]]
+						then
+							debug "failed to append home dir file context spec"
+							exit 1
+						fi
+
 					elif [[ $DISABLERBACSEP == 1 ]]
 					then
 						NAME=`echo "${HOMEDIR//HOME_DIR//home/"$USERNAME"}"`
 						echo "${NAME//sys.id/"$SEUSERID"}" >> ${PATHTODSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP}
+
+						if ! [[ $? == 0 ]]
+						then
+							debug "failed to append home dir file context spec"
+							exit 1
+						fi
 
 					else
 						printf "%s\n" "unhandled exception"
@@ -739,10 +1377,22 @@ do
 						ID=`echo "${NAME//sys.id/$SEUSERID}"`
 						echo "${ID//sys.role/"$SEUSERROLE"}" >> ${PATHTODSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP}
 
+						if ! [[ $? == 0 ]]
+						then
+							debug "failed to append spool file context spec"
+							exit 1
+						fi
+
 					elif [[ $DISABLERBACSEP == 1 ]]
 					then
 						NAME=`echo "${SPOOLFILE//USER_SPOOL//var/spool/mail/"$USERNAME"}"`
 						echo "${NAME//sys.id/"$SEUSERID"}" >> ${PATHTODSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP}
+
+						if ! [[ $? == 0 ]]
+						then
+							debug "failed to append spool file context spec"
+							exit 1
+						fi
 
 					else
 						printf "%s\n" "unhandled exception"
@@ -752,8 +1402,34 @@ do
 
 			else
 				DEFAULTSEUSERROLETUPLE="`/bin/bash ${PATHTODSSP}/${PATHTOPRINTSEUSERTUPLERELATIVETODSSP} -s ${PATHTOSEUSERSMLSRELATIVETODSSP} -p ${PATHTODSSP}`"
+
+				if ! [[ $retval == 0 ]] && ! [[ $retval == 205 ]]
+				then
+					case $retval in
+						1) debug "general fault" ;;
+						193) debug "file is not accessible" ;;
+						194) debug "file is not readable" ;;
+						195) debug "file is a zero-byte file" ;;
+						205) debug "no seuser tuple to list" ;;
+						*) debug "unhandled exception" ;;
+					esac
+
+					exit `echo $retval`
+				fi
+
 				DEFAULTSEUSERID="`printf "%s\n" "$DEFAULTSEUSERROLETUPLE" | /bin/awk -F":" '{ print $1 }' 2>/dev/null`"
+
+				if [[ -z $DEFAULTSEUSERID ]]
+				then
+					debug "unable to determine default selinux user identity"
+				fi
+
 				DEFAULTSEUSERROLE="`printf "%s\n" "$DEFAULTSEUSERROLETUPLE" | /bin/awk -F":" '{ print $2 }' 2>/dev/null`"
+
+				if [[ -z $DEFAULTSEUSERROLE ]]
+				then
+					debug "unable to determine default selinux user role"
+				fi
 
 				for HOMEDIR in ${HOMEDIRTEMPLATE[*]}
 				do
@@ -763,10 +1439,22 @@ do
 						ID=`echo "${NAME//sys.id/$DEFAULTSEUSERID}"`
 						echo "${ID//sys.role/"$DEFAULTSEUSERROLE"}" >> ${PATHTODSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP}
 
+						if ! [[ $? == 0 ]]
+						then
+							debug "failed to append home dir file context spec"
+							exit 1
+						fi
+
 					elif [[ $DISABLERBACSEP == 1 ]]
 					then
 						NAME=`echo "${HOMEDIR//HOME_DIR//home/"$USERNAME"}"`
 						echo "${NAME//sys.id/"$DEFAULTSEUSERID"}" >> ${PATHTODSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP}
+
+						if ! [[ $? == 0 ]]
+						then
+							debug "failed to append home dir file context spec"
+							exit 1
+						fi
 
 					else
 						printf "%s\n" "unhandled exception"
@@ -782,10 +1470,22 @@ do
 						ID=`echo "${NAME//sys.id/$DEFAULTSEUSERID}"`
 						echo "${ID//sys.role/"$DEFAULTSEUSERROLE"}" >> ${PATHTODSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP}
 
+						if ! [[ $? == 0 ]]
+						then
+							debug "failed to append spool file context spec"
+							exit 1
+						fi
+
 					elif [[ $DISABLERBACSEP == 1 ]]
 					then
 						NAME=`echo "${SPOOLFILE//USER_SPOOL//var/spool/mail/"$USERNAME"}"`
 						echo "${NAME//sys.id/"$DEFAULTSEUSERID"}" >> ${PATHTODSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP}
+
+						if ! [[ $? == 0 ]]
+						then
+							debug "failed to append spool file context spec"
+							exit 1
+						fi
 
 					else
 						printf "%s\n" "unhandled exception"
@@ -808,6 +1508,8 @@ done
 if [[ -x /sbin/sefcontext_compile ]]
 then
 	/sbin/sefcontext_compile ${PATHTODSSP}/${PATHTOCONTEXTSRELATIVETODSSP} && /sbin/sefcontext_compile ${PATHTODSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP}
+else
+	debug "not compiling contexts"
 fi
 
 exit
