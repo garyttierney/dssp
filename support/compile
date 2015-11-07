@@ -394,7 +394,7 @@ then
 		then
 			NAME=`echo "${DEFAULTHOMEDIR//DEFAULT_HOME_DIR//home}"`
 			ID=`echo "${NAME//sys.id/$DEFAULTSEUSERID}"`
-			echo "${ID//sys.role/"$DEFAULTSEUSERROLE"}" >> ${PATHTODSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP}
+			echo "${ID//sys.role/"$DEFAULTSEUSERROLE"}" >> ${PATHTODSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP} 2>/dev/null
 
 			if ! [[ $? == 0 ]]
 			then
@@ -405,7 +405,7 @@ then
 		elif [[ $DISABLERBACSEP == 1 ]]
 		then
 			NAME=`echo "${DEFAULTHOMEDIR//DEFAULT_HOME_DIR//home}"`
-			echo "${NAME//sys.id/"$DEFAULTSEUSERID"}" >> ${PATHTODSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP}
+			echo "${NAME//sys.id/"$DEFAULTSEUSERID"}" >> ${PATHTODSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP} 2>/dev/null
 
 			if ! [[ $? == 0 ]]
 			then
@@ -461,7 +461,7 @@ then
 			then
 				NAME=`echo "${DEFAULTHOMEDIR//DEFAULT_HOME_DIR//home}"`
 				ID=`echo "${NAME//sys.id/$DEFAULTSEUSERID}"`
-				echo "${ID//sys.role/"$DEFAULTSEUSERROLE"}" >> ${PATHTODSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP}
+				echo "${ID//sys.role/"$DEFAULTSEUSERROLE"}" >> ${PATHTODSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP} 2>/dev/null
 
 				if ! [[ $? == 0 ]]
 				then
@@ -472,7 +472,7 @@ then
 			elif [[ $DISABLERBACSEP == 1 ]]
 			then
 				NAME=`echo "${DEFAULTHOMEDIR//DEFAULT_HOME_DIR//home}"`
-				echo "${NAME//sys.id/"$DEFAULTSEUSERID"}" >> ${PATHTODSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP}
+				echo "${NAME//sys.id/"$DEFAULTSEUSERID"}" >> ${PATHTODSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP} 2>/dev/null
 
 				if ! [[ $? == 0 ]]
 				then
@@ -531,7 +531,7 @@ then
 			then
 				NAME=`echo "${DEFAULTHOMEDIR//DEFAULT_HOME_DIR//home}"`
 				ID=`echo "${NAME//sys.id/$DEFAULTSEUSERID}"`
-				echo "${ID//sys.role/"$DEFAULTSEUSERROLE"}" >> ${PATHTODSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP}
+				echo "${ID//sys.role/"$DEFAULTSEUSERROLE"}" >> ${PATHTODSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP} 2>/dev/null
 
 				if ! [[ $? == 0 ]]
 				then
@@ -542,7 +542,7 @@ then
 			elif [[ $DISABLERBACSEP == 1 ]]
 			then
 				NAME=`echo "${DEFAULTHOMEDIR//DEFAULT_HOME_DIR//home}"`
-				echo "${NAME//sys.id/"$DEFAULTSEUSERID"}" >> ${PATHTODSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP}
+				echo "${NAME//sys.id/"$DEFAULTSEUSERID"}" >> ${PATHTODSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP} 2>/dev/null
 
 				if ! [[ $? == 0 ]]
 				then
@@ -601,7 +601,7 @@ then
 			then
 				NAME=`echo "${DEFAULTHOMEDIR//DEFAULT_HOME_DIR//home}"`
 				ID=`echo "${NAME//sys.id/$DEFAULTSEUSERID}"`
-				echo "${ID//sys.role/"$DEFAULTSEUSERROLE"}" >> ${PATHTODSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP}
+				echo "${ID//sys.role/"$DEFAULTSEUSERROLE"}" >> ${PATHTODSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP} 2>/dev/null
 
 				if ! [[ $? == 0 ]]
 				then
@@ -612,7 +612,7 @@ then
 			elif [[ $DISABLERBACSEP == 1 ]]
 			then
 				NAME=`echo "${DEFAULTHOMEDIR//DEFAULT_HOME_DIR//home}"`
-				echo "${NAME//sys.id/"$DEFAULTSEUSERID"}" >> ${PATHTODSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP}
+				echo "${NAME//sys.id/"$DEFAULTSEUSERID"}" >> ${PATHTODSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP} 2>/dev/null
 
 				if ! [[ $? == 0 ]]
 				then
@@ -758,7 +758,7 @@ do
 				then
 					NAME=`echo "${HOMEDIR//HOME_DIR//home/"$USERNAME"}"`
 					ID=`echo "${NAME//sys.id/$SEUSERID}"`
-					echo "${ID//sys.role/"$SEUSERROLE"}" >> ${PATHTODSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP}
+					echo "${ID//sys.role/"$SEUSERROLE"}" >> ${PATHTODSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP} 2>/dev/null
 
 					if ! [[ $? == 0 ]]
 					then
@@ -769,7 +769,7 @@ do
 				elif [[ $DISABLERBACSEP == 1 ]]
 				then
 					NAME=`echo "${HOMEDIR//HOME_DIR//home/"$USERNAME"}"`
-					echo "${NAME//sys.id/"$SEUSERID"}" >> ${PATHTODSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP}
+					echo "${NAME//sys.id/"$SEUSERID"}" >> ${PATHTODSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP} 2>/dev/null
 
 					if ! [[ $? == 0 ]]
 					then
@@ -789,7 +789,7 @@ do
 				then
 					NAME=`echo "${SPOOLFILE//USER_SPOOL//var/spool/mail/"$USERNAME"}"`
 					ID=`echo "${NAME//sys.id/$SEUSERID}"`
-					echo "${ID//sys.role/"$SEUSERROLE"}" >> ${PATHTODSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP}
+					echo "${ID//sys.role/"$SEUSERROLE"}" >> ${PATHTODSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP} 2>/dev/null
 
 					if ! [[ $? == 0 ]]
 					then
@@ -800,7 +800,7 @@ do
 				elif [[ $DISABLERBACSEP == 1 ]]
 				then
 					NAME=`echo "${SPOOLFILE//USER_SPOOL//var/spool/mail/"$USERNAME"}"`
-					echo "${NAME//sys.id/"$SEUSERID"}" >> ${PATHTODSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP}
+					echo "${NAME//sys.id/"$SEUSERID"}" >> ${PATHTODSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP} 2>/dev/null
 
 					if ! [[ $? == 0 ]]
 					then
@@ -851,7 +851,7 @@ do
 				then
 					NAME=`echo "${HOMEDIR//HOME_DIR//home/"$USERNAME"}"`
 					ID=`echo "${NAME//sys.id/$DEFAULTSEUSERID}"`
-					echo "${ID//sys.role/"$DEFAULTSEUSERROLE"}" >> ${PATHTODSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP}
+					echo "${ID//sys.role/"$DEFAULTSEUSERROLE"}" >> ${PATHTODSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP} 2>/dev/null
 
 					if ! [[ $? == 0 ]]
 					then
@@ -862,7 +862,7 @@ do
 				elif [[ $DISABLERBACSEP == 1 ]]
 				then
 					NAME=`echo "${HOMEDIR//HOME_DIR//home/"$USERNAME"}"`
-					echo "${NAME//sys.id/"$DEFAULTSEUSERID"}" >> ${PATHTODSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP}
+					echo "${NAME//sys.id/"$DEFAULTSEUSERID"}" >> ${PATHTODSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP} 2>/dev/null
 
 					if ! [[ $? == 0 ]]
 					then
@@ -882,7 +882,7 @@ do
 				then
 					NAME=`echo "${SPOOLFILE//USER_SPOOL//var/spool/mail/"$USERNAME"}"`
 					ID=`echo "${NAME//sys.id/$DEFAULTSEUSERID}"`
-					echo "${ID//sys.role/"$DEFAULTSEUSERROLE"}" >> ${PATHTODSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP}
+					echo "${ID//sys.role/"$DEFAULTSEUSERROLE"}" >> ${PATHTODSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP} 2>/dev/null
 
 					if ! [[ $? == 0 ]]
 					then
@@ -893,7 +893,7 @@ do
 				elif [[ $DISABLERBACSEP == 1 ]]
 				then
 					NAME=`echo "${SPOOLFILE//USER_SPOOL//var/spool/mail/"$USERNAME"}"`
-					echo "${NAME//sys.id/"$DEFAULTSEUSERID"}" >> ${PATHTODSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP}
+					echo "${NAME//sys.id/"$DEFAULTSEUSERID"}" >> ${PATHTODSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP} 2>/dev/null
 
 					if ! [[ $? == 0 ]]
 					then
@@ -950,7 +950,7 @@ do
 					then
 						NAME=`echo "${HOMEDIR//HOME_DIR//home/"$USERNAME"}"`
 						ID=`echo "${NAME//sys.id/$SEUSERID}"`
-						echo "${ID//sys.role/"$SEUSERROLE"}" >> ${PATHTODSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP}
+						echo "${ID//sys.role/"$SEUSERROLE"}" >> ${PATHTODSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP} 2>/dev/null
 
 						if ! [[ $? == 0 ]]
 						then
@@ -961,7 +961,7 @@ do
 					elif [[ $DISABLERBACSEP == 1 ]]
 					then
 						NAME=`echo "${HOMEDIR//HOME_DIR//home/"$USERNAME"}"`
-						echo "${NAME//sys.id/"$SEUSERID"}" >> ${PATHTODSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP}
+						echo "${NAME//sys.id/"$SEUSERID"}" >> ${PATHTODSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP} 2>/dev/null
 
 						if ! [[ $? == 0 ]]
 						then
@@ -981,7 +981,7 @@ do
 					then
 						NAME=`echo "${SPOOLFILE//USER_SPOOL//var/spool/mail/"$USERNAME"}"`
 						ID=`echo "${NAME//sys.id/$SEUSERID}"`
-						echo "${ID//sys.role/"$SEUSERROLE"}" >> ${PATHTODSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP}
+						echo "${ID//sys.role/"$SEUSERROLE"}" >> ${PATHTODSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP} 2>/dev/null
 
 						if ! [[ $? == 0 ]]
 						then
@@ -992,7 +992,7 @@ do
 					elif [[ $DISABLERBACSEP == 1 ]]
 					then
 						NAME=`echo "${SPOOLFILE//USER_SPOOL//var/spool/mail/"$USERNAME"}"`
-						echo "${NAME//sys.id/"$SEUSERID"}" >> ${PATHTODSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP}
+						echo "${NAME//sys.id/"$SEUSERID"}" >> ${PATHTODSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP} 2>/dev/null
 
 						if ! [[ $? == 0 ]]
 						then
@@ -1043,7 +1043,7 @@ do
 					then
 						NAME=`echo "${HOMEDIR//HOME_DIR//home/"$USERNAME"}"`
 						ID=`echo "${NAME//sys.id/$DEFAULTSEUSERID}"`
-						echo "${ID//sys.role/"$DEFAULTSEUSERROLE"}" >> ${PATHTODSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP}
+						echo "${ID//sys.role/"$DEFAULTSEUSERROLE"}" >> ${PATHTODSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP} 2>/dev/null
 
 						if ! [[ $? == 0 ]]
 						then
@@ -1054,7 +1054,7 @@ do
 					elif [[ $DISABLERBACSEP == 1 ]]
 					then
 						NAME=`echo "${HOMEDIR//HOME_DIR//home/"$USERNAME"}"`
-						echo "${NAME//sys.id/"$DEFAULTSEUSERID"}" >> ${PATHTODSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP}
+						echo "${NAME//sys.id/"$DEFAULTSEUSERID"}" >> ${PATHTODSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP} 2>/dev/null
 
 						if ! [[ $? == 0 ]]
 						then
@@ -1074,7 +1074,7 @@ do
 					then
 						NAME=`echo "${SPOOLFILE//USER_SPOOL//var/spool/mail/"$USERNAME"}"`
 						ID=`echo "${NAME//sys.id/$DEFAULTSEUSERID}"`
-						echo "${ID//sys.role/"$DEFAULTSEUSERROLE"}" >> ${PATHTODSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP}
+						echo "${ID//sys.role/"$DEFAULTSEUSERROLE"}" >> ${PATHTODSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP} 2>/dev/null
 
 						if ! [[ $? == 0 ]]
 						then
@@ -1085,7 +1085,7 @@ do
 					elif [[ $DISABLERBACSEP == 1 ]]
 					then
 						NAME=`echo "${SPOOLFILE//USER_SPOOL//var/spool/mail/"$USERNAME"}"`
-						echo "${NAME//sys.id/"$DEFAULTSEUSERID"}" >> ${PATHTODSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP}
+						echo "${NAME//sys.id/"$DEFAULTSEUSERID"}" >> ${PATHTODSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP} 2>/dev/null
 
 						if ! [[ $? == 0 ]]
 						then
@@ -1147,7 +1147,7 @@ do
 					then
 						NAME=`echo "${HOMEDIR//HOME_DIR//home/"$USERNAME"}"`
 						ID=`echo "${NAME//sys.id/$SEUSERID}"`
-						echo "${ID//sys.role/"$SEUSERROLE"}" >> ${PATHTODSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP}
+						echo "${ID//sys.role/"$SEUSERROLE"}" >> ${PATHTODSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP} 2>/dev/null
 
 						if ! [[ $? == 0 ]]
 						then
@@ -1158,7 +1158,7 @@ do
 					elif [[ $DISABLERBACSEP == 1 ]]
 					then
 						NAME=`echo "${HOMEDIR//HOME_DIR//home/"$USERNAME"}"`
-						echo "${NAME//sys.id/"$SEUSERID"}" >> ${PATHTODSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP}
+						echo "${NAME//sys.id/"$SEUSERID"}" >> ${PATHTODSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP} 2>/dev/null
 
 						if ! [[ $? == 0 ]]
 						then
@@ -1178,7 +1178,7 @@ do
 					then
 						NAME=`echo "${SPOOLFILE//USER_SPOOL//var/spool/mail/"$USERNAME"}"`
 						ID=`echo "${NAME//sys.id/$SEUSERID}"`
-						echo "${ID//sys.role/"$SEUSERROLE"}" >> ${PATHTODSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP}
+						echo "${ID//sys.role/"$SEUSERROLE"}" >> ${PATHTODSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP} 2>/dev/null
 
 						if ! [[ $? == 0 ]]
 						then
@@ -1189,7 +1189,7 @@ do
 					elif [[ $DISABLERBACSEP == 1 ]]
 					then
 						NAME=`echo "${SPOOLFILE//USER_SPOOL//var/spool/mail/"$USERNAME"}"`
-						echo "${NAME//sys.id/"$SEUSERID"}" >> ${PATHTODSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP}
+						echo "${NAME//sys.id/"$SEUSERID"}" >> ${PATHTODSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP} 2>/dev/null
 
 						if ! [[ $? == 0 ]]
 						then
@@ -1240,7 +1240,7 @@ do
 					then
 						NAME=`echo "${HOMEDIR//HOME_DIR//home/"$USERNAME"}"`
 						ID=`echo "${NAME//sys.id/$DEFAULTSEUSERID}"`
-						echo "${ID//sys.role/"$DEFAULTSEUSERROLE"}" >> ${PATHTODSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP}
+						echo "${ID//sys.role/"$DEFAULTSEUSERROLE"}" >> ${PATHTODSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP} 2>/dev/null
 
 						if ! [[ $? == 0 ]]
 						then
@@ -1251,7 +1251,7 @@ do
 					elif [[ $DISABLERBACSEP == 1 ]]
 					then
 						NAME=`echo "${HOMEDIR//HOME_DIR//home/"$USERNAME"}"`
-						echo "${NAME//sys.id/"$DEFAULTSEUSERID"}" >> ${PATHTODSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP}
+						echo "${NAME//sys.id/"$DEFAULTSEUSERID"}" >> ${PATHTODSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP} 2>/dev/null
 
 						if ! [[ $? == 0 ]]
 						then
@@ -1271,7 +1271,7 @@ do
 					then
 						NAME=`echo "${SPOOLFILE//USER_SPOOL//var/spool/mail/"$USERNAME"}"`
 						ID=`echo "${NAME//sys.id/$DEFAULTSEUSERID}"`
-						echo "${ID//sys.role/"$DEFAULTSEUSERROLE"}" >> ${PATHTODSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP}
+						echo "${ID//sys.role/"$DEFAULTSEUSERROLE"}" >> ${PATHTODSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP} 2>/dev/null
 
 						if ! [[ $? == 0 ]]
 						then
@@ -1282,7 +1282,7 @@ do
 					elif [[ $DISABLERBACSEP == 1 ]]
 					then
 						NAME=`echo "${SPOOLFILE//USER_SPOOL//var/spool/mail/"$USERNAME"}"`
-						echo "${NAME//sys.id/"$DEFAULTSEUSERID"}" >> ${PATHTODSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP}
+						echo "${NAME//sys.id/"$DEFAULTSEUSERID"}" >> ${PATHTODSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP} 2>/dev/null
 
 						if ! [[ $? == 0 ]]
 						then
@@ -1344,7 +1344,7 @@ do
 					then
 						NAME=`echo "${HOMEDIR//HOME_DIR//home/"$USERNAME"}"`
 						ID=`echo "${NAME//sys.id/$SEUSERID}"`
-						echo "${ID//sys.role/"$SEUSERROLE"}" >> ${PATHTODSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP}
+						echo "${ID//sys.role/"$SEUSERROLE"}" >> ${PATHTODSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP} 2>/dev/null
 
 						if ! [[ $? == 0 ]]
 						then
@@ -1355,7 +1355,7 @@ do
 					elif [[ $DISABLERBACSEP == 1 ]]
 					then
 						NAME=`echo "${HOMEDIR//HOME_DIR//home/"$USERNAME"}"`
-						echo "${NAME//sys.id/"$SEUSERID"}" >> ${PATHTODSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP}
+						echo "${NAME//sys.id/"$SEUSERID"}" >> ${PATHTODSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP} 2>/dev/null
 
 						if ! [[ $? == 0 ]]
 						then
@@ -1375,7 +1375,7 @@ do
 					then
 						NAME=`echo "${SPOOLFILE//USER_SPOOL//var/spool/mail/"$USERNAME"}"`
 						ID=`echo "${NAME//sys.id/$SEUSERID}"`
-						echo "${ID//sys.role/"$SEUSERROLE"}" >> ${PATHTODSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP}
+						echo "${ID//sys.role/"$SEUSERROLE"}" >> ${PATHTODSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP} 2>/dev/null
 
 						if ! [[ $? == 0 ]]
 						then
@@ -1386,7 +1386,7 @@ do
 					elif [[ $DISABLERBACSEP == 1 ]]
 					then
 						NAME=`echo "${SPOOLFILE//USER_SPOOL//var/spool/mail/"$USERNAME"}"`
-						echo "${NAME//sys.id/"$SEUSERID"}" >> ${PATHTODSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP}
+						echo "${NAME//sys.id/"$SEUSERID"}" >> ${PATHTODSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP} 2>/dev/null
 
 						if ! [[ $? == 0 ]]
 						then
@@ -1437,7 +1437,7 @@ do
 					then
 						NAME=`echo "${HOMEDIR//HOME_DIR//home/"$USERNAME"}"`
 						ID=`echo "${NAME//sys.id/$DEFAULTSEUSERID}"`
-						echo "${ID//sys.role/"$DEFAULTSEUSERROLE"}" >> ${PATHTODSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP}
+						echo "${ID//sys.role/"$DEFAULTSEUSERROLE"}" >> ${PATHTODSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP} 2>/dev/null
 
 						if ! [[ $? == 0 ]]
 						then
@@ -1448,7 +1448,7 @@ do
 					elif [[ $DISABLERBACSEP == 1 ]]
 					then
 						NAME=`echo "${HOMEDIR//HOME_DIR//home/"$USERNAME"}"`
-						echo "${NAME//sys.id/"$DEFAULTSEUSERID"}" >> ${PATHTODSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP}
+						echo "${NAME//sys.id/"$DEFAULTSEUSERID"}" >> ${PATHTODSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP} 2>/dev/null
 
 						if ! [[ $? == 0 ]]
 						then
@@ -1468,7 +1468,7 @@ do
 					then
 						NAME=`echo "${SPOOLFILE//USER_SPOOL//var/spool/mail/"$USERNAME"}"`
 						ID=`echo "${NAME//sys.id/$DEFAULTSEUSERID}"`
-						echo "${ID//sys.role/"$DEFAULTSEUSERROLE"}" >> ${PATHTODSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP}
+						echo "${ID//sys.role/"$DEFAULTSEUSERROLE"}" >> ${PATHTODSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP} 2>/dev/null
 
 						if ! [[ $? == 0 ]]
 						then
@@ -1479,7 +1479,7 @@ do
 					elif [[ $DISABLERBACSEP == 1 ]]
 					then
 						NAME=`echo "${SPOOLFILE//USER_SPOOL//var/spool/mail/"$USERNAME"}"`
-						echo "${NAME//sys.id/"$DEFAULTSEUSERID"}" >> ${PATHTODSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP}
+						echo "${NAME//sys.id/"$DEFAULTSEUSERID"}" >> ${PATHTODSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP} 2>/dev/null
 
 						if ! [[ $? == 0 ]]
 						then
