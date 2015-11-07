@@ -179,12 +179,12 @@ updatetoupstream () {
 		if [[ $_STATUS == 196 ]]
 		then
 			debug "file is not a directory"
-			exit `echo $_STATUS`
+			return `echo $_STATUS`
 
 		elif ! [[ $_STATUS == 0 ]]
 		then
 			debug "unhandled exception"
-			exit `echo $_STATUS`
+			return `echo $_STATUS`
 		fi
 
 		( /bin/cd $1 && /bin/git pull --recurse-submodules https://github.com/defensec/dssp \
