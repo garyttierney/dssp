@@ -45,6 +45,12 @@ exit codes
 	exit
 }
 
+if [[ $UID == 0 ]]
+then
+	printf "%s\n" "cannot be executed as root"
+	exit 1
+fi
+
 ! (( $# > 0 )) && usage || :
 
 while (( $# > 0 ))
@@ -132,13 +138,9 @@ do
 			printf "%s\n" "unable to determine max policy version"
 			exit 1
 
-		elif (( $POLICYVERION > "`/bin/cat /sys/fs/selinux/policyvers 2>/dev/null`" ))
+		elif (( $POLICYVERSION > "`/bin/cat /sys/fs/selinux/policyvers 2>/dev/null`" ))
 		then
 			printf "%s\n" "invalid policy version \"$POLICYVERSION\" specified"
-			exit 1
-
-		else
-			printf "%s\n" "unhandled exception"
 			exit 1
 		fi
 		;;
@@ -147,9 +149,12 @@ do
 		DISABLERBACSEP=1
 		;;
 		\-v)
+
 		DEBUG=1
 		;;
-		*) break
+		*)
+
+		break
 		;;
 		esac
 	shift
@@ -344,15 +349,34 @@ fi
 
 IFS=$'\n'
 
-echo > ${PATHTODSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP}
+/bin/rm -f ${PATHTODSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP} 2>/dev/null
 
-if [[ -s ${PATHTODSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP} ]]
+if ! [[ $? == 0 ]]
+then
+	debug "failed to remove \"${PATHTODSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP}\""
+fi
+
+/bin/rm -f ${PATHTODSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP}.bin 2>/dev/null
+
+if ! [[ $? == 0 ]]
+then
+	debug "failed to remove \"${PATHTODSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP}.bin\""
+fi
+
+/bin/touch ${PATHTODSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP} 2>/dev/null
+
+if ! [[ $? == 0 ]]
+then
+	debug "failed to touch empty file \"${PATHTODSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP}\""
+fi
+
+if ! [[ -s ${PATHTODSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP} ]]
 then
 	debug "cleared ${PATHTODSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP}"
 
-elif ! [[ -s ${PATHTODSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP} ]]
+elif [[ -s ${PATHTODSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP} ]]
 then
-	debug "cleared to empty ${PATHTODSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP}"
+	debug "unable to empty ${PATHTODSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP}"
 	exit 1
 
 else
@@ -364,7 +388,7 @@ if [[ -r ${PATHTODSSP}/${PATHTOSEUSERSLOCALRELATIVETODSSP} ]] || [[ -s ${PATHTOD
 then
 	DEFAULTSEUSERROLETUPLE="`/bin/bash ${PATHTODSSP}/${PATHTOPRINTSEUSERTUPLERELATIVETODSSP} -s ${PATHTOSEUSERSLOCALRELATIVETODSSP} -p ${PATHTODSSP}`"
 
-	retval=` echo $?`
+	retval=`echo $?`
 
 	if ! [[ $retval == 0 ]] && ! [[ $retval == 205 ]]
 	then
@@ -431,7 +455,7 @@ then
 	then
 		DEFAULTSEUSERROLETUPLE="`/bin/bash ${PATHTODSSP}/${PATHTOPRINTSEUSERTUPLERELATIVETODSSP} -s ${PATHTOSEUSERSSTANDARDRELATIVETODSSP} -p ${PATHTODSSP}`"
 
-		retval=` echo $?`
+		retval=`echo $?`
 
 		if ! [[ $retval == 0 ]] && ! [[ $retval == 205 ]]
 		then
@@ -503,6 +527,8 @@ then
 	then
 		DEFAULTSEUSERROLETUPLE="`/bin/bash ${PATHTODSSP}/${PATHTOPRINTSEUSERTUPLERELATIVETODSSP} -s ${PATHTOSEUSERSMCSRELATIVETODSSP} -p ${PATHTODSSP}`"
 
+		retval=`echo $?`
+
 		if ! [[ $retval == 0 ]] && ! [[ $retval == 205 ]]
 		then
 			case $retval in
@@ -572,6 +598,8 @@ then
 	if [[ -r ${PATHTODSSP}/${PATHTOSEUSERSMLSRELATIVETODSSP} ]] || [[ -s ${PATHTODSSP}/${PATHTOSEUSERSMLSRELATIVETODSSP} ]]
 	then
 		DEFAULTSEUSERROLETUPLE="`/bin/bash ${PATHTODSSP}/${PATHTOPRINTSEUSERTUPLERELATIVETODSSP} -s ${PATHTOSEUSERSMLSRELATIVETODSSP} -p ${PATHTODSSP}`"
+
+		retval=`echo $?`
 
 		if ! [[ $retval == 0 ]] && ! [[ $retval == 205 ]]
 		then
@@ -726,9 +754,11 @@ for USERNAME in ${USERNAMES[*]}
 do
 	if [[ -r ${PATHTODSSP}/${PATHTOSEUSERSLOCALRELATIVETODSSP} ]] || [[ -s ${PATHTODSSP}/${PATHTOSEUSERSLOCALRELATIVETODSSP} ]]
 	then
-		if [[ `/bin/grep "^$USERNAME:" ${PATHTODSSP}/${PATHTOSEUSERSLOCALRELATIVETODSSP}` ]]
+		if [[ `/bin/grep "^$USERNAME:" ${PATHTODSSP}/${PATHTOSEUSERSLOCALRELATIVETODSSP} 2>/dev/null` ]]
 		then
 			SEUSERROLETUPLE="`/bin/bash ${PATHTODSSP}/${PATHTOPRINTSEUSERTUPLERELATIVETODSSP} -s ${PATHTOSEUSERSLOCALRELATIVETODSSP} -p ${PATHTODSSP} -u ${USERNAME}`"
+
+			retval=`echo $?`
 
 			if ! [[ $retval == 0 ]] && ! [[ $retval == 205 ]]
 			then
@@ -822,6 +852,8 @@ do
 
 		else
 			DEFAULTSEUSERROLETUPLE="`/bin/bash ${PATHTODSSP}/${PATHTOPRINTSEUSERTUPLERELATIVETODSSP} -s ${PATHTOSEUSERSLOCALRELATIVETODSSP} -p ${PATHTODSSP}`"
+
+			retval=`echo $?`
 
 			if ! [[ $retval == 0 ]] && ! [[ $retval == 205 ]]
 			then
@@ -918,9 +950,11 @@ do
 	then
 		if [[ -r ${PATHTODSSP}/${PATHTOSEUSERSSTANDARDRELATIVETODSSP} ]] || [[ -s ${PATHTODSSP}/${PATHTOSEUSERSSTANDARDRELATIVETODSSP} ]]
 		then
-			if [[ `/bin/grep "^$USERNAME:" ${PATHTODSSP}/${PATHTOSEUSERSSTANDARDRELATIVETODSSP}` ]]
+			if [[ `/bin/grep "^$USERNAME:" ${PATHTODSSP}/${PATHTOSEUSERSSTANDARDRELATIVETODSSP} 2>/dev/null` ]]
 			then
 				SEUSERROLETUPLE="`/bin/bash ${PATHTODSSP}/${PATHTOPRINTSEUSERTUPLERELATIVETODSSP} -s ${PATHTOSEUSERSSTANDARDRELATIVETODSSP} -p ${PATHTODSSP} -u ${USERNAME}`"
+
+				retval=`echo $?`
 
 				if ! [[ $retval == 0 ]] && ! [[ $retval == 205 ]]
 				then
@@ -1014,6 +1048,8 @@ do
 
 			else
 				DEFAULTSEUSERROLETUPLE="`/bin/bash ${PATHTODSSP}/${PATHTOPRINTSEUSERTUPLERELATIVETODSSP} -s ${PATHTOSEUSERSSTANDARDRELATIVETODSSP} -p ${PATHTODSSP}`"
+
+				retval=`echo $?`
 
 				if ! [[ $retval == 0 ]] && ! [[ $retval == 205 ]]
 				then
@@ -1115,9 +1151,11 @@ do
 	then
 		if [[ -r ${PATHTODSSP}/${PATHTOSEUSERSMCSRELATIVETODSSP} ]] || [[ -s ${PATHTODSSP}/${PATHTOSEUSERSMCSRELATIVETODSSP} ]]
 		then
-			if [[ `/bin/grep "^$USERNAME:" ${PATHTODSSP}/${PATHTOSEUSERSMCSRELATIVETODSSP}` ]]
+			if [[ `/bin/grep "^$USERNAME:" ${PATHTODSSP}/${PATHTOSEUSERSMCSRELATIVETODSSP} 2>/dev/null` ]]
 			then
 				SEUSERROLETUPLE="`/bin/bash ${PATHTODSSP}/${PATHTOPRINTSEUSERTUPLERELATIVETODSSP} -s ${PATHTOSEUSERSMCSRELATIVETODSSP} -p ${PATHTODSSP} -u ${USERNAME}`"
+
+				retval=`echo $?`
 
 				if ! [[ $retval == 0 ]] && ! [[ $retval == 205 ]]
 				then
@@ -1211,6 +1249,8 @@ do
 
 			else
 				DEFAULTSEUSERROLETUPLE="`/bin/bash ${PATHTODSSP}/${PATHTOPRINTSEUSERTUPLERELATIVETODSSP} -s ${PATHTOSEUSERSMCSRELATIVETODSSP} -p ${PATHTODSSP}`"
+
+				retval=`echo $?`
 
 				if ! [[ $retval == 0 ]] && ! [[ $retval == 205 ]]
 				then
@@ -1312,9 +1352,11 @@ do
 	then
 		if [[ -r ${PATHTODSSP}/${PATHTOSEUSERSMLSRELATIVETODSSP} ]] || [[ -s ${PATHTODSSP}/${PATHTOSEUSERSMLSRELATIVETODSSP} ]]
 		then
-			if [[ `/bin/grep "^$USERNAME:" ${PATHTODSSP}/${PATHTOSEUSERSMLSRELATIVETODSSP}` ]]
+			if [[ `/bin/grep "^$USERNAME:" ${PATHTODSSP}/${PATHTOSEUSERSMLSRELATIVETODSSP} 2>/dev/null` ]]
 			then
 				SEUSERROLETUPLE="`/bin/bash ${PATHTODSSP}/${PATHTOPRINTSEUSERTUPLERELATIVETODSSP} -s ${PATHTOSEUSERSMLSRELATIVETODSSP} -p ${PATHTODSSP} -u ${USERNAME}`"
+
+				retval=`echo $?`
 
 				if ! [[ $retval == 0 ]] && ! [[ $retval == 205 ]]
 				then
@@ -1408,6 +1450,8 @@ do
 
 			else
 				DEFAULTSEUSERROLETUPLE="`/bin/bash ${PATHTODSSP}/${PATHTOPRINTSEUSERTUPLERELATIVETODSSP} -s ${PATHTOSEUSERSMLSRELATIVETODSSP} -p ${PATHTODSSP}`"
+
+				retval=`echo $?`
 
 				if ! [[ $retval == 0 ]] && ! [[ $retval == 205 ]]
 				then
@@ -1513,9 +1557,31 @@ done
 
 if [[ -x /sbin/sefcontext_compile ]]
 then
-	/sbin/sefcontext_compile ${PATHTODSSP}/${PATHTOCONTEXTSRELATIVETODSSP} && /sbin/sefcontext_compile ${PATHTODSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP}
+	/sbin/sefcontext_compile ${PATHTODSSP}/${PATHTOCONTEXTSRELATIVETODSSP} 2>/dev/null
+
+	if ! [[ $? == 0 ]]
+	then
+		debug "failed to compile contexts for \"${PATHTODSSP}/${PATHTOCONTEXTSRELATIVETODSSP}\""
+	fi
+
+	filetestandresult -s ${PATHTODSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP}
+
+	retval=`echo $?`
+
+	if [[ $retval == 0 ]]
+	then
+		/sbin/sefcontext_compile ${PATHTODSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP} 2>/dev/null
+
+	elif [[ $retval == 195 ]]
+	then
+		debug "not compiling empty \"${PATHTODSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP}\""
+
+	else
+		debug "unhandled exception"
+		exit 1
+	fi
 else
-	debug "not compiling contexts"
+	debug "unable to execute /bin/sefcontext_conpile"
 fi
 
 exit
