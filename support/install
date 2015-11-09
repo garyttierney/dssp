@@ -3596,7 +3596,7 @@ then
 					then
 						debug "not installing empty file \"${PATHTODSSP}/contexts/${CONTEXTSFILE}\""
 
-					if [[ $retval == 0 ]]
+					elif [[ $retval == 0 ]]
 					then
 						if [[ $UID == 0 ]]
 						then
