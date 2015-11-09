@@ -148,9 +148,12 @@ filetestresult () {
 # @retval 197 file is not a writeable file
 
 filetestandresult () {
-	debug "performing file test $1 on $2, and evaluating its results"
-	filetest $1 $2
-	filetestresult $1 $2
+	local _FLAG=$1
+	local _FILE=$2
+
+	debug "performing file test $_FLAG on $_FILE, and evaluating its results"
+	filetest $_FLAG $_FILE
+	filetestresult $_FLAG $_FILE
 }
 
 ## @brief updates dssp
@@ -188,3 +191,5 @@ updatetoupstream () {
 			&& /bin/git submodule update --recursive )
 	fi
 }
+
+#EOF
