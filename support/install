@@ -3357,7 +3357,7 @@ then
 
 						retval=`echo $?`
 
-						if ! [[ $retval == 0 ]] && ! [[ $retval == 199 ]] && ! [[ $retval == 200 ]] || ! [[ $retval == 195 ]]
+						if ! [[ $retval == 0 ]] && ! [[ $retval == 199 ]] && ! [[ $retval == 200 ]] && ! [[ $retval == 195 ]]
 						then
 							case $retval in
 								1) debug "general fault" ;;
@@ -3371,7 +3371,7 @@ then
 						then
 							debug "not updating empty file \"${PATHTODSSP}/contexts.d/${CONTEXTSFILE}\""
 
-							filetest -f ${PATHTOSELINUXCONFIG}/${DSSP}/contexts/${STRIPPEDCONTEXTSFILE}
+							filetestandresult -f ${PATHTOSELINUXCONFIG}/${DSSP}/contexts/${STRIPPEDCONTEXTSFILE}
 
 							retval=`echo $?`
 
@@ -3466,7 +3466,7 @@ then
 						then
 							debug "not updating empty file \"${PATHTODSSP}/contexts.d/${CONTEXTSFILE}\""
 
-							filetest -f ${PATHTOSELINUXCONFIG}/${DSSP}/contexts/${STRIPPEDCONTEXTSFILE}
+							filetestandresult -f ${PATHTOSELINUXCONFIG}/${DSSP}/contexts/${STRIPPEDCONTEXTSFILE}
 
 							retval=`echo $?`
 
