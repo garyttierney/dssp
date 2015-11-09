@@ -204,6 +204,7 @@ case $retval in
 	193) debug "file is not accessible" ;;
 	194) debug "file not readable" ;;
 	195) debug "file is a zero byte file" ;;
+	196) debug "file is not a directory" ;;
 	201) debug "no path entries to list" ;;
 	202) debug "no such file or directory" ;;
 	*) debug "unhandled exception" ;;
