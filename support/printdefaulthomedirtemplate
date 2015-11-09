@@ -42,9 +42,12 @@ do
 		PATHTODSSP=$1
 		;;
 		\-d)
+
 		DEBUG=1
 		;;
-		*) break
+		*)
+
+		break
 		;;
 		esac
 	shift
@@ -92,11 +95,7 @@ elif [[ -n $DEFAULTHOMEDIRTEMPLATE ]]
 then
 	printf "%s\n" "${DEFAULTHOMEDIRTEMPLATE[@]}"
 	exit
-
-else
-	debug "unhandled exception"
-	exit 1
 fi
 
-exit
+exit `echo $?`
 #EOF

@@ -42,9 +42,12 @@ do
 		PATHTODSSP=$1
 		;;
 		\-d)
+
 		DEBUG=1
 		;;
-		*) break
+		*)
+
+		break
 		;;
 		esac
 	shift
@@ -91,12 +94,7 @@ then
 elif [[ -n $SPOOLFILETEMPLATE ]]
 then
 	printf "%s\n" "${SPOOLFILETEMPLATE[@]}"
-	exit
-
-else
-	debug "unhandled exception"
-	exit 1
 fi
 
-exit
+exit `echo $?`
 #EOF

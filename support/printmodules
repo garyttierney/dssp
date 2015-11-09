@@ -41,9 +41,12 @@ do
 		PATHTODSSP=$1
 		;;
 		\-d)
+
 		DEBUG=1
 		;;
-		*) break
+		*)
+
+		break
 		;;
 		esac
 	shift
@@ -97,11 +100,7 @@ done
 if [[ -n $MODULES ]]
 then
 	printf "%s\n" "${MODULES[@]}"
-
-else
-	debug "unhandled exception"
-	exit 1
 fi
 
-exit
+exit `echo $?`
 #EOF

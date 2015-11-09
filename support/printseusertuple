@@ -65,9 +65,12 @@ do
 		USERNAME=$1
 		;;
 		\-d)
+
 		DEBUG=1
 		;;
-		*) break
+		*)
+
+		break
 		;;
 		esac
 	shift
@@ -106,8 +109,6 @@ retval=$?
 
 if [[ -z $USERNAME ]]
 then
-	debug "fetching default seuser tuple"
-
 	DEFAULTSEUSER="`/bin/grep ^__default__ ${PATHTODSSP}/${PATHTOSEUSERSFILERELATIVETOSOURCE} | /bin/awk -F ":" '{ print $2 }' 2>/dev/null`"
 	DEFAULTSEUSERPREFIX="`printf "%s\n" "$DEFAULTSEUSER" | /bin/cut -s -f1 -d. 2>/dev/null`"
 
@@ -138,16 +139,10 @@ then
 			debug "unable to determine valid default user tuple"
 			exit 1
 		fi
-
-	else
-		debug "unhandled exception"
-		exit 1
 	fi
 
 elif [[ -n $USERNAME ]]
 then
-	debug "fetching seuser tuple for $USERNAME"
-
 	SEUSER="`/bin/grep ^"$USERNAME" ${PATHTODSSP}/${PATHTOSEUSERSFILERELATIVETOSOURCE} | /bin/awk -F ":" '{ print $2 }' 2>/dev/null`"
         SEUSERPREFIX="`printf "%s\n" "$SEUSER" | /bin/cut -s -f1 -d. 2>/dev/null`"
 
@@ -177,16 +172,8 @@ then
 			debug "unable to determine valid user tuple for $USERNAME"
 			exit 1
 		fi
-
-	else
-		debug "unhandled exception"
-		exit 1
 	fi
-
-else
-	debug "unhandled exception"
-	exit 1
 fi
 
-exit
+exit `echo $?`
 #EOF

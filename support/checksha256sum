@@ -66,9 +66,12 @@ do
 		PATHTOTARGET=$1
 		;;
 		\-d)
+
 		DEBUG=1
 		;;
-		*) break
+		*)
+
+		break
 		;;
 		esac
 	shift
@@ -123,7 +126,26 @@ retval=$?
 
 ! [[ $retval == 0 ]] && exit `echo $retval`
 
-SUMSOURCE="`/bin/sudo -E /bin/sha256sum $PATHTOSOURCE | /bin/awk '{ print $1 }' 2>/dev/null`"
+if [[ $UID == 0 ]]
+then
+	SUMSOURCE="`/bin/sha256sum $PATHTOSOURCE | /bin/awk '{ print $1 }' 2>/dev/null`"
+
+	if ! [[ $? == 0 ]]
+	then
+		printf "%s\n" "failed to get source sum"
+		exit `echo $?`
+	fi
+
+elif ! [[ $UID == 0 ]]
+then
+	SUMSOURCE="`/bin/sudo -E /bin/sha256sum $PATHTOSOURCE | /bin/awk '{ print $1 }' 2>/dev/null`"
+
+	if ! [[ $? == 0 ]]
+	then
+		printf "%s\n" "failed to get source sum"
+		exit `echo $?`
+	fi
+fi
 
 if [[ -z $SUMSOURCE ]]
 then
@@ -131,7 +153,26 @@ then
 	exit 1
 fi
 
-SUMTARGET="`/bin/sudo -E /bin/sha256sum $PATHTOTARGET | /bin/awk '{ print $1 }' 2>/dev/null`"
+if [[ $UID == 0 ]]
+then
+	SUMTARGET="`/bin/sha256sum $PATHTOTARGET | /bin/awk '{ print $1 }' 2>/dev/null`"
+
+	if ! [[ $? == 0 ]]
+	then
+		printf "%s\n" "failed to get target sum"
+		exit `echo $?`
+	fi
+
+elif ! [[ $UID == 0 ]]
+then
+	SUMTARGET="`/bin/sudo -E /bin/sha256sum $PATHTOTARGET | /bin/awk '{ print $1 }' 2>/dev/null`"
+
+	if ! [[ $? == 0 ]]
+	then
+		printf "%s\n" "failed to get target sum"
+		exit `echo $?`
+	fi
+fi
 
 if [[ -z $SUMTARGET ]]
 then
@@ -146,11 +187,7 @@ then
 elif ! [[ $SUMSOURCE == $SUMTARGET ]]
 then
 	exit 200
-
-else
-	debug "unhandled exception"
-	exit 1
 fi
 
-exit
+exit `echo $?`
 #EOF

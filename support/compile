@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# todo: implement a "make clean" option to remove generated contexts and policy
+
 declare PATHTOCONTEXTSRELATIVETODSSP="contexts/files/file_contexts"
 declare PATHTOFUNCTIONSRELATIVETODSSP="support/functions"
 declare PATHTOHOMEDIRCONTEXTSRELATIVETODSSP="contexts/files/file_contexts.homedirs"
@@ -44,12 +46,6 @@ exit codes
 203	: no path entries to be included"
 	exit
 }
-
-if [[ $UID == 0 ]]
-then
-	printf "%s\n" "cannot be executed as root"
-	exit 1
-fi
 
 ! (( $# > 0 )) && usage || :
 
@@ -173,12 +169,12 @@ then
 
 		if [[ -z $POLICYVERSION ]] && [[ ! $POLICYVERSION =~ "^[0-9]+$" ]]
 		then
-			printf "%s\n" "invalid policy version \"$POLICYVERSION\" specified"
+			debug "invalid policy version \"$POLICYVERSION\" specified"
 			exit 1
 		fi
 
 	else
-		echo "unable to determine max policy version"
+		debug "unable to determine max policy version"
 		exit 1
 	fi
 fi
@@ -203,32 +199,22 @@ EXCLUDES+=(`/bin/bash ${PATHTODSSP}/${PATHTOPRINTEXCLUDESRELATIVETODSSP} -p $PAT
 
 retval=`echo $?`
 
+case $retval in
+	1) debug "general fault" ;;
+	193) debug "file is not accessible" ;;
+	194) debug "file not readable" ;;
+	195) debug "file is a zero byte file" ;;
+	201) debug "no path entries to list" ;;
+	202) debug "no such file or directory" ;;
+	*) debug "unhandled exception" ;;
+esac
+
 if ! [[ $retval == 0 ]] && ! [[ $retval == 201 ]]
 then
-	case $retval in
-		1) debug "general fault" ;;
-		194) debug "file is not readable" ;;
-		195) debug "file is a zero-byte file" ;;
-		196) debug "file is not a directory" ;;
-		202) debug "no such file or directory" ;;
-		*) debug "unhandled exception" ;;
-	esac
-
 	exit `echo $retval`
 fi
 
-if [[ -z $EXCLUDES ]]
-then
-	if [[ $retval == 201 ]]
-	then
-		debug "no path entries to be excluded"
-
-	else
-		debug "unhandled exception"
-		exit 1
-	fi
-
-elif [[ -n $EXCLUDES ]]
+if [[ -n $EXCLUDES ]]
 then
 	debug "path entries to be excluded"
 fi
@@ -239,31 +225,20 @@ MODULES+=(`/bin/bash ${PATHTODSSP}/${PATHTOPRINTMODULESRELATIVETODSSP} -p $PATHT
 
 retval=`echo $?`
 
+case $retval in
+	1) debug "general fault" ;;
+	194) debug "file not readable" ;;
+	195) debug "file is a zero byte file" ;;
+	203) debug "no modules list" ;;
+	*) debug "unhandled exception" ;;
+esac
+
 if ! [[ $retval == 0 ]] && ! [[ $retval == 203 ]]
 then
-	case $retval in
-		1) debug "general fault" ;;
-		194) debug "file is not readable" ;;
-		195) debug "file is a zero-byte file" ;;
-		*) debug "unhandled exception" ;;
-	esac
-
 	exit `echo $retval`
 fi
 
-if [[ -z $MODULES ]]
-then
-	if [[ $retval == 203 ]]
-	then
-		debug "no path entries to be included"
-		exit `echo $retval`
-
-	else
-		debug "unhandled exception"
-		exit 1
-	fi
-
-elif [[ -n $MODULES ]]
+if [[ -n $MODULES ]]
 then
 	debug "path entries to be included"
 fi
@@ -280,10 +255,6 @@ then
 	MODULESTOCOMPILE+="`printf "%s\n" "${MODULES[@]}" 2>/dev/null`"
 
 	debug "no path entries to be excluded"
-
-else
-	debug "unhandled exception"
-	exit 1
 fi
 
 if [[ -n $MODULESTOCOMPILE ]]
@@ -293,10 +264,6 @@ then
 elif [[ -z $MODULESTOCOMPILE ]]
 then
 	debug "no modules to compile"
-	exit 1
-
-else
-	echo "unhandled exception"
 	exit 1
 fi
 
@@ -317,33 +284,30 @@ DEFAULTHOMEDIRTEMPLATE="`/bin/bash ${PATHTODSSP}/${PATHTOPRINTDEFAULTHOMEDIRTEMP
 
 retval=` echo $?`
 
-if ! [[ $retval == 0 ]] && ! [[ $retval == 198 ]]
+if ! [[ $retval == 0 ]]
 then
 	case $retval in
 		1) debug "general fault" ;;
 		193) debug "file is not accessible" ;;
-		194) debug "file is not readable" ;;
-		195) debug "file is a zero-byte file" ;;
+		194) debug "file not readable" ;;
+		195) debug "file is a zero byte file" ;;
 		198) debug "no default template to list" ;;
 		*) debug "unhandled exception" ;;
 	esac
+fi
 
+if ! [[ $retval == 0 ]] && ! [[ $retval == 198 ]]
+then
 	exit `echo $retval`
 fi
 
-if [[ -z $DEFAULTHOMEDIRTEMPLATE ]]
+if [[ -n $DEFAULTHOMEDIRTEMPLATE ]]
 then
-	debug "no default home dir template"
-
-else
 	/bin/sed -i.bak '/^DEFAULT_HOME_DIR/d' ${PATHTODSSP}/${PATHTOCONTEXTSRELATIVETODSSP} 2>/dev/null
 
-	if [[ $? == 0 ]]
+	if ! [[ $? == 0 ]]
 	then
-		debug "removed default home dir template entries from ${PATHTODSSP}/${PATHTOCONTEXTSRELATIVETODSSP}"
-
-	else
-		debug "unable to remove default home dir template entries from ${PATHTODSSP}/${PATHTOCONTEXTSRELATIVETODSSP}"
+		debug "failed to remove default home dir template entries from ${PATHTODSSP}/${PATHTOCONTEXTSRELATIVETODSSP}"
 	fi
 fi
 
@@ -370,17 +334,9 @@ then
 	debug "failed to touch empty file \"${PATHTODSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP}\""
 fi
 
-if ! [[ -s ${PATHTODSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP} ]]
+if [[ -s ${PATHTODSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP} ]]
 then
-	debug "cleared ${PATHTODSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP}"
-
-elif [[ -s ${PATHTODSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP} ]]
-then
-	debug "unable to empty ${PATHTODSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP}"
-	exit 1
-
-else
-	printf "%s\n" "unhandled exception"
+	debug "unable to zero ${PATHTODSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP}"
 	exit 1
 fi
 
@@ -390,17 +346,20 @@ then
 
 	retval=`echo $?`
 
-	if ! [[ $retval == 0 ]] && ! [[ $retval == 205 ]]
+	if ! [[ $retval == 0 ]]
 	then
 		case $retval in
 			1) debug "general fault" ;;
 			193) debug "file is not accessible" ;;
-			194) debug "file is not readable" ;;
-			195) debug "file is a zero-byte file" ;;
+			194) debug "file not readable" ;;
+			195) debug "file is a zero byte file" ;;
 			205) debug "no seuser tuple to list" ;;
 			*) debug "unhandled exception" ;;
 		esac
+	fi
 
+	if ! [[ $retval == 0 ]] && ! [[ $retval == 205 ]]
+	then
 		exit `echo $retval`
 	fi
 
@@ -442,10 +401,6 @@ then
 				debug "failed to append default home dir file context spec"
 				exit 1
 			fi
-
-		else
-			printf "%s\n" "unhandled exception"
-			exit 1
 		fi
 	done
 
@@ -457,17 +412,20 @@ then
 
 		retval=`echo $?`
 
-		if ! [[ $retval == 0 ]] && ! [[ $retval == 205 ]]
+		if ! [[ $retval == 0 ]]
 		then
 			case $retval in
 				1) debug "general fault" ;;
 				193) debug "file is not accessible" ;;
-				194) debug "file is not readable" ;;
-				195) debug "file is a zero-byte file" ;;
+				194) debug "file not readable" ;;
+				195) debug "file is a zero byte file" ;;
 				205) debug "no seuser tuple to list" ;;
 				*) debug "unhandled exception" ;;
 			esac
+		fi
 
+		if ! [[ $retval == 0 ]] && ! [[ $retval == 205 ]]
+		then
 			exit `echo $retval`
 		fi
 
@@ -509,16 +467,8 @@ then
 					debug "failed to append default home dir file context spec"
 					exit 1
 				fi
-
-			else
-				printf "%s\n" "unhandled exception"
-				exit 1
 			fi
 		done
-
-	else
-		printf "%s\n" "unhandled exception"
-		exit 1
 	fi
 
 elif [[ $MODELTOBUILD == mcs ]]
@@ -529,17 +479,20 @@ then
 
 		retval=`echo $?`
 
-		if ! [[ $retval == 0 ]] && ! [[ $retval == 205 ]]
+		if ! [[ $retval == 0 ]]
 		then
 			case $retval in
 				1) debug "general fault" ;;
 				193) debug "file is not accessible" ;;
-				194) debug "file is not readable" ;;
-				195) debug "file is a zero-byte file" ;;
+				194) debug "file not readable" ;;
+				195) debug "file is a zero byte file" ;;
 				205) debug "no seuser tuple to list" ;;
 				*) debug "unhandled exception" ;;
 			esac
+		fi
 
+		if ! [[ $retval == 0 ]] && ! [[ $retval == 205 ]]
+		then
 			exit `echo $retval`
 		fi
 
@@ -581,16 +534,8 @@ then
 					debug "failed to append default home dir file context spec"
 					exit 1
 				fi
-
-			else
-				printf "%s\n" "unhandled exception"
-				exit 1
 			fi
 		done
-
-	else
-		printf "%s\n" "unhandled exception"
-		exit 1
 	fi
 
 elif [[ $MODELTOBUILD == mls ]]
@@ -601,17 +546,20 @@ then
 
 		retval=`echo $?`
 
-		if ! [[ $retval == 0 ]] && ! [[ $retval == 205 ]]
+		if ! [[ $retval == 0 ]]
 		then
 			case $retval in
 				1) debug "general fault" ;;
 				193) debug "file is not accessible" ;;
-				194) debug "file is not readable" ;;
-				195) debug "file is a zero-byte file" ;;
+				194) debug "file not readable" ;;
+				195) debug "file is a zero byte file" ;;
 				205) debug "no seuser tuple to list" ;;
 				*) debug "unhandled exception" ;;
 			esac
+		fi
 
+		if ! [[ $retval == 0 ]] && ! [[ $retval == 205 ]]
+		then
 			exit `echo $retval`
 		fi
 
@@ -653,16 +601,8 @@ then
 					debug "failed to append default home dir file context spec"
 					exit 1
 				fi
-
-			else
-				printf "%s\n" "unhandled exception"
-				exit 1
 			fi
 		done
-
-	else
-		printf "%s\n" "unhandled exception"
-		exit 1
 	fi
 fi
 
@@ -670,82 +610,81 @@ USERNAMES="`/bin/bash ${PATHTODSSP}/${PATHTOPRINTREALUSERSRELATIVETODSSP} -p ${P
 
 retval=` echo $?`
 
-if ! [[ $retval == 0 ]] && ! [[ $retval == 204 ]]
+if ! [[ $retval == 0 ]]
 then
 	case $retval in
 		1) debug "general fault" ;;
 		193) debug "file is not accessible" ;;
-		194) debug "file is not readable" ;;
-		195) debug "file is a zero-byte file" ;;
-		198) debug "no real users to list" ;;
+		194) debug "file not readable" ;;
+		195) debug "file is a zero byte file" ;;
+		204) debug "no real users to list" ;;
 		*) debug "unhandled exception" ;;
 	esac
+fi
 
+if ! [[ $retval == 0 ]] && ! [[ $retval == 204 ]]
+then
 	exit `echo $retval`
 fi
 
 HOMEDIRTEMPLATE="`/bin/bash ${PATHTODSSP}/${PATHTOPRINTHOMEDIRTEMPLATERELATIVETODSSP} -p ${PATHTODSSP}`"
 
-retval=` echo $?`
+retval=`echo $?`
 
-if ! [[ $retval == 0 ]] && ! [[ $retval == 198 ]]
+if ! [[ $retval == 0 ]]
 then
 	case $retval in
 		1) debug "general fault" ;;
 		193) debug "file is not accessible" ;;
-		194) debug "file is not readable" ;;
-		195) debug "file is a zero-byte file" ;;
-		198) debug "no home dir template to list" ;;
+		194) debug "file not readable" ;;
+		195) debug "file is a zero byte file" ;;
+		198) debug "no template to list" ;;
 		*) debug "unhandled exception" ;;
 	esac
+fi
 
+if ! [[ $retval == 0 ]] && ! [[ $retval == 198 ]]
+then
 	exit `echo $retval`
 fi
 
-if [[ -z $HOMEDIRTEMPLATE ]]
+if [[ -n $HOMEDIRTEMPLATE ]]
 then
-	debug "no home dir template"
-
-else
 	/bin/sed -i.bak '/^HOME_DIR/d' ${PATHTODSSP}/${PATHTOCONTEXTSRELATIVETODSSP} 2>/dev/null
 
-	if [[ $? == 0 ]]
+	if ! [[ $? == 0 ]]
 	then
-		debug "removed home dir template entries from ${PATHTODSSP}/${PATHTOCONTEXTSRELATIVETODSSP}"
-
-	else
 		debug "unable to remove home dir template entries from ${PATHTODSSP}/${PATHTOCONTEXTSRELATIVETODSSP}"
 	fi
 fi
 
 SPOOLFILETEMPLATE="`/bin/bash ${PATHTODSSP}/${PATHTOPRINTSPOOLFILETEMPLATERELATIVETODSSP} -p ${PATHTODSSP}`"
 
-if ! [[ $retval == 0 ]] && ! [[ $retval == 198 ]]
+retval=`echo $?`
+
+if ! [[ $retval == 0 ]]
 then
 	case $retval in
 		1) debug "general fault" ;;
 		193) debug "file is not accessible" ;;
-		194) debug "file is not readable" ;;
-		195) debug "file is a zero-byte file" ;;
-		198) debug "no spool file template to list" ;;
+		194) debug "file not readable" ;;
+		195) debug "file is a zero byte file" ;;
+		204) debug "no template to list" ;;
 		*) debug "unhandled exception" ;;
 	esac
+fi
 
+if ! [[ $retval == 0 ]] && ! [[ $retval == 198 ]]
+then
 	exit `echo $retval`
 fi
 
-if [[ -z $SPOOLFILETEMPLATE ]]
+if [[ -n $SPOOLFILETEMPLATE ]]
 then
-	debug "no spool file template"
-
-else
 	/bin/sed -i.bak '/^USER_SPOOL/d' ${PATHTODSSP}/${PATHTOCONTEXTSRELATIVETODSSP} 2>/dev/null
 
-	if [[ $? == 0 ]]
+	if ! [[ $? == 0 ]]
 	then
-		debug "removed spool file template entries from ${PATHTODSSP}/${PATHTOCONTEXTSRELATIVETODSSP}"
-
-	else
 		debug "unable to remove spool file template entries from ${PATHTODSSP}/${PATHTOCONTEXTSRELATIVETODSSP}"
 	fi
 fi
@@ -760,17 +699,20 @@ do
 
 			retval=`echo $?`
 
-			if ! [[ $retval == 0 ]] && ! [[ $retval == 205 ]]
+			if ! [[ $retval == 0 ]]
 			then
 				case $retval in
 					1) debug "general fault" ;;
 					193) debug "file is not accessible" ;;
-					194) debug "file is not readable" ;;
-					195) debug "file is a zero-byte file" ;;
+					194) debug "file not readable" ;;
+					195) debug "file is a zero byte file" ;;
 					205) debug "no seuser tuple to list" ;;
 					*) debug "unhandled exception" ;;
 				esac
+			fi
 
+			if ! [[ $retval == 0 ]] && ! [[ $retval == 205 ]]
+			then
 				exit `echo $retval`
 			fi
 
@@ -812,10 +754,6 @@ do
 						debug "failed to append home dir file context spec"
 						exit 1
 					fi
-
-				else
-					printf "%s\n" "unhandled exception"
-					exit 1
 				fi
 			done
 
@@ -843,10 +781,6 @@ do
 						debug "failed to append spool file context spec"
 						exit 1
 					fi
-
-				else
-					printf "%s\n" "unhandled exception"
-					exit 1
 				fi
 			done
 
@@ -855,17 +789,20 @@ do
 
 			retval=`echo $?`
 
-			if ! [[ $retval == 0 ]] && ! [[ $retval == 205 ]]
+			if ! [[ $retval == 0 ]]
 			then
 				case $retval in
 					1) debug "general fault" ;;
 					193) debug "file is not accessible" ;;
-					194) debug "file is not readable" ;;
-					195) debug "file is a zero-byte file" ;;
+					194) debug "file not readable" ;;
+					195) debug "file is a zero byte file" ;;
 					205) debug "no seuser tuple to list" ;;
 					*) debug "unhandled exception" ;;
 				esac
+			fi
 
+			if ! [[ $retval == 0 ]] && ! [[ $retval == 205 ]]
+			then
 				exit `echo $retval`
 			fi
 
@@ -907,10 +844,6 @@ do
 						debug "failed to append home dir file context spec"
 						exit 1
 					fi
-
-				else
-					printf "%s\n" "unhandled exception"
-					exit 1
 				fi
 			done
 
@@ -938,10 +871,6 @@ do
 						debug "failed to append spool file context spec"
 						exit 1
 					fi
-
-				else
-					printf "%s\n" "unhandled exception"
-					exit 1
 				fi
 			done
 		fi
@@ -956,17 +885,20 @@ do
 
 				retval=`echo $?`
 
-				if ! [[ $retval == 0 ]] && ! [[ $retval == 205 ]]
+				if ! [[ $retval == 0 ]]
 				then
 					case $retval in
 						1) debug "general fault" ;;
 						193) debug "file is not accessible" ;;
-						194) debug "file is not readable" ;;
-						195) debug "file is a zero-byte file" ;;
+						194) debug "file not readable" ;;
+						195) debug "file is a zero byte file" ;;
 						205) debug "no seuser tuple to list" ;;
 						*) debug "unhandled exception" ;;
 					esac
+				fi
 
+				if ! [[ $retval == 0 ]] && ! [[ $retval == 205 ]]
+				then
 					exit `echo $retval`
 				fi
 
@@ -1008,10 +940,6 @@ do
 							debug "failed to append home dir file context spec"
 							exit 1
 						fi
-
-					else
-						printf "%s\n" "unhandled exception"
-						exit 1
 					fi
 				done
 
@@ -1039,10 +967,6 @@ do
 							debug "failed to append spool file context spec"
 							exit 1
 						fi
-
-					else
-						printf "%s\n" "unhandled exception"
-						exit 1
 					fi
 				done
 
@@ -1051,17 +975,20 @@ do
 
 				retval=`echo $?`
 
-				if ! [[ $retval == 0 ]] && ! [[ $retval == 205 ]]
+				if ! [[ $retval == 0 ]]
 				then
 					case $retval in
 						1) debug "general fault" ;;
 						193) debug "file is not accessible" ;;
-						194) debug "file is not readable" ;;
-						195) debug "file is a zero-byte file" ;;
+						194) debug "file not readable" ;;
+						195) debug "file is a zero byte file" ;;
 						205) debug "no seuser tuple to list" ;;
 						*) debug "unhandled exception" ;;
 					esac
+				fi
 
+				if ! [[ $retval == 0 ]] && ! [[ $retval == 205 ]]
+				then
 					exit `echo $retval`
 				fi
 
@@ -1103,10 +1030,6 @@ do
 							debug "failed to append home dir file context spec"
 							exit 1
 						fi
-
-					else
-						printf "%s\n" "unhandled exception"
-						exit 1
 					fi
 				done
 
@@ -1134,17 +1057,9 @@ do
 							debug "failed to append spool file context spec"
 							exit 1
 						fi
-
-					else
-						printf "%s\n" "unhandled exception"
-						exit 1
 					fi
 				done
 			fi
-
-		else
-			printf "%s\n" "unhandled exception"
-			exit 1
 		fi
 
 	elif [[ $MODELTOBUILD == mcs ]]
@@ -1157,17 +1072,20 @@ do
 
 				retval=`echo $?`
 
-				if ! [[ $retval == 0 ]] && ! [[ $retval == 205 ]]
+				if ! [[ $retval == 0 ]]
 				then
 					case $retval in
 						1) debug "general fault" ;;
 						193) debug "file is not accessible" ;;
-						194) debug "file is not readable" ;;
-						195) debug "file is a zero-byte file" ;;
+						194) debug "file not readable" ;;
+						195) debug "file is a zero byte file" ;;
 						205) debug "no seuser tuple to list" ;;
 						*) debug "unhandled exception" ;;
 					esac
+				fi
 
+				if ! [[ $retval == 0 ]] && ! [[ $retval == 205 ]]
+				then
 					exit `echo $retval`
 				fi
 
@@ -1209,10 +1127,6 @@ do
 							debug "failed to append home dir file context spec"
 							exit 1
 						fi
-
-					else
-						printf "%s\n" "unhandled exception"
-						exit 1
 					fi
 				done
 
@@ -1240,10 +1154,6 @@ do
 							debug "failed to append spool file context spec"
 							exit 1
 						fi
-
-					else
-						printf "%s\n" "unhandled exception"
-						exit 1
 					fi
 				done
 
@@ -1252,17 +1162,20 @@ do
 
 				retval=`echo $?`
 
-				if ! [[ $retval == 0 ]] && ! [[ $retval == 205 ]]
+				if ! [[ $retval == 0 ]]
 				then
 					case $retval in
 						1) debug "general fault" ;;
 						193) debug "file is not accessible" ;;
-						194) debug "file is not readable" ;;
-						195) debug "file is a zero-byte file" ;;
+						194) debug "file not readable" ;;
+						195) debug "file is a zero byte file" ;;
 						205) debug "no seuser tuple to list" ;;
 						*) debug "unhandled exception" ;;
 					esac
+				fi
 
+				if ! [[ $retval == 0 ]] && ! [[ $retval == 205 ]]
+				then
 					exit `echo $retval`
 				fi
 
@@ -1304,10 +1217,6 @@ do
 							debug "failed to append home dir file context spec"
 							exit 1
 						fi
-
-					else
-						printf "%s\n" "unhandled exception"
-						exit 1
 					fi
 				done
 
@@ -1335,17 +1244,9 @@ do
 							debug "failed to append spool file context spec"
 							exit 1
 						fi
-
-					else
-						printf "%s\n" "unhandled exception"
-						exit 1
 					fi
 				done
 			fi
-
-		else
-			printf "%s\n" "unhandled exception"
-			exit 1
 		fi
 
 	elif [[ $MODELTOBUILD == mls ]]
@@ -1358,17 +1259,20 @@ do
 
 				retval=`echo $?`
 
-				if ! [[ $retval == 0 ]] && ! [[ $retval == 205 ]]
+				if ! [[ $retval == 0 ]]
 				then
 					case $retval in
 						1) debug "general fault" ;;
 						193) debug "file is not accessible" ;;
-						194) debug "file is not readable" ;;
-						195) debug "file is a zero-byte file" ;;
+						194) debug "file not readable" ;;
+						195) debug "file is a zero byte file" ;;
 						205) debug "no seuser tuple to list" ;;
 						*) debug "unhandled exception" ;;
 					esac
+				fi
 
+				if ! [[ $retval == 0 ]] && ! [[ $retval == 205 ]]
+				then
 					exit `echo $retval`
 				fi
 
@@ -1410,10 +1314,6 @@ do
 							debug "failed to append home dir file context spec"
 							exit 1
 						fi
-
-					else
-						printf "%s\n" "unhandled exception"
-						exit 1
 					fi
 				done
 
@@ -1441,10 +1341,6 @@ do
 							debug "failed to append spool file context spec"
 							exit 1
 						fi
-
-					else
-						printf "%s\n" "unhandled exception"
-						exit 1
 					fi
 				done
 
@@ -1453,17 +1349,20 @@ do
 
 				retval=`echo $?`
 
-				if ! [[ $retval == 0 ]] && ! [[ $retval == 205 ]]
+				if ! [[ $retval == 0 ]]
 				then
 					case $retval in
 						1) debug "general fault" ;;
 						193) debug "file is not accessible" ;;
-						194) debug "file is not readable" ;;
-						195) debug "file is a zero-byte file" ;;
+						194) debug "file not readable" ;;
+						195) debug "file is a zero byte file" ;;
 						205) debug "no seuser tuple to list" ;;
 						*) debug "unhandled exception" ;;
 					esac
+				fi
 
+				if ! [[ $retval == 0 ]] && ! [[ $retval == 205 ]]
+				then
 					exit `echo $retval`
 				fi
 
@@ -1505,10 +1404,6 @@ do
 							debug "failed to append home dir file context spec"
 							exit 1
 						fi
-
-					else
-						printf "%s\n" "unhandled exception"
-						exit 1
 					fi
 				done
 
@@ -1536,22 +1431,10 @@ do
 							debug "failed to append spool file context spec"
 							exit 1
 						fi
-
-					else
-						printf "%s\n" "unhandled exception"
-						exit 1
 					fi
 				done
 			fi
-
-		else
-			printf "%s\n" "unhandled exception"
-			exit 1
 		fi
-
-	else
-		printf "%s\n" "unhandled exception"
-		exit 1
 	fi
 done
 
@@ -1575,14 +1458,10 @@ then
 	elif [[ $retval == 195 ]]
 	then
 		debug "not compiling empty \"${PATHTODSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP}\""
-
-	else
-		debug "unhandled exception"
-		exit 1
 	fi
 else
 	debug "unable to execute /bin/sefcontext_conpile"
 fi
 
-exit
+exit `echo $?`
 #EOF
