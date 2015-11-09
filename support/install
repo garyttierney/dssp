@@ -3325,8 +3325,6 @@ then
 	done
 
 
-# contextfile
-
 	for CONTEXTSFILE in `/bin/ls -p ${PATHTODSSP}/contexts | /bin/grep -v / | /bin/grep ".${MODELTOBUILD}$" 2>/dev/null`
 	do
 		STRIPPEDCONTEXTSFILE="`/bin/basename "$CONTEXTSFILE" ".${MODELTOBUILD}"`"
@@ -3359,18 +3357,52 @@ then
 
 						retval=`echo $?`
 
-						if ! [[ $retval == 0 ]] && ! [[ $retval == 199 ]] && ! [[ $retval == 200 ]]
+						if ! [[ $retval == 0 ]] && ! [[ $retval == 199 ]] && ! [[ $retval == 200 ]] || ! [[ $retval == 195 ]]
 						then
 							case $retval in
 								1) debug "general fault" ;;
 								193) debug "file is not accessible" ;;
 								194) debug "file is not readable" ;;
-								195) debug "file is a zero-byte file" ;;
 								*) debug "unhandled exception" ;;
 							esac
 						fi
 
-						if [[ $retval == 199 ]]
+						if [[ $retval == 195 ]]
+						then
+							debug "not updating empty file \"${PATHTODSSP}/contexts.d/${CONTEXTSFILE}\""
+
+							filetest -f ${PATHTOSELINUXCONFIG}/${DSSP}/contexts/${STRIPPEDCONTEXTSFILE}
+
+							retval=`echo $?`
+
+							if [[ $retval == 0 ]]
+							then
+								if [[ $UID == 0 ]]
+								then
+									\rm -f ${PATHTOSELINUXCONFIG}/${DSSP}/contexts/${STRIPPEDCONTEXTSFILE} 2>/dev/null
+
+									if ! [[ $? == 0 ]]
+									then
+										debug "failed to remove \"${PATHTOSELINUXCONFIG}/${DSSP}/contexts/${STRIPPEDCONTEXTSFILE}\""
+										exit `echo $?`
+									fi
+
+								elif ! [[ $UID == 0 ]]
+								then
+									/bin/sudo -E \rm -f ${PATHTOSELINUXCONFIG}/${DSSP}/contexts/${STRIPPEDCONTEXTSFILE} 2>/dev/null
+
+									if ! [[ $? == 0 ]]
+									then
+										debug "failed to remove \"${PATHTOSELINUXCONFIG}/${DSSP}/contexts/${STRIPPEDCONTEXTSFILE}\""
+										exit `echo $?`
+									fi
+								fi
+
+							else
+								exit `echo $?`
+							fi
+
+						elif [[ $retval == 199 ]]
 						then
 							debug "not updating \"${PATHTODSSP}/contexts.d/${CONTEXTSFILE}\""
 
@@ -3420,18 +3452,52 @@ then
 
 						retval=`echo $?`
 
-						if ! [[ $retval == 0 ]] && ! [[ $retval == 199 ]] && ! [[ $retval == 200 ]]
+						if ! [[ $retval == 0 ]] && ! [[ $retval == 199 ]] && ! [[ $retval == 200 ]] && ! [[ $retval == 195 ]]
 						then
 							case $retval in
 								1) debug "general fault" ;;
 								193) debug "file is not accessible" ;;
 								194) debug "file is not readable" ;;
-								195) debug "file is a zero-byte file" ;;
 								*) debug "unhandled exception" ;;
 							esac
 						fi
 
-						if [[ $retval == 199 ]]
+						if [[ $retval == 195 ]]
+						then
+							debug "not updating empty file \"${PATHTODSSP}/contexts.d/${CONTEXTSFILE}\""
+
+							filetest -f ${PATHTOSELINUXCONFIG}/${DSSP}/contexts/${STRIPPEDCONTEXTSFILE}
+
+							retval=`echo $?`
+
+							if [[ $retval == 0 ]]
+							then
+								if [[ $UID == 0 ]]
+								then
+									\rm -f ${PATHTOSELINUXCONFIG}/${DSSP}/contexts/${STRIPPEDCONTEXTSFILE} 2>/dev/null
+
+									if ! [[ $? == 0 ]]
+									then
+										debug "failed to remove \"${PATHTOSELINUXCONFIG}/${DSSP}/contexts/${STRIPPEDCONTEXTSFILE}\""
+										exit `echo $?`
+									fi
+
+								elif ! [[ $UID == 0 ]]
+								then
+									/bin/sudo -E \rm -f ${PATHTOSELINUXCONFIG}/${DSSP}/contexts/${STRIPPEDCONTEXTSFILE} 2>/dev/null
+
+									if ! [[ $? == 0 ]]
+									then
+										debug "failed to remove \"${PATHTOSELINUXCONFIG}/${DSSP}/contexts/${STRIPPEDCONTEXTSFILE}\""
+										exit `echo $?`
+									fi
+								fi
+
+							else
+								exit `echo $?`
+							fi
+
+						elif [[ $retval == 199 ]]
 						then
 							debug "not updating \"${PATHTODSSP}/contexts/${CONTEXTSFILE}\""
 
@@ -3485,7 +3551,11 @@ then
 
 					retval=`echo $?`
 
-					if [[ $retval == 0 ]]
+					if [[ $retval == 195 ]]
+					then
+						debug "not installing empty file \"${PATHTODSSP}/contexts.d/${CONTEXTSFILE}\""
+
+					elif [[ $retval == 0 ]]
 					then
 						if [[ $UID == 0 ]]
 						then
@@ -3521,6 +3591,10 @@ then
 					filetestandresult -s ${PATHTODSSP}/contexts/${CONTEXTSFILE}
 
 					retval=`echo $?`
+
+					if [[ $retval == 195 ]]
+					then
+						debug "not installing empty file \"${PATHTODSSP}/contexts/${CONTEXTSFILE}\""
 
 					if [[ $retval == 0 ]]
 					then
