@@ -1,4 +1,4 @@
-#!/bin/bash
+n#!/bin/bash
 
 PATH=/sbin:/bin:/usr/sbin:/usr/bin
 export PATH
@@ -162,28 +162,25 @@ filetestandresult () {
 # @retval 207 unable to execute /bin/git
 
 updatetoupstream () {
+	local _PATHTODSSP=$1
+
 	if ! [[ -x /bin/git ]]
 	then
 		debug "unable to execute /bin/git"
 		return 207
 
 	elif ! (( $# == 1 ))
+	then
 		debug "expects a single parameter: path to dssp"
 		return 1
 
 	else
 		filetestandresult -d $1
 
-		_STATUS=`echo $?`
+		local _STATUS=`echo $?`
 
-		if [[ $_STATUS == 196 ]]
+		if ! [[ $_STATUS == 0 ]]
 		then
-			debug "file is not a directory"
-			return `echo $_STATUS`
-
-		elif ! [[ $_STATUS == 0 ]]
-		then
-			debug "unhandled exception"
 			return `echo $_STATUS`
 		fi
 
