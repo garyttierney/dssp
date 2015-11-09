@@ -3351,13 +3351,48 @@ then
 
 					retval=`echo $?`
 
-					if [[ $retval == 0 ]]
+					if [[ $retval == 195 ]]
+					then
+						debug "not updating empty file \"${PATHTODSSP}/contexts.d/${CONTEXTSFILE}\""
+
+						filetestandresult -f ${PATHTOSELINUXCONFIG}/${DSSP}/contexts/${STRIPPEDCONTEXTSFILE}
+
+						retval=`echo $?`
+
+						if [[ $retval == 0 ]]
+						then
+							if [[ $UID == 0 ]]
+							then
+								\rm -f ${PATHTOSELINUXCONFIG}/${DSSP}/contexts/${STRIPPEDCONTEXTSFILE} 2>/dev/null
+
+								if ! [[ $? == 0 ]]
+								then
+									debug "failed to remove \"${PATHTOSELINUXCONFIG}/${DSSP}/contexts/${STRIPPEDCONTEXTSFILE}\""
+									exit `echo $?`
+								fi
+
+							elif ! [[ $UID == 0 ]]
+							then
+								/bin/sudo -E \rm -f ${PATHTOSELINUXCONFIG}/${DSSP}/contexts/${STRIPPEDCONTEXTSFILE} 2>/dev/null
+
+								if ! [[ $? == 0 ]]
+								then
+									debug "failed to remove \"${PATHTOSELINUXCONFIG}/${DSSP}/contexts/${STRIPPEDCONTEXTSFILE}\""
+									exit `echo $?`
+								fi
+							fi
+
+						else
+							exit `echo $?`
+						fi
+
+					elif [[ $retval == 0 ]]
 					then
 						/bin/bash ${PATHTODSSP}/${PATHTOCHECKSHA256SUMRELATIVETODSSP} -p ${PATHTODSSP} -s ${PATHTODSSP}/contexts.d/${CONTEXTSFILE} -t ${PATHTOSELINUXCONFIG}/${DSSP}/contexts/${STRIPPEDCONTEXTSFILE}
 
 						retval=`echo $?`
 
-						if ! [[ $retval == 0 ]] && ! [[ $retval == 199 ]] && ! [[ $retval == 200 ]] && ! [[ $retval == 195 ]]
+						if ! [[ $retval == 0 ]] && ! [[ $retval == 199 ]] && ! [[ $retval == 200 ]]
 						then
 							case $retval in
 								1) debug "general fault" ;;
@@ -3367,42 +3402,7 @@ then
 							esac
 						fi
 
-						if [[ $retval == 195 ]]
-						then
-							debug "not updating empty file \"${PATHTODSSP}/contexts.d/${CONTEXTSFILE}\""
-
-							filetestandresult -f ${PATHTOSELINUXCONFIG}/${DSSP}/contexts/${STRIPPEDCONTEXTSFILE}
-
-							retval=`echo $?`
-
-							if [[ $retval == 0 ]]
-							then
-								if [[ $UID == 0 ]]
-								then
-									\rm -f ${PATHTOSELINUXCONFIG}/${DSSP}/contexts/${STRIPPEDCONTEXTSFILE} 2>/dev/null
-
-									if ! [[ $? == 0 ]]
-									then
-										debug "failed to remove \"${PATHTOSELINUXCONFIG}/${DSSP}/contexts/${STRIPPEDCONTEXTSFILE}\""
-										exit `echo $?`
-									fi
-
-								elif ! [[ $UID == 0 ]]
-								then
-									/bin/sudo -E \rm -f ${PATHTOSELINUXCONFIG}/${DSSP}/contexts/${STRIPPEDCONTEXTSFILE} 2>/dev/null
-
-									if ! [[ $? == 0 ]]
-									then
-										debug "failed to remove \"${PATHTOSELINUXCONFIG}/${DSSP}/contexts/${STRIPPEDCONTEXTSFILE}\""
-										exit `echo $?`
-									fi
-								fi
-
-							else
-								exit `echo $?`
-							fi
-
-						elif [[ $retval == 199 ]]
+						if [[ $retval == 199 ]]
 						then
 							debug "not updating \"${PATHTODSSP}/contexts.d/${CONTEXTSFILE}\""
 
@@ -3446,13 +3446,48 @@ then
 
 					retval=`echo $?`
 
-					if [[ $retval == 0 ]]
+					if [[ $retval == 195 ]]
+					then
+						debug "not updating empty file \"${PATHTODSSP}/contexts/${CONTEXTSFILE}\""
+
+						filetestandresult -f ${PATHTOSELINUXCONFIG}/${DSSP}/contexts/${STRIPPEDCONTEXTSFILE}
+
+						retval=`echo $?`
+
+						if [[ $retval == 0 ]]
+						then
+							if [[ $UID == 0 ]]
+							then
+								\rm -f ${PATHTOSELINUXCONFIG}/${DSSP}/contexts/${STRIPPEDCONTEXTSFILE} 2>/dev/null
+
+								if ! [[ $? == 0 ]]
+								then
+									debug "failed to remove \"${PATHTOSELINUXCONFIG}/${DSSP}/contexts/${STRIPPEDCONTEXTSFILE}\""
+									exit `echo $?`
+								fi
+
+							elif ! [[ $UID == 0 ]]
+							then
+								/bin/sudo -E \rm -f ${PATHTOSELINUXCONFIG}/${DSSP}/contexts/${STRIPPEDCONTEXTSFILE} 2>/dev/null
+
+								if ! [[ $? == 0 ]]
+								then
+									debug "failed to remove \"${PATHTOSELINUXCONFIG}/${DSSP}/contexts/${STRIPPEDCONTEXTSFILE}\""
+									exit `echo $?`
+								fi
+							fi
+
+						else
+							exit `echo $?`
+						fi
+
+					elif [[ $retval == 0 ]]
 					then
 						/bin/bash ${PATHTODSSP}/${PATHTOCHECKSHA256SUMRELATIVETODSSP} -p ${PATHTODSSP} -s ${PATHTODSSP}/contexts/${CONTEXTSFILE} -t ${PATHTOSELINUXCONFIG}/${DSSP}/contexts/${STRIPPEDCONTEXTSFILE}
 
 						retval=`echo $?`
 
-						if ! [[ $retval == 0 ]] && ! [[ $retval == 199 ]] && ! [[ $retval == 200 ]] && ! [[ $retval == 195 ]]
+						if ! [[ $retval == 0 ]] && ! [[ $retval == 199 ]] && ! [[ $retval == 200 ]]
 						then
 							case $retval in
 								1) debug "general fault" ;;
@@ -3462,42 +3497,7 @@ then
 							esac
 						fi
 
-						if [[ $retval == 195 ]]
-						then
-							debug "not updating empty file \"${PATHTODSSP}/contexts.d/${CONTEXTSFILE}\""
-
-							filetestandresult -f ${PATHTOSELINUXCONFIG}/${DSSP}/contexts/${STRIPPEDCONTEXTSFILE}
-
-							retval=`echo $?`
-
-							if [[ $retval == 0 ]]
-							then
-								if [[ $UID == 0 ]]
-								then
-									\rm -f ${PATHTOSELINUXCONFIG}/${DSSP}/contexts/${STRIPPEDCONTEXTSFILE} 2>/dev/null
-
-									if ! [[ $? == 0 ]]
-									then
-										debug "failed to remove \"${PATHTOSELINUXCONFIG}/${DSSP}/contexts/${STRIPPEDCONTEXTSFILE}\""
-										exit `echo $?`
-									fi
-
-								elif ! [[ $UID == 0 ]]
-								then
-									/bin/sudo -E \rm -f ${PATHTOSELINUXCONFIG}/${DSSP}/contexts/${STRIPPEDCONTEXTSFILE} 2>/dev/null
-
-									if ! [[ $? == 0 ]]
-									then
-										debug "failed to remove \"${PATHTOSELINUXCONFIG}/${DSSP}/contexts/${STRIPPEDCONTEXTSFILE}\""
-										exit `echo $?`
-									fi
-								fi
-
-							else
-								exit `echo $?`
-							fi
-
-						elif [[ $retval == 199 ]]
+						if [[ $retval == 199 ]]
 						then
 							debug "not updating \"${PATHTODSSP}/contexts/${CONTEXTSFILE}\""
 
