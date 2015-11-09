@@ -219,7 +219,9 @@ if [[ $BUILDDSSP == 1 ]]
 then
 	/bin/bash ${PATHTODSSP}/${PATHTOCOMPILERELATIVETODSSP} -p ${PATHTODSSP} $([[ -n $MODELTOBUILD ]] && printf "%s" "-m $MODELTOBUILD") $([[ -n $DEBUG ]] && printf "%s" "-v") $([[ -n $DISABLEDONTAUDIT ]] && printf "%s" "-d") $([[ -n $DISABLERBACSEP ]] && printf "%s" "-r") $([[ -n $POLICYVERSION ]] && printf "%s" "-n $POLICYVERSION") $([[ -n $UNKNOWNHANDLING ]] && printf "%s" "-u $UNKNOWNHANDLING")
 
-	! [[ $? == 0 ]] && exit `echo $?`
+	retval=`echo $?`
+
+	! [[ $retval == 0 ]] && exit `echo $retval`
 fi
 
 filetestandresult -d ${PATHTOSELINUXCONFIG}/${DSSP}

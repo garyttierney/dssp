@@ -254,27 +254,27 @@ if [[ -n $EXCLUDES ]]
 then
 	for EXCLUDE in ${EXCLUDES[@]}
 	do
-		MODULESTOCOMPILE="`printf "%s\n" "${MODULES[@]}" | /bin/grep -v "$EXCLUDE" 2>/dev/null`"
+		MODULES="`printf "%s\n" "${MODULES[@]}" | /bin/grep -v "$EXCLUDE" 2>/dev/null`"
 	done
 
 elif [[ -z $EXCLUDES ]]
 then
-	MODULESTOCOMPILE+="`printf "%s\n" "${MODULES[@]}" 2>/dev/null`"
+	MODULES+="`printf "%s\n" "${MODULES[@]}" 2>/dev/null`"
 
 	debug "no path entries to be excluded"
 fi
 
-if [[ -n $MODULESTOCOMPILE ]]
+if [[ -n $MODULES ]]
 then
-	debug "modules to compile" "${MODULESTOCOMPILE[@]}"
+	debug "modules to compile" "${MODULES[@]}"
 
-elif [[ -z $MODULESTOCOMPILE ]]
+elif [[ -z $MODULES ]]
 then
 	debug "no modules to compile"
 	exit 1
 fi
 
-( /bin/cd $PATHTODSSP && $PATHTOSECILC --policyvers="$POLICYVERSION" $([[ -n $DEBUG ]] && printf "%s" "-v") $([[ -n $DISABLEDONTAUDIT ]] && printf "%s" "-D") $([[ -n $UNKNOWNHANDLING ]] && printf "%s" --handle-unknown="$UNKNOWNHANDLING") ${MODULESTOCOMPILE[@]} -o ${PATHTODSSP}/policy/policy.${POLICYVERSION} -f ${PATHTODSSP}/${PATHTOCONTEXTSRELATIVETODSSP} )
+( /bin/cd $PATHTODSSP && $PATHTOSECILC --policyvers="$POLICYVERSION" $([[ -n $DEBUG ]] && printf "%s" "-v") $([[ -n $DISABLEDONTAUDIT ]] && printf "%s" "-D") $([[ -n $UNKNOWNHANDLING ]] && printf "%s" --handle-unknown="$UNKNOWNHANDLING") ${MODULES[@]} -o ${PATHTODSSP}/policy/policy.${POLICYVERSION} -f ${PATHTODSSP}/${PATHTOCONTEXTSRELATIVETODSSP} )
 
 retval=`echo $?`
 
