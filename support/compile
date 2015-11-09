@@ -195,7 +195,7 @@ fi
 
 debug "fetching path entries to exclude from policy"
 
-EXCLUDES+=(`/bin/bash ${PATHTODSSP}/${PATHTOPRINTEXCLUDESRELATIVETODSSP} -p $PATHTODSSP`)
+EXCLUDES+="`/bin/bash ${PATHTODSSP}/${PATHTOPRINTEXCLUDESRELATIVETODSSP} -p $PATHTODSSP`"
 
 retval=`echo $?`
 
@@ -225,7 +225,7 @@ fi
 
 debug "fetching path entries to include with policy"
 
-MODULES+=(`/bin/bash ${PATHTODSSP}/${PATHTOPRINTMODULESRELATIVETODSSP} -p $PATHTODSSP`)
+MODULES+="`/bin/bash ${PATHTODSSP}/${PATHTOPRINTMODULESRELATIVETODSSP} -p $PATHTODSSP`"
 
 retval=`echo $?`
 
@@ -254,27 +254,27 @@ if [[ -n $EXCLUDES ]]
 then
 	for EXCLUDE in ${EXCLUDES[@]}
 	do
-		MODULES="`printf "%s\n" "${MODULES[@]}" | /bin/grep -v "$EXCLUDE" 2>/dev/null`"
+		MODULESTOCOMPILE="`printf "%s\n" "${MODULES[@]}" | /bin/grep -v "$EXCLUDE" 2>/dev/null`"
 	done
 
 elif [[ -z $EXCLUDES ]]
 then
-	MODULES+="`printf "%s\n" "${MODULES[@]}" 2>/dev/null`"
+	MODULESTOCOMPILE+="`printf "%s\n" "${MODULES[@]}" 2>/dev/null`"
 
 	debug "no path entries to be excluded"
 fi
 
-if [[ -n $MODULES ]]
+if [[ -n $MODULESTOCOMPILE ]]
 then
-	debug "modules to compile" "${MODULES[@]}"
+	debug "modules to compile" "${MODULESTOCOMPILE[@]}"
 
-elif [[ -z $MODULES ]]
+elif [[ -z $MODULESTOCOMPILE ]]
 then
 	debug "no modules to compile"
 	exit 1
 fi
 
-( /bin/cd $PATHTODSSP && $PATHTOSECILC --policyvers="$POLICYVERSION" $([[ -n $DEBUG ]] && printf "%s" "-v") $([[ -n $DISABLEDONTAUDIT ]] && printf "%s" "-D") $([[ -n $UNKNOWNHANDLING ]] && printf "%s" --handle-unknown="$UNKNOWNHANDLING") ${MODULES[@]} -o ${PATHTODSSP}/policy/policy.${POLICYVERSION} -f ${PATHTODSSP}/${PATHTOCONTEXTSRELATIVETODSSP} )
+( /bin/cd $PATHTODSSP && $PATHTOSECILC --policyvers="$POLICYVERSION" $([[ -n $DEBUG ]] && printf "%s" "-v") $([[ -n $DISABLEDONTAUDIT ]] && printf "%s" "-D") $([[ -n $UNKNOWNHANDLING ]] && printf "%s" --handle-unknown="$UNKNOWNHANDLING") ${MODULESTOCOMPILE[@]} -o ${PATHTODSSP}/policy/policy.${POLICYVERSION} -f ${PATHTODSSP}/${PATHTOCONTEXTSRELATIVETODSSP} )
 
 retval=`echo $?`
 
