@@ -78,6 +78,7 @@
 (filecon "/etc/rc\.d/init\.d/functions" file config)
 (filecon "/etc/rc\.d/init\.d/README" file config)
 (filecon "/etc/sysconfig/network-scripts/network-functions.*" file config)
+(filecon "/home" dir home)
 (filecon "/home(/.*)?" any home)
 (filecon "/home/\.journal" any ())
 (filecon "/home/lost\+found/.*" any ())
