@@ -199,16 +199,19 @@ EXCLUDES+=(`/bin/bash ${PATHTODSSP}/${PATHTOPRINTEXCLUDESRELATIVETODSSP} -p $PAT
 
 retval=`echo $?`
 
-case $retval in
-	1) debug "general fault" ;;
-	193) debug "file is not accessible" ;;
-	194) debug "file not readable" ;;
-	195) debug "file is a zero byte file" ;;
-	196) debug "file is not a directory" ;;
-	201) debug "no path entries to list" ;;
-	202) debug "no such file or directory" ;;
-	*) debug "unhandled exception" ;;
-esac
+if ! [[ $retval == 0 ]]
+then
+	case $retval in
+		1) debug "general fault" ;;
+		193) debug "file is not accessible" ;;
+		194) debug "file not readable" ;;
+		195) debug "file is a zero byte file" ;;
+		196) debug "file is not a directory" ;;
+		201) debug "no path entries to list" ;;
+		202) debug "no such file or directory" ;;
+		*) debug "unhandled exception" ;;
+	esac
+fi
 
 if ! [[ $retval == 0 ]] && ! [[ $retval == 201 ]]
 then
@@ -226,13 +229,16 @@ MODULES+=(`/bin/bash ${PATHTODSSP}/${PATHTOPRINTMODULESRELATIVETODSSP} -p $PATHT
 
 retval=`echo $?`
 
-case $retval in
-	1) debug "general fault" ;;
-	194) debug "file not readable" ;;
-	195) debug "file is a zero byte file" ;;
-	203) debug "no modules list" ;;
-	*) debug "unhandled exception" ;;
-esac
+if ! [[ $retval == 0 ]]
+then
+	case $retval in
+		1) debug "general fault" ;;
+		194) debug "file not readable" ;;
+		195) debug "file is a zero byte file" ;;
+		203) debug "no modules list" ;;
+		*) debug "unhandled exception" ;;
+	esac
+fi
 
 if ! [[ $retval == 0 ]] && ! [[ $retval == 203 ]]
 then
