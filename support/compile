@@ -252,7 +252,7 @@ fi
 
 if [[ -n $EXCLUDES ]]
 then
-	for EXCLUDE in ${EXCLUDES[@]}
+	for EXCLUDE in "${EXCLUDES[@]}"
 	do
 		MODULESTOCOMPILE="`printf "%s\n" "${MODULES[@]}" | /bin/grep -v "$EXCLUDE" 2>/dev/null`"
 	done
