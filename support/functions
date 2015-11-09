@@ -175,7 +175,7 @@ updatetoupstream () {
 		return 1
 
 	else
-		filetestandresult -d $1
+		filetestandresult -d $_PATHTODSSP
 
 		local _STATUS=`echo $?`
 
@@ -184,7 +184,7 @@ updatetoupstream () {
 			return `echo $_STATUS`
 		fi
 
-		( /bin/cd $1 && /bin/git pull --recurse-submodules https://github.com/defensec/dssp \
+		( /bin/cd $_PATHTODSSP && /bin/git pull --recurse-submodules https://github.com/defensec/dssp \
 			&& /bin/git submodule update --recursive )
 	fi
 }
