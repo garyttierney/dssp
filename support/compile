@@ -296,9 +296,18 @@ then
 	exit 1
 fi
 
-( /bin/cd $PATHTODSSP && $PATHTOSECILC --policyvers="$POLICYVERSION" $([[ -n $DEBUG ]] && printf "%s" "-v") $([[ -n $DISABLEDONTAUDIT ]] && printf "%s" "-D") $([[ -n $UNKNOWNHANDLING ]] && printf "%s" --handle-unknown="$UNKNOWNHANDLING") ${MODULESTOCOMPILE[@]} -o ${PATHTODSSP}/policy/policy.${POLICYVERSION} -f ${PATHTODSSP}/${PATHTOCONTEXTSRELATIVETODSSP} )
+if [[ -n $DEBUG ]]
+then
+	( /bin/cd $PATHTODSSP && $PATHTOSECILC -v --policyvers="$POLICYVERSION" $([[ -n $DISABLEDONTAUDIT ]] && printf "%s" "-D") $([[ -n $UNKNOWNHANDLING ]] && printf "%s" --handle-unknown="$UNKNOWNHANDLING") ${MODULESTOCOMPILE[@]} -o ${PATHTODSSP}/policy/policy.${POLICYVERSION} -f ${PATHTODSSP}/${PATHTOCONTEXTSRELATIVETODSSP} )
 
-retval=`echo $?`
+	retval=`echo $?`
+
+elif [[ -z $DEBUG ]]
+then
+	( /bin/cd $PATHTODSSP && $PATHTOSECILC --policyvers="$POLICYVERSION" $([[ -n $DISABLEDONTAUDIT ]] && printf "%s" "-D") $([[ -n $UNKNOWNHANDLING ]] && printf "%s" --handle-unknown="$UNKNOWNHANDLING") ${MODULESTOCOMPILE[@]} -o ${PATHTODSSP}/policy/policy.${POLICYVERSION} -f ${PATHTODSSP}/${PATHTOCONTEXTSRELATIVETODSSP} 2>/dev/null )
+
+	retval=`echo $?`
+fi
 
 if ! [[ $retval == 0 ]]
 then
