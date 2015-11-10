@@ -296,7 +296,7 @@ then
 	exit 1
 fi
 
-( /bin/cd $PATHTODSSP && $PATHTOSECILC --policyvers="$POLICYVERSION" $([[ -n $DEBUG ]] && printf "%s" "-v") $([[ -n $DISABLEDONTAUDIT ]] && printf "%s" "-D") $([[ -n $UNKNOWNHANDLING ]] && printf "%s" --handle-unknown="$UNKNOWNHANDLING") ${MODULESTOCOMPILE[@]} -o ${PATHTODSSP}/policy/policy.${POLICYVERSION} -f ${PATHTODSSP}/${PATHTOCONTEXTSRELATIVETODSSP} 2>/dev/null)
+( /bin/cd $PATHTODSSP && $PATHTOSECILC --policyvers="$POLICYVERSION" $([[ -n $DEBUG ]] && printf "%s" "-v") $([[ -n $DISABLEDONTAUDIT ]] && printf "%s" "-D") $([[ -n $UNKNOWNHANDLING ]] && printf "%s" --handle-unknown="$UNKNOWNHANDLING") ${MODULESTOCOMPILE[@]} -o ${PATHTODSSP}/policy/policy.${POLICYVERSION} -f ${PATHTODSSP}/${PATHTOCONTEXTSRELATIVETODSSP} )
 
 retval=`echo $?`
 

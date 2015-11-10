@@ -3700,7 +3700,6 @@ then
 		fi
 	done
 
-
 	for CONTEXTSFILE in `/bin/ls -p ${PATHTODSSP}/contexts | /bin/grep -v / | /bin/grep ".${MODELTOBUILD}$" 2>/dev/null`
 	do
 		STRIPPEDCONTEXTSFILE="`/bin/basename "$CONTEXTSFILE" ".${MODELTOBUILD}"`"
