@@ -402,6 +402,10 @@
 		(call search_proc (ARG1))
 		(allow ARG1 efivarfs.fs list_dir_perms))
 
+	(macro manage_efivarfs_files ((type ARG1))
+		(call search_proc (ARG1))
+		(call manage_files_pattern (ARG1 efivarfs.fs efivarfs.fs)))
+
 	(macro getattr_fuse_fs ((type ARG1))
 		(allow ARG1 fuse_fs.fs (filesystem (getattr))))
 
