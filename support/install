@@ -67,6 +67,7 @@ do
 		if ! (( $# > 0 ))
 		then
 			printf "%s\n" "option -m expects one parameter: model to build"
+
 			exit
 		fi
 
@@ -75,6 +76,7 @@ do
 		if ! [[ $MODELTOBUILD == standard ]] && ! [[ $MODELTOBUILD == mcs ]] && ! [[ $MODELTOBUILD == mls ]]
 		then
 			printf "%s\n" "invalid model \"$MODELTOBUILD\"specified, must be one of: standard, mcs, or mls"
+
 			exit 1
 		fi
 		;;
@@ -84,6 +86,7 @@ do
 		if ! (( $# > 0 ))
 		then
 			printf "%s\n" "option -p expects one parameter: path to dssp source"
+
 			exit
 		fi
 
@@ -95,6 +98,7 @@ do
 		if ! (( $# > 0 ))
 		then
 			printf "%s\n" "option -u expects one parameter: unknown handling"
+
 			exit
 		fi
 
@@ -103,6 +107,7 @@ do
 		if ! [[ $UNKNOWNHANDLING == allow ]] || ! [[ $UNKNOWNHANDLING == deny ]] || ! [[ $UNKNOWNHANDLING == reject ]]
 		then
 			printf "%s\n" "invalid unknown handling \"$UNKNOWNHANDLING\" specified, must be one of: allow, deny, or reject"
+
 			exit 1
 		fi
 		;;
@@ -116,6 +121,7 @@ do
 		if ! (( $# > 0 ))
 		then
 			printf "%s\n" "option -i expects one parameter: path to secilc"
+
 			exit
 		fi
 
@@ -124,6 +130,7 @@ do
 		if ! [[ -x $PATHTOSECIL ]]
 		then
 			printf "%s\n" "invalid path to secilc"
+
 			exit 1
 		fi
 		;;
@@ -133,6 +140,7 @@ do
 		if ! (( $# > 0 ))
 		then
 			printf "%s\n" "option -n expects one parameter: policy version"
+
 			exit
 		fi
 
@@ -141,11 +149,13 @@ do
 		if ! [[ -r /sys/fs/selinux/policyvers ]]
 		then
 			printf "%s\n" "unable to determine max policy version"
+
 			exit 1
 
 		elif (( $POLICYVERSION > "`/bin/cat /sys/fs/selinux/policyvers 2>/dev/null`" ))
 		then
 			printf "%s\n" "invalid policy version \"$POLICYVERSION\" specified"
+
 			exit 1
 		fi
 		;;
@@ -181,11 +191,13 @@ then
 		if [[ -z $POLICYVERSION ]] && [[ ! $POLICYVERSION =~ "^[0-9]+$" ]]
 		then
 			printf "%s\n" "invalid policy version \"$POLICYVERSION\" specified"
+
 			exit 1
 		fi
 
 	else
 		echo "unable to determine max policy version"
+
 		exit 1
 	fi
 fi
@@ -193,6 +205,7 @@ fi
 if ! [[ -r ${PATHTODSSP}/${PATHTOFUNCTIONSRELATIVETODSSP} ]]
 then
 	debug "unable to source functions"
+
 	exit 1
 fi
 
@@ -201,6 +214,7 @@ source ${PATHTODSSP}/${PATHTOFUNCTIONSRELATIVETODSSP} 2>/dev/null
 if ! [[ -w $PATHTODSSP ]] && [[ $BUILDDSSP == 1 ]]
 then
 	debug "path to dssp \"$PATHTODSSP\" is not writeable"
+
 	exit 1
 fi
 
@@ -242,45 +256,60 @@ then
 	then
 		/bin/mkdir -p ${PATHTOSELINUXCONFIG}/${DSSP}/contexts/files 2>/dev/null
 
+		retval=`echo $?`
+
 	elif ! [[ $UID == 0 ]]
 	then
 		/bin/sudo -E /bin/mkdir -p ${PATHTOSELINUXCONFIG}/${DSSP}/contexts/files 2>/dev/null
+
+		retval=`echo $?`
 	fi
 
-	if ! [[ $? == 0 ]]
+	if ! [[ $retval == 0 ]]
 	then
 		debug "failed to create \"${PATHTOSELINUXCONFIG}/${DSSP}/contexts/files\" directory"
-		exit 1
+
+		exit `echo $retval`
 	fi
 
 	if [[ $UID == 0 ]]
 	then
 		/bin/mkdir -m 0700 ${PATHTOSELINUXCONFIG}/${DSSP}/policy 2>/dev/null
 
+		retval=`echo $?`
+
 	elif ! [[ $UID == 0 ]]
 	then
 		/bin/sudo -E /bin/mkdir -m 0700 ${PATHTOSELINUXCONFIG}/${DSSP}/policy 2>/dev/null
+
+		retval=`echo $?`
 	fi
 
-	if ! [[ $? == 0 ]]
+	if ! [[ $retval == 0 ]]
 	then
 		debug "failed to create \"${PATHTOSELINUXCONFIG}/${DSSP}/policy\" directory"
-		exit 1
+
+		exit `echo $retval`
 	fi
 
 	if [[ $UID == 0 ]]
 	then
 		/bin/mkdir ${PATHTOSELINUXCONFIG}/${DSSP}/contexts/users 2>/dev/null
 
+		retval=`echo $?`
+
 	elif ! [[ $UID == 0 ]]
 	then
 		/bin/sudo -E /bin/mkdir ${PATHTOSELINUXCONFIG}/${DSSP}/contexts/users 2>/dev/null
+
+		retval=`echo $?`
 	fi
 
-	if ! [[ $? == 0 ]]
+	if ! [[ $retval == 0 ]]
 	then
 		debug "failed to create \"${PATHTOSELINUXCONFIG}/${DSSP}/contexts/users\" directory"
-		exit 1
+
+		exit `echo $retval`
 	fi
 
 	filetestandresult -f ${PATHTODSSP}/policy/policy.${POLICYVERSION}
@@ -305,29 +334,40 @@ then
 				then
 					/bin/cp ${PATHTODSSP}/policy/policy.${POLICYVERSION} ${PATHTOSELINUXCONFIG}/${DSSP}/policy/policy.${POLICYVERSION} 2>/dev/null
 
+					retval=`echo $?`
+
 				elif ! [[ $UID == 0 ]]
 				then
 					/bin/sudo -E /bin/cp ${PATHTODSSP}/policy/policy.${POLICYVERSION} ${PATHTOSELINUXCONFIG}/${DSSP}/policy/policy.${POLICYVERSION} 2>/dev/null
+
+					retval=`echo $?`
 				fi
 
-				if ! [[ $? == 0 ]]
+				if ! [[ $retval == 0 ]]
 				then
 					debug "failed to install \"${PATHTODSSP}/policy/policy.${POLICYVERSION}\" to \"${PATHTOSELINUXCONFIG}/${DSSP}/policy/\""
-					exit 1
+
+					exit `echo $retval`
 				fi
 
 				if [[ $UID == 0 ]]
 				then
 					/bin/chmod 0600 ${PATHTOSELINUXCONFIG}/${DSSP}/policy/policy.${POLICYVERSION} 2>/dev/null
 
+					retval=`echo $?`
+
 				elif ! [[ $UID == 0 ]]
 				then
 					/bin/sudo -E /bin/chmod 0600 ${PATHTOSELINUXCONFIG}/${DSSP}/policy/policy.${POLICYVERSION} 2>/dev/null
+
+					retval=`echo $?`
 				fi
 
-				if ! [[ $? == 0 ]]
+				if ! [[ $retval == 0 ]]
 				then
 					debug "failed to change mode of \"${PATHTOSELINUXCONFIG}/${DSSP}/policy/policy.${POLICYVERSION}\""
+
+					exit `echo $retval`
 				fi
 
 			else
@@ -364,15 +404,20 @@ then
 				then
 					/bin/cp ${PATHTODSSP}/${PATHTOCONTEXTSRELATIVETODSSP} ${PATHTOSELINUXCONFIG}/${DSSP}/${PATHTOCONTEXTSRELATIVETODSSP} 2>/dev/null
 
+					retval=`echo $?`
+
 				elif ! [[ $UID == 0 ]]
 				then
 					/bin/sudo -E /bin/cp ${PATHTODSSP}/${PATHTOCONTEXTSRELATIVETODSSP} ${PATHTOSELINUXCONFIG}/${DSSP}/${PATHTOCONTEXTSRELATIVETODSSP} 2>/dev/null
+
+					retval=`echo $?`
 				fi
 
-				if ! [[ $? == 0 ]]
+				if ! [[ $retval == 0 ]]
 				then
 					debug "failed to install \"${PATHTODSSP}/${PATHTOCONTEXTSRELATIVETODSSP}\" to \"${PATHTOSELINUXCONFIG}/${DSSP}/${PATHTOCONTEXTSRELATIVETODSSP}\""
-					exit 1
+
+					exit `echo $retval`
 				fi
 
 			else
@@ -409,15 +454,20 @@ then
 				then
 					/bin/cp ${PATHTODSSP}/${PATHTOCONTEXTSRELATIVETODSSP}.bin ${PATHTOSELINUXCONFIG}/${DSSP}/${PATHTOCONTEXTSRELATIVETODSSP}.bin 2>/dev/null
 
+					retval=`echo $?`
+
 				elif ! [[ $UID == 0 ]]
 				then
 					/bin/sudo -E /bin/cp ${PATHTODSSP}/${PATHTOCONTEXTSRELATIVETODSSP}.bin ${PATHTOSELINUXCONFIG}/${DSSP}/${PATHTOCONTEXTSRELATIVETODSSP}.bin 2>/dev/null
+
+					retval=`echo $?`
 				fi
 
-				if ! [[ $? == 0 ]]
+				if ! [[ $retval == 0 ]]
 				then
 					debug "failed to install \"${PATHTODSSP}/${PATHTOCONTEXTSRELATIVETODSSP}.bin\" to \"${PATHTOSELINUXCONFIG}/${DSSP}/${PATHTOCONTEXTSRELATIVETODSSP}.bin\""
-					exit 1
+
+					exit `echo $retval`
 				fi
 
 			else
@@ -454,15 +504,20 @@ then
 				then
 					/bin/cp ${PATHTODSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP} ${PATHTOSELINUXCONFIG}/${DSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP} 2>/dev/null
 
+					retval=`echo $?`
+
 				elif ! [[ $UID == 0 ]]
 				then
 					/bin/sudo -E /bin/cp ${PATHTODSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP} ${PATHTOSELINUXCONFIG}/${DSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP} 2>/dev/null
+
+					retval=`echo $?`
 				fi
 
-				if ! [[ $? == 0 ]]
+				if ! [[ $retval == 0 ]]
 				then
 					debug "failed to install \"${PATHTODSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP}\" to \"${PATHTOSELINUXCONFIG}/${DSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP}\""
-					exit 1
+
+					exit `echo $retval`
 				fi
 
 			elif [[ $retval == 195 ]]
@@ -503,15 +558,20 @@ then
 				then
 					/bin/cp ${PATHTODSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP}.bin ${PATHTOSELINUXCONFIG}/${DSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP}.bin 2>/dev/null
 
+					retval=`echo $?`
+
 				elif ! [[ $UID == 0 ]]
 				then
 					/bin/sudo -E /bin/cp ${PATHTODSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP}.bin ${PATHTOSELINUXCONFIG}/${DSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP}.bin 2>/dev/null
+
+					retval=`echo $?`
 				fi
 
-				if ! [[ $? == 0 ]]
+				if ! [[ $retval == 0 ]]
 				then
 					debug "failed to install \"${PATHTODSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP}.bin\" to \"${PATHTOSELINUXCONFIG}/${DSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP}.bin\""
-					exit 1
+
+					exit `echo $retval`
 				fi
 
 			else
@@ -558,15 +618,20 @@ then
 					then
 						/bin/cp ${PATHTODSSP}/contexts.d/files/file_contexts.subs_dist ${PATHTOSELINUXCONFIG}/${DSSP}/contexts/files/file_contexts.subs_dist 2>/dev/null
 
+						retval=`echo $?`
+
 					elif ! [[ $UID == 0 ]]
 					then
 						/bin/sudo -E /bin/cp ${PATHTODSSP}/contexts.d/files/file_contexts.subs_dist ${PATHTOSELINUXCONFIG}/${DSSP}/contexts/files/file_contexts.subs_dist 2>/dev/null
+
+						retval=`echo $?`
 					fi
 
-					if ! [[ $? == 0 ]]
+					if ! [[ $retval == 0 ]]
 					then
 						debug "failed to install \"${PATHTODSSP}/contexts.d/files/file_contexts.subs_dist\" to \"${PATHTOSELINUXCONFIG}/${DSSP}/contexts/files/file_contexts.subs_dist\""
-						exit 1
+
+						exit `echo $retval`
 					fi
 
 				else
@@ -595,15 +660,20 @@ then
 					then
 						/bin/cp ${PATHTODSSP}/contexts/files/file_contexts.subs_dist ${PATHTOSELINUXCONFIG}/${DSSP}/contexts/files/file_contexts.subs_dist 2>/dev/null
 
+						retval=`echo $?`
+
 					elif ! [[ $UID == 0 ]]
 					then
 						/bin/sudo -E /bin/cp ${PATHTODSSP}/contexts/files/file_contexts.subs_dist ${PATHTOSELINUXCONFIG}/${DSSP}/contexts/files/file_contexts.subs_dist 2>/dev/null
+
+						retval=`echo $?`
 					fi
 
-					if ! [[ $? == 0 ]]
+					if ! [[ $retval == 0 ]]
 					then
 						debug "failed to install \"${PATHTODSSP}/contexts/files/file_contexts.subs_dist\" to \"${PATHTOSELINUXCONFIG}/${DSSP}/contexts/files/file_contexts.subs_dist\""
-						exit 1
+
+						exit `echo $retval`
 					fi
 
 				else
@@ -650,15 +720,20 @@ then
 					then
 						/bin/cp ${PATHTODSSP}/contexts.d/dbus_contexts ${PATHTOSELINUXCONFIG}/${DSSP}/contexts/dbus_contexts 2>/dev/null
 
+						retval=`echo $?`
+
 					elif ! [[ $UID == 0 ]]
 					then
 						/bin/sudo -E /bin/cp ${PATHTODSSP}/contexts.d/dbus_contexts ${PATHTOSELINUXCONFIG}/${DSSP}/contexts/dbus_contexts 2>/dev/null
+
+						retval=`echo $?`
 					fi
 
-					if ! [[ $? == 0 ]]
+					if ! [[ $retval == 0 ]]
 					then
 						debug "failed to install \"${PATHTODSSP}/contexts.d/dbus_contexts\" to \"${PATHTOSELINUXCONFIG}/${DSSP}/contexts/dbus_contexts\""
-						exit 1
+
+						exit `echo $retval`
 					fi
 
 				else
@@ -687,15 +762,20 @@ then
 					then
 						/bin/cp ${PATHTODSSP}/contexts/dbus_contexts ${PATHTOSELINUXCONFIG}/${DSSP}/contexts/dbus_contexts 2>/dev/null
 
+						retval=`echo $?`
+
 					elif ! [[ $UID == 0 ]]
 					then
 						/bin/sudo -E /bin/cp ${PATHTODSSP}/contexts/dbus_contexts ${PATHTOSELINUXCONFIG}/${DSSP}/contexts/dbus_contexts 2>/dev/null
+
+						retval=`echo $?`
 					fi
 
-					if ! [[ $? == 0 ]]
+					if ! [[ $retval == 0 ]]
 					then
 						debug "failed to install \"${PATHTODSSP}/contexts/dbus_contexts\" to \"${PATHTOSELINUXCONFIG}/${DSSP}/contexts/dbus_contexts\""
-						exit 1
+
+						exit `echo $retval`
 					fi
 
 				else
@@ -741,15 +821,20 @@ then
 					then
 						/bin/cp ${PATHTODSSP}/contexts.d/openssh_contexts ${PATHTOSELINUXCONFIG}/${DSSP}/contexts/openssh_contexts 2>/dev/null
 
+						retval=`echo $?`
+
 					elif ! [[ $UID == 0 ]]
 					then
 						/bin/sudo -E /bin/cp ${PATHTODSSP}/contexts.d/openssh_contexts ${PATHTOSELINUXCONFIG}/${DSSP}/contexts/openssh_contexts 2>/dev/null
+
+						retval=`echo $?`
 					fi
 
-					if ! [[ $? == 0 ]]
+					if ! [[ $retval == 0 ]]
 					then
 						debug "failed to install \"${PATHTODSSP}/contexts.d/openssh_contexts\" to \"${PATHTOSELINUXCONFIG}/${DSSP}/contexts/openssh_contexts\""
-						exit 1
+
+						exit `echo $retval`
 					fi
 
 				else
@@ -778,15 +863,20 @@ then
 					then
 						/bin/cp ${PATHTODSSP}/contexts/openssh_contexts ${PATHTOSELINUXCONFIG}/${DSSP}/contexts/openssh_contexts 2>/dev/null
 
+						retval=`echo $?`
+
 					elif ! [[ $UID == 0 ]]
 					then
 						/bin/sudo -E /bin/cp ${PATHTODSSP}/contexts/openssh_contexts ${PATHTOSELINUXCONFIG}/${DSSP}/contexts/openssh_contexts 2>/dev/null
+
+						retval=`echo $?`
 					fi
 
-					if ! [[ $? == 0 ]]
+					if ! [[ $retval == 0 ]]
 					then
 						debug "failed to install \"${PATHTODSSP}/contexts/openssh_contexts\" to \"${PATHTOSELINUXCONFIG}/${DSSP}/contexts/openssh_contexts\""
-						exit 1
+
+						exit `echo $retval`
 					fi
 
 				else
@@ -828,15 +918,20 @@ then
 				then
 					/bin/cp ${PATHTODSSP}/seusers.local ${PATHTOSELINUXCONFIG}/${DSSP}/seusers 2>/dev/null
 
+					retval=`echo $?`
+
 				elif ! [[ $UID == 0 ]]
 				then
 					/bin/sudo -E /bin/cp ${PATHTODSSP}/seusers.local ${PATHTOSELINUXCONFIG}/${DSSP}/seusers 2>/dev/null
+
+					retval=`echo $?`
 				fi
 
-				if ! [[ $? == 0 ]]
+				if ! [[ $retval == 0 ]]
 				then
 					debug "failed to install \"${PATHTODSSP}/seusers.local\""
-					exit 1
+
+					exit `echo $retval`
 				fi
 			else
 				exit `echo $retval`
@@ -866,15 +961,20 @@ then
 					then
 						/bin/cp ${PATHTODSSP}/${SEUSERSFILE} ${PATHTOSELINUXCONFIG}/${DSSP}/${STRIPPEDSEUSERSFILE}
 
+						retval=`echo $?`
+
 					elif ! [[ $UID == 0 ]]
 					then
 						/bin/sudo -E /bin/cp ${PATHTODSSP}/${SEUSERSFILE} ${PATHTOSELINUXCONFIG}/${DSSP}/${STRIPPEDSEUSERSFILE}
+
+						retval=`echo $?`
 					fi
 
-					if ! [[ $? == 0 ]]
+					if ! [[ $retval == 0 ]]
 					then
 						debug "failed to install \"${PATHTODSSP}/${SEUSERSFILE}\""
-						exit 1
+
+						exit `echo $retval`
 					fi
 				else
 					exit `echo $retval`
@@ -929,15 +1029,20 @@ then
 								then
 									/bin/cp ${PATHTODSSP}/contexts.d/files/${FILECONTEXTSFILE} ${PATHTOSELINUXCONFIG}/${DSSP}/contexts/files/${STRIPPEDFILECONTEXTSFILE} 2>/dev/null
 
+									retval=`echo $?`
+
 								elif ! [[ $UID == 0 ]]
 								then
 									/bin/sudo -E /bin/cp ${PATHTODSSP}/contexts.d/files/${FILECONTEXTSFILE} ${PATHTOSELINUXCONFIG}/${DSSP}/contexts/files/${STRIPPEDFILECONTEXTSFILE} 2>/dev/null
+
+									retval=`echo $?`
 								fi
 
-								if ! [[ $? == 0 ]]
+								if ! [[ $retval == 0 ]]
 								then
 									debug "failed to install \"${PATHTODSSP}/contexts.d/files/${FILECONTEXTSFILE}\" to \"${PATHTOSELINUXCONFIG}/${DSSP}/contexts/files/${STRIPPEDFILECONTEXTSFILE}\""
-									exit 1
+
+									exit `echo $retval`
 								fi
 							else
 								exit `echo $retval`
@@ -952,15 +1057,20 @@ then
 						then
 							/bin/cp ${PATHTODSSP}/contexts/files/${FILECONTEXTSFILE} ${PATHTOSELINUXCONFIG}/${DSSP}/contexts/files/${STRIPPEDFILECONTEXTSFILE} 2>/dev/null
 
+							retval=`echo $?`
+
 						elif ! [[ $UID == 0 ]]
 						then
 							/bin/sudo -E /bin/cp ${PATHTODSSP}/contexts/files/${FILECONTEXTSFILE} ${PATHTOSELINUXCONFIG}/${DSSP}/contexts/files/${STRIPPEDFILECONTEXTSFILE} 2>/dev/null
+
+							retval=`echo $?`
 						fi
 
-						if ! [[ $? == 0 ]]
+						if ! [[ $retval == 0 ]]
 						then
 							debug "failed to install \"${PATHTODSSP}/contexts/files/${FILECONTEXTSFILE}\" to \"${PATHTOSELINUXCONFIG}/${DSSP}/contexts/files/${STRIPPEDFILECONTEXTSFILE}\""
-							exit 1
+
+							exit `echo $retval`
 						fi
 
 					else
@@ -1024,15 +1134,20 @@ then
 								then
 									/bin/cp ${PATHTODSSP}/contexts.d/users/${USERCONTEXTSFILE} ${PATHTOSELINUXCONFIG}/${DSSP}/contexts/users/${STRIPPEDUSERCONTEXTSFILE} 2>/dev/null
 
+									retval=`echo $?`
+
 								elif ! [[ $UID == 0 ]]
 								then
 									/bin/sudo -E /bin/cp ${PATHTODSSP}/contexts.d/users/${USERCONTEXTSFILE} ${PATHTOSELINUXCONFIG}/${DSSP}/contexts/users/${STRIPPEDUSERCONTEXTSFILE} 2>/dev/null
+
+									retval=`echo $?`
 								fi
 
-								if ! [[ $? == 0 ]]
+								if ! [[ $retval == 0 ]]
 								then
 									debug "failed to install \"${PATHTODSSP}/contexts.d/users/${USERCONTEXTSFILE}\" to \"${PATHTOSELINUXCONFIG}/${DSSP}/contexts/users/${STRIPPEDUSERCONTEXTSFILE}\""
-									exit 1
+
+									exit `echo $retval`
 								fi
 
 							else
@@ -1049,15 +1164,20 @@ then
 						then
 							/bin/cp ${PATHTODSSP}/contexts/users/${USERCONTEXTSFILE} ${PATHTOSELINUXCONFIG}/${DSSP}/contexts/users/${STRIPPEDUSERCONTEXTSFILE} 2>/dev/null
 
+							retval=`echo $?`
+
 						elif ! [[ $UID == 0 ]]
 						then
 							/bin/sudo -E /bin/cp ${PATHTODSSP}/contexts/users/${USERCONTEXTSFILE} ${PATHTOSELINUXCONFIG}/${DSSP}/contexts/users/${STRIPPEDUSERCONTEXTSFILE} 2>/dev/null
+
+							retval=`echo $?`
 						fi
 
-						if ! [[ $? == 0 ]]
+						if ! [[ $retval == 0 ]]
 						then
 							debug "failed to install \"${PATHTODSSP}/contexts/users/${USERCONTEXTSFILE}\" to \"${PATHTOSELINUXCONFIG}/${DSSP}/contexts/users/${STRIPPEDUSERCONTEXTSFILE}\""
-							exit 1
+
+							exit `echo $retval`
 						fi
 
 					else
@@ -1121,15 +1241,20 @@ then
 								then
 									/bin/cp ${PATHTODSSP}/contexts.d/${CONTEXTSFILE} ${PATHTOSELINUXCONFIG}/${DSSP}/contexts/${STRIPPEDCONTEXTSFILE} 2>/dev/null
 
+									retval=`echo $?`
+
 								elif ! [[ $UID == 0 ]]
 								then
 									/bin/sudo -E /bin/cp ${PATHTODSSP}/contexts.d/${CONTEXTSFILE} ${PATHTOSELINUXCONFIG}/${DSSP}/contexts/${STRIPPEDCONTEXTSFILE} 2>/dev/null
+
+									retval=`echo $?`
 								fi
 
-								if ! [[ $? == 0 ]]
+								if ! [[ $retval == 0 ]]
 								then
 									debug "failed to install \"${PATHTODSSP}/contexts.d/${CONTEXTSFILE}\" to \"${PATHTOSELINUXCONFIG}/${DSSP}/contexts/${STRIPPEDCONTEXTSFILE}\""
-									exit 1
+
+									exit `echo $retval`
 								fi
 
 							else
@@ -1146,15 +1271,20 @@ then
 						then
 							/bin/cp ${PATHTODSSP}/contexts/${CONTEXTSFILE} ${PATHTOSELINUXCONFIG}/${DSSP}/contexts/${STRIPPEDCONTEXTSFILE} 2>/dev/null
 
+							retval=`echo $?`
+
 						elif ! [[ $UID == 0 ]]
 						then
 							/bin/sudo -E /bin/cp ${PATHTODSSP}/contexts/${CONTEXTSFILE} ${PATHTOSELINUXCONFIG}/${DSSP}/contexts/${STRIPPEDCONTEXTSFILE} 2>/dev/null
+
+							retval=`echo $?`
 						fi
 
-						if ! [[ $? == 0 ]]
+						if ! [[ $retval == 0 ]]
 						then
 							debug "failed to install \"${PATHTODSSP}/contexts/${CONTEXTSFILE}\" to \"${PATHTOSELINUXCONFIG}/${DSSP}/contexts/${STRIPPEDCONTEXTSFILE}\""
-							exit 1
+
+							exit `echo $retval`
 						fi
 
 
@@ -1179,7 +1309,7 @@ then
 			fi
 
 		else
-			exit `echo $?`
+			exit `echo $retval`
 		fi
 	done
 
@@ -1206,15 +1336,20 @@ then
 		then
 			/bin/mkdir -p ${PATHTOSELINUXCONFIG}/${DSSP}/contexts/files 2>/dev/null
 
+			retval=`echo $?`
+
 		elif ! [[ $UID == 0 ]]
 		then
 			/bin/sudo -E /bin/mkdir -p ${PATHTOSELINUXCONFIG}/${DSSP}/contexts/files 2>/dev/null
+
+			retval=`echo $?`
 		fi
 
-		if ! [[ $? == 0 ]]
+		if ! [[ $retval == 0 ]]
 		then
 			debug "failed to create \"${PATHTOSELINUXCONFIG}/${DSSP}/contexts/files\" directory"
-			exit 1
+
+			exit `echo $retval`
 		fi
 
 	elif ! [[ $retval == 0 ]]
@@ -1232,15 +1367,20 @@ then
 		then
 			/bin/mkdir -p ${PATHTOSELINUXCONFIG}/${DSSP}/policy 2>/dev/null
 
+			retval=`echo $?`
+
 		elif ! [[ $UID == 0 ]]
 		then
 			/bin/sudo -E /bin/mkdir -p ${PATHTOSELINUXCONFIG}/${DSSP}/policy 2>/dev/null
+
+			retval=`echo $?`
 		fi
 
-		if ! [[ $? == 0 ]]
+		if ! [[ $retval == 0 ]]
 		then
 			debug "failed to create \"${PATHTOSELINUXCONFIG}/${DSSP}/policy\" directory"
-			exit 1
+
+			exit `echo $retval`
 		fi
 
 	elif ! [[ $retval == 0 ]]
@@ -1258,15 +1398,20 @@ then
 		then
 			/bin/mkdir -p ${PATHTOSELINUXCONFIG}/${DSSP}/contexts/users 2>/dev/null
 
+			retval=`echo $?`
+
 		elif ! [[ $UID == 0 ]]
 		then
 			/bin/sudo -E /bin/mkdir -p ${PATHTOSELINUXCONFIG}/${DSSP}/contexts/users 2>/dev/null
+
+			retval=`echo $?`
 		fi
 
-		if ! [[ $? == 0 ]]
+		if ! [[ $retval == 0 ]]
 		then
 			debug "failed to create \"${PATHTOSELINUXCONFIG}/${DSSP}/contexts/users\" directory"
-			exit 1
+
+			exit `echo $retval`
 		fi
 
 	elif ! [[ $retval == 0 ]]
@@ -1317,15 +1462,20 @@ then
 					then
 						\cp -f ${PATHTODSSP}/policy/policy.${POLICYVERSION} ${PATHTOSELINUXCONFIG}/${DSSP}/policy/policy.${POLICYVERSION} 2>/dev/null
 
+						retval=`echo $?`
+
 					elif ! [[ $UID == 0 ]]
 					then
 						/bin/sudo -E \cp -f ${PATHTODSSP}/policy/policy.${POLICYVERSION} ${PATHTOSELINUXCONFIG}/${DSSP}/policy/policy.${POLICYVERSION} 2>/dev/null
+
+						retval=`echo $?`
 					fi
 
-					if ! [[ $? == 0 ]]
+					if ! [[ $retval == 0 ]]
 					then
 						debug "failed to update \"${PATHTODSSP}/policy/policy.${POLICYVERSION}\""
-						exit 1
+
+						exit `echo $retval`
 					fi
 
 				else
@@ -1357,15 +1507,20 @@ then
 				then
 					/bin/cp ${PATHTODSSP}/policy/policy.${POLICYVERSION} ${PATHTOSELINUXCONFIG}/${DSSP}/policy/policy.${POLICYVERSION} 2>/dev/null
 
+					retval=`echo $?`
+
 				elif ! [[ $UID == 0 ]]
 				then
 					/bin/sudo -E /bin/cp ${PATHTODSSP}/policy/policy.${POLICYVERSION} ${PATHTOSELINUXCONFIG}/${DSSP}/policy/policy.${POLICYVERSION} 2>/dev/null
+
+					retval=`echo $?`
 				fi
 
-				if ! [[ $? == 0 ]]
+				if ! [[ $retval == 0 ]]
 				then
 					debug "failed to install \"${PATHTODSSP}/policy/policy.${POLICYVERSION}\""
-					exit 1
+
+					exit `echo $retval`
 				fi
 
 			else
@@ -1420,15 +1575,20 @@ then
 					then
 						\cp -f ${PATHTODSSP}/${PATHTOCONTEXTSRELATIVETODSSP} ${PATHTOSELINUXCONFIG}/${DSSP}/${PATHTOCONTEXTSRELATIVETODSSP} 2>/dev/null
 
+						retval=`echo $?`
+
 					elif ! [[ $UID == 0 ]]
 					then
 						/bin/sudo -E \cp -f ${PATHTODSSP}/${PATHTOCONTEXTSRELATIVETODSSP} ${PATHTOSELINUXCONFIG}/${DSSP}/${PATHTOCONTEXTSRELATIVETODSSP} 2>/dev/null
+
+						retval=`echo $?`
 					fi
 
-					if ! [[ $? == 0 ]]
+					if ! [[ $retval == 0 ]]
 					then
 						debug "failed to update \"${PATHTODSSP}/${PATHTOCONTEXTSRELATIVETODSSP}\""
-						exit 1
+
+						exit `echo $retval`
 					fi
 
 				else
@@ -1460,15 +1620,20 @@ then
 				then
 					/bin/cp ${PATHTODSSP}/${PATHTOCONTEXTSRELATIVETODSSP} ${PATHTOSELINUXCONFIG}/${DSSP}/${PATHTOCONTEXTSRELATIVETODSSP} 2>/dev/null
 
+					retval=`echo $?`
+
 				elif ! [[ $UID == 0 ]]
 				then
 					/bin/sudo -E /bin/cp ${PATHTODSSP}/${PATHTOCONTEXTSRELATIVETODSSP} ${PATHTOSELINUXCONFIG}/${DSSP}/${PATHTOCONTEXTSRELATIVETODSSP} 2>/dev/null
+
+					retval=`echo $?`
 				fi
 
-				if ! [[ $? == 0 ]]
+				if ! [[ $retval == 0 ]]
 				then
 					debug "failed to install \"${PATHTODSSP}/${PATHTOCONTEXTSRELATIVETODSSP}\""
-					exit 1
+
+					exit `echo $retval`
 				fi
 
 			else
@@ -1523,15 +1688,20 @@ then
 					then
 						\cp -f ${PATHTODSSP}/${PATHTOCONTEXTSRELATIVETODSSP}.bin ${PATHTOSELINUXCONFIG}/${DSSP}/${PATHTOCONTEXTSRELATIVETODSSP}.bin 2>/dev/null
 
+						retval=`echo $?`
+
 					elif ! [[ $UID == 0 ]]
 					then
 						/bin/sudo -E \cp -f ${PATHTODSSP}/${PATHTOCONTEXTSRELATIVETODSSP}.bin ${PATHTOSELINUXCONFIG}/${DSSP}/${PATHTOCONTEXTSRELATIVETODSSP}.bin 2>/dev/null
+
+						retval=`echo $?`
 					fi
 
-					if ! [[ $? == 0 ]]
+					if ! [[ $retval == 0 ]]
 					then
 						debug "failed to update \"${PATHTODSSP}/${PATHTOCONTEXTSRELATIVETODSSP}.bin\""
-						exit 1
+
+						exit `echo $retval`
 					fi
 
 				else
@@ -1563,15 +1733,20 @@ then
 				then
 					/bin/cp ${PATHTODSSP}/${PATHTOCONTEXTSRELATIVETODSSP}.bin ${PATHTOSELINUXCONFIG}/${DSSP}/${PATHTOCONTEXTSRELATIVETODSSP}.bin 2>/dev/null
 
+					retval=`echo $?`
+
 				elif ! [[ $UID == 0 ]]
 				then
 					/bin/sudo -E /bin/cp ${PATHTODSSP}/${PATHTOCONTEXTSRELATIVETODSSP}.bin ${PATHTOSELINUXCONFIG}/${DSSP}/${PATHTOCONTEXTSRELATIVETODSSP}.bin 2>/dev/null
+
+					retval=`echo $?`
 				fi
 
-				if ! [[ $? == 0 ]]
+				if ! [[ $retval == 0 ]]
 				then
 					debug "failed to install \"${PATHTODSSP}/${PATHTOCONTEXTSRELATIVETODSSP}.bin\""
-					exit 1
+
+					exit `echo $retval`
 				fi
 
 			else
@@ -1626,15 +1801,20 @@ then
 					then
 						\cp -f ${PATHTODSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP} ${PATHTOSELINUXCONFIG}/${DSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP} 2>/dev/null
 
+						retval=`echo $?`
+
 					elif ! [[ $UID == 0 ]]
 					then
 						/bin/sudo -E \cp -f ${PATHTODSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP} ${PATHTOSELINUXCONFIG}/${DSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP} 2>/dev/null
+
+						retval=`echo $?`
 					fi
 
-					if ! [[ $? == 0 ]]
+					if ! [[ $retval == 0 ]]
 					then
 						debug "failed to update \"${PATHTODSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP}\""
-						exit 1
+
+						exit `echo $retval`
 					fi
 
 				else
@@ -1655,12 +1835,16 @@ then
 					then
 						\rm -f ${PATHTOSELINUXCONFIG}/${DSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP} 2>/dev/null
 
+						retval=`echo $?`
+
 					elif ! [[ $UID == 0 ]]
 					then
 						/bin/sudo -E \rm -f ${PATHTOSELINUXCONFIG}/${DSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP} 2>/dev/null
+
+						retval=`echo $?`
 					fi
 
-					if [[ $? == 0 ]]
+					if [[ $retval == 0 ]]
 					then
 						debug "removed \"${PATHTOSELINUXCONFIG}/${DSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP}\""
 
@@ -1668,12 +1852,16 @@ then
 						then
 							\rm -f ${PATHTOSELINUXCONFIG}/${DSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP}.bin 2>/dev/null
 
+							retval=`echo $?`
+
 						elif ! [[ $UID == 0 ]]
 						then
 							/bin/sudo -E \rm -f ${PATHTOSELINUXCONFIG}/${DSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP}.bin 2>/dev/null
+
+							retval=`echo $?`
 						fi
 
-						if [[ $? == 0 ]]
+						if [[ $retval == 0 ]]
 						then
 							debug "removed \"${PATHTOSELINUXCONFIG}/${DSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP}.bin\""
 
@@ -1681,7 +1869,7 @@ then
 							debug "failed to remove \"${PATHTOSELINUXCONFIG}/${DSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP}.bin\""
 						fi
 
-					elif ! [[ $? == 0 ]]
+					elif ! [[ $retval == 0 ]]
 					then
 						debug "failed to remove \"${PATHTOSELINUXCONFIG}/${DSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP}\""
 					fi
@@ -1715,15 +1903,20 @@ then
 				then
 					/bin/cp ${PATHTODSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP} ${PATHTOSELINUXCONFIG}/${DSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP} 2>/dev/null
 
+					retval=`echo $?`
+
 				elif ! [[ $UID == 0 ]]
 				then
 					/bin/sudo -E /bin/cp ${PATHTODSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP} ${PATHTOSELINUXCONFIG}/${DSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP} 2>/dev/null
+
+					retval=`echo $?`
 				fi
 
-				if ! [[ $? == 0 ]]
+				if ! [[ $retval == 0 ]]
 				then
 					debug "failed to install \"${PATHTODSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP}\""
-					exit 1
+
+					exit `echo $retval`
 				fi
 
 			elif [[ $retval == 195 ]]
@@ -1782,15 +1975,20 @@ then
 					then
 						\cp -f ${PATHTODSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP}.bin ${PATHTOSELINUXCONFIG}/${DSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP}.bin 2>/dev/null
 
+						retval=`echo $?`
+
 					elif ! [[ $UID == 0 ]]
 					then
 						/bin/sudo -E \cp -f ${PATHTODSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP}.bin ${PATHTOSELINUXCONFIG}/${DSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP}.bin 2>/dev/null
+
+						retval=`echo $?`
 					fi
 
-					if ! [[ $? == 0 ]]
+					if ! [[ $retval == 0 ]]
 					then
 						debug "failed to update \"${PATHTODSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP}.bin\""
-						exit 1
+
+						exit `echo $retval`
 					fi
 
 				else
@@ -1811,16 +2009,20 @@ then
 					then
 						\rm -f ${PATHTOSELINUXCONFIG}/${DSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP}.bin 2>/dev/null
 
+						retval=`echo $?`
+
 					elif ! [[ $UID == 0 ]]
 					then
 						/bin/sudo -E \rm -f ${PATHTOSELINUXCONFIG}/${DSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP}.bin 2>/dev/null
+
+						retval=`echo $?`
 					fi
 
-					if [[ $? == 0 ]]
+					if [[ $retval == 0 ]]
 					then
 						debug "removed \"${PATHTOSELINUXCONFIG}/${DSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP}.bin\""
 
-					elif ! [[ $? == 0 ]]
+					elif ! [[ $retval == 0 ]]
 					then
 						debug "failed to remove \"${PATHTOSELINUXCONFIG}/${DSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP}.bin\""
 					fi
@@ -1854,15 +2056,20 @@ then
 				then
 					/bin/cp ${PATHTODSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP}.bin ${PATHTOSELINUXCONFIG}/${DSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP}.bin 2>/dev/null
 
+					retval=`echo $?`
+
 				elif ! [[ $UID == 0 ]]
 				then
 					/bin/sudo -E /bin/cp ${PATHTODSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP}.bin ${PATHTOSELINUXCONFIG}/${DSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP}.bin 2>/dev/null
+
+					retval=`echo $?`
 				fi
 
-				if ! [[ $? == 0 ]]
+				if ! [[ $retval == 0 ]]
 				then
 					debug "failed to install \"${PATHTODSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP}.bin\""
-					exit 1
+
+					exit `echo $retval`
 				fi
 
 			elif [[ $retval == 195 ]]
@@ -1933,15 +2140,20 @@ then
 							then
 								\cp -f ${PATHTODSSP}/contexts.d/files/file_contexts.subs_dist ${PATHTOSELINUXCONFIG}/${DSSP}/contexts/files/file_contexts.subs_dist 2>/dev/null
 
+								retval=`echo $?`
+
 							elif ! [[ $UID == 0 ]]
 							then
 								/bin/sudo -E \cp -f ${PATHTODSSP}/contexts.d/files/file_contexts.subs_dist ${PATHTOSELINUXCONFIG}/${DSSP}/contexts/files/file_contexts.subs_dist 2>/dev/null
+
+								retval=`echo $?`
 							fi
 
-							if ! [[ $? == 0 ]]
+							if ! [[ $retval == 0 ]]
 							then
 								debug "failed to update \"${PATHTODSSP}/contexts.d/files/file_contexts.subs_dist\""
-								exit 1
+
+								exit `echo $retval`
 							fi
 
 						else
@@ -2000,15 +2212,20 @@ then
 								then
 									\cp -f ${PATHTODSSP}/contexts/files/file_contexts.subs_dist ${PATHTOSELINUXCONFIG}/${DSSP}/contexts/files/file_contexts.subs_dist 2>/dev/null
 
+									retval=`echo $?`
+
 								elif ! [[ $UID == 0 ]]
 								then
 									/bin/sudo -E \cp -f ${PATHTODSSP}/contexts/files/file_contexts.subs_dist ${PATHTOSELINUXCONFIG}/${DSSP}/contexts/files/file_contexts.subs_dist 2>/dev/null
+
+									retval=`echo $?`
 								fi
 
-								if ! [[ $? == 0 ]]
+								if ! [[ $retval == 0 ]]
 								then
 									debug "failed to update \"${PATHTODSSP}/contexts/files/file_contexts.subs_dist\""
-									exit 1
+
+									exit `echo $retval`
 								fi
 
 							else
@@ -2062,15 +2279,20 @@ then
 						then
 							\cp -f ${PATHTODSSP}/contexts.d/files/file_contexts.subs_dist ${PATHTOSELINUXCONFIG}/${DSSP}/contexts/files/file_contexts.subs_dist 2>/dev/null
 
+							retval=`echo $?`
+
 						elif ! [[ $UID == 0 ]]
 						then
 							/bin/sudo -E \cp -f ${PATHTODSSP}/contexts.d/files/file_contexts.subs_dist ${PATHTOSELINUXCONFIG}/${DSSP}/contexts/files/file_contexts.subs_dist 2>/dev/null
+
+							retval=`echo $?`
 						fi
 
-						if ! [[ $? == 0 ]]
+						if ! [[ $retval == 0 ]]
 						then
 							debug "failed to install \"${PATHTODSSP}/contexts.d/files/file_contexts.subs_dist\""
-							exit 1
+
+							exit `echo $retval`
 						fi
 
 					else
@@ -2105,15 +2327,20 @@ then
 							then
 								\cp -f ${PATHTODSSP}/contexts/files/file_contexts.subs_dist ${PATHTOSELINUXCONFIG}/${DSSP}/contexts/files/file_contexts.subs_dist 2>/dev/null
 
+								retval=`echo $?`
+
 							elif ! [[ $UID == 0 ]]
 							then
 								/bin/sudo -E \cp -f ${PATHTODSSP}/contexts/files/file_contexts.subs_dist ${PATHTOSELINUXCONFIG}/${DSSP}/contexts/files/file_contexts.subs_dist 2>/dev/null
+
+								retval=`echo $?`
 							fi
 
-							if ! [[ $? == 0 ]]
+							if ! [[ $retval == 0 ]]
 							then
 								debug "failed to update \"${PATHTODSSP}/contexts/files/file_contexts.subs_dist\""
-								exit 1
+
+								exit `echo $retval`
 							fi
 
 						else
@@ -2192,15 +2419,20 @@ then
 							then
 								\cp -f ${PATHTODSSP}/contexts.d/dbus_contexts ${PATHTOSELINUXCONFIG}/${DSSP}/contexts/dbus_contexts 2>/dev/null
 
+								retval=`echo $?`
+
 							elif ! [[ $UID == 0 ]]
 							then
 								/bin/sudo -E \cp -f ${PATHTODSSP}/contexts.d/dbus_contexts ${PATHTOSELINUXCONFIG}/${DSSP}/contexts/dbus_contexts 2>/dev/null
+
+								retval=`echo $?`
 							fi
 
-							if ! [[ $? == 0 ]]
+							if ! [[ $retval == 0 ]]
 							then
 								debug "failed to update \"${PATHTODSSP}/contexts.d/dbus_contexts\""
-								exit 1
+
+								exit `echo $retval`
 							fi
 
 						else
@@ -2259,15 +2491,20 @@ then
 								then
 									\cp -f ${PATHTODSSP}/contexts/dbus_contexts ${PATHTOSELINUXCONFIG}/${DSSP}/contexts/dbus_contexts 2>/dev/null
 
+									retval=`echo $?`
+
 								elif ! [[ $UID == 0 ]]
 								then
 									/bin/sudo -E \cp -f ${PATHTODSSP}/contexts/dbus_contexts ${PATHTOSELINUXCONFIG}/${DSSP}/contexts/dbus_contexts 2>/dev/null
+
+									retval=`echo $?`
 								fi
 
-								if ! [[ $? == 0 ]]
+								if ! [[ $retval == 0 ]]
 								then
 									debug "failed to update \"${PATHTODSSP}/contexts/dbus_contexts\""
-									exit 1
+
+									exit `echo $retval`
 								fi
 
 							else
@@ -2321,15 +2558,20 @@ then
 						then
 							\cp -f ${PATHTODSSP}/contexts.d/dbus_contexts ${PATHTOSELINUXCONFIG}/${DSSP}/contexts/dbus_contexts 2>/dev/null
 
+							retval=`echo $?`
+
 						elif ! [[ $UID == 0 ]]
 						then
 							/bin/sudo -E \cp -f ${PATHTODSSP}/contexts.d/dbus_contexts ${PATHTOSELINUXCONFIG}/${DSSP}/contexts/dbus_contexts 2>/dev/null
+
+							retval=`echo $?`
 						fi
 
-						if ! [[ $? == 0 ]]
+						if ! [[ $retval == 0 ]]
 						then
 							debug "failed to install \"${PATHTODSSP}/contexts.d/dbus_contexts\""
-							exit 1
+
+							exit `echo $retval`
 						fi
 
 					else
@@ -2364,15 +2606,20 @@ then
 							then
 								\cp -f ${PATHTODSSP}/contexts/dbus_contexts ${PATHTOSELINUXCONFIG}/${DSSP}/contexts/dbus_contexts 2>/dev/null
 
+								retval=`echo $?`
+
 							elif ! [[ $UID == 0 ]]
 							then
 								/bin/sudo -E \cp -f ${PATHTODSSP}/contexts/dbus_contexts ${PATHTOSELINUXCONFIG}/${DSSP}/contexts/dbus_contexts 2>/dev/null
+
+								retval=`echo $?`
 							fi
 
-							if ! [[ $? == 0 ]]
+							if ! [[ $retval == 0 ]]
 							then
 								debug "failed to update \"${PATHTODSSP}/contexts/dbus_contexts\""
-								exit 1
+
+								exit `echo $retval`
 							fi
 
 						else
@@ -2451,15 +2698,20 @@ then
 							then
 								\cp -f ${PATHTODSSP}/contexts.d/openssh_contexts ${PATHTOSELINUXCONFIG}/${DSSP}/contexts/openssh_contexts 2>/dev/null
 
+								retval=`echo $?`
+
 							elif ! [[ $UID == 0 ]]
 							then
 								/bin/sudo -E \cp -f ${PATHTODSSP}/contexts.d/openssh_contexts ${PATHTOSELINUXCONFIG}/${DSSP}/contexts/openssh_contexts 2>/dev/null
+
+								retval=`echo $?`
 							fi
 
-							if ! [[ $? == 0 ]]
+							if ! [[ $retval == 0 ]]
 							then
 								debug "failed to update \"${PATHTODSSP}/contexts.d/openssh_contexts\""
-								exit 1
+
+								exit `echo $retval`
 							fi
 
 						else
@@ -2518,15 +2770,20 @@ then
 								then
 									\cp -f ${PATHTODSSP}/contexts/openssh_contexts ${PATHTOSELINUXCONFIG}/${DSSP}/contexts/openssh_contexts 2>/dev/null
 
+									retval=`echo $?`
+
 								elif ! [[ $UID == 0 ]]
 								then
 									/bin/sudo -E \cp -f ${PATHTODSSP}/contexts/openssh_contexts ${PATHTOSELINUXCONFIG}/${DSSP}/contexts/openssh_contexts 2>/dev/null
+
+									retval=`echo $?`
 								fi
 
-								if ! [[ $? == 0 ]]
+								if ! [[ $retval == 0 ]]
 								then
 									debug "failed to update \"${PATHTODSSP}/contexts/openssh_contexts\""
-									exit 1
+
+									exit `echo $retval`
 								fi
 
 							else
@@ -2580,15 +2837,20 @@ then
 						then
 							\cp -f ${PATHTODSSP}/contexts.d/openssh_contexts ${PATHTOSELINUXCONFIG}/${DSSP}/contexts/openssh_contexts 2>/dev/null
 
+							retval=`echo $?`
+
 						elif ! [[ $UID == 0 ]]
 						then
 							/bin/sudo -E \cp -f ${PATHTODSSP}/contexts.d/openssh_contexts ${PATHTOSELINUXCONFIG}/${DSSP}/contexts/openssh_contexts 2>/dev/null
+
+							retval=`echo $?`
 						fi
 
-						if ! [[ $? == 0 ]]
+						if ! [[ $retval == 0 ]]
 						then
 							debug "failed to install \"${PATHTODSSP}/contexts.d/openssh_contexts\""
-							exit 1
+
+							exit `echo $retval`
 						fi
 
 					else
@@ -2623,15 +2885,20 @@ then
 							then
 								\cp -f ${PATHTODSSP}/contexts/openssh_contexts ${PATHTOSELINUXCONFIG}/${DSSP}/contexts/openssh_contexts 2>/dev/null
 
+								retval=`echo $?`
+
 							elif ! [[ $UID == 0 ]]
 							then
 								/bin/sudo -E \cp -f ${PATHTODSSP}/contexts/openssh_contexts ${PATHTOSELINUXCONFIG}/${DSSP}/contexts/openssh_contexts 2>/dev/null
+
+								retval=`echo $?`
 							fi
 
-							if ! [[ $? == 0 ]]
+							if ! [[ $retval == 0 ]]
 							then
 								debug "failed to update \"${PATHTODSSP}/contexts/openssh_contexts\""
-								exit 1
+
+								exit `echo $retval`
 							fi
 
 						else
@@ -2704,15 +2971,20 @@ then
 						then
 							\cp -f ${PATHTODSSP}/seusers.local ${PATHTOSELINUXCONFIG}/${DSSP}/seusers 2>/dev/null
 
+							retval=`echo $?`
+
 						elif ! [[ $UID == 0 ]]
 						then
 							/bin/sudo -E \cp -f ${PATHTODSSP}/seusers.local ${PATHTOSELINUXCONFIG}/${DSSP}/seusers 2>/dev/null
+
+							retval=`echo $?`
 						fi
 
-						if ! [[ $? == 0 ]]
+						if ! [[ $retval == 0 ]]
 						then
 							debug "failed to update \"${PATHTODSSP}/seusers.local\""
-							exit 1
+
+							exit `echo $retval`
 						fi
 
 					else
@@ -2768,15 +3040,20 @@ then
 							then
 								\cp -f ${PATHTODSSP}/${SEUSERSFILE} ${PATHTOSELINUXCONFIG}/${DSSP}/seusers 2>/dev/null
 
+								retval=`echo $?`
+
 							elif ! [[ $UID == 0 ]]
 							then
 								/bin/sudo -E \cp -f ${PATHTODSSP}/${SEUSERSFILE} ${PATHTOSELINUXCONFIG}/${DSSP}/seusers 2>/dev/null
+
+								retval=`echo $?`
 							fi
 
-							if ! [[ $? == 0 ]]
+							if ! [[ $retval == 0 ]]
 							then
 								debug "failed to update \"${PATHTODSSP}/${SEUSERSFILE}\""
-								exit 1
+
+								exit `echo $retval`
 							fi
 
 						else
@@ -2816,15 +3093,20 @@ then
 					then
 						/bin/cp ${PATHTODSSP}/seusers.local ${PATHTOSELINUXCONFIG}/${DSSP}/seusers 2>/dev/null
 
+						retval=`echo $?`
+
 					elif ! [[ $UID == 0 ]]
 					then
 						/bin/sudo -E /bin/cp ${PATHTODSSP}/seusers.local ${PATHTOSELINUXCONFIG}/${DSSP}/seusers 2>/dev/null
+
+						retval=`echo $?`
 					fi
 
-					if ! [[ $? == 0 ]]
+					if ! [[ $retval == 0 ]]
 					then
 						debug "failed to update \"${PATHTODSSP}/seusers.local\""
-						exit 1
+
+						exit `echo $retval`
 					fi
 
 				else
@@ -2859,15 +3141,20 @@ then
 					then
 						/bin/cp ${PATHTODSSP}/${SEUSERSFILE} ${PATHTOSELINUXCONFIG}/${DSSP}/${STRIPPEDSEUSERSFILE} 2>/dev/null
 
+						retval=`echo $?`
+
 					elif ! [[ $UID == 0 ]]
 					then
 						/bin/sudo -E /bin/cp ${PATHTODSSP}/${SEUSERSFILE} ${PATHTOSELINUXCONFIG}/${DSSP}/${STRIPPEDSEUSERSFILE} 2>/dev/null
+
+						retval=`echo $?`
 					fi
 
-					if ! [[ $? == 0 ]]
+					if ! [[ $retval == 0 ]]
 					then
 						debug "failed to install \"${PATHTODSSP}/${SEUSERSFILE}\""
-						exit 1
+
+						exit `echo $retval`
 					fi
 				else
 					exit `echo $retval`
@@ -2931,15 +3218,20 @@ then
 							then
 								\cp -f ${PATHTODSSP}/contexts.d/users/${USERCONTEXTSFILE} ${PATHTOSELINUXCONFIG}/${DSSP}/contexts/users/${STRIPPEDUSERCONTEXTSFILE} 2>/dev/null
 
+								retval=`echo $?`
+
 							elif ! [[ $UID == 0 ]]
 							then
 								/bin/sudo -E \cp -f ${PATHTODSSP}/contexts.d/users/${USERCONTEXTSFILE} ${PATHTOSELINUXCONFIG}/${DSSP}/contexts/users/${STRIPPEDUSERCONTEXTSFILE} 2>/dev/null
+
+								retval=`echo $?`
 							fi
 
-							if ! [[ $? == 0 ]]
+							if ! [[ $retval == 0 ]]
 							then
 								debug "failed to update \"${PATHTODSSP}/contexts.d/users/${USERCONTEXTSFILE}\""
-								exit 1
+
+								exit `echo $retval`
 							fi
 
 						else
@@ -2992,15 +3284,20 @@ then
 							then
 								\cp -f ${PATHTODSSP}/contexts/users/${USERCONTEXTSFILE} ${PATHTOSELINUXCONFIG}/${DSSP}/contexts/users/${STRIPPEDUSERCONTEXTSFILE} 2>/dev/null
 
+								retval=`echo $?`
+
 							elif ! [[ $UID == 0 ]]
 							then
 								/bin/sudo -E \cp -f ${PATHTODSSP}/contexts/users/${USERCONTEXTSFILE} ${PATHTOSELINUXCONFIG}/${DSSP}/contexts/users/${STRIPPEDUSERCONTEXTSFILE} 2>/dev/null
+
+								retval=`echo $?`
 							fi
 
-							if ! [[ $? == 0 ]]
+							if ! [[ $retval == 0 ]]
 							then
 								debug "failed to update \"${PATHTODSSP}/contexts/users/${USERCONTEXTSFILE}\""
-								exit 1
+
+								exit `echo $retval`
 							fi
 
 						else
@@ -3042,15 +3339,20 @@ then
 						then
 							/bin/cp ${PATHTODSSP}/contexts.d/users/${USERCONTEXTSFILE} ${PATHTOSELINUXCONFIG}/${DSSP}/contexts/users/${STRIPPEDUSERCONTEXTSFILE} 2>/dev/null
 
+							retval=`echo $?`
+
 						elif ! [[ $UID == 0 ]]
 						then
 							/bin/sudo -E /bin/cp ${PATHTODSSP}/contexts.d/users/${USERCONTEXTSFILE} ${PATHTOSELINUXCONFIG}/${DSSP}/contexts/users/${STRIPPEDUSERCONTEXTSFILE} 2>/dev/null
+
+							retval=`echo $?`
 						fi
 
-						if ! [[ $? == 0 ]]
+						if ! [[ $retval == 0 ]]
 						then
 							debug "failed to update \"${PATHTODSSP}/contexts.d/users/${USERCONTEXTSFILE}\""
-							exit 1
+
+							exit `echo $retval`
 						fi
 
 					else
@@ -3079,15 +3381,20 @@ then
 						then
 							/bin/cp ${PATHTODSSP}/contexts/users/${USERCONTEXTSFILE} ${PATHTOSELINUXCONFIG}/${DSSP}/contexts/users/${STRIPPEDUSERCONTEXTSFILE} 2>/dev/null
 
+							retval=`echo $?`
+
 						elif ! [[ $UID == 0 ]]
 						then
 							/bin/sudo -E /bin/cp ${PATHTODSSP}/contexts/users/${USERCONTEXTSFILE} ${PATHTOSELINUXCONFIG}/${DSSP}/contexts/users/${STRIPPEDUSERCONTEXTSFILE} 2>/dev/null
+
+							retval=`echo $?`
 						fi
 
-						if ! [[ $? == 0 ]]
+						if ! [[ $retval == 0 ]]
 						then
 							debug "failed to update \"${PATHTODSSP}/contexts/users/${USERCONTEXTSFILE}\""
-							exit 1
+
+							exit `echo $retval`
 						fi
 
 					else
@@ -3159,15 +3466,20 @@ then
 							then
 								\cp -f ${PATHTODSSP}/contexts.d/files/${FILECONTEXTSFILE} ${PATHTOSELINUXCONFIG}/${DSSP}/contexts/files/${STRIPPEDFILECONTEXTSFILE} 2>/dev/null
 
+								retval=`echo $?`
+
 							elif ! [[ $UID == 0 ]]
 							then
 								/bin/sudo -E \cp -f ${PATHTODSSP}/contexts.d/files/${FILECONTEXTSFILE} ${PATHTOSELINUXCONFIG}/${DSSP}/contexts/files/${STRIPPEDFILECONTEXTSFILE} 2>/dev/null
+
+								retval=`echo $?`
 							fi
 
-							if ! [[ $? == 0 ]]
+							if ! [[ $retval == 0 ]]
 							then
 								debug "failed to update \"${PATHTODSSP}/contexts.d/files/${FILECONTEXTSFILE}\""
-								exit 1
+
+								exit `echo $retval`
 							fi
 
 						else
@@ -3220,15 +3532,19 @@ then
 							then
 								\cp -f ${PATHTODSSP}/contexts/files/${FILECONTEXTSFILE} ${PATHTOSELINUXCONFIG}/${DSSP}/contexts/files/${STRIPPEDFILECONTEXTSFILE} 2>/dev/null
 
+								retval=`echo $?`
+
 							elif ! [[ $UID == 0 ]]
 							then
 								/bin/sudo -E \cp -f ${PATHTODSSP}/contexts/files/${FILECONTEXTSFILE} ${PATHTOSELINUXCONFIG}/${DSSP}/contexts/files/${STRIPPEDFILECONTEXTSFILE} 2>/dev/null
+
+								retval=`echo $?`
 							fi
 
-							if ! [[ $? == 0 ]]
+							if ! [[ $retval == 0 ]]
 							then
 								debug "failed to update \"${PATHTODSSP}/contexts/files/${FILECONTEXTSFILE}\""
-								exit 1
+								exit `echo $retval`
 							fi
 
 						else
@@ -3270,15 +3586,20 @@ then
 						then
 							/bin/cp ${PATHTODSSP}/contexts.d/files/${FILECONTEXTSFILE} ${PATHTOSELINUXCONFIG}/${DSSP}/contexts/files/${STRIPPEDFILECONTEXTSFILE} 2>/dev/null
 
+							retval=`echo $?`
+
 						elif ! [[ $UID == 0 ]]
 						then
 							/bin/sudo -E /bin/cp ${PATHTODSSP}/contexts.d/files/${FILECONTEXTSFILE} ${PATHTOSELINUXCONFIG}/${DSSP}/contexts/files/${STRIPPEDFILECONTEXTSFILE} 2>/dev/null
+
+							retval=`echo $?`
 						fi
 
-						if ! [[ $? == 0 ]]
+						if ! [[ $retval == 0 ]]
 						then
 							debug "failed to update \"${PATHTODSSP}/contexts.d/files/${FILECONTEXTSFILE}\""
-							exit 1
+
+							exit `echo $retval`
 						fi
 
 					else
@@ -3307,15 +3628,20 @@ then
 						then
 							/bin/cp ${PATHTODSSP}/contexts/files/${FILECONTEXTSFILE} ${PATHTOSELINUXCONFIG}/${DSSP}/contexts/files/${STRIPPEDFILECONTEXTSFILE} 2>/dev/null
 
+							retval=`echo $?`
+
 						elif ! [[ $UID == 0 ]]
 						then
 							/bin/sudo -E /bin/cp ${PATHTODSSP}/contexts/files/${FILECONTEXTSFILE} ${PATHTOSELINUXCONFIG}/${DSSP}/contexts/files/${STRIPPEDFILECONTEXTSFILE} 2>/dev/null
+
+							retval=`echo $?`
 						fi
 
-						if ! [[ $? == 0 ]]
+						if ! [[ $retval == 0 ]]
 						then
 							debug "failed to update \"${PATHTODSSP}/contexts/files/${FILECONTEXTSFILE}\""
-							exit 1
+
+							exit `echo $retval`
 						fi
 
 					else
@@ -3375,25 +3701,31 @@ then
 							then
 								\rm -f ${PATHTOSELINUXCONFIG}/${DSSP}/contexts/${STRIPPEDCONTEXTSFILE} 2>/dev/null
 
-								if ! [[ $? == 0 ]]
+								retval=`echo $?`
+
+								if ! [[ $retval == 0 ]]
 								then
 									debug "failed to remove \"${PATHTOSELINUXCONFIG}/${DSSP}/contexts/${STRIPPEDCONTEXTSFILE}\""
-									exit `echo $?`
+
+									exit `echo $retval`
 								fi
 
 							elif ! [[ $UID == 0 ]]
 							then
 								/bin/sudo -E \rm -f ${PATHTOSELINUXCONFIG}/${DSSP}/contexts/${STRIPPEDCONTEXTSFILE} 2>/dev/null
 
-								if ! [[ $? == 0 ]]
+								retval=`echo $?`
+
+								if ! [[ $retval == 0 ]]
 								then
 									debug "failed to remove \"${PATHTOSELINUXCONFIG}/${DSSP}/contexts/${STRIPPEDCONTEXTSFILE}\""
-									exit `echo $?`
+
+									exit `echo $retval`
 								fi
 							fi
 
 						else
-							exit `echo $?`
+							exit `echo $retval`
 						fi
 
 					elif [[ $retval == 0 ]]
@@ -3422,15 +3754,20 @@ then
 							then
 								\cp -f ${PATHTODSSP}/contexts.d/${CONTEXTSFILE} ${PATHTOSELINUXCONFIG}/${DSSP}/contexts/${STRIPPEDCONTEXTSFILE} 2>/dev/null
 
+								retval=`echo $?`
+
 							elif ! [[ $UID == 0 ]]
 							then
 								/bin/sudo -E \cp -f ${PATHTODSSP}/contexts.d/${CONTEXTSFILE} ${PATHTOSELINUXCONFIG}/${DSSP}/contexts/${STRIPPEDCONTEXTSFILE} 2>/dev/null
+
+								retval=`echo $?`
 							fi
 
-							if ! [[ $? == 0 ]]
+							if ! [[ $retval == 0 ]]
 							then
 								debug "failed to update \"${PATHTODSSP}/contexts.d/${CONTEXTSFILE}\""
-								exit 1
+
+								exit `echo $retval`
 							fi
 
 						else
@@ -3470,25 +3807,31 @@ then
 							then
 								\rm -f ${PATHTOSELINUXCONFIG}/${DSSP}/contexts/${STRIPPEDCONTEXTSFILE} 2>/dev/null
 
-								if ! [[ $? == 0 ]]
+								retval=`echo $?`
+
+								if ! [[ $retval == 0 ]]
 								then
 									debug "failed to remove \"${PATHTOSELINUXCONFIG}/${DSSP}/contexts/${STRIPPEDCONTEXTSFILE}\""
-									exit `echo $?`
+
+									exit `echo $retval`
 								fi
 
 							elif ! [[ $UID == 0 ]]
 							then
 								/bin/sudo -E \rm -f ${PATHTOSELINUXCONFIG}/${DSSP}/contexts/${STRIPPEDCONTEXTSFILE} 2>/dev/null
 
-								if ! [[ $? == 0 ]]
+								retval=`echo $?`
+
+								if ! [[ $retval == 0 ]]
 								then
 									debug "failed to remove \"${PATHTOSELINUXCONFIG}/${DSSP}/contexts/${STRIPPEDCONTEXTSFILE}\""
-									exit `echo $?`
+
+									exit `echo $retval`
 								fi
 							fi
 
 						else
-							exit `echo $?`
+							exit `echo $retval`
 						fi
 
 					elif [[ $retval == 0 ]]
@@ -3517,15 +3860,20 @@ then
 							then
 								\cp -f ${PATHTODSSP}/contexts/${CONTEXTSFILE} ${PATHTOSELINUXCONFIG}/${DSSP}/contexts/${STRIPPEDCONTEXTSFILE} 2>/dev/null
 
+								retval=`echo $?`
+
 							elif ! [[ $UID == 0 ]]
 							then
 								/bin/sudo -E \cp -f ${PATHTODSSP}/contexts/${CONTEXTSFILE} ${PATHTOSELINUXCONFIG}/${DSSP}/contexts/${STRIPPEDCONTEXTSFILE} 2>/dev/null
+
+								retval=`echo $?`
 							fi
 
-							if ! [[ $? == 0 ]]
+							if ! [[ $retval == 0 ]]
 							then
 								debug "failed to update \"${PATHTODSSP}/contexts/${CONTEXTSFILE}\""
-								exit 1
+
+								exit `echo $retval`
 							fi
 
 						else
@@ -3571,15 +3919,20 @@ then
 						then
 							/bin/cp ${PATHTODSSP}/contexts.d/${CONTEXTSFILE} ${PATHTOSELINUXCONFIG}/${DSSP}/contexts/${STRIPPEDCONTEXTSFILE} 2>/dev/null
 
+							retval=`echo $?`
+
 						elif ! [[ $UID == 0 ]]
 						then
 							/bin/sudo -E /bin/cp ${PATHTODSSP}/contexts.d/${CONTEXTSFILE} ${PATHTOSELINUXCONFIG}/${DSSP}/contexts/${STRIPPEDCONTEXTSFILE} 2>/dev/null
+
+							retval=`echo $?`
 						fi
 
-						if ! [[ $? == 0 ]]
+						if ! [[ $retval == 0 ]]
 						then
 							debug "failed to update \"${PATHTODSSP}/contexts.d/${CONTEXTSFILE}\""
-							exit 1
+
+							exit `echo $retval`
 						fi
 
 					else
@@ -3612,15 +3965,20 @@ then
 						then
 							/bin/cp ${PATHTODSSP}/contexts/${CONTEXTSFILE} ${PATHTOSELINUXCONFIG}/${DSSP}/contexts/${STRIPPEDCONTEXTSFILE} 2>/dev/null
 
+							retval=`echo $?`
+
 						elif ! [[ $UID == 0 ]]
 						then
 							/bin/sudo -E /bin/cp ${PATHTODSSP}/contexts/${CONTEXTSFILE} ${PATHTOSELINUXCONFIG}/${DSSP}/contexts/${STRIPPEDCONTEXTSFILE} 2>/dev/null
+
+							retval=`echo $?`
 						fi
 
-						if ! [[ $? == 0 ]]
+						if ! [[ $retval == 0 ]]
 						then
 							debug "failed to update \"${PATHTODSSP}/contexts/${CONTEXTSFILE}\""
-							exit 1
+
+							exit `echo $retval`
 						fi
 
 					else
@@ -3647,8 +4005,8 @@ then
 	debug ""
 
 else
-	exit `echo $?`
+	exit `echo $retval`
 fi
 
-exit `echo $?`
+exit
 #EOF

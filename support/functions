@@ -29,12 +29,14 @@ filetest () {
 	if ! (( $# == 2 ))
 	then
 		debug "expects two parameters: test flag, and file to test"
+
 		return 1
 	fi
 
 	if ! [[ $_FLAG == -f ]] && ! [[ $_FLAG == -r ]] && ! [[ $_FLAG == -s ]] && ! [[ $_FLAG == -d ]] && ! [[ $_FLAG == -w ]]
 	then
 		debug "expects a valid file test flag: -d, -f, -s, -d, or -w"
+
 		return 1
 
 	elif ! /bin/test $_FLAG $_FILE
@@ -51,9 +53,11 @@ filetest () {
 
 			/bin/sudo -E /bin/test $_FLAG $_FILE > /dev/null 2>&1
 
-		if [[ $? == 0 ]]
+			retval=`echo $?`
+
+		if [[ $retval == 0 ]]
 		then
-			return 0
+			return `echo $retval`
 
 		else
 			return 192
@@ -61,16 +65,13 @@ filetest () {
 
 	else
 		debug "sudo cannot be executed"
+
                 return 1
         fi
 
 	elif /bin/test $_FLAG $_FILE
 	then
 		return 0
-
-	else
-		debug "unhandled exception"
-		return 1
 	fi
 }
 
@@ -87,22 +88,25 @@ filetest () {
 # @retval 197 file is not a writeable file
 
 filetestresult () {
-	local _STATUS=`echo $?`
+	retval=`echo $?`
+
 	local _FLAG=$1
 	local _FILE=$2
 
 	if ! (( $# == 2 ))
 	then
 		debug "expects two parameters: test flag, and file to test"
+
 		return 1
 	fi
 
 	if ! [[ $_FLAG == -f ]] && ! [[ $_FLAG == -r ]] && ! [[ $_FLAG == -s ]] && ! [[ $_FLAG == -d ]] && ! [[ $_FLAG == -w ]]
 	then
 		debug "expects a valid file test flag: -d, -f, -s, -d, or -w"
+
 		return 1
 
-	elif [[ $_STATUS == 0 ]]
+	elif [[ $retval == 0 ]]
 	then
 		case $_FLAG in
 			-f) debug "file $_FILE is a accessible file" && return 0 ;;
@@ -113,7 +117,7 @@ filetestresult () {
 			*) debug "unhandled exception" && return 1 ;;
 		esac
 
-	elif [[ $_STATUS == 192 ]]
+	elif [[ $retval == 192 ]]
 	then
 		case $_FLAG in
 			-f) debug "file $_FILE is not a accessible file" && return 193 ;;
@@ -124,14 +128,11 @@ filetestresult () {
 			*) debug "unhandled exception" && return 1 ;;
 		esac
 
-	elif [[ $_STATUS == 1 ]]
+	elif [[ $retval == 1 ]]
 	then
 		debug "cannot determine whether file $_FILE is accessible"
-		return 1
 
-	else
-		debug "unhandled exception"
-		return 1
+		return `echo $retval`
 	fi
 }
 
@@ -152,6 +153,7 @@ filetestandresult () {
 	local _FILE=$2
 
 	debug "performing file test $_FLAG on $_FILE, and evaluating its results"
+
 	filetest $_FLAG $_FILE
 	filetestresult $_FLAG $_FILE
 }
@@ -170,25 +172,29 @@ updatetoupstream () {
 	if ! [[ -x /bin/git ]]
 	then
 		debug "unable to execute /bin/git"
+
 		return 206
 
 	elif ! (( $# == 1 ))
 	then
 		debug "expects a single parameter: path to dssp"
+
 		return 1
 
 	else
 		filetestandresult -d $_PATHTODSSP
 
-		local _STATUS=`echo $?`
+		retval=`echo $?`
 
-		if ! [[ $_STATUS == 0 ]]
+		if ! [[ $retval == 0 ]]
 		then
-			return `echo $_STATUS`
+			return `echo $retval`
 		fi
 
 		( /bin/cd $_PATHTODSSP && /bin/git pull --recurse-submodules https://github.com/defensec/dssp \
 			&& /bin/git submodule update --recursive )
+
+		retval=`echo $?`
 	fi
 }
 

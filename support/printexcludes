@@ -38,6 +38,7 @@ do
 		if ! (( $# > 0 ))
 		then
 			printf "%s\n" "option -p expects one parameter: path to dssp source"
+
 			exit
 		fi
 
@@ -63,6 +64,7 @@ fi
 if ! [[ -r ${PATHTODSSP}/${PATHTOFUNCTIONSRELATIVETODSSP} ]]
 then
 	debug "unable to source functions"
+
 	exit 1
 fi
 
@@ -72,35 +74,35 @@ for PATHTOEXCLUDEFILERELATIVETODSSP in ${PATHSTOEXCLUDEFILESRELATIVETODSSP[@]}
 do
 	filetestandresult -f ${PATHTODSSP}/${PATHTOEXCLUDEFILERELATIVETODSSP}
 
-	retval=$?
+	retval=`echo $?`
 
-	if [[ $retval == 1 ]]
+	if ! [[ $retval == 0 ]] $$ ! [[ $retval == 193 ]]
 	then
-		debug "unhandled exception"
-		exit `echo $?`
+		exit `echo $retval`
 	fi
 
 	filetestandresult -r ${PATHTODSSP}/${PATHTOEXCLUDEFILERELATIVETODSSP}
 
-	retval=$?
+	retval=`echo $?`
 
         if [[ $retval == 0 ]]
         then
 		if /bin/test -s ${PATHTODSSP}/${PATHTOEXCLUDEFILERELATIVETODSSP}
 		then
 			ENTRIES+=(`/bin/cat ${PATHTODSSP}/${PATHTOEXCLUDEFILERELATIVETODSSP} 2>/dev/null`)
+
+			retval=`echo $?`
 		fi
 
-	elif [[ $retval == 1 ]]
-	then
-		debug "unhandled exception"
-		exit `echo $?`
+	else
+		exit `echo $retval`
 	fi
 done
 
 if [[ -z $ENTRIES ]]
 then
 	debug "no path entries to list"
+
 	exit 201
 fi
 
@@ -134,6 +136,7 @@ do
 		if [[ $retval == 196 ]]
 		then
 			debug "no such file or directory: ${PATHTODSSP}/${ENTRY}"
+
 			exit 202
 
 		elif ! [[ $retval == 0 ]]
@@ -151,5 +154,5 @@ then
 	printf "%s\n" "${ENTRIES[@]}"
 fi
 
-exit `echo $?`
+exit `echo $retval`
 #EOF

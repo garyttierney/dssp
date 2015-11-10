@@ -37,6 +37,7 @@ do
 		if ! (( $# > 0 ))
 		then
 			printf "%s\n" "option -p expects one parameter: path to dssp source"
+
 			exit
 		fi
 
@@ -48,6 +49,7 @@ do
 		if ! (( $# > 0 ))
 		then
 			printf "%s\n" "option -s expects one parameter: path to seusers file relative to dssp source"
+
 			exit
 		fi
 
@@ -59,6 +61,7 @@ do
 		if ! (( $# > 0 ))
 		then
 			printf "%s\n" "option -u expects one parameter: username to match"
+
 			exit
 		fi
 
@@ -84,6 +87,7 @@ fi
 if ! [[ -r ${PATHTODSSP}/${PATHTOFUNCTIONSRELATIVETODSSP} ]]
 then
 	debug "unable to source functions"
+
 	exit 1
 fi
 
@@ -91,30 +95,36 @@ source ${PATHTODSSP}/${PATHTOFUNCTIONSRELATIVETODSSP} 2>/dev/null
 
 filetestandresult -f ${PATHTODSSP}/${PATHTOSEUSERSFILERELATIVETOSOURCE}
 
-retval=$?
+retval=`echo $?`
 
 ! [[ $retval == 0 ]] && exit `echo $retval`
 
 filetestandresult -r ${PATHTODSSP}/${PATHTOSEUSERSFILERELATIVETOSOURCE}
 
-retval=$?
+retval=`echo $?`
 
 ! [[ $retval == 0 ]] && exit `echo $retval`
 
 filetestandresult -s ${PATHTODSSP}/${PATHTOSEUSERSFILERELATIVETOSOURCE}
 
-retval=$?
+retval=`echo $?`
 
 ! [[ $retval == 0 ]] && exit `echo $retval`
 
 if [[ -z $USERNAME ]]
 then
 	DEFAULTSEUSER="`/bin/grep ^__default__ ${PATHTODSSP}/${PATHTOSEUSERSFILERELATIVETOSOURCE} | /bin/awk -F ":" '{ print $2 }' 2>/dev/null`"
+
+	retval=`echo $?`
+
 	DEFAULTSEUSERPREFIX="`printf "%s\n" "$DEFAULTSEUSER" | /bin/cut -s -f1 -d. 2>/dev/null`"
+
+	retval=`echo $?`
 
 	if [[ -z $DEFAULTSEUSER ]]
 	then
 		debug "no default seuser found in ${PATHTODSSP}/${PATHTOSEUSERSFILERELATIVETOSOURCE}"
+
 		exit 1
 
 	elif [[ -n $DEFAULTSEUSERPREFIX ]]
@@ -124,6 +134,7 @@ then
 			printf "%s\n" "${DEFAULTSEUSER}:${DEFAULTSEUSERPREFIX}.role"
 		else
 			debug "unable to determine valid default user tuple"
+
 			exit 1
 		fi
 
@@ -132,11 +143,14 @@ then
 
 		ALTERNATEDEFAULTSEUSERPREFIX="`printf "%s\n" "$DEFAULTSEUSER" | /bin/awk -F "_u"$ '{ print $1 }' 2>/dev/null`"
 
+		retval=`echo $?`
+
 		if [[ $DEFAULTSEUSER == ${ALTERNATEDEFAULTSEUSERPREFIX}_u ]]
 		then
 			printf "%s\n" "${DEFAULTSEUSER}:${ALTERNATEDEFAULTSEUSERPREFIX}_r"
 		else
 			debug "unable to determine valid default user tuple"
+
 			exit 1
 		fi
 	fi
@@ -144,11 +158,17 @@ then
 elif [[ -n $USERNAME ]]
 then
 	SEUSER="`/bin/grep ^"$USERNAME" ${PATHTODSSP}/${PATHTOSEUSERSFILERELATIVETOSOURCE} | /bin/awk -F ":" '{ print $2 }' 2>/dev/null`"
+
+	retval=`echo $?`
+
         SEUSERPREFIX="`printf "%s\n" "$SEUSER" | /bin/cut -s -f1 -d. 2>/dev/null`"
+
+	retval=`echo $?`
 
 	if [[ -z $SEUSER ]]
 	then
 		debug "no seuser found in ${PATHTODSSP}/${PATHTOSEUSERSFILERELATIVETOSOURCE} for $USERNAME"
+
 		exit 205
 
 	elif [[ -n $SEUSERPREFIX ]]
@@ -158,6 +178,7 @@ then
 			printf "%s\n" "${SEUSER}:${SEUSERPREFIX}.role"
 		else
 			debug "unable to determine valid user tuple for $USERNAME"
+
 			exit 1
 		fi
 
@@ -165,15 +186,18 @@ then
 	then
 		ALTERNATESEUSERPREFIX="`printf "%s\n" "$SEUSER" | /bin/awk -F "_u"$ '{ print $1 }' 2>/dev/null`"
 
+		retval=`echo $?`
+
 		if [[ $SEUSER == ${ALTERNATESEUSERPREFIX}_u ]]
 		then
 			printf "%s\n" "${SEUSER}:${ALTERNATESEUSERPREFIX}_r"
 		else
 			debug "unable to determine valid user tuple for $USERNAME"
+
 			exit 1
 		fi
 	fi
 fi
 
-exit `echo $?`
+exit `echo $retval`
 #EOF

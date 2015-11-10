@@ -36,6 +36,7 @@ do
 		if ! (( $# > 0 ))
 		then
 			printf "%s\n" "option -p expects one parameter: path to dssp source"
+
 			exit
 		fi
 
@@ -61,6 +62,7 @@ fi
 if ! [[ -r ${PATHTODSSP}/${PATHTOFUNCTIONSRELATIVETODSSP} ]]
 then
 	debug "unable to source functions"
+
 	exit 1
 fi
 
@@ -68,33 +70,36 @@ source ${PATHTODSSP}/${PATHTOFUNCTIONSRELATIVETODSSP} 2>/dev/null
 
 filetestandresult -f ${PATHTODSSP}/${PATHTOCONTEXTSRELATIVETODSSP}
 
-retval=$?
+retval=`echo $?`
 
 ! [[ $retval == 0 ]] && exit `echo $retval`
 
 filetestandresult -r ${PATHTODSSP}/${PATHTOCONTEXTSRELATIVETODSSP}
 
-retval=$?
+retval=`echo $?`
 
 ! [[ $retval == 0 ]] && exit `echo $retval`
 
 filetestandresult -s ${PATHTODSSP}/${PATHTOCONTEXTSRELATIVETODSSP}
 
-retval=$?
+retval=`echo $?`
 
 ! [[ $retval == 0 ]] && exit `echo $retval`
 
 SPOOLFILETEMPLATE+="`/bin/grep 'USER_SPOOL' ${PATHTODSSP}/${PATHTOCONTEXTSRELATIVETODSSP} 2>/dev/null`"
 
+retval=`echo $?`
+
 if [[ -z $SPOOLFILETEMPLATE ]]
 then
 	debug "no template to list"
-        exit 198
+
+	exit 198
 
 elif [[ -n $SPOOLFILETEMPLATE ]]
 then
 	printf "%s\n" "${SPOOLFILETEMPLATE[@]}"
 fi
 
-exit `echo $?`
+exit `echo $retval`
 #EOF

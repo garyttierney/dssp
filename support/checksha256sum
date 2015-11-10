@@ -38,6 +38,7 @@ do
 		if ! (( $# > 0 ))
 		then
 			printf "%s\n" "option -p expects one parameter: path to dssp source"
+
 			exit
 		fi
 
@@ -49,6 +50,7 @@ do
 		if ! (( $# > 0 ))
 		then
 			printf "%s\n" "option -s expects one parameter: path to source"
+
 			exit
 		fi
 
@@ -60,6 +62,7 @@ do
 		if ! (( $# > 0 ))
 		then
 			printf "%s\n" "option -t expects one parameter: path to target"
+
 			exit
 		fi
 
@@ -85,6 +88,7 @@ fi
 if ! [[ -r ${PATHTODSSP}/${PATHTOFUNCTIONSRELATIVETODSSP} ]]
 then
 	debug "unable to source functions"
+
 	exit 1
 fi
 
@@ -92,37 +96,37 @@ source ${PATHTODSSP}/${PATHTOFUNCTIONSRELATIVETODSSP} 2>/dev/null
 
 filetestandresult -f ${PATHTOSOURCE}
 
-retval=$?
+retval=`echo $?`
 
 ! [[ $retval == 0 ]] && exit `echo $retval`
 
 filetestandresult -r ${PATHTOSOURCE}
 
-retval=$?
+retval=`echo $?`
 
 ! [[ $retval == 0 ]] && exit `echo $retval`
 
 filetestandresult -s ${PATHTOSOURCE}
 
-retval=$?
+retval=`echo $?`
 
 ! [[ $retval == 0 ]] && exit `echo $retval`
 
 filetestandresult -f ${PATHTOTARGET}
 
-retval=$?
+retval=`echo $?`
 
 ! [[ $retval == 0 ]] && exit `echo $retval`
 
 filetestandresult -r ${PATHTOTARGET}
 
-retval=$?
+retval=`echo $?`
 
 ! [[ $retval == 0 ]] && exit `echo $retval`
 
 filetestandresult -s ${PATHTOTARGET}
 
-retval=$?
+retval=`echo $?`
 
 ! [[ $retval == 0 ]] && exit `echo $retval`
 
@@ -130,26 +134,33 @@ if [[ $UID == 0 ]]
 then
 	SUMSOURCE="`/bin/sha256sum $PATHTOSOURCE | /bin/awk '{ print $1 }' 2>/dev/null`"
 
-	if ! [[ $? == 0 ]]
+	retval=`echo $?`
+
+	if ! [[ $retval == 0 ]]
 	then
 		printf "%s\n" "failed to get source sum"
-		exit `echo $?`
+
+		exit `echo $retval`
 	fi
 
 elif ! [[ $UID == 0 ]]
 then
 	SUMSOURCE="`/bin/sudo -E /bin/sha256sum $PATHTOSOURCE | /bin/awk '{ print $1 }' 2>/dev/null`"
 
-	if ! [[ $? == 0 ]]
+	retval=`echo $?`
+
+	if ! [[ $retval == 0 ]]
 	then
 		printf "%s\n" "failed to get source sum"
-		exit `echo $?`
+
+		exit `echo $retval`
 	fi
 fi
 
 if [[ -z $SUMSOURCE ]]
 then
 	debug "failed to get source sum"
+
 	exit 1
 fi
 
@@ -157,26 +168,33 @@ if [[ $UID == 0 ]]
 then
 	SUMTARGET="`/bin/sha256sum $PATHTOTARGET | /bin/awk '{ print $1 }' 2>/dev/null`"
 
-	if ! [[ $? == 0 ]]
+	retval=`echo $?`
+
+	if ! [[ $retval == 0 ]]
 	then
 		printf "%s\n" "failed to get target sum"
-		exit `echo $?`
+
+		exit `echo $retval`
 	fi
 
 elif ! [[ $UID == 0 ]]
 then
 	SUMTARGET="`/bin/sudo -E /bin/sha256sum $PATHTOTARGET | /bin/awk '{ print $1 }' 2>/dev/null`"
 
-	if ! [[ $? == 0 ]]
+	retval=`echo $?`
+
+	if ! [[ $retval == 0 ]]
 	then
 		printf "%s\n" "failed to get target sum"
-		exit `echo $?`
+
+		exit `echo $retval`
 	fi
 fi
 
 if [[ -z $SUMTARGET ]]
 then
 	debug "failed to get target sum"
+
 	exit 1
 fi
 
@@ -189,5 +207,5 @@ then
 	exit 200
 fi
 
-exit `echo $?`
+exit `echo $retval`
 #EOF

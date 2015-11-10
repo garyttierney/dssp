@@ -37,6 +37,7 @@ do
 		if ! (( $# > 0 ))
 		then
 			printf "%s\n" "option -p expects one parameter: path to dssp source"
+
 			exit
 		fi
 
@@ -62,6 +63,7 @@ fi
 if ! [[ -r ${PATHTODSSP}/${PATHTOFUNCTIONSRELATIVETODSSP} ]]
 then
 	debug "unable to source functions"
+
 	exit 1
 fi
 
@@ -69,61 +71,70 @@ source ${PATHTODSSP}/${PATHTOFUNCTIONSRELATIVETODSSP} 2>/dev/null
 
 filetestandresult -f $PATHTOLOGINDEFS
 
-retval=$?
+retval=`echo $?`
 
 ! [[ $retval == 0 ]] && exit `echo $retval`
 
 filetestandresult -r $PATHTOLOGINDEFS
 
-retval=$?
+retval=`echo $?`
 
 ! [[ $retval == 0 ]] && exit `echo $retval`
 
 filetestandresult -s $PATHTOLOGINDEFS
 
-retval=$?
+retval=`echo $?`
 
 ! [[ $retval == 0 ]] && exit `echo $retval`
 
 UID_MAX="`/bin/grep ^UID_MAX $PATHTOLOGINDEFS | /bin/awk -F" " '{ print $2 }' 2>/dev/null`"
 
+retval=`echo $?`
+
 if [[ $UID_MAX =~ "^[0-9]+$" ]]
 then
 	debug "invalid max uid: $UID_MAX"
+
 	exit 1
 fi
 
 UID_MIN="`/bin/grep ^UID_MIN $PATHTOLOGINDEFS | /bin/awk -F" " '{ print $2 }' 2>/dev/null`"
 
+retval=`echo $?`
+
 if [[ $UID_MIN =~ "^[0-9]+$" ]]
 then
 	debug "invalid min uid: $UID_MIN"
+
 	exit 1
 fi
 
 filetestandresult -f $PATHTOSHELLS
 
-retval=$?
+retval=`echo $?`
 
 ! [[ $retval == 0 ]] && exit `echo $retval`
 
 filetestandresult -r $PATHTOSHELLS
 
-retval=$?
+retval=`echo $?`
 
 ! [[ $retval == 0 ]] && exit `echo $retval`
 
 filetestandresult -s $PATHTOSHELLS
 
-retval=$?
+retval=`echo $?`
 
 ! [[ $retval == 0 ]] && exit `echo $retval`
 
 LOGINSHELLS+=(`/bin/grep -v nologin $PATHTOSHELLS 2>/dev/null`)
 
+retval=`echo $?`
+
 if [[ -z $LOGINSHELLS ]]
 then
 	debug "no login shells found"
+
 	exit 1
 fi
 
@@ -137,17 +148,23 @@ do
 	then
 		UNAME="`printf "%s\n" "$ENTRY" | /bin/awk -F ":" '{ print $1 }' 2>/dev/null`"
 
+		retval=`echo $?`
+
 		if [[ -z $UNAME ]]
 		then
 			debug "unable to determine login name for $ENTRY"
+
 			exit 1
 		fi
 
                 USHELL="`printf "%s\n" "$ENTRY" | /bin/awk -F ":" '{ print $7 }' 2>/dev/null`"
 
+		retval=`echo $?`
+
 		if [[ -z $USHELL ]]
 		then
 			debug "unable to determine login shell for $ENTRY"
+
 			exit 1
 		fi
 
@@ -161,14 +178,17 @@ do
 		if ! [[ $_HSHELL == 1 ]]
 		then
 			debug "invalid shell $USHELL for $UNAME in $ENTRY"
+
 			exit 1
 		fi
 
                 UHOME="`printf "%s\n" "$ENTRY" | /bin/awk -F ":" '{ print $6 }' 2>/dev/null`"
 
+		retval=`echo $?`
+
 		filetestandresult -d $UHOME
 
-		retval=$?
+		retval=`echo $?`
 
 		! [[ $retval == 0 ]] && exit `echo $retval`
 
@@ -179,6 +199,7 @@ done
 if [[ -z $UNAMES ]]
 then
 	debug "no real users to list"
+
 	exit 204
 
 elif [[ -n $UNAMES ]]
@@ -186,5 +207,5 @@ then
 	printf "%s\n" "${UNAMES[@]}"
 fi
 
-exit `echo $?`
+exit `echo $retval`
 #EOF

@@ -35,6 +35,7 @@ do
 		if ! (( $# > 0 ))
 		then
 			printf "%s\n" "option -p expects one parameter: path to dssp source"
+
 			exit
 		fi
 
@@ -60,6 +61,7 @@ fi
 if ! [[ -r ${PATHTODSSP}/${PATHTOFUNCTIONSRELATIVETODSSP} ]]
 then
 	debug "unable to source functions"
+
 	exit 1
 fi
 
@@ -74,11 +76,14 @@ do
 	! [[ $retval == 0 ]] && exit `echo $retval`
 
 	MODULES+=(`/bin/find /${PATHTODSSP}/${PATHTOMODULESRELATIVETODSSP} -type f \( -iname "*.cil" \) | /bin/cut -d/ -f2-`)
+
+	retval=`echo $?`
 done
 
 if [[ -z $MODULES ]]
 then
 	debug "no modules to list"
+
 	exit 203
 fi
 
@@ -86,13 +91,13 @@ for MODULE in ${MODULES[@]}
 do
 	filetestandresult -r $MODULE
 
-	retval=$?
+	retval=`echo $?`
 
 	! [[ $retval == 0 ]] && exit `echo $retval`
 
 	filetestandresult -s $MODULE
 
-	retval=$?
+	retval=`echo $?`
 
 	! [[ $retval == 0 ]] && exit `echo $retval`
 done
@@ -102,5 +107,5 @@ then
 	printf "%s\n" "${MODULES[@]}"
 fi
 
-exit `echo $?`
+exit `echo $retval`
 #EOF
