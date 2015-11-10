@@ -162,7 +162,7 @@ filetestandresult () {
 # @retval 0 success
 # @retval 1 general fault
 # @retval 196 file is not a directory
-# @retval 207 unable to execute /bin/git
+# @retval 206 unable to execute /bin/git
 
 updatetoupstream () {
 	local _PATHTODSSP=$1
@@ -170,7 +170,7 @@ updatetoupstream () {
 	if ! [[ -x /bin/git ]]
 	then
 		debug "unable to execute /bin/git"
-		return 207
+		return 206
 
 	elif ! (( $# == 1 ))
 	then

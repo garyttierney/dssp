@@ -37,13 +37,22 @@ discretionary options
 
 exit codes
 
+0	: success
+1	: general fault
 193	: file is not accessible
 194	: file is not readable
 195	: file is a zero-byte file
 196	: file is not a directory
 197 	: file is not a writeable file
+198	: no default template to list
+199	: files are identical
+200	: files are not identical
+201	: no path entries to list
 202	: no such file or directory
-203	: no path entries to be included"
+203	: no path entries to be included
+204	: no real users to list
+205	: no seuser tuple to list
+206	: unable to execute /bin/git"
 	exit
 }
 
