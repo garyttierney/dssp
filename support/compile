@@ -734,7 +734,7 @@ then
 		193) debug "file is not accessible" ;;
 		194) debug "file not readable" ;;
 		195) debug "file is a zero byte file" ;;
-		204) debug "no template to list" ;;
+		198) debug "no template to list" ;;
 		*) debug "unhandled exception" ;;
 	esac
 fi

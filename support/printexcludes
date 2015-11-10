@@ -81,11 +81,14 @@ do
 		exit `echo $retval`
 	fi
 
-	filetestandresult -r ${PATHTODSSP}/${PATHTOEXCLUDEFILERELATIVETODSSP}
+	if ! [[ $retval == 193 ]]
+	then
+		filetestandresult -r ${PATHTODSSP}/${PATHTOEXCLUDEFILERELATIVETODSSP}
 
-	retval=`echo $?`
+		retval=`echo $?`
+	fi
 
-        if [[ $retval == 0 ]]
+        if [[ $retval == 0 ]] || ! [[ $retval == 193 ]]
         then
 		if /bin/test -s ${PATHTODSSP}/${PATHTOEXCLUDEFILERELATIVETODSSP}
 		then
@@ -93,6 +96,10 @@ do
 
 			retval=`echo $?`
 		fi
+
+	elif [[ $retval == 193 ]]
+	then
+		debug "ignoring \"${PATHTODSSP}/${PATHTOEXCLUDEFILERELATIVETODSSP}\""
 
 	else
 		exit `echo $retval`
