@@ -76,7 +76,7 @@ do
 
 	retval=`echo $?`
 
-	if ! [[ $retval == 0 ]] || ! [[ $retval == 193 ]]
+	if ! [[ $retval == 0 ]] && ! [[ $retval == 193 ]]
 	then
 		exit `echo $retval`
 	fi
