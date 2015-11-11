@@ -191,24 +191,10 @@ updatetoupstream () {
 			return `echo $retval`
 		fi
 
-		/bin/git --git-dir=${_PATHTODSSP}/.git pull --recurse-submodules https://github.com/defensec/dssp
+		/bin/git --git-dir=${_PATHTODSSP}/.git pull --recurse-submodules https://github.com/defensec/dssp \
+			&& /bin/git --git-dir=${_PATHTODSSP}/.git submodule foreach '/bin/git submodule update --recursive;'
 
 		retval=`echo $?`
-
-		if ! [[ $retval == 0 ]]
-		then
-			return `echo $retval`
-
-		else
-	                ( /bin/cd $_PATHTODSSP && /bin/git --git-dir=${_PATHTODSSP}/.git submodule update --recursive )
-
-			retval=`echo $?`
-
-			if ! [[ $retval == 0 ]]
-			then
-				return `echo $retval`
-			fi
-		fi
 	fi
 }
 
