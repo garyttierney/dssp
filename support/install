@@ -2449,8 +2449,6 @@ then
 							esac
 						fi
 
-						retval=`echo $?`
-
 						if [[ $retval == 199 ]]
 						then
 							debug "not updating \"${PATHTODSSP}/contexts.d/dbus_contexts\""
