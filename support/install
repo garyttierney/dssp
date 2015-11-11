@@ -1199,14 +1199,14 @@ then
 
 	for CONTEXTSFILE in `/bin/ls -p ${PATHTODSSP}/contexts/ | /bin/grep -v / | /bin/grep ".${MODELTOBUILD}$" 2>/dev/null`
 	do
+		STRIPPEDCONTEXTSFILE="`/bin/basename "$CONTEXTSFILE" ".${MODELTOBUILD}"`"
+
 		filetestandresult -f ${PATHTODSSP}/contexts/${CONTEXTSFILE}
 
 		retval=`echo $?`
 
 		if [[ $retval == 0 ]]
 		then
-			STRIPPEDCONTEXTSFILE="`/bin/basename "$CONTEXTSFILE" ".${MODELTOBUILD}"`"
-
 			filetestandresult -f ${PATHTODSSP}/contexts.d/${CONTEXTSFILE}
 
 			retval=`echo $?`
