@@ -1307,11 +1307,11 @@ then
 	debug ""
 	debug "new installation"
 	debug "----------------"
-	debug "change SELINUXTYPE in ${PATHTOSELINUXCONFIG}/config to ${DSSP}"
-	debug "change mode to permissive"
-	debug "execute /sbin/load_policy"
-	debug "execute /sbin/restorecon -RF /"
-	debug "empty /var/tmp"
+	debug "change \"SELINUXTYPE\" in \"${PATHTOSELINUXCONFIG}/config\" to \"${DSSP}\""
+	debug "change mode to \"permissive\""
+	debug "execute \"/sbin/load_policy\" to reload the policy"
+	debug "execute \"/sbin/restorecon -RF /\" to relabel the file systems"
+	debug "optional empty \"/var/tmp\""
 	debug "reboot"
 	debug ""
 
@@ -1455,11 +1455,15 @@ then
 
 						retval=`echo $?`
 
+						NEEDRELOAD=1
+
 					elif ! [[ $UID == 0 ]]
 					then
 						/bin/sudo -E \cp -f ${PATHTODSSP}/policy/policy.${POLICYVERSION} ${PATHTOSELINUXCONFIG}/${DSSP}/policy/policy.${POLICYVERSION} 2>/dev/null
 
 						retval=`echo $?`
+
+						NEEDRELOAD=1
 					fi
 
 					if ! [[ $retval == 0 ]]
@@ -1500,11 +1504,15 @@ then
 
 					retval=`echo $?`
 
+					NEEDRELOAD=1
+
 				elif ! [[ $UID == 0 ]]
 				then
 					/bin/sudo -E /bin/cp ${PATHTODSSP}/policy/policy.${POLICYVERSION} ${PATHTOSELINUXCONFIG}/${DSSP}/policy/policy.${POLICYVERSION} 2>/dev/null
 
 					retval=`echo $?`
+
+					NEEDRELOAD=1
 				fi
 
 				if ! [[ $retval == 0 ]]
@@ -1568,11 +1576,15 @@ then
 
 						retval=`echo $?`
 
+						NEEDRELABEL=1
+
 					elif ! [[ $UID == 0 ]]
 					then
 						/bin/sudo -E \cp -f ${PATHTODSSP}/${PATHTOCONTEXTSRELATIVETODSSP} ${PATHTOSELINUXCONFIG}/${DSSP}/${PATHTOCONTEXTSRELATIVETODSSP} 2>/dev/null
 
 						retval=`echo $?`
+
+						NEEDRELABEL=1
 					fi
 
 					if ! [[ $retval == 0 ]]
@@ -1613,11 +1625,15 @@ then
 
 					retval=`echo $?`
 
+					NEEDRELABEL=1
+
 				elif ! [[ $UID == 0 ]]
 				then
 					/bin/sudo -E /bin/cp ${PATHTODSSP}/${PATHTOCONTEXTSRELATIVETODSSP} ${PATHTOSELINUXCONFIG}/${DSSP}/${PATHTOCONTEXTSRELATIVETODSSP} 2>/dev/null
 
 					retval=`echo $?`
+
+					NEEDRELABEL=1
 				fi
 
 				if ! [[ $retval == 0 ]]
@@ -1681,11 +1697,15 @@ then
 
 						retval=`echo $?`
 
+						NEEDRELABEL=1
+
 					elif ! [[ $UID == 0 ]]
 					then
 						/bin/sudo -E \cp -f ${PATHTODSSP}/${PATHTOCONTEXTSRELATIVETODSSP}.bin ${PATHTOSELINUXCONFIG}/${DSSP}/${PATHTOCONTEXTSRELATIVETODSSP}.bin 2>/dev/null
 
 						retval=`echo $?`
+
+						NEEDRELABEL=1
 					fi
 
 					if ! [[ $retval == 0 ]]
@@ -1726,11 +1746,15 @@ then
 
 					retval=`echo $?`
 
+					NEEDRELABEL=1
+
 				elif ! [[ $UID == 0 ]]
 				then
 					/bin/sudo -E /bin/cp ${PATHTODSSP}/${PATHTOCONTEXTSRELATIVETODSSP}.bin ${PATHTOSELINUXCONFIG}/${DSSP}/${PATHTOCONTEXTSRELATIVETODSSP}.bin 2>/dev/null
 
 					retval=`echo $?`
+
+					NEEDRELABEL=1
 				fi
 
 				if ! [[ $retval == 0 ]]
@@ -1794,11 +1818,15 @@ then
 
 						retval=`echo $?`
 
+						NEEDRELABEL=1
+
 					elif ! [[ $UID == 0 ]]
 					then
 						/bin/sudo -E \cp -f ${PATHTODSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP} ${PATHTOSELINUXCONFIG}/${DSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP} 2>/dev/null
 
 						retval=`echo $?`
+
+						NEEDRELABEL=1
 					fi
 
 					if ! [[ $retval == 0 ]]
@@ -1828,11 +1856,15 @@ then
 
 						retval=`echo $?`
 
+						NEEDRELABEL=1
+
 					elif ! [[ $UID == 0 ]]
 					then
 						/bin/sudo -E \rm -f ${PATHTOSELINUXCONFIG}/${DSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP} 2>/dev/null
 
 						retval=`echo $?`
+
+						NEEDRELABEL=1
 					fi
 
 					if [[ $retval == 0 ]]
@@ -1845,18 +1877,19 @@ then
 
 							retval=`echo $?`
 
+							NEEDRELABEL=1
+
 						elif ! [[ $UID == 0 ]]
 						then
 							/bin/sudo -E \rm -f ${PATHTOSELINUXCONFIG}/${DSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP}.bin 2>/dev/null
 
 							retval=`echo $?`
+
+							NEEDRELABEL=1
 						fi
 
-						if [[ $retval == 0 ]]
+						if ! [[ $retval == 0 ]]
 						then
-							debug "removed \"${PATHTOSELINUXCONFIG}/${DSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP}.bin\""
-
-						else
 							debug "failed to remove \"${PATHTOSELINUXCONFIG}/${DSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP}.bin\""
 						fi
 
@@ -1896,11 +1929,15 @@ then
 
 					retval=`echo $?`
 
+					NEEDRELABEL=1
+
 				elif ! [[ $UID == 0 ]]
 				then
 					/bin/sudo -E /bin/cp ${PATHTODSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP} ${PATHTOSELINUXCONFIG}/${DSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP} 2>/dev/null
 
 					retval=`echo $?`
+
+					NEEDRELABEL=1
 				fi
 
 				if ! [[ $retval == 0 ]]
@@ -1941,11 +1978,15 @@ then
 
 				retval=`echo $?`
 
+				NEEDRELABEL=1
+
 			elif ! [[ $UID == 0 ]]
 			then
 				/bin/sudo -E \rm -f ${PATHTOSELINUXCONFIG}/${DSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP}.bin 2>/dev/null
 
 				retval=`echo $?`
+
+				NEEDRELABEL=1
 			fi
 
 			if ! [[ $retval == 0 ]]
@@ -1996,11 +2037,15 @@ then
 
 							retval=`echo $?`
 
+							NEEDRELABEL=1
+
 						elif ! [[ $UID == 0 ]]
 						then
 							/bin/sudo -E \cp -f ${PATHTODSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP}.bin ${PATHTOSELINUXCONFIG}/${DSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP}.bin 2>/dev/null
 
 							retval=`echo $?`
+
+							NEEDRELABEL=1
 						fi
 
 						if ! [[ $retval == 0 ]]
@@ -2028,11 +2073,15 @@ then
 
 							retval=`echo $?`
 
+							NEEDRELABEL=1
+
 						elif ! [[ $UID == 0 ]]
 						then
 							/bin/sudo -E \rm -f ${PATHTOSELINUXCONFIG}/${DSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP}.bin 2>/dev/null
 
 							retval=`echo $?`
+
+							NEEDRELABEL=1
 						fi
 
 						if ! [[ $retval == 0 ]]
@@ -2085,11 +2134,15 @@ then
 
 						retval=`echo $?`
 
+						NEEDRELABEL=1
+
 					elif ! [[ $UID == 0 ]]
 					then
 						/bin/sudo -E /bin/cp ${PATHTODSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP}.bin ${PATHTOSELINUXCONFIG}/${DSSP}/${PATHTOHOMEDIRCONTEXTSRELATIVETODSSP}.bin 2>/dev/null
 
 						retval=`echo $?`
+
+						NEEDRELABEL=1
 					fi
 
 					if ! [[ $retval == 0 ]]
@@ -2173,11 +2226,15 @@ then
 
 								retval=`echo $?`
 
+								NEEDRELABEL=1
+
 							elif ! [[ $UID == 0 ]]
 							then
 								/bin/sudo -E \cp -f ${PATHTODSSP}/contexts.d/files/file_contexts.subs_dist ${PATHTOSELINUXCONFIG}/${DSSP}/contexts/files/file_contexts.subs_dist 2>/dev/null
 
 								retval=`echo $?`
+
+								NEEDRELABEL=1
 							fi
 
 							if ! [[ $retval == 0 ]]
@@ -2245,11 +2302,15 @@ then
 
 									retval=`echo $?`
 
+									NEEDRELABEL=1
+
 								elif ! [[ $UID == 0 ]]
 								then
 									/bin/sudo -E \cp -f ${PATHTODSSP}/contexts/files/file_contexts.subs_dist ${PATHTOSELINUXCONFIG}/${DSSP}/contexts/files/file_contexts.subs_dist 2>/dev/null
 
 									retval=`echo $?`
+
+									NEEDRELABEL=1
 								fi
 
 								if ! [[ $retval == 0 ]]
@@ -2312,11 +2373,15 @@ then
 
 							retval=`echo $?`
 
+							NEEDRELABEL=1
+
 						elif ! [[ $UID == 0 ]]
 						then
 							/bin/sudo -E \cp -f ${PATHTODSSP}/contexts.d/files/file_contexts.subs_dist ${PATHTOSELINUXCONFIG}/${DSSP}/contexts/files/file_contexts.subs_dist 2>/dev/null
 
 							retval=`echo $?`
+
+							NEEDRELABEL=1
 						fi
 
 						if ! [[ $retval == 0 ]]
@@ -2360,11 +2425,15 @@ then
 
 								retval=`echo $?`
 
+								NEEDRELABEL=1
+
 							elif ! [[ $UID == 0 ]]
 							then
 								/bin/sudo -E \cp -f ${PATHTODSSP}/contexts/files/file_contexts.subs_dist ${PATHTOSELINUXCONFIG}/${DSSP}/contexts/files/file_contexts.subs_dist 2>/dev/null
 
 								retval=`echo $?`
+
+								NEEDRELABEL=1
 							fi
 
 							if ! [[ $retval == 0 ]]
@@ -4030,8 +4099,22 @@ then
 	debug ""
 	debug "update existing install"
 	debug "-----------------------"
-	debug "execute /sbin/load_policy"
-	debug "contexts changes may require that you relabel, and restart affected processes"
+
+	if [[ $NEEDRELOAD == 1 ]]
+	then
+		debug "policy reload is required"
+	fi
+
+	if [[ $NEEDRELABEL == 1 ]]
+	then
+		debug "file context specifications have changed that require relabeling"
+	fi
+
+	if [[ -z $NEEDRELOAD ]] || [[ -z $NEEDRELABEL ]]
+	then
+		debug "policy, and file context specifications have not changed"
+	fi
+
 	debug ""
 
 else
