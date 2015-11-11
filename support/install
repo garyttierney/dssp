@@ -2436,6 +2436,8 @@ then
 					then
 						/bin/bash ${PATHTODSSP}/${PATHTOCHECKSHA256SUMRELATIVETODSSP} -p ${PATHTODSSP} -s ${PATHTODSSP}/contexts.d/dbus_contexts -t ${PATHTOSELINUXCONFIG}/${DSSP}/contexts/dbus_contexts
 
+						retval=`echo $?`
+
 						if ! [[ $retval == 0 ]] && ! [[ $retval == 199 ]] && ! [[ $retval == 200 ]]
 						then
 							case $retval in
