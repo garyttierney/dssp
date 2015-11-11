@@ -1193,7 +1193,7 @@ then
 			fi
 
 		else
-			exit `echo $retval`
+			exit `echo $?`
 		fi
 	done
 
@@ -1253,7 +1253,8 @@ then
 					exit `echo $retval`
 				fi
 
-			else
+			elif [[ $retval == 193 ]]
+			then
 				filetestandresult -r ${PATHTODSSP}/contexts/${CONTEXTSFILE}
 
 				retval=`echo $?`
@@ -1294,6 +1295,8 @@ then
 					exit `echo $retval`
 				fi
 
+			else
+				exit `echo $retval`
 			fi
 
 		else
@@ -4011,7 +4014,6 @@ then
 					else
 						exit `echo $retval`
 					fi
-
 				else
 					exit `echo $retval`
 				fi
