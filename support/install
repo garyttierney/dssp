@@ -1253,7 +1253,7 @@ then
 					exit `echo $retval`
 				fi
 
-			if [[ $retval == 193 ]]
+			elif [[ $retval == 193 ]]
 			then
 				filetestandresult -r ${PATHTODSSP}/contexts/${CONTEXTSFILE}
 
@@ -1282,7 +1282,7 @@ then
 
 						if ! [[ $retval == 0 ]]
 						then
-							debug "failed to install \"${PATHTODSSP}/contexts.d/${CONTEXTSFILE}\" to \"${PATHTOSELINUXCONFIG}/${DSSP}/contexts/${STRIPPEDCONTEXTSFILE}\""
+							debug "failed to install \"${PATHTODSSP}/contexts/${CONTEXTSFILE}\" to \"${PATHTOSELINUXCONFIG}/${DSSP}/contexts/${STRIPPEDCONTEXTSFILE}\""
 
 							exit `echo $retval`
 						fi
@@ -1294,6 +1294,9 @@ then
 				else
 					exit `echo $retval`
 				fi
+
+			else
+				exit `echo $retval`
 			fi
 
 		else
