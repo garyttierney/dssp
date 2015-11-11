@@ -1193,7 +1193,7 @@ then
 			fi
 
 		else
-			exit `echo $?`
+			exit `echo $retval`
 		fi
 	done
 
@@ -1288,7 +1288,7 @@ then
 						fi
 
 					else
-						debug "not installing empty \"${PATHTODSSP}/contexts/${CONTEXTSFILE}\"
+						debug "not installing empty \"${PATHTODSSP}/contexts/${CONTEXTSFILE}\""
 					fi
 
 				else
