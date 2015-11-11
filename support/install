@@ -1246,7 +1246,7 @@ then
 						fi
 
 					else
-						debug "not installing empty \"${PATHTODSSP}/contexts.d/${CONTEXTSFILE}\"
+						debug "not installing empty \"${PATHTODSSP}/contexts.d/${CONTEXTSFILE}\""
 					fi
 
 				else
