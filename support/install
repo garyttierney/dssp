@@ -1205,67 +1205,71 @@ then
 
 		if [[ $retval == 0 ]]
 		then
-			filetestandresult -r ${PATHTODSSP}/contexts/${CONTEXTSFILE}
+			STRIPPEDCONTEXTSFILE="`/bin/basename "$CONTEXTSFILE" ".${MODELTOBUILD}"`"
+
+			filetestandresult -f ${PATHTODSSP}/contexts.d/${CONTEXTSFILE}
 
 			retval=`echo $?`
 
 			if [[ $retval == 0 ]]
 			then
-				filetestandresult -s ${PATHTODSSP}/contexts/${CONTEXTSFILE}
+				filetestandresult -r ${PATHTODSSP}/contexts.d/${CONTEXTSFILE}
 
 				retval=`echo $?`
 
 				if [[ $retval == 0 ]]
 				then
-					STRIPPEDCONTEXTSFILE="`/bin/basename "$CONTEXTSFILE" ".${MODELTOBUILD}"`"
-
-					filetestandresult -f ${PATHTODSSP}/contexts.d/${CONTEXTSFILE}
+					filetestandresult -s ${PATHTODSSP}/contexts.d/${CONTEXTSFILE}
 
 					retval=`echo $?`
 
 					if [[ $retval == 0 ]]
 					then
-						filetestandresult -r ${PATHTODSSP}/contexts.d/${CONTEXTSFILE}
-
-						retval=`echo $?`
-
-						if [[ $retval == 0 ]]
+						if [[ $UID == 0 ]]
 						then
-							filetestandresult -s ${PATHTODSSP}/contexts.d/${CONTEXTSFILE}
+							/bin/cp ${PATHTODSSP}/contexts.d/${CONTEXTSFILE} ${PATHTOSELINUXCONFIG}/${DSSP}/contexts/${STRIPPEDCONTEXTSFILE} 2>/dev/null
 
 							retval=`echo $?`
 
-							if [[ $retval == 0 ]]
-							then
-								if [[ $UID == 0 ]]
-								then
-									/bin/cp ${PATHTODSSP}/contexts.d/${CONTEXTSFILE} ${PATHTOSELINUXCONFIG}/${DSSP}/contexts/${STRIPPEDCONTEXTSFILE} 2>/dev/null
+						elif ! [[ $UID == 0 ]]
+						then
+							/bin/sudo -E /bin/cp ${PATHTODSSP}/contexts.d/${CONTEXTSFILE} ${PATHTOSELINUXCONFIG}/${DSSP}/contexts/${STRIPPEDCONTEXTSFILE} 2>/dev/null
 
-									retval=`echo $?`
+							retval=`echo $?`
+						fi
 
-								elif ! [[ $UID == 0 ]]
-								then
-									/bin/sudo -E /bin/cp ${PATHTODSSP}/contexts.d/${CONTEXTSFILE} ${PATHTOSELINUXCONFIG}/${DSSP}/contexts/${STRIPPEDCONTEXTSFILE} 2>/dev/null
+						if ! [[ $retval == 0 ]]
+						then
+							debug "failed to install \"${PATHTODSSP}/contexts.d/${CONTEXTSFILE}\" to \"${PATHTOSELINUXCONFIG}/${DSSP}/contexts/${STRIPPEDCONTEXTSFILE}\""
 
-									retval=`echo $?`
-								fi
-
-								if ! [[ $retval == 0 ]]
-								then
-									debug "failed to install \"${PATHTODSSP}/contexts.d/${CONTEXTSFILE}\" to \"${PATHTOSELINUXCONFIG}/${DSSP}/contexts/${STRIPPEDCONTEXTSFILE}\""
-
-									exit `echo $retval`
-								fi
-
-							else
-								exit `echo $retval`
-							fi
+							exit `echo $retval`
+						fi
 
 						else
 							exit `echo $retval`
 						fi
 
-					elif [[ $retval == 193 ]]
+					else
+						debug "not installing empty \"${PATHTODSSP}/contexts.d/${CONTEXTSFILE}\"
+					fi
+
+				else
+					exit `echo $retval`
+				fi
+
+			if [[ $retval == 193 ]]
+			then
+				filetestandresult -r ${PATHTODSSP}/contexts/${CONTEXTSFILE}
+
+				retval=`echo $?`
+
+				if [[ $retval == 0 ]]
+				then
+					filetestandresult -s ${PATHTODSSP}/contexts/${CONTEXTSFILE}
+
+					retval=`echo $?`
+
+					if [[ $retval == 0 ]]
 					then
 						if [[ $UID == 0 ]]
 						then
@@ -1282,32 +1286,22 @@ then
 
 						if ! [[ $retval == 0 ]]
 						then
-							debug "failed to install \"${PATHTODSSP}/contexts/${CONTEXTSFILE}\" to \"${PATHTOSELINUXCONFIG}/${DSSP}/contexts/${STRIPPEDCONTEXTSFILE}\""
+							debug "failed to install \"${PATHTODSSP}/contexts.d/${CONTEXTSFILE}\" to \"${PATHTOSELINUXCONFIG}/${DSSP}/contexts/${STRIPPEDCONTEXTSFILE}\""
 
 							exit `echo $retval`
 						fi
 
-
-					elif [[ $retval == 195 ]]
-					then
-						debug "not installing empty file \"${PATHTODSSP}/contexts/${CONTEXTSFILE}\""
+						else
+							exit `echo $retval`
+						fi
 
 					else
-						exit `echo $retval`
+						debug "not installing empty \"${PATHTODSSP}/contexts/${CONTEXTSFILE}\"
 					fi
-
-				elif [[ $retval == 195 ]]
-				then
-					debug "not installing empty file \"${PATHTODSSP}/contexts/${CONTEXTSFILE}\""
-
 				else
 					exit `echo $retval`
 				fi
-
-			else
-				exit `echo $retval`
 			fi
-
 		else
 			exit `echo $retval`
 		fi
