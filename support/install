@@ -1311,7 +1311,7 @@ then
 	debug "change mode to \"permissive\""
 	debug "execute \"/sbin/load_policy\" to reload the policy"
 	debug "execute \"/sbin/restorecon -RF /\" to relabel the file systems"
-	debug "optional empty \"/var/tmp\""
+	debug "optionally empty \"/var/tmp\""
 	debug "reboot"
 	debug ""
 
