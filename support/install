@@ -4110,7 +4110,7 @@ then
 		debug "file context specifications have changed that require relabeling"
 	fi
 
-	if [[ -z $NEEDRELOAD ]] || [[ -z $NEEDRELABEL ]]
+	if [[ -z $NEEDRELOAD ]] && [[ -z $NEEDRELABEL ]]
 	then
 		debug "policy, and file context specifications have not changed"
 	fi
