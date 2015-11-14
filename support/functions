@@ -192,7 +192,7 @@ updatetoupstream () {
 		fi
 
 		/bin/git --git-dir=${_PATHTODSSP}/.git pull --recurse-submodules https://github.com/defensec/dssp \
-			&& /bin/git --git-dir=${_PATHTODSSP}/.git submodule foreach '/bin/git submodule update merge --recursive;'
+			&& /bin/git --git-dir=${_PATHTODSSP}/.git submodule foreach '/bin/git submodule update --merge --recursive;'
 
 		retval=`echo $?`
 	fi
