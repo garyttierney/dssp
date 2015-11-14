@@ -1,221 +1,310 @@
 #!/bin/bash
 
-if [ "$#" == "0" ]
-then
-	echo "Takes one, and optionally two params. Path to policy source and path to secilc compiler respectively"
-	echo "Examples:"
-	echo "bash tests/tests -p ~/Workspace/dssp"
-	echo "bash tests/tests -p ~/Workspace/dssp -i ~/bin/secilc"
+declare PATHTOSECILC="/usr/bin/secilc"
+declare PATHTOPRINTMODULESRELATIVETODSSP="support/printmodules"
+declare PATHTOPRINTEXCLUDESRELATIVETODSSP="support/printexcludes"
+declare PATHTOFUNCTIONSRELATIVETODSSP="support/functions"
+
+usage () {
+	echo "$0 - runs a set of basics tests on DSSP
+
+mandatory options
+-p	: path to dssp sources
+
+discretionary options
+-i	: path to secilc
+
+exit codes
+0	: success
+1	: general fault
+193	: file is not accessible
+194	: file is not readable
+195	: file is a zero-byte file
+196	: file is not a directory
+197 	: file is not a writeable file
+201	: no path entries to list
+202	: no such file or directory
+203	: no path entries to be included"
 	exit
+}
+
+! (( $# > 0 )) && usage || :
+
+while (($# > 0))
+do
+	case $1 in
+		\-i)
+		shift
+
+		if ! (( $# > 0 ))
+		then
+			printf "%s\n" "option -i expects one parameter: path to secilc"
+
+			exit
+		fi
+
+		PATHTOSECILC=$1
+
+		if ! [[ -x $PATHTOSECIL ]]
+		then
+			printf "%s\n" "invalid path to secilc"
+
+			exit 1
+		fi
+		;;
+		\-p)
+		shift
+
+		if ! (( $# > 0 ))
+		then
+			printf "%s\n" "option -p expects one parameter: path to dssp source"
+
+			exit
+		fi
+
+		PATHTODSSP=$1
+		;;
+		*)
+
+		break
+		;;
+	esac
+shift
+done
+
+if ! [[ -d $PATHTODSSP ]] || [[ -z $PATHTODSSP ]] || ! [[ -x $PATHTOSECILC ]]
+then
+	usage
 fi
 
-# @param1 : path to printexcludes script
-# @param2 : path to exclude file
+if ! [[ -r ${PATHTODSSP}/${PATHTOFUNCTIONSRELATIVETODSSP} ]]
+then
+	debug "unable to source functions"
+
+	exit 1
+fi
+
+source ${PATHTODSSP}/${PATHTOFUNCTIONSRELATIVETODSSP} 2>/dev/null
+
+if ! [[ -w $PATHTODSSP ]]
+then
+	debug "path to dssp \"$PATHTODSSP\" is not writeable"
+
+	exit 1
+fi
+
+## @brief get a list of paths to exclude
+#
+# @param paths to exclude files relative to dssp separated by comma
+# @retval 0 success
+# @retval 1 general fault
+# @retval 193 file is not accessible
+# @retval 194 file is not readable
+# @retval 195 file is a zero-byte file
 
 get_excludes () {
-	EXCLUDES=
-	PRINTEXCLUDESPATH=$1
-	EXCLUDESPATH=$2
+	PATHTOEXCLUDEFILERELATIVETODSSP=$1
 
-	if [ ! -f "$PRINTEXCLUDESPATH" ]
+	unset EXCLUDES
+
+	EXCLUDES+="`/bin/bash $PATHTOPRINTEXCLUDESRELATIVETODSSP -p $PATHTODSSP -e $PATHTOEXCLUDEFILERELATIVETODSSP`"
+
+	retval=`echo $?`
+
+	if ! [[ $retval == 0 ]]
 	then
-		echo "printexludes script not found at $PRINTEXCLUDESPATH"
-		return 1
-	fi
+		return `echo $retval`
 
-	if [ -f "$EXCLUDESPATH" -a -r "$EXCLUDESPATH" -a -s "$EXCLUDESPATH" ]
+	elif ! [[ -n $EXCLUDES ]]
 	then
-		unset EXCLUDES
-		EXCLUDES+="`/bin/bash "$PRINTEXCLUDESPATH" "$EXCLUDESPATH"`"
-		test -n "$EXCLUDES" && return 0
+		debug "variable \"$EXCLUDE\" is not set"
 
-	else
 		return 1
 	fi
 }
+
+## @brief get a list of modules
+#
+# @retval 0 success
+# @retval 1 general fault
+# @retval 193 file is not accessible
+# @retval 194 file is not readable
+# @retval 195 file is a zero-byte file
 
 get_modules () {
-	MODULES=
-	PRINTMODULESPATH=$1
-	MODULESPATH=$2
+	unset MODULES
 
-	if [ ! -f "$PRINTMODULESPATH" ]
+	MODULES+=`/bin/bash $PATHTOPRINTMODULESRELATIVETODSSP -p $PATHTODSSP -e sources,sources.d,tests`
+
+	retval=`echo $?`
+
+	if ! [[ $retval == 0 ]]
 	then
-		echo "printmodules script not found at $PRINTMODULESPATH"
+		return `echo $retval`
+
+	elif ! [[ -n $MODULES ]]
+	then
+		debug "variable \"$MODULES\" is not set"
+
 		return 1
 	fi
-
-	if [ -d "$MODULESPATH" ]
-	then
-		unset MODULES
-		MODULES+=`/bin/bash "$PRINTMODULESPATH" "$MODULESPATH"`
-		test -n "$MODULES" && return 0
-	else
-		return 1
-	fi
-
 }
+
+## @brief get a list of modules to compile
+#
+# @retval 0 success
+# @retval 1 general fault
+# @retval 193 file is not accessible
+# @retval 194 file is not readable
+# @retval 195 file is a zero-byte file
 
 get_modules_minus_excludes () {
-	EXCLUDE=
-	MODULESTOCOMPILE=
+	unset MODULESTOCOMPILE
 
-	if [ -z "$MODULES" ]
+	if [[ -z $MODULES ]]
 	then
-		echo "No modules!"
+		debug "No modules to compile"
+
 		return 1
 	fi
 
-	if [ -n "$EXCLUDES" ]
+	if [[ -n $EXCLUDES ]]
 	then
-		for EXCLUDE in "${EXCLUDES[*]}"
+		for EXCLUDE in "${EXCLUDES[@]}"
 		do
-			MODULESTOCOMPILE="`echo "${MODULES[@]}" | /bin/grep -v "$EXCLUDE"`"
-			test -n "$MODULESTOCOMPILE" && return 0
+			MODULESTOCOMPILE="`printf "%s\n" "${MODULES[@]}" | /bin/grep -v "$EXCLUDE" 2>/dev/null`"
+
+			retval=`echo $?`
+
+			if ! [[ $retval == 0 ]]
+			then
+				return `echo $retval`
+			fi
+
+			if [[ -z $MODULESTOCOMPILE ]]
+			then
+				debug "no modules to compile"
+
+				return 1
+			fi
 		done
-	elif [ -z "$EXCLUDES" ]
+
+	elif [[ -z $EXCLUDES ]]
 	then
-		MODULESTOCOMPILE+=`echo ${MODULES[@]}`
-		test -n "$MODULESTOCOMPILE" && return 0
+		MODULESTOCOMPILE+="`printf "%s\n" "${MODULES[@]}" 2>/dev/null`"
+
+		retval=`echo $retval`
+
+		if ! [[ $retval == 0 ]]
+		then
+			return `echo $retval`
+		fi
+
+		if [[ -z $MODULESTOCOMPILE ]]
+		then
+			debug "no modules to compile"
+
+			return 1
+		fi
 	fi
 }
+
+## @brief build modules to compile
+#
+# @retval 0 success
+# @retval 1 general fault
 
 buildit () {
-	if [ -z "$MODULESTOCOMPILE" ]
+	if [[ -z $MODULESTOCOMPILE ]]
 	then
-		echo "No modules to compile!"
+		debug "no modules to compile"
+
 		return 1
         fi
 
-	if [ -z "$SPATH" ]
-	then
-		echo "No path to sources!"
-		return 1
-        fi
+	( /bin/cd $PATHTODSSP && time $PATHTOSECILC ${MODULESTOCOMPILE[@]} \
+		-o ${PATHTODSSP}/policy/policy.`/bin/cat /sys/fs/selinux/policyvers` -f ${PATHTODSSP}/contexts/files/file_contexts 2>/dev/null )
 
-	if [ -z "$SECILC" ]
-	then
-		echo "No SECILC compiler!"
-		return 1
-        fi
+	retval=`echo $?`
 
-	( /bin/cd "$SPATH" && time "$SECILC" ${MODULESTOCOMPILE[@]} \
-		-o "$SPATH"/policy/policy.`/bin/cat /sys/fs/selinux/policyvers` -f "$SPATH"/contexts/files/file_contexts || return 1 )
+	if ! [[ $retval == 0 ]]
+	then
+		return `echo $retval`
+	fi
 }
 
-# @param1: test case name
+## @brief get the size of specified test case policy
+#
+# @param test case name
+# @retval 0 success
+# @retval 1 general fault
 
 get_policy_size () {
-	if [ -z "SPATH" ]
-	then
-		echo "No path to sources!"
-		return 1
-	fi
+	TESTCASENAME=$1
 
-	if [ -f "$SPATH"/policy/policy.`/bin/cat /sys/fs/selinux/policyvers` ]
+	if [[ -f ${PATHTODSSP}/policy/policy.`/bin/cat /sys/fs/selinux/policyvers` ]]
 	then
-		echo "Size of policy ${1} is `/bin/stat -c %s ${SPATH}/policy/policy.$(/bin/cat /sys/fs/selinux/policyvers)` bytes"
+		echo "Size of policy ${TESTCASENAME} is `/bin/stat -c %s ${PATHTODSSP}/policy/policy.$(/bin/cat /sys/fs/selinux/policyvers)` bytes"
 		echo "--- end of test ---"
 		echo
+	else
+		debug "no such file or directory"
+
+		return 1
 	fi
 }
 
-get_options () {
-	SECILC="/usr/bin/secilc"
-	SPATH=
-
-	while (($# > 0))
-	do
-		case $1 in
-			\-i)
-			shift
-
-			unset SECILC
-			SECILC="$1"
-
-			if [ ! -f "$SECILC" -a ! -x "$SECILC" -a ! -s "$SECILC" ]
-			then
-				echo "option -i expects a single parameter: accessible secilc location"
-				return 1
-			fi
-			;;
-			\-p)
-			shift
-
-			unset SPATH
-			SPATH="$1"
-
-			if [ ! -d "$SPATH" -a  ! -w "$SPATH" ]
-			then
-				echo "option -p expects a single parameter: accessible path to source policy to build"
-				return 1
-			fi
-			;;
-			*) break
-			;;
-		esac
-	shift
-	done
-}
-
+## @brief run test
+#
 # @param1: test case name
-# @param2: excludes file name
+# @param2: paths to exclude files relative to dssp separated by comma
+# @retval 0 success
+# @retval 1 general fault
 
 do_test () {
-	echo "--- Testing ${1} ---"
-	get_excludes ${SPATH}/support/printexcludes ${SPATH}/tests/${2} || return 1
-	get_modules ${SPATH}/support/printmodules ${SPATH} || return 1
-	get_modules_minus_excludes || return 1
-	buildit || return 1
-	get_policy_size ${1} || return 1
+	TESTCASENAME=$1
+	PATHSTOEXCLUDEFILESRELATIVETODSSP=$2
+
+	echo "--- Testing $TESTCASENAME ---"
+	get_excludes $PATHSTOEXCLUDEFILESRELATIVETODSSP || return `echo $retval`
+	get_modules || return `echo $retval`
+	get_modules_minus_excludes || return `echo $retval`
+	buildit || return `echo $retval`
+	get_policy_size $TESTCASENAME || return `echo $retval`
 }
-
-get_options $@ || exit 1
-
-if [ ! -f "$SECILC" -a ! -x "$SECILC" ]
-then
-	echo "SECILC is not executable at $SECILC"
-	exit 1
-fi
-
-if [ ! -d "$SPATH" -a ! -w "$SPATH" ]
-then
-	echo "source path is not writable at $SPATH"
-	exit 1
-fi
 
 # base tests
 
-do_test standard_base test_base_excludes_standard || echo "Test standard_base FAILED"
-do_test rbacsep_base test_base_excludes_rbacsep || echo "Test rbacsep_base FAILED"
-do_test mcs_base test_base_excludes_mcs || echo "Test mcs_base FAILED"
-do_test mcsrbacsep_base test_base_excludes_mcsrbacsep || echo "Test mcsrbacsep_base FAILED"
-do_test mls_base test_base_excludes_mls || echo "Test mls_base FAILED"
-do_test mlsrbacsep_base test_base_excludes_mlsrbacsep || echo "Test mlsrbacsep_base FAILED"
+do_test standard_base tests/test_base_excludes_standard || echo "Test standard_base FAILED"
+do_test rbacsep_base tests/test_base_excludes_rbacsep || echo "Test rbacsep_base FAILED"
+do_test mcs_base tests/test_base_excludes_mcs || echo "Test mcs_base FAILED"
+do_test mcsrbacsep_base tests/test_base_excludes_mcsrbacsep || echo "Test mcsrbacsep_base FAILED"
+do_test mls_base tests/test_base_excludes_mls || echo "Test mls_base FAILED"
+do_test mlsrbacsep_base tests/test_base_excludes_mlsrbacsep || echo "Test mlsrbacsep_base FAILED"
 
 # all tests
 
-do_test standard_all test_all_excludes_standard || echo "Test standard_all FAILED"
-do_test rbacsep_all test_all_excludes_rbacsep || echo "Test rbacsep_all FAILED"
-do_test mcs_all test_all_excludes_mcs || echo "Test mcs_all FAILED"
-do_test mcsrbacsep_all test_all_excludes_mcsrbacsep || echo "Test mcsrbacsep_all FAILED"
-do_test mls_all test_all_excludes_mls || echo "Test mls_all FAILED"
-do_test mlsrbacsep_all test_all_excludes_mlsrbacsep || echo "Test mlsrbacsep_all FAILED"
+do_test standard_all tests/test_all_excludes_standard || echo "Test standard_all FAILED"
+do_test rbacsep_all tests/test_all_excludes_rbacsep || echo "Test rbacsep_all FAILED"
+do_test mcs_all tests/test_all_excludes_mcs || echo "Test mcs_all FAILED"
+do_test mcsrbacsep_all tests/test_all_excludes_mcsrbacsep || echo "Test mcsrbacsep_all FAILED"
+do_test mls_all tests/test_all_excludes_mls || echo "Test mls_all FAILED"
+do_test mlsrbacsep_all tests/test_all_excludes_mlsrbacsep || echo "Test mlsrbacsep_all FAILED"
 
 # all minus sd tests
 
-do_test standard_all_minus_sd test_all_minus_sd_excludes_standard || echo "Test standard_all_minus_sd FAILED"
-do_test rbacsep_all_minus_sd test_all_minus_sd_excludes_rbacsep || echo "Test rbacsep_all_minus_sd FAILED"
-do_test mcs_all_minus_sd test_all_minus_sd_excludes_mcs || echo "Test mcs_all_minus_sd FAILED"
-do_test mcsrbacsep_all_minus_sd test_all_minus_sd_excludes_mcsrbacsep || echo "Test mcsrbacsep_all_minus_sd FAILED"
-do_test mls_all_minus_sd test_all_minus_sd_excludes_mls || echo "Test mls_all_minus_sd FAILED"
-do_test mlsrbacsep_all_minus_sd test_all_minus_sd_excludes_mlsrbacsep || echo "Test mlsrbacsep_all_minus_sd FAILED"
+do_test standard_all_minus_sd tests/test_all_minus_sd_excludes_standard || echo "Test standard_all_minus_sd FAILED"
+do_test rbacsep_all_minus_sd tests/test_all_minus_sd_excludes_rbacsep || echo "Test rbacsep_all_minus_sd FAILED"
+do_test mcs_all_minus_sd tests/test_all_minus_sd_excludes_mcs || echo "Test mcs_all_minus_sd FAILED"
+do_test mcsrbacsep_all_minus_sd tests/test_all_minus_sd_excludes_mcsrbacsep || echo "Test mcsrbacsep_all_minus_sd FAILED"
+do_test mls_all_minus_sd tests/test_all_minus_sd_excludes_mls || echo "Test mls_all_minus_sd FAILED"
+do_test mlsrbacsep_all_minus_sd tests/test_all_minus_sd_excludes_mlsrbacsep || echo "Test mlsrbacsep_all_minus_sd FAILED"
 
 # all minus dbus tests
 
-do_test standard_all_minus_dbus test_all_minus_dbus_excludes_standard || echo "Test standard_all_minus_dbus FAILED"
-do_test rbacsep_all_minus_dbus test_all_minus_dbus_excludes_rbacsep || echo "Test rbacsep_all_minus_dbus FAILED"
-do_test mcs_all_minus_dbus test_all_minus_dbus_excludes_mcs || echo "Test mcs_all_minus_dbus FAILED"
-do_test mcsrbacsep_all_minus_dbus test_all_minus_dbus_excludes_mcsrbacsep || echo "Test mcsrbacsep_all_minus_dbus FAILED"
-do_test mls_all_minus_dbus test_all_minus_dbus_excludes_mls || echo "Test mls_all_minus_dbus FAILED"
-do_test mlsrbacsep_all_minus_dbus test_all_minus_dbus_excludes_mlsrbacsep || echo "Test mlsrbacsep_all_minus_dbus FAILED"
+do_test standard_all_minus_dbus tests/test_all_minus_dbus_excludes_standard || echo "Test standard_all_minus_dbus FAILED"
+do_test rbacsep_all_minus_dbus tests/test_all_minus_dbus_excludes_rbacsep || echo "Test rbacsep_all_minus_dbus FAILED"
+do_test mcs_all_minus_dbus tests/test_all_minus_dbus_excludes_mcs || echo "Test mcs_all_minus_dbus FAILED"
+do_test mcsrbacsep_all_minus_dbus tests/test_all_minus_dbus_excludes_mcsrbacsep || echo "Test mcsrbacsep_all_minus_dbus FAILED"
+do_test mls_all_minus_dbus tests/test_all_minus_dbus_excludes_mls || echo "Test mls_all_minus_dbus FAILED"
+do_test mlsrbacsep_all_minus_dbus tests/test_all_minus_dbus_excludes_mlsrbacsep || echo "Test mlsrbacsep_all_minus_dbus FAILED"
