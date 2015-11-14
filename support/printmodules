@@ -13,6 +13,7 @@ mandatory options
 discretionary options
 
 -d	: enable debugging
+-e	: alternative paths to modules relative to dssp separated by comma
 
 exit codes
 
@@ -29,6 +30,20 @@ exit codes
 while (( $# > 0 ))
 do
 	case $1 in
+		\-e)
+		shift
+
+		if ! (( $# > 0 ))
+		then
+			printf "%s\n" "option -e expects one parameter: alternative paths to modules relative to dssp separated by comma"
+
+			exit
+		fi
+
+		unset PATHSTOMODULESRELATIVETODSSP
+
+		PATHSTOMODULESRELATIVETODSSP+="`/bin/echo $1 | /bin/sed "s/,/ /g"`"
+		;;
 		\-p)
 		shift
 
