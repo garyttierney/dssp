@@ -196,7 +196,7 @@ then
 		fi
 
 	else
-		echo "unable to determine max policy version"
+		printf "%s\n" "unable to determine max policy version"
 
 		exit 1
 	fi
@@ -204,7 +204,7 @@ fi
 
 if ! [[ -r ${PATHTODSSP}/${PATHTOFUNCTIONSRELATIVETODSSP} ]]
 then
-	echo "unable to source functions"
+	printf "%s\n" "unable to source functions"
 
 	exit 1
 fi

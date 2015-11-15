@@ -61,7 +61,7 @@ fi
 
 if ! [[ -r ${PATHTODSSP}/${PATHTOFUNCTIONSRELATIVETODSSP} ]]
 then
-	debug "unable to source functions"
+	printf "%s\n" "unable to source functions"
 
 	exit 1
 fi

@@ -186,13 +186,13 @@ then
 
 		if [[ -z $POLICYVERSION ]] && [[ ! $POLICYVERSION =~ "^[0-9]+$" ]]
 		then
-			echo "invalid policy version \"$POLICYVERSION\" specified"
+			printf "%s\n" "invalid policy version \"$POLICYVERSION\" specified"
 
 			exit 1
 		fi
 
 	else
-		debug "unable to determine max policy version"
+		printf "%s\n" "unable to determine max policy version"
 
 		exit 1
 	fi
@@ -200,7 +200,7 @@ fi
 
 if ! [[ -r ${PATHTODSSP}/${PATHTOFUNCTIONSRELATIVETODSSP} ]]
 then
-	echo "unable to source functions"
+	printf "%s\n" "unable to source functions"
 
 	exit 1
 fi
