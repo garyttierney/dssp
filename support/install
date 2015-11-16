@@ -228,7 +228,7 @@ then
 	then
 		case retval in
 			1) debug "general fault" ;;
-			196) debug "file in not a directory" ;;
+			196) debug "file is not a directory" ;;
 			206) debug "unable to execute /bin/git" ;;
 			*) debug "unhandled exception" ;;
 		esac
