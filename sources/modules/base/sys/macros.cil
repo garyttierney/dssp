@@ -486,11 +486,11 @@
 		(allow ARG1 sysfs_obj_type_attribute read_lnk_file_perms))
 
 	(macro search_cpu_sysfs ((type ARG1))
-		(call fs.search_sysfs (ARG1))
+		(call fs.read_sysfs_lnk_files (ARG1))
 		(allow ARG1 cpu_sysfs.sysfs search_dir_perms))
 
 	(macro list_cpu_sysfs ((type ARG1))
-		(call fs.search_sysfs (ARG1))
+		(call fs.read_sysfs_lnk_files (ARG1))
 		(allow ARG1 cpu_sysfs.sysfs list_dir_perms))
 
 	(macro read_cpu_sysfs_files ((type ARG1))
@@ -502,37 +502,43 @@
 		(allow ARG1 cpu_sysfs.sysfs rw_file_perms))
 
 	(macro read_cpu_sysfs ((type ARG1))
-		(call fs.search_sysfs (ARG1))
+		(call read_cpu_online_sysfs_files (ARG1))
 		(allow ARG1 cpu_sysfs.sysfs read_file_perms)
 		(allow ARG1 cpu_sysfs.sysfs list_dir_perms)
 		(allow ARG1 cpu_sysfs.sysfs read_lnk_file_perms))
 
 	(macro read_cpu_online_sysfs_files ((type ARG1))
-		(call fs.search_sysfs (ARG1))
+		(call fs.read_sysfs_lnk_files (ARG1))
 		(call read_files_pattern (ARG1 cpu_sysfs.sysfs cpu_online_sysfs.sysfs)))
 
 	(macro search_memory_sysfs ((type ARG1))
-		(call fs.search_sysfs (ARG1))
+		(call fs.read_sysfs_lnk_files (ARG1))
 		(allow ARG1 memory_sysfs.sysfs search_dir_perms))
 
 	(macro list_memory_sysfs ((type ARG1))
-		(call fs.search_sysfs (ARG1))
+		(call fs.read_sysfs_lnk_files (ARG1))
 		(allow ARG1 memory_sysfs.sysfs list_dir_perms))
 
 	(macro read_memory_sysfs_files ((type ARG1))
-		(call fs.search_sysfs (ARG1))
+		(call fs.read_sysfs_lnk_files (ARG1))
 		(call read_files_pattern (ARG1 memory_sysfs.sysfs memory_sysfs.sysfs)))
 
 	(macro rw_memory_sysfs_files ((type ARG1))
-		(call fs.search_sysfs (ARG1))
+		(call fs.read_sysfs_lnk_files (ARG1))
 		(call rw_files_pattern (ARG1 memory_sysfs.sysfs memory_sysfs.sysfs)))
 
+	(macro read_memory_sysfs ((type ARG1))
+		(call fs.read_sysfs_lnk_files (ARG1))
+		(allow ARG1 memory_sysfs.sysfs read_file_perms)
+		(allow ARG1 memory_sysfs.sysfs list_dir_perms)
+		(allow ARG1 memory_sysfs.sysfs read_lnk_file_perms))
+
 	(macro search_node_sysfs ((type ARG1))
-		(call fs.search_sysfs (ARG1))
+		(call fs.read_sysfs_lnk_files (ARG1))
 		(allow ARG1 node_sysfs.sysfs search_dir_perms))
 
 	(macro list_node_sysfs ((type ARG1))
-		(call fs.search_sysfs (ARG1))
+		(call fs.read_sysfs_lnk_files (ARG1))
 		(allow ARG1 node_sysfs.sysfs list_dir_perms))
 
 	(macro read_node_sysfs_files ((type ARG1))
@@ -543,8 +549,14 @@
 		(call read_node_online_sysfs_files (ARG1))
 		(allow ARG1 node_sysfs.sysfs rw_file_perms))
 
+	(macro read_node_sysfs ((type ARG1))
+		(call read_node_online_sysfs_files (ARG1))
+		(allow ARG1 node_sysfs.sysfs read_file_perms)
+		(allow ARG1 node_sysfs.sysfs list_dir_perms)
+		(allow ARG1 node_sysfs.sysfs read_lnk_file_perms))
+
 	(macro read_node_online_sysfs_files ((type ARG1))
-		(call fs.search_sysfs (ARG1))
+		(call fs.read_sysfs_lnk_files (ARG1))
 		(call read_files_pattern (ARG1 node_sysfs.sysfs node_online_sysfs.sysfs)))
 
 	(macro read_state_files ((type ARG1))
