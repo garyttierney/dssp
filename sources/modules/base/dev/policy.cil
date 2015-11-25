@@ -1,6 +1,8 @@
 (sid devnull)
 
 (block dev
+	(typeattribute null_sd_status_subj_type_attribute)
+
 	(typeattribute obj_type_attribute)
 	(typeattribute storage_obj_type_attribute)
 
@@ -33,7 +35,11 @@
 
 	(typeattributeset except_storage_obj_type_attribute (and (obj_type_attribute) (not (storage_obj_type_attribute))))
 
-	(allow unconfined_subj_type_attribute except_storage_obj_type_attribute all_chr_file_perms_except_mounton_and_execmod))
+	(allow unconfined_subj_type_attribute except_storage_obj_type_attribute all_chr_file_perms_except_mounton_and_execmod)
+
+	(optional null_sd_status_subj_type_optional_sd
+		(allow null_sd_status_subj_type_attribute null.dev (service (status)))
+		(call fs.search_devtmpfs (null_sd_status_subj_type_attribute))))
 
 (block apm
 	(blockinherit dev.obj_blk))

@@ -383,6 +383,9 @@
 		(call fs.search_devtmpfs (ARG1))
 		(allow ARG1 lvm_control.dev rw_chr_file_perms))
 
+	(macro null_sd_status_subj_type ((type ARG1))
+		(typeattributeset null_sd_status_subj_type_attribute ARG1))
+
 	(macro rw_null ((type ARG1))
 		(call fs.search_devtmpfs (ARG1))
 		(allow ARG1 null.dev rw_chr_file_perms))
