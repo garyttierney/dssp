@@ -221,6 +221,7 @@
 		(call fs.devtmpfs_obj_type_transition (ARG1 usb.dev chr_file "012"))
 		(call fs.devtmpfs_obj_type_transition (ARG1 usb.dev chr_file "013"))
 		(call fs.devtmpfs_obj_type_transition (ARG1 usb.dev chr_file "014"))
+		(call fs.devtmpfs_obj_type_transition (ARG1 usb.dev chr_file "015"))
 		(call fs.devtmpfs_obj_type_transition (ARG1 usb.dev chr_file "hidraw0"))
 		(call fs.devtmpfs_obj_type_transition (ARG1 usb.dev chr_file "hidraw1"))
 		(call fs.devtmpfs_obj_type_transition (ARG1 usb.dev chr_file "hidraw2"))
