@@ -270,6 +270,14 @@
 	(macro getattr_devtmpfs_fs ((type ARG1))
 		(allow ARG1 devtmpfs.fs (filesystem (getattr))))
 
+	(macro manage_devtmpfs_blk_files ((type ARG1))
+		(allow ARG1 self (capability (mknod)))
+		(call manage_blk_files_pattern (ARG1 devtmpfs.fs devtmpfs.fs)))
+
+	(macro manage_devtmpfs_chr_files ((type ARG1))
+		(allow ARG1 self (capability (mknod)))
+		(call manage_chr_files_pattern (ARG1 devtmpfs.fs devtmpfs.fs)))
+
 	(macro read_devtmpfs_files ((type ARG1))
 		(call read_files_pattern (ARG1 devtmpfs.fs devtmpfs.fs)))
 
@@ -298,9 +306,6 @@
 
 	(macro manage_devtmpfs_files ((type ARG1))
 		(call manage_files_pattern (ARG1 devtmpfs.fs devtmpfs.fs)))
-
-	(macro manage_devtmpfs_chr_files ((type ARG1))
-		(call manage_chr_files_pattern (ARG1 devtmpfs.fs devtmpfs.fs)))
 
 	(macro add_entry_devtmpfs ((type ARG1))
 		(allow ARG1 devtmpfs.fs add_entry_dir_perms))
@@ -341,9 +346,6 @@
 
 	(macro dontaudit_getattr_devtmpfs_blk_files ((type ARG1))
 		(dontaudit ARG1 devtmpfs.fs (blk_file (getattr))))
-
-	(macro manage_devtmpfs_blk_files ((type ARG1))
-		(call manage_blk_files_pattern (ARG1 devtmpfs.fs devtmpfs.fs)))
 
 	(macro manage_devtmpfs_dirs ((type ARG1))
 		(call manage_dirs_pattern (ARG1 devtmpfs.fs devtmpfs.fs)))
