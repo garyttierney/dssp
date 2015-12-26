@@ -51,6 +51,19 @@
 
 	(call dev.manage_all (subj))
 
+	(call dev.devtmpfs_obj_type_transition_clock (subj))
+	(call dev.devtmpfs_obj_type_transition_event (subj))
+	(call dev.devtmpfs_obj_type_transition_kvm (subj))
+	(call dev.devtmpfs_obj_type_transition_mei_misc (subj))
+	(call dev.devtmpfs_obj_type_transition_mouse (subj))
+	(call dev.devtmpfs_obj_type_transition_printer (subj))
+	(call dev.devtmpfs_obj_type_transition_sound (subj))
+	(call dev.devtmpfs_obj_type_transition_tpm (subj))
+	(call dev.devtmpfs_obj_type_transition_usb (subj))
+	(call dev.devtmpfs_obj_type_transition_v4l (subj))
+	(call dev.devtmpfs_obj_type_transition_watchdog (subj))
+	(call dev.devtmpfs_obj_type_transition_wireless (subj))
+
 	(call file.read_data_files (subj))
 
 	(call fs.dontaudit_write_devtmpfs_chr_files (subj))
@@ -64,23 +77,10 @@
 	(call sec.compute_create_context (subj))
 	(call sec.list_fs (subj))
 
+	(call term.devtmpfs_obj_type_transition_unallocated_tty (subj))
+
 	(tunableif enable_mls
 		(true
-			(call term.devtmpfs_obj_type_transition_unallocated_tty (subj))
-
-			(call dev.devtmpfs_obj_type_transition_clock (subj))
-			(call dev.devtmpfs_obj_type_transition_event (subj))
-			(call dev.devtmpfs_obj_type_transition_kvm (subj))
-			(call dev.devtmpfs_obj_type_transition_mei_misc (subj))
-			(call dev.devtmpfs_obj_type_transition_mouse (subj))
-			(call dev.devtmpfs_obj_type_transition_printer (subj))
-			(call dev.devtmpfs_obj_type_transition_sound (subj))
-			(call dev.devtmpfs_obj_type_transition_tpm (subj))
-			(call dev.devtmpfs_obj_type_transition_usb (subj))
-			(call dev.devtmpfs_obj_type_transition_v4l (subj))
-			(call dev.devtmpfs_obj_type_transition_watchdog (subj))
-			(call dev.devtmpfs_obj_type_transition_wireless (subj))
-
 			(optional sys_enable_mls_optional_kmod
 				(call kmod.auto_subj_range_transition (subj systemhigh systemhigh)))
 
@@ -94,10 +94,8 @@
 				(call sd_coredump.auto_subj_range_transition (subj systemhigh systemhigh))))
 
 		(false
-			(call fs.create_devtmpfs_chr_files (subj))
-			(call fs.create_devtmpfs_blk_files (subj))
-			(call fs.setattr_devtmpfs_chr_files (subj))
-			(call fs.setattr_devtmpfs_blk_files (subj))))
+			(call fs.manage_devtmpfs_chr_files (subj))
+			(call fs.manage_devtmpfs_blk_files (subj))))
 
 	(tunableif enable_rbacsep
 		(true
