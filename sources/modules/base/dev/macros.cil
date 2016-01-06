@@ -112,6 +112,10 @@
 		(call fs.search_devtmpfs (ARG1))
 		(allow ARG1 urandom.dev (chr_file (getattr))))
 
+	(macro getattr_usb ((type ARG1))
+		(call fs.search_devtmpfs (ARG1))
+		(allow ARG1 usb.dev (chr_file (getattr))))
+
 	(macro getattr_v4l ((type ARG1))
 		(call fs.search_devtmpfs (ARG1))
 		(allow ARG1 v4l.dev (chr_file (getattr))))
@@ -499,11 +503,14 @@
 	(macro setattr_sound ((type ARG1))
 		(allow ARG1 sound.dev (chr_file (setattr))))
 
-	(macro setattr_wireless ((type ARG1))
-		(allow ARG1 wireless.dev (chr_file (setattr))))
+	(macro setattr_usb ((type ARG1))
+		(allow ARG1 usb.dev (chr_file (setattr))))
 
 	(macro setattr_v4l ((type ARG1))
 		(allow ARG1 v4l.dev (chr_file (setattr))))
+
+	(macro setattr_wireless ((type ARG1))
+		(allow ARG1 wireless.dev (chr_file (setattr))))
 
 	(macro dontaudit_write_kmsg ((type ARG1))
 		(dontaudit ARG1 kmsg_dev.dev write_chr_file_perms))
