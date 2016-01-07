@@ -203,6 +203,9 @@
 
 	(call sys.mountpoint_obj_type (fs)))
 
+(block nsfs
+	(blockinherit fs.obj_blk))
+
 (block proc
 	(blockinherit fs.obj_blk)
 

@@ -26,6 +26,7 @@
 		(context iso9660 (sys.id sys.role iso9660.fs (systemlow systemlow)))
 		(context nfs (sys.id sys.role nfs.fs (systemlow systemlow)))
 		(context nfsd (sys.id sys.role nfsd.fs (systemlow systemlow)))
+		(context nsfs (sys.id sys.role nsfs.fs (systemlow systemlow)))
 		(context proc (sys.id sys.role proc.fs (systemlow systemlow)))
 		(context pstore (sys.id sys.role pstore.fs (systemlow systemlow)))
 		(context rootfs (sys.id sys.role rootfs.fs (systemlow systemlow)))
@@ -60,6 +61,7 @@
 		(context iso9660 (sys.id object_r iso9660.fs (systemlow systemlow)))
 		(context nfs (sys.id object_r nfs.fs (systemlow systemlow)))
 		(context nfsd (sys.id object_r nfsd.fs (systemlow systemlow)))
+		(context nsfs (sys.id object_r nsfs.fs (systemlow systemlow)))
 		(context proc (sys.id object_r proc.fs (systemlow systemlow)))
 		(context pstore (sys.id object_r pstore.fs (systemlow systemlow)))
 		(context rootfs (sys.id object_r rootfs.fs (systemlow systemlow)))
@@ -79,7 +81,6 @@
 (filecon "/tmp" dir tmpfs)
 (filecon "/var/run/user(/.*)?" any ())
 
-(fsuse task "nsfs" fs)
 (fsuse task "pipefs" fs)
 (fsuse task "sockfs" fs)
 (fsuse trans "devpts" devpts)
@@ -110,6 +111,7 @@
 (genfscon "nfs" "/" nfs)
 (genfscon "nfs4" "/" nfs)
 (genfscon "nfsd" "/" nfsd)
+(genfscon "nsfs" "/" nsfs)
 (genfscon "proc" "/" proc)
 (genfscon "proc" "/sysvipc" proc) ; BUG
 (genfscon "pstore" "/" pstore)
