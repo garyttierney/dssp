@@ -1,3 +1,4 @@
+sys.role:gdm.subj:s0 sysadm.role:sysadm.subj:s0 wheel.role:wheel.subj:s0 user.role:user.subj:s0
 sys.role:login.subj:s0 sysadm.role:sysadm.subj:s0 wheel.role:wheel.subj:s0 user.role:user.subj:s0
 sys.role:sd.subj:s0 sysadm.role:sysadm_sduser.subj:s0 wheel.role:wheel_sduser.subj:s0 user.role:user_sduser.subj:s0
 sys.role:sshd.sshd.subj:s0 sysadm.role:sysadm.subj:s0 wheel.role:wheel.subj:s0 user.role:user.subj:s0
