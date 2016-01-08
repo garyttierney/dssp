@@ -408,6 +408,10 @@
 		(call search_proc (ARG1))
 		(call manage_files_pattern (ARG1 efivarfs.fs efivarfs.fs)))
 
+	(macro read_efivarfs_files ((type ARG1))
+		(call search_proc (ARG1))
+		(call read_files_pattern (ARG1 efivarfs.fs efivarfs.fs)))
+
 	(macro getattr_fuse_fs ((type ARG1))
 		(allow ARG1 fuse_fs.fs (filesystem (getattr))))
 
@@ -515,6 +519,7 @@
 		(allow ARG1 nfs.fs (filesystem (getattr))))
 
 	(macro read_nsfs_files ((type ARG1))
+		(call search_proc (ARG1))
 		(allow ARG1 nsfs.fs read_file_perms))
 
 	(macro search_proc ((type ARG1))
