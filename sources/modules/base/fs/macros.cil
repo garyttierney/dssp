@@ -515,7 +515,7 @@
 		(allow ARG1 nfs.fs (filesystem (getattr))))
 
 	(macro read_nsfs_files ((type ARG1))
-		(call read_files_pattern (ARG1 nsfs.fs nsfs.fs)))
+		(allow ARG1 nsfs.fs read_file_perms))
 
 	(macro search_proc ((type ARG1))
 		(allow ARG1 proc.fs search_dir_perms))
