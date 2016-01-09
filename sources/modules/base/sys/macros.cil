@@ -119,6 +119,9 @@
 	(macro read_keyring ((type ARG1))
 		(allow ARG1 subj (key (search read))))
 
+	(macro search_keyring ((type ARG1))
+		(allow ARG1 subj (key (search))))
+
 	(macro mounton_kmsg_proc_files ((type ARG1))
 		(allow ARG1 kmsg_proc.proc (file (mounton))))
 
