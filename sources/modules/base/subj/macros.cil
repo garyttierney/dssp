@@ -82,6 +82,12 @@
 			(allow ARG1 subj (fd (use)))
 			(allow ARG1 subj rw_inherited_fifo_file_perms)))
 
+	(block write_inherited_fifo_files_blk
+		(blockabstract write_inherited_fifo_files_blk)
+		(macro write_inherited_fifo_files ((type ARG1))
+			(allow ARG1 subj (fd (use)))
+			(allow ARG1 subj write_inherited_fifo_file_perms)))
+
 	(block append_inherited_unix_stream_sockets_blk
 		(blockabstract append_inherited_unix_stream_sockets_blk)
 		(macro append_inherited_unix_stream_sockets ((type ARG1))
@@ -204,6 +210,12 @@
 		(macro append_inherited_fifo_files_all_subj ((type ARG1))
 			(allow ARG1 subj_type_attribute (fd (use)))
 			(allow ARG1 subj_type_attribute append_inherited_fifo_file_perms)))
+
+	(block write_inherited_fifo_files_all_blk
+		(blockabstract write_inherited_fifo_files_all_blk)
+		(macro write_inherited_fifo_files_all_subj ((type ARG1))
+			(allow ARG1 subj_type_attribute (fd (use)))
+			(allow ARG1 subj_type_attribute write_inherited_fifo_file_perms)))
 
 	(block rw_inherited_fifo_files_all_blk
 		(blockabstract rw_inherited_fifo_files_all_blk)
