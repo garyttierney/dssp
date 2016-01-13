@@ -65,7 +65,7 @@ do
 			exit
 		fi
 
-		USERNAME=$1
+		MYUSERNAME=$1
 		;;
 		\-d)
 
@@ -111,7 +111,7 @@ retval=`echo $?`
 
 ! [[ $retval == 0 ]] && exit `echo $retval`
 
-if [[ -z $USERNAME ]]
+if [[ -z $MYUSERNAME ]]
 then
 	DEFAULTSEUSER="`/bin/grep ^__default__ ${PATHTODSSP}/${PATHTOSEUSERSFILERELATIVETOSOURCE} | /bin/awk -F ":" '{ print $2 }' 2>/dev/null`"
 
@@ -155,9 +155,9 @@ then
 		fi
 	fi
 
-elif [[ -n $USERNAME ]]
+elif [[ -n $MYUSERNAME ]]
 then
-	SEUSER="`/bin/grep ^"$USERNAME" ${PATHTODSSP}/${PATHTOSEUSERSFILERELATIVETOSOURCE} | /bin/awk -F ":" '{ print $2 }' 2>/dev/null`"
+	SEUSER="`/bin/grep ^"$MYUSERNAME" ${PATHTODSSP}/${PATHTOSEUSERSFILERELATIVETOSOURCE} | /bin/awk -F ":" '{ print $2 }' 2>/dev/null`"
 
 	retval=`echo $?`
 
@@ -167,7 +167,7 @@ then
 
 	if [[ -z $SEUSER ]]
 	then
-		debug "no seuser found in ${PATHTODSSP}/${PATHTOSEUSERSFILERELATIVETOSOURCE} for $USERNAME"
+		debug "no seuser found in ${PATHTODSSP}/${PATHTOSEUSERSFILERELATIVETOSOURCE} for $MYUSERNAME"
 
 		exit 205
 
@@ -177,7 +177,7 @@ then
 		then
 			printf "%s\n" "${SEUSER}:${SEUSERPREFIX}.role"
 		else
-			debug "unable to determine valid user tuple for $USERNAME"
+			debug "unable to determine valid user tuple for $MYUSERNAME"
 
 			exit 1
 		fi
@@ -192,7 +192,7 @@ then
 		then
 			printf "%s\n" "${SEUSER}:${ALTERNATESEUSERPREFIX}_r"
 		else
-			debug "unable to determine valid user tuple for $USERNAME"
+			debug "unable to determine valid user tuple for $MYUSERNAME"
 
 			exit 1
 		fi
