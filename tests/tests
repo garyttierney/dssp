@@ -308,3 +308,12 @@ do_test mcs_all_minus_dbus tests/test_all_minus_dbus_excludes_mcs || echo "Test 
 do_test mcsrbacsep_all_minus_dbus tests/test_all_minus_dbus_excludes_mcsrbacsep || echo "Test mcsrbacsep_all_minus_dbus FAILED"
 do_test mls_all_minus_dbus tests/test_all_minus_dbus_excludes_mls || echo "Test mls_all_minus_dbus FAILED"
 do_test mlsrbacsep_all_minus_dbus tests/test_all_minus_dbus_excludes_mlsrbacsep || echo "Test mlsrbacsep_all_minus_dbus FAILED"
+
+# all minus gnome tests
+
+do_test standard_all_minus_gnome tests/test_all_minus_gnome_excludes_standard || echo "Test standard_all_minus_gnome FAILED"
+do_test rbacsep_all_minus_gnome tests/test_all_minus_gnome_excludes_rbacsep || echo "Test rbacsep_all_minus_gnome FAILED"
+do_test mcs_all_minus_gnome tests/test_all_minus_gnome_excludes_mcs || echo "Test mcs_all_minus_gnome FAILED"
+do_test mcsrbacsep_all_minus_gnome tests/test_all_minus_gnome_excludes_mcsrbacsep || echo "Test mcsrbacsep_all_minus_gnome FAILED"
+do_test mls_all_minus_gnome tests/test_all_minus_gnome_excludes_mls || echo "Test mls_all_minus_gnome FAILED"
+do_test mlsrbacsep_all_minus_gnome tests/test_all_minus_gnome_excludes_mlsrbacsep || echo "Test mlsrbacsep_all_minus_gnome FAILED"
