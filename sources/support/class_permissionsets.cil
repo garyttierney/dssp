@@ -218,6 +218,9 @@
 (classpermission link_key_perms)
 (classpermissionset link_key_perms (key (search link)))
 
+(classpermission read_key_perms)
+(classpermissionset read_key_perms (key (view read search link)))
+
 (classpermission rw_key_perms)
 (classpermissionset rw_key_perms (key (view read search write link)))
 
