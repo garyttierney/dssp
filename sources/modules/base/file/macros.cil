@@ -4729,6 +4729,13 @@
 		(call fs.search_tmpfs (ARG1))
 		(call read_lnk_files_pattern (ARG1 tmpfs_obj_type_attribute tmpfs_obj_type_attribute)))
 
+	(macro dontaudit_read_all_tmpfs ((type ARG1))
+		(dontaudit ARG1 tmpfs_obj_type_attribute read_file_perms)
+		(dontaudit ARG1 tmpfs_obj_type_attribute list_dir_perms)
+		(dontaudit ARG1 tmpfs_obj_type_attribute read_fifo_file_perms)
+		(dontaudit ARG1 tmpfs_obj_type_attribute read_sock_file_perms)
+		(dontaudit ARG1 tmpfs_obj_type_attribute read_lnk_file_perms))
+
 	(macro read_all_tmpfs ((type ARG1))
 		(call fs.search_tmpfs (ARG1))
 		(allow ARG1 tmpfs_obj_type_attribute read_file_perms)
