@@ -608,6 +608,9 @@
 	(macro search_rootfs ((type ARG1))
 		(allow ARG1 rootfs.fs search_dir_perms))
 
+	(macro dontaudit_list_rootfs ((type ARG1))
+		(dontaudit ARG1 rootfs.fs list_dir_perms))
+
 	(macro list_rootfs ((type ARG1))
 		(allow ARG1 rootfs.fs list_dir_perms))
 
