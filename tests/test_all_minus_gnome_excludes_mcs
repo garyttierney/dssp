@@ -53,6 +53,9 @@ sources/modules/contrib/roles/sysadm_gsh
 sources/modules/contrib/roles/wheel_gt
 sources/modules/contrib/roles/user_gt
 sources/modules/contrib/roles/sysadm_gt
+sources/modules/contrib/roles/wheel_gvfs
+sources/modules/contrib/roles/user_gvfs
+sources/modules/contrib/roles/sysadm_gvfs
 sources/modules/contrib/roles/wheel_mutter
 sources/modules/contrib/roles/user_mutter
 sources/modules/contrib/roles/sysadm_mutter
