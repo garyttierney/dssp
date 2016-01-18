@@ -439,6 +439,11 @@
 	(macro read_fuse_lnk_files ((type ARG1))
 		(call read_lnk_files_pattern (ARG1 fuse_fs.fs fuse_fs.fs)))
 
+	(macro getattr_fuse ((type ARG1))
+		(allow ARG1 fuse_fs.fs (dir (getattr)))
+		(allow ARG1 fuse_fs.fs (file (getattr)))
+		(allow ARG1 fuse_fs.fs (lnk_file (getattr))))
+
 	(macro read_fuse ((type ARG1))
 		(allow ARG1 fuse_fs.fs list_dir_perms)
 		(allow ARG1 fuse_fs.fs read_file_perms)
