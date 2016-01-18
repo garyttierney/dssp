@@ -412,6 +412,9 @@
 		(call search_proc (ARG1))
 		(call read_files_pattern (ARG1 efivarfs.fs efivarfs.fs)))
 
+	(macro dontaudit_audit_access_fuse_files ((type ARG1))
+		(dontaudit ARG1 fuse_fs.fs (file (audit_access))))
+
 	(macro getattr_fuse_fs ((type ARG1))
 		(allow ARG1 fuse_fs.fs (filesystem (getattr))))
 
