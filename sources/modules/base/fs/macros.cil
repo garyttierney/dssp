@@ -433,6 +433,9 @@
 	(macro list_fuse ((type ARG1))
 		(allow ARG1 fuse_fs.fs list_dir_perms))
 
+	(macro dontaudit_search_fuse ((type ARG1))
+		(dontaudit ARG1 fuse_fs.fs search_dir_perms))
+
 	(macro read_fuse_files ((type ARG1))
 		(call read_files_pattern (ARG1 fuse_fs.fs fuse_fs.fs)))
 
