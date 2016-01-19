@@ -20,6 +20,9 @@ sources/modules/contrib/roles/sysadm_evo
 sources/modules/contrib/roles/wheel_gcal
 sources/modules/contrib/roles/user_gcal
 sources/modules/contrib/roles/sysadm_gcal
+sources/modules/contrib/roles/wheel_gcon
+sources/modules/contrib/roles/user_gcon
+sources/modules/contrib/roles/sysadm_gcon
 sources/modules/contrib/roles/wheel_gconf
 sources/modules/contrib/roles/user_gconf
 sources/modules/contrib/roles/sysadm_gconf
