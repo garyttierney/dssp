@@ -20,6 +20,9 @@ sources/modules/contrib/roles/sysadm_evo
 sources/modules/contrib/roles/wheel_gcal
 sources/modules/contrib/roles/user_gcal
 sources/modules/contrib/roles/sysadm_gcal
+sources/modules/contrib/roles/wheel_gcl
+sources/modules/contrib/roles/user_gcl
+sources/modules/contrib/roles/sysadm_gcl
 sources/modules/contrib/roles/wheel_gcon
 sources/modules/contrib/roles/user_gcon
 sources/modules/contrib/roles/sysadm_gcon
@@ -59,6 +62,9 @@ sources/modules/contrib/roles/sysadm_gsd
 sources/modules/contrib/roles/wheel_gsh
 sources/modules/contrib/roles/user_gsh
 sources/modules/contrib/roles/sysadm_gsh
+sources/modules/contrib/roles/wheel_gsound
+sources/modules/contrib/roles/user_gsound
+sources/modules/contrib/roles/sysadm_gsound
 sources/modules/contrib/roles/wheel_gt
 sources/modules/contrib/roles/user_gt
 sources/modules/contrib/roles/sysadm_gt
@@ -77,9 +83,15 @@ sources/modules/contrib/roles/sysadm_nmce
 sources/modules/contrib/roles/wheel_obexd
 sources/modules/contrib/roles/user_obexd
 sources/modules/contrib/roles/sysadm_obexd
+sources/modules/contrib/roles/wheel_polari
+sources/modules/contrib/roles/user_polari
+sources/modules/contrib/roles/sysadm_polari
 sources/modules/contrib/roles/wheel_rygel
 sources/modules/contrib/roles/user_rygel
 sources/modules/contrib/roles/sysadm_rygel
+sources/modules/contrib/roles/wheel_tp
+sources/modules/contrib/roles/user_tp
+sources/modules/contrib/roles/sysadm_tp
 sources/modules/contrib/roles/wheel_tracker
 sources/modules/contrib/roles/user_tracker
 sources/modules/contrib/roles/sysadm_tracker
