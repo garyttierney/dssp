@@ -46,7 +46,7 @@ sources/modules/contrib/roles/user_gkrd
 sources/modules/contrib/roles/sysadm_gkrd
 sources/modules/contrib/roles/wheel_glib
 sources/modules/contrib/roles/user_glib
-sources/modules/contrib/roles/sysadm_gm
+sources/modules/contrib/roles/sysadm_glib
 sources/modules/contrib/roles/wheel_gm
 sources/modules/contrib/roles/user_gm
 sources/modules/contrib/roles/sysadm_gm
@@ -78,11 +78,11 @@ sources/modules/contrib/roles/wheel_mutter
 sources/modules/contrib/roles/user_mutter
 sources/modules/contrib/roles/sysadm_mutter
 sources/modules/contrib/roles/wheel_nmce
-sources/modules/contrib/roles/user_nautilus
-sources/modules/contrib/roles/sysadm_nautilus
-sources/modules/contrib/roles/wheel_nautilus
 sources/modules/contrib/roles/user_nmce
 sources/modules/contrib/roles/sysadm_nmce
+sources/modules/contrib/roles/wheel_nautilus
+sources/modules/contrib/roles/user_nautilus
+sources/modules/contrib/roles/sysadm_nautilus
 sources/modules/contrib/roles/wheel_obexd
 sources/modules/contrib/roles/user_obexd
 sources/modules/contrib/roles/sysadm_obexd
