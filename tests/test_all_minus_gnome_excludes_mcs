@@ -46,7 +46,10 @@ sources/modules/contrib/roles/user_gkrd
 sources/modules/contrib/roles/sysadm_gkrd
 sources/modules/contrib/roles/wheel_glib
 sources/modules/contrib/roles/user_glib
-sources/modules/contrib/roles/sysadm_glib
+sources/modules/contrib/roles/sysadm_gm
+sources/modules/contrib/roles/wheel_gm
+sources/modules/contrib/roles/user_gm
+sources/modules/contrib/roles/sysadm_gm
 sources/modules/contrib/roles/wheel_goa
 sources/modules/contrib/roles/user_goa
 sources/modules/contrib/roles/sysadm_goa
