@@ -61,6 +61,7 @@ sources/modules/contrib/roles/user_gpinentry
 sources/modules/contrib/roles/sysadm_gpinentry
 sources/modules/contrib/roles/wheel_gs
 sources/modules/contrib/roles/user_gs
+sources/modules/contrib/roles/sysadm_gs
 sources/modules/contrib/roles/wheel_grilo
 sources/modules/contrib/roles/user_grilo
 sources/modules/contrib/roles/sysadm_grilo

@@ -223,7 +223,7 @@ buildit () {
         fi
 
 	( /bin/cd $PATHTODSSP && time $PATHTOSECILC ${MODULESTOCOMPILE[@]} \
-		-o ${PATHTODSSP}/policy/policy.`/bin/cat /sys/fs/selinux/policyvers` -f ${PATHTODSSP}/contexts/files/file_contexts 2>/dev/null )
+		-o ${PATHTODSSP}/policy/policy.`/bin/cat /sys/fs/selinux/policyvers` -f ${PATHTODSSP}/contexts/files/file_contexts )
 
 	retval=`echo $?`
 
