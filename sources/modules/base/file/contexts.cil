@@ -134,7 +134,6 @@
 (filecon "/var/run" symlink runtime)
 (filecon "/var/run/media/[^/]*/.*" any ())
 (filecon "/var/run/media(/[^/]*)?" dir mnt)
-(filecon "/var/run/media(/[^/]*)?" symlink mnt)
 (filecon "/var/run/sysconfig(/.*)?" any runtime_config)
 (filecon "/var/run/user/.*" any ())
 (filecon "/var/run/user" dir runtime_user)
