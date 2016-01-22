@@ -38,6 +38,9 @@ sources/modules/contrib/roles/sysadm_gcr
 sources/modules/contrib/roles/wheel_gcs
 sources/modules/contrib/roles/user_gcs
 sources/modules/contrib/roles/sysadm_gcs
+sources/modules/contrib/roles/wheel_gdocs
+sources/modules/contrib/roles/user_gdocs
+sources/modules/contrib/roles/sysadm_gdocs
 sources/modules/contrib/roles/wheel_gedit
 sources/modules/contrib/roles/user_gedit
 sources/modules/contrib/roles/sysadm_gedit
@@ -56,6 +59,9 @@ sources/modules/contrib/roles/sysadm_gm
 sources/modules/contrib/roles/wheel_goa
 sources/modules/contrib/roles/user_goa
 sources/modules/contrib/roles/sysadm_goa
+sources/modules/contrib/roles/wheel_gom
+sources/modules/contrib/roles/user_gom
+sources/modules/contrib/roles/sysadm_gom
 sources/modules/contrib/roles/wheel_gpinentry
 sources/modules/contrib/roles/user_gpinentry
 sources/modules/contrib/roles/sysadm_gpinentry
