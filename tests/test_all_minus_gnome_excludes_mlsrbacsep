@@ -89,6 +89,12 @@ sources/modules/contrib/roles/sysadm_gt
 sources/modules/contrib/roles/wheel_gvfs
 sources/modules/contrib/roles/user_gvfs
 sources/modules/contrib/roles/sysadm_gvfs
+sources/modules/contrib/roles/wheel_gvfsdfuse
+sources/modules/contrib/roles/user_gvfsdfuse
+sources/modules/contrib/roles/sysadm_gvfsdfuse
+sources/modules/contrib/roles/wheel_gvid
+sources/modules/contrib/roles/user_gvid
+sources/modules/contrib/roles/sysadm_gvid
 sources/modules/contrib/roles/wheel_mutter
 sources/modules/contrib/roles/user_mutter
 sources/modules/contrib/roles/sysadm_mutter
