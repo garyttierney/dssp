@@ -79,7 +79,9 @@
 (block mnt
 	(blockinherit file.obj_blk)
 
-	(call sys.mountpoint_obj_type (file)))
+	(call sys.mountpoint_obj_type (file))
+
+	(call fs.associate_tmpfs (file)))
 
 (block runtime
 	(blockinherit file.runtime_obj_blk)

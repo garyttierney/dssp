@@ -4843,6 +4843,9 @@
 	(macro mounton_mnt_dirs ((type ARG1))
 		(allow ARG1 mnt.file (dir (mounton))))
 
+	(macro runtime_obj_type_transition_mnt ((type ARG1))
+		(call file.runtime_obj_type_transition (ARG1 mnt.file dir "media")))
+
 	(macro search_runtime_user ((type ARG1))
 		(call search_runtime (ARG1))
 		(allow ARG1 runtime_user.runtime_file search_dir_perms))
