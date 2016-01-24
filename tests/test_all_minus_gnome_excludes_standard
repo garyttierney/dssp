@@ -17,6 +17,9 @@ sources/modules/contrib/roles/sysadm_dconf
 sources/modules/contrib/roles/wheel_dleyna
 sources/modules/contrib/roles/user_dleyna
 sources/modules/contrib/roles/sysadm_dleyna
+sources/modules/contrib/roles/wheel_dleynar
+sources/modules/contrib/roles/user_dleynar
+sources/modules/contrib/roles/sysadm_dleynar
 sources/modules/contrib/roles/wheel_evo
 sources/modules/contrib/roles/user_evo
 sources/modules/contrib/roles/sysadm_evo
@@ -62,6 +65,9 @@ sources/modules/contrib/roles/sysadm_goa
 sources/modules/contrib/roles/wheel_gom
 sources/modules/contrib/roles/user_gom
 sources/modules/contrib/roles/sysadm_gom
+sources/modules/contrib/roles/wheel_gph
+sources/modules/contrib/roles/user_gph
+sources/modules/contrib/roles/sysadm_gph
 sources/modules/contrib/roles/wheel_gpinentry
 sources/modules/contrib/roles/user_gpinentry
 sources/modules/contrib/roles/sysadm_gpinentry
@@ -92,6 +98,9 @@ sources/modules/contrib/roles/sysadm_gvfs
 sources/modules/contrib/roles/wheel_gvfsdfuse
 sources/modules/contrib/roles/user_gvfsdfuse
 sources/modules/contrib/roles/sysadm_gvfsdfuse
+sources/modules/contrib/roles/wheel_gvfsdgoa
+sources/modules/contrib/roles/user_gvfsdgoa
+sources/modules/contrib/roles/sysadm_gvfsdgoa
 sources/modules/contrib/roles/wheel_gvid
 sources/modules/contrib/roles/user_gvid
 sources/modules/contrib/roles/sysadm_gvid
