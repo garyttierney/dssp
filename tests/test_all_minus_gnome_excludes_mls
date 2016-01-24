@@ -20,6 +20,9 @@ sources/modules/contrib/roles/sysadm_dleyna
 sources/modules/contrib/roles/wheel_dleynar
 sources/modules/contrib/roles/user_dleynar
 sources/modules/contrib/roles/sysadm_dleynar
+sources/modules/contrib/roles/wheel_eog
+sources/modules/contrib/roles/user_eog
+sources/modules/contrib/roles/sysadm_eog
 sources/modules/contrib/roles/wheel_evo
 sources/modules/contrib/roles/user_evo
 sources/modules/contrib/roles/sysadm_evo
