@@ -793,6 +793,107 @@ then
 		exit `echo $retval`
 	fi
 
+	filetestandresult -f ${PATHTODSSP}/contexts/x_contexts
+
+	retval=`echo $?`
+
+	if [[ $retval == 0 ]]
+	then
+		filetestandresult -f ${PATHTODSSP}/contexts.d/x_contexts
+
+		retval=`echo $?`
+
+		if [[ $retval == 0 ]]
+		then
+			filetestandresult -r ${PATHTODSSP}/contexts.d/x_contexts
+
+			retval=`echo $?`
+
+			if [[ $retval == 0 ]]
+			then
+				filetestandresult -s ${PATHTODSSP}/contexts.d/x_contexts
+
+				retval=`echo $?`
+
+				if [[ $retval == 0 ]]
+				then
+					if [[ $UID == 0 ]]
+					then
+						/bin/cp ${PATHTODSSP}/contexts.d/x_contexts ${PATHTOSELINUXCONFIG}/${DSSP}/contexts/x_contexts 2>/dev/null
+
+						retval=`echo $?`
+
+					elif ! [[ $UID == 0 ]]
+					then
+						/bin/sudo -E /bin/cp ${PATHTODSSP}/contexts.d/x_contexts ${PATHTOSELINUXCONFIG}/${DSSP}/contexts/x_contexts 2>/dev/null
+
+						retval=`echo $?`
+					fi
+
+					if ! [[ $retval == 0 ]]
+					then
+						debug "failed to install \"${PATHTODSSP}/contexts.d/x_contexts\" to \"${PATHTOSELINUXCONFIG}/${DSSP}/contexts/x_contexts\""
+
+						exit `echo $retval`
+					fi
+
+				else
+					exit `echo $retval`
+				fi
+
+			else
+				exit `echo $retval`
+			fi
+
+		elif [[ $retval == 193 ]]
+		then
+			filetestandresult -r ${PATHTODSSP}/contexts/x_contexts
+
+			retval=`echo $?`
+
+			if [[ $retval == 0 ]]
+			then
+				filetestandresult -s ${PATHTODSSP}/contexts/x_contexts
+
+				retval=`echo $?`
+
+				if [[ $retval == 0 ]]
+				then
+					if [[ $UID == 0 ]]
+					then
+						/bin/cp ${PATHTODSSP}/contexts/x_contexts ${PATHTOSELINUXCONFIG}/${DSSP}/contexts/x_contexts 2>/dev/null
+
+						retval=`echo $?`
+
+					elif ! [[ $UID == 0 ]]
+					then
+						/bin/sudo -E /bin/cp ${PATHTODSSP}/contexts/x_contexts ${PATHTOSELINUXCONFIG}/${DSSP}/contexts/x_contexts 2>/dev/null
+
+						retval=`echo $?`
+					fi
+
+					if ! [[ $retval == 0 ]]
+					then
+						debug "failed to install \"${PATHTODSSP}/contexts/x_contexts\" to \"${PATHTOSELINUXCONFIG}/${DSSP}/contexts/x_contexts\""
+
+						exit `echo $retval`
+					fi
+
+				else
+					exit `echo $retval`
+				fi
+
+			else
+				exit `echo $retval`
+			fi
+
+		else
+			exit `echo $retval`
+		fi
+	else
+		exit `echo $retval`
+	fi
+
 	filetestandresult -f ${PATHTODSSP}/contexts/openssh_contexts
 
 	retval=`echo $?`
@@ -2718,6 +2819,285 @@ then
 							if ! [[ $retval == 0 ]]
 							then
 								debug "failed to update \"${PATHTODSSP}/contexts/dbus_contexts\""
+
+								exit `echo $retval`
+							fi
+
+						else
+							exit `echo $retval`
+						fi
+
+					else
+						exit `echo $retval`
+					fi
+				else
+					exit `echo $retval`
+				fi
+			else
+				exit `echo $retval`
+			fi
+		else
+			exit `echo $retval`
+		fi
+
+	else
+		exit `echo $retval`
+	fi
+
+	filetestandresult -f ${PATHTOSELINUXCONFIG}/${DSSP}/contexts/x_contexts
+
+	retval=`echo $?`
+
+	if [[ $retval == 0 ]]
+	then
+		filetestandresult -f ${PATHTODSSP}/contexts/x_contexts
+
+		retval=`echo $?`
+
+		if [[ $retval == 0 ]]
+		then
+			filetestandresult -f ${PATHTODSSP}/contexts.d/x_contexts
+
+			retval=`echo $?`
+
+			if [[ $retval == 0 ]]
+			then
+				filetestandresult -r ${PATHTODSSP}/contexts.d/x_contexts
+
+				retval=`echo $?`
+
+				if [[ $retval == 0 ]]
+				then
+					filetestandresult -s ${PATHTODSSP}/contexts.d/x_contexts
+
+					retval=`echo $?`
+
+					if [[ $retval == 0 ]]
+					then
+						/bin/bash ${PATHTODSSP}/${PATHTOCHECKSHA256SUMRELATIVETODSSP} -p ${PATHTODSSP} -s ${PATHTODSSP}/contexts.d/x_contexts -t ${PATHTOSELINUXCONFIG}/${DSSP}/contexts/x_contexts
+
+						retval=`echo $?`
+
+						if ! [[ $retval == 0 ]] && ! [[ $retval == 199 ]] && ! [[ $retval == 200 ]]
+						then
+							case $retval in
+								1) debug "general fault" ;;
+								193) debug "file is not accessible" ;;
+								194) debug "file is not readable" ;;
+								195) debug "file is a zero-byte file" ;;
+								*) debug "unhandled exception" ;;
+							esac
+						fi
+
+						if [[ $retval == 199 ]]
+						then
+							debug "not updating \"${PATHTODSSP}/contexts.d/x_contexts\""
+
+						elif [[ $retval == 200 ]]
+						then
+							if [[ $UID == 0 ]]
+							then
+								\cp -f ${PATHTODSSP}/contexts.d/x_contexts ${PATHTOSELINUXCONFIG}/${DSSP}/contexts/x_contexts 2>/dev/null
+
+								retval=`echo $?`
+
+							elif ! [[ $UID == 0 ]]
+							then
+								/bin/sudo -E \cp -f ${PATHTODSSP}/contexts.d/x_contexts ${PATHTOSELINUXCONFIG}/${DSSP}/contexts/x_contexts 2>/dev/null
+
+								retval=`echo $?`
+							fi
+
+							if ! [[ $retval == 0 ]]
+							then
+								debug "failed to update \"${PATHTODSSP}/contexts.d/x_contexts\""
+
+								exit `echo $retval`
+							fi
+
+						else
+							exit `echo $retval`
+						fi
+
+					else
+						exit `echo $retval`
+					fi
+				else
+					exit `echo $retval`
+				fi
+
+			elif [[ $retval == 193 ]]
+			then
+				filetestandresult -f ${PATHTODSSP}/contexts/x_contexts
+
+				retval=`echo $?`
+
+				if [[ $retval == 0 ]]
+				then
+					filetestandresult -r ${PATHTODSSP}/contexts/x_contexts
+
+					retval=`echo $?`
+
+					if [[ $retval == 0 ]]
+					then
+						filetestandresult -s ${PATHTODSSP}/contexts/x_contexts
+
+						retval=`echo $?`
+
+						if [[ $retval == 0 ]]
+						then
+							/bin/bash ${PATHTODSSP}/${PATHTOCHECKSHA256SUMRELATIVETODSSP} -p ${PATHTODSSP} -s ${PATHTODSSP}/contexts/x_contexts -t ${PATHTOSELINUXCONFIG}/${DSSP}/contexts/x_contexts
+
+							retval=`echo $?`
+
+							if ! [[ $retval == 0 ]] && ! [[ $retval == 199 ]] && ! [[ $retval == 200 ]]
+							then
+								case $retval in
+									1) debug "general fault" ;;
+									193) debug "file is not accessible" ;;
+									194) debug "file is not readable" ;;
+									195) debug "file is a zero-byte file" ;;
+									*) debug "unhandled exception" ;;
+								esac
+							fi
+
+							if [[ $retval == 199 ]]
+							then
+								debug "not updating \"${PATHTODSSP}/contexts/x_contexts\""
+
+							elif [[ $retval == 200 ]]
+							then
+								if [[ $UID == 0 ]]
+								then
+									\cp -f ${PATHTODSSP}/contexts/x_contexts ${PATHTOSELINUXCONFIG}/${DSSP}/contexts/x_contexts 2>/dev/null
+
+									retval=`echo $?`
+
+								elif ! [[ $UID == 0 ]]
+								then
+									/bin/sudo -E \cp -f ${PATHTODSSP}/contexts/x_contexts ${PATHTOSELINUXCONFIG}/${DSSP}/contexts/x_contexts 2>/dev/null
+
+									retval=`echo $?`
+								fi
+
+								if ! [[ $retval == 0 ]]
+								then
+									debug "failed to update \"${PATHTODSSP}/contexts/x_contexts\""
+
+									exit `echo $retval`
+								fi
+
+							else
+								exit `echo $retval`
+							fi
+
+						else
+							exit `echo $retval`
+						fi
+
+					else
+						exit `echo $retval`
+					fi
+				else
+					exit `echo $retval`
+				fi
+			else
+				exit `echo $retval`
+			fi
+		else
+			exit `echo $retval`
+		fi
+
+	elif [[ $retval == 193 ]]
+	then
+		filetestandresult -f ${PATHTODSSP}/contexts/x_contexts
+
+		retval=`echo $?`
+
+		if [[ $retval == 0 ]]
+		then
+			filetestandresult -f ${PATHTODSSP}/contexts.d/x_contexts
+
+			retval=`echo $?`
+
+			if [[ $retval == 0 ]]
+			then
+				filetestandresult -r ${PATHTODSSP}/contexts.d/x_contexts
+
+				retval=`echo $?`
+
+				if [[ $retval == 0 ]]
+				then
+					filetestandresult -s ${PATHTODSSP}/contexts.d/x_contexts
+
+					retval=`echo $?`
+
+					if [[ $retval == 0 ]]
+					then
+						if [[ $UID == 0 ]]
+						then
+							\cp -f ${PATHTODSSP}/contexts.d/x_contexts ${PATHTOSELINUXCONFIG}/${DSSP}/contexts/x_contexts 2>/dev/null
+
+							retval=`echo $?`
+
+						elif ! [[ $UID == 0 ]]
+						then
+							/bin/sudo -E \cp -f ${PATHTODSSP}/contexts.d/x_contexts ${PATHTOSELINUXCONFIG}/${DSSP}/contexts/x_contexts 2>/dev/null
+
+							retval=`echo $?`
+						fi
+
+						if ! [[ $retval == 0 ]]
+						then
+							debug "failed to install \"${PATHTODSSP}/contexts.d/x_contexts\""
+
+							exit `echo $retval`
+						fi
+
+					else
+						exit `echo $retval`
+					fi
+
+				else
+					exit `echo $retval`
+				fi
+
+			elif [[ $retval == 193 ]]
+			then
+				filetestandresult -f ${PATHTODSSP}/contexts/x_contexts
+
+				retval=`echo $?`
+
+				if [[ $retval == 0 ]]
+				then
+					filetestandresult -r ${PATHTODSSP}/contexts/x_contexts
+
+					retval=`echo $?`
+
+					if [[ $retval == 0 ]]
+					then
+						filetestandresult -s ${PATHTODSSP}/contexts/x_contexts
+
+						retval=`echo $?`
+
+						if [[ $retval == 0 ]]
+						then
+							if [[ $UID == 0 ]]
+							then
+								\cp -f ${PATHTODSSP}/contexts/x_contexts ${PATHTOSELINUXCONFIG}/${DSSP}/contexts/x_contexts 2>/dev/null
+
+								retval=`echo $?`
+
+							elif ! [[ $UID == 0 ]]
+							then
+								/bin/sudo -E \cp -f ${PATHTODSSP}/contexts/x_contexts ${PATHTOSELINUXCONFIG}/${DSSP}/contexts/x_contexts 2>/dev/null
+
+								retval=`echo $?`
+							fi
+
+							if ! [[ $retval == 0 ]]
+							then
+								debug "failed to update \"${PATHTODSSP}/contexts/x_contexts\""
 
 								exit `echo $retval`
 							fi

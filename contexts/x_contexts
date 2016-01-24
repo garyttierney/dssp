@@ -1,0 +1,16 @@
+#
+# This file will disable the Xorg Xserver SELinux access control extension
+#
+# DSSP does not intent to support XACE because Fedora is moving towards XWayland, and Xserver no
+# longer runs as a system service
+#
+
+#
+# A configuration snippet with the following should be dropped into /etc/X11/xorg.conf.d/
+#
+#	section "Module"
+#	SubSection "extmod"
+#	Option "SELinux mode disabled"
+#	EndSubSection
+#	EndSection
+#
