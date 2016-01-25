@@ -64,9 +64,10 @@
 	(call dev.devtmpfs_obj_type_transition_watchdog (subj))
 	(call dev.devtmpfs_obj_type_transition_wireless (subj))
 
-	(call file.read_data_files (subj))
+	(call file.read_data (subj))
 
 	(call fs.dontaudit_write_devtmpfs_chr_files (subj))
+	(call fs.getattr_fs (subj))
 	(call fs.list_rootfs (subj))
 	(call fs.manage_devtmpfs_dirs (subj))
 	(call fs.manage_devtmpfs_lnk_files (subj))
@@ -78,6 +79,8 @@
 	(call sec.list_fs (subj))
 
 	(call term.devtmpfs_obj_type_transition_unallocated_tty (subj))
+
+	(call fonts.read (subj))
 
 	(tunableif enable_mls
 		(true
