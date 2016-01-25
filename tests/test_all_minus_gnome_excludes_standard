@@ -29,6 +29,9 @@ sources/modules/contrib/roles/sysadm_evince
 sources/modules/contrib/roles/wheel_evo
 sources/modules/contrib/roles/user_evo
 sources/modules/contrib/roles/sysadm_evo
+sources/modules/contrib/roles/wheel_epiphany
+sources/modules/contrib/roles/user_epiphany
+sources/modules/contrib/roles/sysadm_epiphany
 sources/modules/contrib/roles/wheel_gcal
 sources/modules/contrib/roles/user_gcal
 sources/modules/contrib/roles/sysadm_gcal
