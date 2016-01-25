@@ -396,6 +396,9 @@
 	(macro remount_dosfs_fs ((type ARG1))
 		(allow ARG1 dosfs.fs (filesystem (remount))))
 
+	(macro getattr_efivarfs_fs ((type ARG1))
+		(allow ARG1 efivarfs.fs (filesystem (getattr))))
+
 	(macro search_efivarfs ((type ARG1))
 		(call search_proc (ARG1))
 		(allow ARG1 efivarfs.fs search_dir_perms))
