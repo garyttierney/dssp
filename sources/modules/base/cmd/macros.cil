@@ -29,9 +29,6 @@
 	(macro cmd_obj_type ((type ARG1))
 		(typeattributeset obj_type_attribute ARG1))
 
-	(macro manage_cmd_files ((type ARG1))
-		(call manage_files_pattern (ARG1 cmd_file cmd_file)))
-
 	(macro read_cmd ((type ARG1))
 		(call file.search_data (ARG1))
 		(allow ARG1 cmd_file list_dir_perms)
