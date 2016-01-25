@@ -23,7 +23,7 @@ exit codes
 194	: file is not readable
 195	: file is a zero-byte file
 196	: file is not a directory
-197 	: file is not a writeable file
+197	: file is not a writeable file
 201	: no path entries to list
 202	: no such file or directory
 203	: no path entries to be included"
