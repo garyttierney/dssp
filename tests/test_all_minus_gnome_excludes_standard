@@ -23,6 +23,9 @@ sources/modules/contrib/roles/sysadm_dleynar
 sources/modules/contrib/roles/wheel_eog
 sources/modules/contrib/roles/user_eog
 sources/modules/contrib/roles/sysadm_eog
+sources/modules/contrib/roles/wheel_evince
+sources/modules/contrib/roles/user_evince
+sources/modules/contrib/roles/sysadm_evince
 sources/modules/contrib/roles/wheel_evo
 sources/modules/contrib/roles/user_evo
 sources/modules/contrib/roles/sysadm_evo
