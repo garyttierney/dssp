@@ -96,7 +96,6 @@ sources/modules/contrib/roles/wheel_gsound
 sources/modules/contrib/roles/user_gsound
 sources/modules/contrib/roles/sysadm_gsound
 sources/modules/contrib/roles/wheel_gsw
-sources/modules/contrib/roles/user_gsw
 sources/modules/contrib/roles/sysadm_gsw
 sources/modules/contrib/roles/wheel_gt
 sources/modules/contrib/roles/user_gt

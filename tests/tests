@@ -5,6 +5,8 @@ declare PATHTOPRINTMODULESRELATIVETODSSP="support/printmodules"
 declare PATHTOPRINTEXCLUDESRELATIVETODSSP="support/printexcludes"
 declare PATHTOFUNCTIONSRELATIVETODSSP="support/functions"
 
+retval=0
+
 usage () {
 	echo "$0 - runs a set of basics tests on DSSP
 
@@ -317,3 +319,5 @@ do_test mcs_all_minus_gnome tests/test_all_minus_gnome_excludes_mcs || echo "Tes
 do_test mcsrbacsep_all_minus_gnome tests/test_all_minus_gnome_excludes_mcsrbacsep || echo "Test mcsrbacsep_all_minus_gnome FAILED"
 do_test mls_all_minus_gnome tests/test_all_minus_gnome_excludes_mls || echo "Test mls_all_minus_gnome FAILED"
 do_test mlsrbacsep_all_minus_gnome tests/test_all_minus_gnome_excludes_mlsrbacsep || echo "Test mlsrbacsep_all_minus_gnome FAILED"
+
+exit `echo $retval`
