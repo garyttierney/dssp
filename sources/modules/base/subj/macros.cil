@@ -328,7 +328,7 @@
 	(macro execstack_uncond_subj_type ((type ARG1))
 		(allow ARG1 self (process (execmem execstack)))
 		(typeattributeset execmem_subj_type_attribute ARG1)
-		(typeattributeset execstack_type_attribute ARG1))
+		(typeattributeset execstack_subj_type_attribute ARG1))
 
 	(macro mmap_low_subj_type ((type ARG1))
 		(typeattributeset mmap_low_subj_type_attribute ARG1)
