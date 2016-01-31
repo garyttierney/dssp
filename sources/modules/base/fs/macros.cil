@@ -415,6 +415,9 @@
 		(call search_proc (ARG1))
 		(call read_files_pattern (ARG1 efivarfs.fs efivarfs.fs)))
 
+	(macro dontaudit_audit_access_fuse_dirs ((type ARG1))
+		(dontaudit ARG1 fuse_fs.fs (dir (audit_access))))
+
 	(macro dontaudit_audit_access_fuse_files ((type ARG1))
 		(dontaudit ARG1 fuse_fs.fs (file (audit_access))))
 
@@ -438,6 +441,9 @@
 
 	(macro dontaudit_search_fuse ((type ARG1))
 		(dontaudit ARG1 fuse_fs.fs search_dir_perms))
+
+	(macro dontaudit_setattr_fuse_dirs ((type ARG1))
+		(dontaudit ARG1 fuse_fs.fs (dir (setattr))))
 
 	(macro read_fuse_files ((type ARG1))
 		(call read_files_pattern (ARG1 fuse_fs.fs fuse_fs.fs)))
@@ -476,6 +482,9 @@
 
 	(macro dontaudit_audit_access_hugetlbfs_dirs ((type ARG1))
 		(dontaudit ARG1 hugetlbfs.fs (dir (audit_access))))
+
+	(macro dontaudit_setattr_hugetlbfs_dirs ((type ARG1))
+		(dontaudit ARG1 hugetlbfs.fs (dir (setattr))))
 
 	(macro setattr_hugetlbfs_dirs ((type ARG1))
 		(allow ARG1 hugetlbfs.fs (dir (setattr))))
