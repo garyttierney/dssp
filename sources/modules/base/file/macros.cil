@@ -4808,29 +4808,36 @@
 		(call sys.mountpoint_obj_type_transition (ARG1 lost_found.file dir "lost+found")))
 
 	(macro search_mnt ((type ARG1))
+		(call search_runtime (ARG1))
 		(allow ARG1 mnt.file search_dir_perms))
 
 	(macro list_mnt ((type ARG1))
+		(call search_runtime (ARG1))
 		(allow ARG1 mnt.file list_dir_perms))
 
 	(macro read_mnt_lnk_files ((type ARG1))
+		(call search_runtime (ARG1))
 		(call read_lnk_files_pattern (ARG1 mnt.file mnt.file)))
 
 	(macro read_mnt ((type ARG1))
+		(call search_runtime (ARG1))
 		(allow ARG1 mnt.file list_dir_perms)
 		(allow ARG1 mnt.file read_file_perms)
 		(allow ARG1 mnt.file read_lnk_file_perms))
 
 	(macro manage_mnt ((type ARG1))
+		(call rw_runtime_dirs (ARG1))
 		(call fs.rw_rootfs_dirs (ARG1))
 		(allow ARG1 mnt.file manage_dir_perms)
 		(allow ARG1 mnt.file manage_file_perms)
 		(allow ARG1 mnt.file manage_lnk_file_perms))
 
 	(macro rw_mnt_dirs ((type ARG1))
+		(call search_runtime (ARG1))
 		(allow ARG1 mnt.file rw_dir_perms))
 
 	(macro manage_mnt_dirs ((type ARG1))
+		(call rw_runtime_dirs (ARG1))
 		(call fs.rw_rootfs_dirs (ARG1))
 		(allow ARG1 mnt.file manage_dir_perms))
 
