@@ -4763,6 +4763,9 @@
 	(macro search_home ((type ARG1))
 		(allow ARG1 home.file search_dir_perms))
 
+	(macro dontaudit_list_home ((type ARG1))
+		(dontaudit ARG1 home.file list_dir_perms))
+
 	(macro list_home ((type ARG1))
 		(allow ARG1 home.file list_dir_perms))
 
