@@ -32,6 +32,9 @@ sources/modules/contrib/roles/sysadm_evo
 sources/modules/contrib/roles/wheel_epiphany
 sources/modules/contrib/roles/user_epiphany
 sources/modules/contrib/roles/sysadm_epiphany
+sources/modules/contrib/roles/wheel_fileroller
+sources/modules/contrib/roles/user_fileroller
+sources/modules/contrib/roles/sysadm_fileroller
 sources/modules/contrib/roles/wheel_gcal
 sources/modules/contrib/roles/user_gcal
 sources/modules/contrib/roles/sysadm_gcal
