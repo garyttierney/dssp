@@ -80,8 +80,6 @@
 
 	(call term.devtmpfs_obj_type_transition_unallocated_tty (subj))
 
-	(call fonts.read (subj))
-
 	(tunableif enable_mls
 		(true
 			(optional sys_enable_mls_optional_kmod
@@ -109,6 +107,9 @@
 
 	(optional sys_optional_dracut_initramfs
 		(call dracut_initramfs.list_runtime (subj)))
+
+	(optional sys_optional_miscfile
+		(call fonts.read (subj)))
 
 	(optional sys_optional_fstools
 		(call fstools.use_fd (subj)))
