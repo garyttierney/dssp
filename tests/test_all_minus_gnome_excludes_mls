@@ -11,6 +11,9 @@ sources/modules/contrib/roles/sysadm_canberra
 sources/modules/contrib/roles/wheel_caribou
 sources/modules/contrib/roles/user_caribou
 sources/modules/contrib/roles/sysadm_caribou
+sources/modules/contrib/roles/wheel_corebird
+sources/modules/contrib/roles/user_corebird
+sources/modules/contrib/roles/sysadm_corebird
 sources/modules/contrib/roles/wheel_dconf
 sources/modules/contrib/roles/user_dconf
 sources/modules/contrib/roles/sysadm_dconf
