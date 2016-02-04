@@ -157,6 +157,9 @@ sources/modules/contrib/roles/sysadm_vino
 sources/modules/contrib/roles/wheel_webkit
 sources/modules/contrib/roles/user_webkit
 sources/modules/contrib/roles/sysadm_webkit
+sources/modules/contrib/roles/wheel_zenity
+sources/modules/contrib/roles/user_zenity
+sources/modules/contrib/roles/sysadm_zenity
 sources.d
 sources/global_tunables.cil
 tests/tunables/mcs_plus_rbacsep.cil
