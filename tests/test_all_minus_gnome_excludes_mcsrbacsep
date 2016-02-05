@@ -41,6 +41,9 @@ sources/modules/contrib/roles/sysadm_fileroller
 sources/modules/contrib/roles/wheel_gcal
 sources/modules/contrib/roles/user_gcal
 sources/modules/contrib/roles/sysadm_gcal
+sources/modules/contrib/roles/wheel_gcalc
+sources/modules/contrib/roles/user_gcalc
+sources/modules/contrib/roles/sysadm_gcalc
 sources/modules/contrib/roles/wheel_gcl
 sources/modules/contrib/roles/user_gcl
 sources/modules/contrib/roles/sysadm_gcl
