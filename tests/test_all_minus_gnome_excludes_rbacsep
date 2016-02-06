@@ -1,7 +1,7 @@
 sources/modules/contrib/gnome
-sources/modules/contrib/roles/wheel_atspird
-sources/modules/contrib/roles/user_atspird
-sources/modules/contrib/roles/sysadm_atspird
+sources/modules/contrib/roles/wheel_atspi
+sources/modules/contrib/roles/user_atspi
+sources/modules/contrib/roles/sysadm_atspi
 sources/modules/contrib/roles/wheel_btst
 sources/modules/contrib/roles/user_btst
 sources/modules/contrib/roles/sysadm_btst
