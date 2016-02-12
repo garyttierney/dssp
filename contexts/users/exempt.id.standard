@@ -1,4 +1,3 @@
-exempt.role:exempt.subj exempt.role:exempt.subj
 sys.role:gdm.subj exempt.role:exempt.subj
 sys.role:login.subj exempt.role:exempt.subj
 sys.role:sd.subj exempt.role:exempt.subj

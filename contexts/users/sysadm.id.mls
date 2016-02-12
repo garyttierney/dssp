@@ -1,4 +1,3 @@
-sysadm.role:sysadm.subj:s0 sysadm.role:sysadm.subj:s0
 sysadm.role:sysadm_sudo.subj:s0 sysadm.role:sysadm.subj:s0
 sys.role:gdm.subj:s0 sysadm.role:sysadm.subj:s0
 sys.role:login.subj:s0 sysadm.role:sysadm.subj:s0
