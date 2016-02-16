@@ -50,8 +50,8 @@
 (classpermission search_dir_perms)
 (classpermissionset search_dir_perms (dir (getattr search open)))
 
-(classpermission all_dir_perms_except_mounton_and_execmod)
-(classpermissionset all_dir_perms_except_mounton_and_execmod (dir (ioctl read write create getattr setattr lock relabelfrom
+(classpermission all_dir_perms_except_execmod)
+(classpermissionset all_dir_perms_except_execmod (dir (ioctl read write create mounton getattr setattr lock relabelfrom
 	relabelto append unlink link rename execute quotaon audit_access open add_name remove_name reparent search rmdir)))
 
 (classpermission create_dir_perms)

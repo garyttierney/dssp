@@ -197,7 +197,7 @@
 	(allow unconfined_subj_type_attribute invalid.isid signal_perms)
 
 	(allow unconfined_subj_type_attribute invalid.isid all_file_perms_except_mounton_execmod_and_entrypoint)
-	(allow unconfined_subj_type_attribute invalid.isid all_dir_perms_except_mounton_and_execmod)
+	(allow unconfined_subj_type_attribute invalid.isid all_dir_perms_except_execmod)
 	(allow unconfined_subj_type_attribute invalid.isid all_fifo_file_perms_except_mounton_and_execmod)
 	(allow unconfined_subj_type_attribute invalid.isid all_lnk_file_perms_except_mounton_and_execmod)
 	(allow unconfined_subj_type_attribute invalid.isid all_sock_file_perms_except_mounton_and_execmod)
@@ -210,7 +210,7 @@
 	(allow unconfined_subj_type_attribute mountpoint_obj_type_attribute (dir (mounton)))
 
 	(allow unconfined_subj_type_attribute unlabeled.isid all_file_perms_except_mounton_execmod_and_entrypoint)
-	(allow unconfined_subj_type_attribute unlabeled.isid all_dir_perms_except_mounton_and_execmod)
+	(allow unconfined_subj_type_attribute unlabeled.isid all_dir_perms_except_execmod)
 	(allow unconfined_subj_type_attribute unlabeled.isid all_fifo_file_perms_except_mounton_and_execmod)
 	(allow unconfined_subj_type_attribute unlabeled.isid all_lnk_file_perms_except_mounton_and_execmod)
 	(allow unconfined_subj_type_attribute unlabeled.isid all_sock_file_perms_except_mounton_and_execmod)

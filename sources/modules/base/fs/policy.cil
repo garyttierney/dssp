@@ -43,7 +43,7 @@
 	(call read_tracefs (trace_client_subj_type_attribute))
 
 	(allow unconfined_subj_type_attribute obj_type_attribute all_file_perms_except_mounton_execmod_and_entrypoint)
-	(allow unconfined_subj_type_attribute obj_type_attribute all_dir_perms_except_mounton_and_execmod)
+	(allow unconfined_subj_type_attribute obj_type_attribute all_dir_perms_except_execmod)
 	(allow unconfined_subj_type_attribute obj_type_attribute all_fifo_file_perms_except_mounton_and_execmod)
 	(allow unconfined_subj_type_attribute obj_type_attribute all_lnk_file_perms_except_mounton_and_execmod)
 	(allow unconfined_subj_type_attribute obj_type_attribute all_sock_file_perms_except_mounton_and_execmod)
