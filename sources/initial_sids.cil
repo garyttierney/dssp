@@ -17,9 +17,11 @@
 
 (tunableif enable_rbacsep
 	(true
-		(context isid (sys.id sys.role unlabeled.isid (systemlow systemlow))))
+		(context isid (sys.id sys.role unlabeled.isid (systemlow
+			systemlow))))
 	(false
-		(context isid (sys.id object_r unlabeled.isid (systemlow systemlow)))))
+		(context isid (sys.id object_r unlabeled.isid (systemlow
+			systemlow)))))
 
 (sidcontext file_labels isid)
 (sidcontext init isid)
@@ -38,6 +40,7 @@
 (sidcontext policy isid)
 (sidcontext scmp_packet isid)
 
-(sidorder (kernel security unlabeled fs file file_labels init any_socket port netif netmsg node igmp_packet icmp_socket
-	tcp_socket sysctl_modprobe sysctl sysctl_fs sysctl_kernel sysctl_net sysctl_net_unix sysctl_vm sysctl_dev kmod policy
-	scmp_packet devnull))
+(sidorder (kernel security unlabeled fs file file_labels init any_socket port
+	netif netmsg node igmp_packet icmp_socket tcp_socket sysctl_modprobe
+	sysctl sysctl_fs sysctl_kernel sysctl_net sysctl_net_unix sysctl_vm
+	sysctl_dev kmod policy scmp_packet devnull))

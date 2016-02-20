@@ -34,229 +34,382 @@
 
 		(mlsconstrain (blk_file (read getattr execute))
 			(or (or (or (dom l1 l2)
-			(and (eq t1 mls.file_read_to_clr_subj_type_attribute) (dom h1 l2)))
-			(eq t1 mls.file_read_subj_type_attribute)) (eq t2 mls.trusted_obj_type_attribute)))
+			(and (eq t1 mls.file_read_to_clr_subj_type_attribute)
+				(dom h1 l2)))
+			(eq t1 mls.file_read_subj_type_attribute))
+				(eq t2 mls.trusted_obj_type_attribute)))
 
 		(mlsconstrain (chr_file (read getattr execute))
 			(or (or (or (dom l1 l2)
-			(and (eq t1 mls.file_read_to_clr_subj_type_attribute) (dom h1 l2)))
-			(eq t1 mls.file_read_subj_type_attribute)) (eq t2 mls.trusted_obj_type_attribute)))
+			(and (eq t1 mls.file_read_to_clr_subj_type_attribute)
+				(dom h1 l2)))
+			(eq t1 mls.file_read_subj_type_attribute))
+				(eq t2 mls.trusted_obj_type_attribute)))
 
 		(mlsconstrain (dir (read getattr execute))
 			(or (or (or (dom l1 l2)
-			(and (eq t1 mls.file_read_to_clr_subj_type_attribute) (dom h1 l2)))
-			(eq t1 mls.file_read_subj_type_attribute)) (eq t2 mls.trusted_obj_type_attribute)))
+			(and (eq t1 mls.file_read_to_clr_subj_type_attribute)
+				(dom h1 l2)))
+			(eq t1 mls.file_read_subj_type_attribute))
+				(eq t2 mls.trusted_obj_type_attribute)))
 
 		(mlsconstrain (fifo_file (read getattr execute))
 			(or (or (or (dom l1 l2)
-			(and (eq t1 mls.file_read_to_clr_subj_type_attribute) (dom h1 l2)))
-			(eq t1 mls.file_read_subj_type_attribute)) (eq t2 mls.trusted_obj_type_attribute)))
+			(and (eq t1 mls.file_read_to_clr_subj_type_attribute)
+				(dom h1 l2)))
+			(eq t1 mls.file_read_subj_type_attribute))
+				(eq t2 mls.trusted_obj_type_attribute)))
 
 		(mlsconstrain (file (read getattr execute))
 			(or (or (or (dom l1 l2)
-			(and (eq t1 mls.file_read_to_clr_subj_type_attribute) (dom h1 l2)))
-			(eq t1 mls.file_read_subj_type_attribute)) (eq t2 mls.trusted_obj_type_attribute)))
+			(and (eq t1 mls.file_read_to_clr_subj_type_attribute)
+				(dom h1 l2)))
+			(eq t1 mls.file_read_subj_type_attribute))
+				(eq t2 mls.trusted_obj_type_attribute)))
 
 		(mlsconstrain (lnk_file (read getattr execute))
 			(or (or (or (dom l1 l2)
-			(and (eq t1 mls.file_read_to_clr_subj_type_attribute) (dom h1 l2)))
-			(eq t1 mls.file_read_subj_type_attribute)) (eq t2 mls.trusted_obj_type_attribute)))
+			(and (eq t1 mls.file_read_to_clr_subj_type_attribute)
+				(dom h1 l2)))
+			(eq t1 mls.file_read_subj_type_attribute))
+				(eq t2 mls.trusted_obj_type_attribute)))
 
 		(mlsconstrain (sock_file (read getattr execute))
 			(or (or (or (dom l1 l2)
-			(and (eq t1 mls.file_read_to_clr_subj_type_attribute) (dom h1 l2)))
-			(eq t1 mls.file_read_subj_type_attribute)) (eq t2 mls.trusted_obj_type_attribute)))
+			(and (eq t1 mls.file_read_to_clr_subj_type_attribute)
+				(dom h1 l2)))
+			(eq t1 mls.file_read_subj_type_attribute))
+				(eq t2 mls.trusted_obj_type_attribute)))
 
 		(mlsconstrain (dir (search))
 			(or (or (or (dom l1 l2)
-			(and (eq t1 mls.file_read_to_clr_subj_type_attribute) (dom h1 l2)))
-			(eq t1 mls.file_read_subj_type_attribute)) (eq t2 mls.trusted_obj_type_attribute)))
+			(and (eq t1 mls.file_read_to_clr_subj_type_attribute)
+				(dom h1 l2)))
+			(eq t1 mls.file_read_subj_type_attribute))
+				(eq t2 mls.trusted_obj_type_attribute)))
 
-		(mlsconstrain (blk_file (write create setattr relabelfrom append unlink link rename mounton))
+		(mlsconstrain (blk_file (write create setattr relabelfrom
+			append unlink link rename mounton))
 			(or (or (or (or (eq l1 l2)
-			(and (and (eq t1 mls.file_write_to_clr_subj_type_attribute) (dom h1 l2)) (domby l1 l2)))
-			(and (and (eq t2 mls.file_write_in_range_subj_type_attribute) (dom l1 l2)) (domby h1 h2)))
-			(eq t1 mls.file_write_subj_type_attribute)) (eq t2 mls.trusted_obj_type_attribute)))
+			(and (and (eq t1
+				mls.file_write_to_clr_subj_type_attribute)
+					(dom h1 l2))
+						(domby l1 l2)))
+			(and (and (eq t2
+				mls.file_write_in_range_subj_type_attribute)
+					(dom l1 l2))
+						(domby h1 h2)))
+			(eq t1 mls.file_write_subj_type_attribute))
+				(eq t2 mls.trusted_obj_type_attribute)))
 
-		(mlsconstrain (chr_file (write create setattr relabelfrom append unlink link rename mounton))
+		(mlsconstrain (chr_file (write create setattr relabelfrom
+			append unlink link rename mounton))
 			(or (or (or (or (eq l1 l2)
-			(and (and (eq t1 mls.file_write_to_clr_subj_type_attribute) (dom h1 l2)) (domby l1 l2)))
-			(and (and (eq t2 mls.file_write_in_range_subj_type_attribute) (dom l1 l2)) (domby h1 h2)))
-			(eq t1 mls.file_write_subj_type_attribute)) (eq t2 mls.trusted_obj_type_attribute)))
+			(and (and (eq t1
+				mls.file_write_to_clr_subj_type_attribute)
+					(dom h1 l2)) (domby l1 l2)))
+			(and (and (eq t2
+				mls.file_write_in_range_subj_type_attribute)
+					(dom l1 l2)) (domby h1 h2)))
+			(eq t1 mls.file_write_subj_type_attribute))
+				(eq t2 mls.trusted_obj_type_attribute)))
 
-		(mlsconstrain (dir (write create setattr relabelfrom append unlink link rename mounton))
+		(mlsconstrain (dir (write create setattr relabelfrom append
+			unlink link rename mounton))
 			(or (or (or (or (eq l1 l2)
-			(and (and (eq t1 mls.file_write_to_clr_subj_type_attribute) (dom h1 l2)) (domby l1 l2)))
-			(and (and (eq t2 mls.file_write_in_range_subj_type_attribute) (dom l1 l2)) (domby h1 h2)))
-			(eq t1 mls.file_write_subj_type_attribute)) (eq t2 mls.trusted_obj_type_attribute)))
+			(and (and (eq t1
+				mls.file_write_to_clr_subj_type_attribute)
+					(dom h1 l2)) (domby l1 l2)))
+			(and (and (eq t2
+				mls.file_write_in_range_subj_type_attribute)
+					(dom l1 l2)) (domby h1 h2)))
+			(eq t1 mls.file_write_subj_type_attribute))
+				(eq t2 mls.trusted_obj_type_attribute)))
 
-		(mlsconstrain (fifo_file (write create setattr relabelfrom append unlink link rename mounton))
+		(mlsconstrain (fifo_file (write create setattr relabelfrom
+			append unlink link rename mounton))
 			(or (or (or (or (eq l1 l2)
-			(and (and (eq t1 mls.file_write_to_clr_subj_type_attribute) (dom h1 l2)) (domby l1 l2)))
-			(and (and (eq t2 mls.file_write_in_range_subj_type_attribute) (dom l1 l2)) (domby h1 h2)))
-			(eq t1 mls.file_write_subj_type_attribute)) (eq t2 mls.trusted_obj_type_attribute)))
+			(and (and (eq t1
+				mls.file_write_to_clr_subj_type_attribute)
+					(dom h1 l2)) (domby l1 l2)))
+			(and (and (eq t2
+				mls.file_write_in_range_subj_type_attribute)
+					(dom l1 l2)) (domby h1 h2)))
+			(eq t1 mls.file_write_subj_type_attribute))
+				(eq t2 mls.trusted_obj_type_attribute)))
 
-		(mlsconstrain (file (write create setattr relabelfrom append unlink link rename mounton))
+		(mlsconstrain (file (write create setattr relabelfrom append
+			unlink link rename mounton))
 			(or (or (or (or (eq l1 l2)
-			(and (and (eq t1 mls.file_write_to_clr_subj_type_attribute) (dom h1 l2)) (domby l1 l2)))
-			(and (and (eq t2 mls.file_write_in_range_subj_type_attribute) (dom l1 l2)) (domby h1 h2)))
-			(eq t1 mls.file_write_subj_type_attribute)) (eq t2 mls.trusted_obj_type_attribute)))
+			(and (and (eq t1
+				mls.file_write_to_clr_subj_type_attribute)
+					(dom h1 l2)) (domby l1 l2)))
+			(and (and (eq t2
+				mls.file_write_in_range_subj_type_attribute)
+					(dom l1 l2)) (domby h1 h2)))
+			(eq t1 mls.file_write_subj_type_attribute))
+				(eq t2 mls.trusted_obj_type_attribute)))
 
-		(mlsconstrain (lnk_file (write create setattr relabelfrom append unlink link rename mounton))
+		(mlsconstrain (lnk_file (write create setattr relabelfrom
+			append unlink link rename mounton))
 			(or (or (or (or (eq l1 l2)
-			(and (and (eq t1 mls.file_write_to_clr_subj_type_attribute) (dom h1 l2)) (domby l1 l2)))
-			(and (and (eq t2 mls.file_write_in_range_subj_type_attribute) (dom l1 l2)) (domby h1 h2)))
-			(eq t1 mls.file_write_subj_type_attribute)) (eq t2 mls.trusted_obj_type_attribute)))
+			(and (and (eq t1
+				mls.file_write_to_clr_subj_type_attribute)
+					(dom h1 l2)) (domby l1 l2)))
+			(and (and (eq t2
+				mls.file_write_in_range_subj_type_attribute)
+					(dom l1 l2)) (domby h1 h2)))
+			(eq t1 mls.file_write_subj_type_attribute))
+				(eq t2 mls.trusted_obj_type_attribute)))
 
-		(mlsconstrain (sock_file (write create setattr relabelfrom append unlink link rename mounton))
+		(mlsconstrain (sock_file (write create setattr relabelfrom
+			append unlink link rename mounton))
 			(or (or (or (or (eq l1 l2)
-			(and (and (eq t1 mls.file_write_to_clr_subj_type_attribute) (dom h1 l2)) (domby l1 l2)))
-			(and (and (eq t2 mls.file_write_in_range_subj_type_attribute) (dom l1 l2)) (domby h1 h2)))
-			(eq t1 mls.file_write_subj_type_attribute)) (eq t2 mls.trusted_obj_type_attribute)))
+			(and (and (eq t1
+				mls.file_write_to_clr_subj_type_attribute)
+					(dom h1 l2)) (domby l1 l2)))
+			(and (and (eq t2
+				mls.file_write_in_range_subj_type_attribute)
+					(dom l1 l2)) (domby h1 h2)))
+			(eq t1 mls.file_write_subj_type_attribute))
+				(eq t2 mls.trusted_obj_type_attribute)))
 
 		(mlsconstrain (dir (add_name remove_name reparent rmdir))
 			(or (or (or (or (eq l1 l2)
-			(and (and (eq t1 mls.file_write_in_range_subj_type_attribute) (dom l1 l2)) (domby l1 h2)))
-			(and (and (eq t1 mls.file_write_to_clr_subj_type_attribute) (dom h1 l2)) (domby l1 l2)))
-			(eq t1 mls.file_write_subj_type_attribute)) (eq t2 mls.trusted_obj_type_attribute)))
+			(and (and (eq t1
+				mls.file_write_in_range_subj_type_attribute)
+					(dom l1 l2)) (domby l1 h2)))
+			(and (and (eq t1
+				mls.file_write_to_clr_subj_type_attribute)
+					(dom h1 l2)) (domby l1 l2)))
+			(eq t1 mls.file_write_subj_type_attribute))
+				(eq t2 mls.trusted_obj_type_attribute)))
 
 		(mlsvalidatetrans dir (and (or (or (or (eq l1 l2)
-			(and (eq t3 mls.file_upgrade_subj_type_attribute) (domby l1 l2)))
-			(and (eq t3 mls.file_downgrade_subj_type_attribute) (dom l1 l2)))
-			(and (eq t3 mls.file_downgrade_subj_type_attribute) (incomp l1 l2)))
+			(and (eq t3 mls.file_upgrade_subj_type_attribute)
+				(domby l1 l2)))
+			(and (eq t3 mls.file_downgrade_subj_type_attribute)
+				(dom l1 l2)))
+			(and (eq t3 mls.file_downgrade_subj_type_attribute)
+				(incomp l1 l2)))
 			(or (or (or (eq h1 h2)
-			(and (eq t3 mls.file_upgrade_subj_type_attribute) (domby h1 h2)))
-			(and (eq t3 mls.file_downgrade_subj_type_attribute) (dom h1 h2)))
-			(and (eq t3 mls.file_downgrade_subj_type_attribute) (incomp h1 h2)))))
+			(and (eq t3 mls.file_upgrade_subj_type_attribute)
+				(domby h1 h2)))
+			(and (eq t3 mls.file_downgrade_subj_type_attribute)
+				(dom h1 h2)))
+			(and (eq t3 mls.file_downgrade_subj_type_attribute)
+				(incomp h1 h2)))))
 
 		(mlsvalidatetrans file (and (or (or (or (eq l1 l2)
-			(and (eq t3 mls.file_upgrade_subj_type_attribute) (domby l1 l2)))
-			(and (eq t3 mls.file_downgrade_subj_type_attribute) (dom l1 l2)))
-			(and (eq t3 mls.file_downgrade_subj_type_attribute) (incomp l1 l2)))
+			(and (eq t3 mls.file_upgrade_subj_type_attribute)
+				(domby l1 l2)))
+			(and (eq t3 mls.file_downgrade_subj_type_attribute)
+				(dom l1 l2)))
+			(and (eq t3 mls.file_downgrade_subj_type_attribute)
+				(incomp l1 l2)))
 			(or (or (or (eq h1 h2)
-			(and (eq t3 mls.file_upgrade_subj_type_attribute) (domby h1 h2)))
-			(and (eq t3 mls.file_downgrade_subj_type_attribute) (dom h1 h2)))
-			(and (eq t3 mls.file_downgrade_subj_type_attribute) (incomp h1 h2)))))
+			(and (eq t3 mls.file_upgrade_subj_type_attribute)
+				(domby h1 h2)))
+			(and (eq t3 mls.file_downgrade_subj_type_attribute)
+				(dom h1 h2)))
+			(and (eq t3 mls.file_downgrade_subj_type_attribute)
+				(incomp h1 h2)))))
 
 		(mlsvalidatetrans lnk_file (and (or (or (or (eq l1 l2)
-			(and (eq t3 mls.file_upgrade_subj_type_attribute) (domby l1 l2)))
-			(and (eq t3 mls.file_downgrade_subj_type_attribute) (dom l1 l2)))
-			(and (eq t3 mls.file_downgrade_subj_type_attribute) (incomp l1 l2)))
+			(and (eq t3 mls.file_upgrade_subj_type_attribute)
+				(domby l1 l2)))
+			(and (eq t3 mls.file_downgrade_subj_type_attribute)
+				(dom l1 l2)))
+			(and (eq t3 mls.file_downgrade_subj_type_attribute)
+				(incomp l1 l2)))
 			(or (or (or (eq h1 h2)
-			(and (eq t3 mls.file_upgrade_subj_type_attribute) (domby h1 h2)))
-			(and (eq t3 mls.file_downgrade_subj_type_attribute) (dom h1 h2)))
-			(and (eq t3 mls.file_downgrade_subj_type_attribute) (incomp h1 h2)))))
+			(and (eq t3 mls.file_upgrade_subj_type_attribute)
+				(domby h1 h2)))
+			(and (eq t3 mls.file_downgrade_subj_type_attribute)
+				(dom h1 h2)))
+			(and (eq t3 mls.file_downgrade_subj_type_attribute)
+				(incomp h1 h2)))))
 
 		(mlsvalidatetrans chr_file (and (or (or (or (eq l1 l2)
-			(and (eq t3 mls.file_upgrade_subj_type_attribute) (domby l1 l2)))
-			(and (eq t3 mls.file_downgrade_subj_type_attribute) (dom l1 l2)))
-			(and (eq t3 mls.file_downgrade_subj_type_attribute) (incomp l1 l2)))
+			(and (eq t3 mls.file_upgrade_subj_type_attribute)
+				(domby l1 l2)))
+			(and (eq t3 mls.file_downgrade_subj_type_attribute)
+				(dom l1 l2)))
+			(and (eq t3 mls.file_downgrade_subj_type_attribute)
+				(incomp l1 l2)))
 			(or (or (or (eq h1 h2)
-			(and (eq t3 mls.file_upgrade_subj_type_attribute) (domby h1 h2)))
-			(and (eq t3 mls.file_downgrade_subj_type_attribute) (dom h1 h2)))
-			(and (eq t3 mls.file_downgrade_subj_type_attribute) (incomp h1 h2)))))
+			(and (eq t3 mls.file_upgrade_subj_type_attribute)
+				(domby h1 h2)))
+			(and (eq t3 mls.file_downgrade_subj_type_attribute)
+				(dom h1 h2)))
+			(and (eq t3 mls.file_downgrade_subj_type_attribute)
+				(incomp h1 h2)))))
 
 		(mlsvalidatetrans blk_file (and (or (or (or (eq l1 l2)
-			(and (eq t3 mls.file_upgrade_subj_type_attribute) (domby l1 l2)))
-			(and (eq t3 mls.file_downgrade_subj_type_attribute) (dom l1 l2)))
-			(and (eq t3 mls.file_downgrade_subj_type_attribute) (incomp l1 l2)))
+			(and (eq t3 mls.file_upgrade_subj_type_attribute)
+				(domby l1 l2)))
+			(and (eq t3 mls.file_downgrade_subj_type_attribute)
+				(dom l1 l2)))
+			(and (eq t3 mls.file_downgrade_subj_type_attribute)
+				(incomp l1 l2)))
 			(or (or (or (eq h1 h2)
-			(and (eq t3 mls.file_upgrade_subj_type_attribute) (domby h1 h2)))
-			(and (eq t3 mls.file_downgrade_subj_type_attribute) (dom h1 h2)))
-			(and (eq t3 mls.file_downgrade_subj_type_attribute) (incomp h1 h2)))))
+			(and (eq t3 mls.file_upgrade_subj_type_attribute)
+				(domby h1 h2)))
+			(and (eq t3 mls.file_downgrade_subj_type_attribute)
+				(dom h1 h2)))
+			(and (eq t3 mls.file_downgrade_subj_type_attribute)
+				(incomp h1 h2)))))
 
 		(mlsvalidatetrans sock_file (and (or (or (or (eq l1 l2)
-			(and (eq t3 mls.file_upgrade_subj_type_attribute) (domby l1 l2)))
-			(and (eq t3 mls.file_downgrade_subj_type_attribute) (dom l1 l2)))
-			(and (eq t3 mls.file_downgrade_subj_type_attribute) (incomp l1 l2)))
+			(and (eq t3 mls.file_upgrade_subj_type_attribute)
+				(domby l1 l2)))
+			(and (eq t3 mls.file_downgrade_subj_type_attribute)
+				(dom l1 l2)))
+			(and (eq t3 mls.file_downgrade_subj_type_attribute)
+				(incomp l1 l2)))
 			(or (or (or (eq h1 h2)
-			(and (eq t3 mls.file_upgrade_subj_type_attribute) (domby h1 h2)))
-			(and (eq t3 mls.file_downgrade_subj_type_attribute) (dom h1 h2)))
-			(and (eq t3 mls.file_downgrade_subj_type_attribute) (incomp h1 h2)))))
+			(and (eq t3 mls.file_upgrade_subj_type_attribute)
+				(domby h1 h2)))
+			(and (eq t3 mls.file_downgrade_subj_type_attribute)
+				(dom h1 h2)))
+			(and (eq t3 mls.file_downgrade_subj_type_attribute)
+				(incomp h1 h2)))))
 
 		(mlsvalidatetrans fifo_file (and (or (or (or (eq l1 l2)
-			(and (eq t3 mls.file_upgrade_subj_type_attribute) (domby l1 l2)))
-			(and (eq t3 mls.file_downgrade_subj_type_attribute) (dom l1 l2)))
-			(and (eq t3 mls.file_downgrade_subj_type_attribute) (incomp l1 l2)))
+			(and (eq t3 mls.file_upgrade_subj_type_attribute)
+				(domby l1 l2)))
+			(and (eq t3 mls.file_downgrade_subj_type_attribute)
+				(dom l1 l2)))
+			(and (eq t3 mls.file_downgrade_subj_type_attribute)
+				(incomp l1 l2)))
 			(or (or (or (eq h1 h2)
-			(and (eq t3 mls.file_upgrade_subj_type_attribute) (domby h1 h2)))
-			(and (eq t3 mls.file_downgrade_subj_type_attribute) (dom h1 h2)))
-			(and (eq t3 mls.file_downgrade_subj_type_attribute) (incomp h1 h2)))))
+			(and (eq t3 mls.file_upgrade_subj_type_attribute)
+				(domby h1 h2)))
+			(and (eq t3 mls.file_downgrade_subj_type_attribute)
+				(dom h1 h2)))
+			(and (eq t3 mls.file_downgrade_subj_type_attribute)
+				(incomp h1 h2)))))
 
 		(mlsconstrain (blk_file (create)) (and (or (or (or (eq l1 l2)
-			(and (eq t1 mls.file_upgrade_subj_type_attribute) (domby l1 l2)))
-			(and (eq t1 mls.file_downgrade_subj_type_attribute) (dom l1 l2)))
-			(and (eq t1 mls.file_downgrade_subj_type_attribute) (incomp l1 l2)))
+			(and (eq t1 mls.file_upgrade_subj_type_attribute)
+				(domby l1 l2)))
+			(and (eq t1 mls.file_downgrade_subj_type_attribute)
+				(dom l1 l2)))
+			(and (eq t1 mls.file_downgrade_subj_type_attribute)
+				(incomp l1 l2)))
 			(or (or (or (eq l1 h2)
-			(and (eq t1 mls.file_upgrade_subj_type_attribute) (domby l1 h2)))
-			(and (eq t1 mls.file_downgrade_subj_type_attribute) (dom l1 h2)))
-			(and (eq t1 mls.file_downgrade_subj_type_attribute) (incomp l1 h2)))))
+			(and (eq t1 mls.file_upgrade_subj_type_attribute)
+				(domby l1 h2)))
+			(and (eq t1 mls.file_downgrade_subj_type_attribute)
+				(dom l1 h2)))
+			(and (eq t1 mls.file_downgrade_subj_type_attribute)
+				(incomp l1 h2)))))
 
 		(mlsconstrain (chr_file (create)) (and (or (or (or (eq l1 l2)
-			(and (eq t1 mls.file_upgrade_subj_type_attribute) (domby l1 l2)))
-			(and (eq t1 mls.file_downgrade_subj_type_attribute) (dom l1 l2)))
-			(and (eq t1 mls.file_downgrade_subj_type_attribute) (incomp l1 l2)))
+			(and (eq t1 mls.file_upgrade_subj_type_attribute)
+				(domby l1 l2)))
+			(and (eq t1 mls.file_downgrade_subj_type_attribute)
+				(dom l1 l2)))
+			(and (eq t1 mls.file_downgrade_subj_type_attribute)
+				(incomp l1 l2)))
 			(or (or (or (eq l1 h2)
-			(and (eq t1 mls.file_upgrade_subj_type_attribute) (domby l1 h2)))
-			(and (eq t1 mls.file_downgrade_subj_type_attribute) (dom l1 h2)))
-			(and (eq t1 mls.file_downgrade_subj_type_attribute) (incomp l1 h2)))))
+			(and (eq t1 mls.file_upgrade_subj_type_attribute)
+				(domby l1 h2)))
+			(and (eq t1 mls.file_downgrade_subj_type_attribute)
+				(dom l1 h2)))
+			(and (eq t1 mls.file_downgrade_subj_type_attribute)
+				(incomp l1 h2)))))
 
 		(mlsconstrain (dir (create)) (and (or (or (or (eq l1 l2)
-			(and (eq t1 mls.file_upgrade_subj_type_attribute) (domby l1 l2)))
-			(and (eq t1 mls.file_downgrade_subj_type_attribute) (dom l1 l2)))
-			(and (eq t1 mls.file_downgrade_subj_type_attribute) (incomp l1 l2)))
+			(and (eq t1 mls.file_upgrade_subj_type_attribute)
+				(domby l1 l2)))
+			(and (eq t1 mls.file_downgrade_subj_type_attribute)
+				(dom l1 l2)))
+			(and (eq t1 mls.file_downgrade_subj_type_attribute)
+				(incomp l1 l2)))
 			(or (or (or (eq l1 h2)
-			(and (eq t1 mls.file_upgrade_subj_type_attribute) (domby l1 h2)))
-			(and (eq t1 mls.file_downgrade_subj_type_attribute) (dom l1 h2)))
-			(and (eq t1 mls.file_downgrade_subj_type_attribute) (incomp l1 h2)))))
+			(and (eq t1 mls.file_upgrade_subj_type_attribute)
+				(domby l1 h2)))
+			(and (eq t1 mls.file_downgrade_subj_type_attribute)
+				(dom l1 h2)))
+			(and (eq t1 mls.file_downgrade_subj_type_attribute)
+				(incomp l1 h2)))))
 
 		(mlsconstrain (fifo_file (create)) (and (or (or (or (eq l1 l2)
-			(and (eq t1 mls.file_upgrade_subj_type_attribute) (domby l1 l2)))
-			(and (eq t1 mls.file_downgrade_subj_type_attribute) (dom l1 l2)))
-			(and (eq t1 mls.file_downgrade_subj_type_attribute) (incomp l1 l2)))
+			(and (eq t1 mls.file_upgrade_subj_type_attribute)
+				(domby l1 l2)))
+			(and (eq t1 mls.file_downgrade_subj_type_attribute)
+				(dom l1 l2)))
+			(and (eq t1 mls.file_downgrade_subj_type_attribute)
+				(incomp l1 l2)))
 			(or (or (or (eq l1 h2)
-			(and (eq t1 mls.file_upgrade_subj_type_attribute) (domby l1 h2)))
-			(and (eq t1 mls.file_downgrade_subj_type_attribute) (dom l1 h2)))
-			(and (eq t1 mls.file_downgrade_subj_type_attribute) (incomp l1 h2)))))
+			(and (eq t1 mls.file_upgrade_subj_type_attribute)
+				(domby l1 h2)))
+			(and (eq t1 mls.file_downgrade_subj_type_attribute)
+				(dom l1 h2)))
+			(and (eq t1 mls.file_downgrade_subj_type_attribute)
+				(incomp l1 h2)))))
 
 		(mlsconstrain (file (create)) (and (or (or (or (eq l1 l2)
-			(and (eq t1 mls.file_upgrade_subj_type_attribute) (domby l1 l2)))
-			(and (eq t1 mls.file_downgrade_subj_type_attribute) (dom l1 l2)))
-			(and (eq t1 mls.file_downgrade_subj_type_attribute) (incomp l1 l2)))
+			(and (eq t1 mls.file_upgrade_subj_type_attribute)
+				(domby l1 l2)))
+			(and (eq t1 mls.file_downgrade_subj_type_attribute)
+				(dom l1 l2)))
+			(and (eq t1 mls.file_downgrade_subj_type_attribute)
+				(incomp l1 l2)))
 			(or (or (or (eq l1 h2)
-			(and (eq t1 mls.file_upgrade_subj_type_attribute) (domby l1 h2)))
-			(and (eq t1 mls.file_downgrade_subj_type_attribute) (dom l1 h2)))
-			(and (eq t1 mls.file_downgrade_subj_type_attribute) (incomp l1 h2)))))
+			(and (eq t1 mls.file_upgrade_subj_type_attribute)
+				(domby l1 h2)))
+			(and (eq t1 mls.file_downgrade_subj_type_attribute)
+				(dom l1 h2)))
+			(and (eq t1 mls.file_downgrade_subj_type_attribute)
+				(incomp l1 h2)))))
 
 		(mlsconstrain (lnk_file (create)) (and (or (or (or (eq l1 l2)
-			(and (eq t1 mls.file_upgrade_subj_type_attribute) (domby l1 l2)))
-			(and (eq t1 mls.file_downgrade_subj_type_attribute) (dom l1 l2)))
-			(and (eq t1 mls.file_downgrade_subj_type_attribute) (incomp l1 l2)))
+			(and (eq t1 mls.file_upgrade_subj_type_attribute)
+				(domby l1 l2)))
+			(and (eq t1 mls.file_downgrade_subj_type_attribute)
+				(dom l1 l2)))
+			(and (eq t1 mls.file_downgrade_subj_type_attribute)
+				(incomp l1 l2)))
 			(or (or (or (eq l1 h2)
-			(and (eq t1 mls.file_upgrade_subj_type_attribute) (domby l1 h2)))
-			(and (eq t1 mls.file_downgrade_subj_type_attribute) (dom l1 h2)))
-			(and (eq t1 mls.file_downgrade_subj_type_attribute) (incomp l1 h2)))))
+			(and (eq t1 mls.file_upgrade_subj_type_attribute)
+				(domby l1 h2)))
+			(and (eq t1 mls.file_downgrade_subj_type_attribute)
+				(dom l1 h2)))
+			(and (eq t1 mls.file_downgrade_subj_type_attribute)
+				(incomp l1 h2)))))
 
 		(mlsconstrain (sock_file (create)) (and (or (or (or (eq l1 l2)
-			(and (eq t1 mls.file_upgrade_subj_type_attribute) (domby l1 l2)))
-			(and (eq t1 mls.file_downgrade_subj_type_attribute) (dom l1 l2)))
-			(and (eq t1 mls.file_downgrade_subj_type_attribute) (incomp l1 l2)))
+			(and (eq t1 mls.file_upgrade_subj_type_attribute)
+				(domby l1 l2)))
+			(and (eq t1 mls.file_downgrade_subj_type_attribute)
+				(dom l1 l2)))
+			(and (eq t1 mls.file_downgrade_subj_type_attribute)
+				(incomp l1 l2)))
 			(or (or (or (eq l1 h2)
-			(and (eq t1 mls.file_upgrade_subj_type_attribute) (domby l1 h2)))
-			(and (eq t1 mls.file_downgrade_subj_type_attribute) (dom l1 h2)))
-			(and (eq t1 mls.file_downgrade_subj_type_attribute) (incomp l1 h2)))))
+			(and (eq t1 mls.file_upgrade_subj_type_attribute)
+				(domby l1 h2)))
+			(and (eq t1 mls.file_downgrade_subj_type_attribute)
+				(dom l1 h2)))
+			(and (eq t1 mls.file_downgrade_subj_type_attribute)
+				(incomp l1 h2)))))
 
 		(mlsconstrain (filesystem (relabelto))
 			(dom h1 h2))
 
 		(mlsconstrain (filesystem (getattr quotaget))
 			(or (or (dom l1 l2)
-			(and (eq t1 mls.file_read_to_clr_subj_type_attribute) (dom h1 l2)))
+			(and (eq t1 mls.file_read_to_clr_subj_type_attribute)
+				(dom h1 l2)))
 			(eq t1 mls.file_read_subj_type_attribute)))
 
-		(mlsconstrain (filesystem (mount remount unmount relabelfrom quotamod))
+		(mlsconstrain (filesystem (mount remount unmount relabelfrom
+			quotamod))
 			(or (or (eq l1 l2)
-			(and (and (eq t1 mls.file_write_to_clr_subj_type_attribute) (dom h1 l2)) (domby l1 l2)))
+			(and (and (eq t1
+				mls.file_write_to_clr_subj_type_attribute)
+					(dom h1 l2)) (domby l1 l2)))
 			(eq t1 mls.file_write_subj_type_attribute)))
 
 		(mlsconstrain (key_socket (relabelto))
@@ -342,609 +495,1020 @@
 
 		(mlsconstrain (key_socket (accept connect))
 			(or (eq l1 l2)
-			(and (or (and (eq t1 mls.net_read_to_clr_subj_type_attribute) (dom h1 l2)) (eq t1 mls.net_read_subj_type_attribute))
-			(or (or (and (and (eq t1 mls.net_write_ranged_subj_type_attribute) (dom l1 l2)) (domby l1 h2))
-			(and (and (eq t1 mls.net_write_to_clr_subj_type_attribute) (dom h1 l2)) (domby l1 l2)))
+			(and (or (and (eq t1
+				mls.net_read_to_clr_subj_type_attribute)
+					(dom h1 l2)) (eq t1
+						mls.net_read_subj_type_attribute))
+			(or (or (and (and (eq t1
+				mls.net_write_ranged_subj_type_attribute)
+					(dom l1 l2)) (domby l1 h2))
+			(and (and (eq t1
+				mls.net_write_to_clr_subj_type_attribute)
+					(dom h1 l2)) (domby l1 l2)))
 			(eq t1 mls.net_write_subj_type_attribute)))))
 
 		(mlsconstrain (netlink_audit_socket (accept connect))
 			(or (eq l1 l2)
-			(and (or (and (eq t1 mls.net_read_to_clr_subj_type_attribute) (dom h1 l2)) (eq t1 mls.net_read_subj_type_attribute))
-			(or (or (and (and (eq t1 mls.net_write_ranged_subj_type_attribute) (dom l1 l2)) (domby l1 h2))
-			(and (and (eq t1 mls.net_write_to_clr_subj_type_attribute) (dom h1 l2)) (domby l1 l2)))
+			(and (or (and (eq t1
+				mls.net_read_to_clr_subj_type_attribute)
+					(dom h1 l2)) (eq t1
+						mls.net_read_subj_type_attribute))
+			(or (or (and (and (eq t1
+				mls.net_write_ranged_subj_type_attribute)
+					(dom l1 l2)) (domby l1 h2))
+			(and (and (eq t1
+				mls.net_write_to_clr_subj_type_attribute)
+					(dom h1 l2)) (domby l1 l2)))
 			(eq t1 mls.net_write_subj_type_attribute)))))
 
 		(mlsconstrain (netlink_dnrt_socket (accept connect))
 			(or (eq l1 l2)
-			(and (or (and (eq t1 mls.net_read_to_clr_subj_type_attribute) (dom h1 l2)) (eq t1 mls.net_read_subj_type_attribute))
-			(or (or (and (and (eq t1 mls.net_write_ranged_subj_type_attribute) (dom l1 l2)) (domby l1 h2))
-			(and (and (eq t1 mls.net_write_to_clr_subj_type_attribute) (dom h1 l2)) (domby l1 l2)))
+			(and (or (and (eq t1
+				mls.net_read_to_clr_subj_type_attribute)
+					(dom h1 l2)) (eq t1
+						mls.net_read_subj_type_attribute))
+			(or (or (and (and (eq t1
+				mls.net_write_ranged_subj_type_attribute)
+					(dom l1 l2)) (domby l1 h2))
+			(and (and (eq t1
+				mls.net_write_to_clr_subj_type_attribute)
+					(dom h1 l2)) (domby l1 l2)))
 			(eq t1 mls.net_write_subj_type_attribute)))))
 
 		(mlsconstrain (netlink_nflog_socket (accept connect))
 			(or (eq l1 l2)
-			(and (or (and (eq t1 mls.net_read_to_clr_subj_type_attribute) (dom h1 l2)) (eq t1 mls.net_read_subj_type_attribute))
-			(or (or (and (and (eq t1 mls.net_write_ranged_subj_type_attribute) (dom l1 l2)) (domby l1 h2))
-			(and (and (eq t1 mls.net_write_to_clr_subj_type_attribute) (dom h1 l2)) (domby l1 l2)))
+			(and (or (and (eq t1
+				mls.net_read_to_clr_subj_type_attribute)
+					(dom h1 l2)) (eq t1
+						mls.net_read_subj_type_attribute))
+			(or (or (and (and (eq t1
+				mls.net_write_ranged_subj_type_attribute)
+					(dom l1 l2)) (domby l1 h2))
+			(and (and (eq t1
+				mls.net_write_to_clr_subj_type_attribute)
+					(dom h1 l2)) (domby l1 l2)))
 			(eq t1 mls.net_write_subj_type_attribute)))))
 
 		(mlsconstrain (netlink_route_socket (accept connect))
 			(or (eq l1 l2)
-			(and (or (and (eq t1 mls.net_read_to_clr_subj_type_attribute) (dom h1 l2)) (eq t1 mls.net_read_subj_type_attribute))
-			(or (or (and (and (eq t1 mls.net_write_ranged_subj_type_attribute) (dom l1 l2)) (domby l1 h2))
-			(and (and (eq t1 mls.net_write_to_clr_subj_type_attribute) (dom h1 l2)) (domby l1 l2)))
+			(and (or (and (eq t1
+				mls.net_read_to_clr_subj_type_attribute)
+					(dom h1 l2)) (eq t1
+						mls.net_read_subj_type_attribute))
+			(or (or (and (and (eq t1
+				mls.net_write_ranged_subj_type_attribute)
+					(dom l1 l2)) (domby l1 h2))
+			(and (and (eq t1
+				mls.net_write_to_clr_subj_type_attribute)
+					(dom h1 l2)) (domby l1 l2)))
 			(eq t1 mls.net_write_subj_type_attribute)))))
 
 		(mlsconstrain (netlink_selinux_socket (accept connect))
 			(or (eq l1 l2)
-			(and (or (and (eq t1 mls.net_read_to_clr_subj_type_attribute) (dom h1 l2)) (eq t1 mls.net_read_subj_type_attribute))
-			(or (or (and (and (eq t1 mls.net_write_ranged_subj_type_attribute) (dom l1 l2)) (domby l1 h2))
-			(and (and (eq t1 mls.net_write_to_clr_subj_type_attribute) (dom h1 l2)) (domby l1 l2)))
+			(and (or (and (eq t1
+				mls.net_read_to_clr_subj_type_attribute)
+					(dom h1 l2)) (eq t1
+						mls.net_read_subj_type_attribute))
+			(or (or (and (and (eq t1
+				mls.net_write_ranged_subj_type_attribute)
+					(dom l1 l2)) (domby l1 h2))
+			(and (and (eq t1
+				mls.net_write_to_clr_subj_type_attribute)
+					(dom h1 l2)) (domby l1 l2)))
 			(eq t1 mls.net_write_subj_type_attribute)))))
 
 		(mlsconstrain (tun_socket (accept connect))
 			(or (eq l1 l2)
-			(and (or (and (eq t1 mls.net_read_to_clr_subj_type_attribute) (dom h1 l2)) (eq t1 mls.net_read_subj_type_attribute))
-			(or (or (and (and (eq t1 mls.net_write_ranged_subj_type_attribute) (dom l1 l2)) (domby l1 h2))
-			(and (and (eq t1 mls.net_write_to_clr_subj_type_attribute) (dom h1 l2)) (domby l1 l2)))
+			(and (or (and (eq t1
+				mls.net_read_to_clr_subj_type_attribute)
+					(dom h1 l2)) (eq t1
+						mls.net_read_subj_type_attribute))
+			(or (or (and (and (eq t1
+				mls.net_write_ranged_subj_type_attribute)
+					(dom l1 l2)) (domby l1 h2))
+			(and (and (eq t1
+				mls.net_write_to_clr_subj_type_attribute)
+					(dom h1 l2)) (domby l1 l2)))
 			(eq t1 mls.net_write_subj_type_attribute)))))
 
 		(mlsconstrain (netlink_kobject_uevent_socket (accept connect))
 			(or (eq l1 l2)
-			(and (or (and (eq t1 mls.net_read_to_clr_subj_type_attribute) (dom h1 l2)) (eq t1 mls.net_read_subj_type_attribute))
-			(or (or (and (and (eq t1 mls.net_write_ranged_subj_type_attribute) (dom l1 l2)) (domby l1 h2))
-			(and (and (eq t1 mls.net_write_to_clr_subj_type_attribute) (dom h1 l2)) (domby l1 l2)))
+			(and (or (and (eq t1
+				mls.net_read_to_clr_subj_type_attribute)
+					(dom h1 l2)) (eq t1
+						mls.net_read_subj_type_attribute))
+			(or (or (and (and (eq t1
+				mls.net_write_ranged_subj_type_attribute)
+					(dom l1 l2)) (domby l1 h2))
+			(and (and (eq t1
+				mls.net_write_to_clr_subj_type_attribute)
+					(dom h1 l2)) (domby l1 l2)))
 			(eq t1 mls.net_write_subj_type_attribute)))))
 
 		(mlsconstrain (appletalk_socket (accept connect))
 			(or (eq l1 l2)
-			(and (or (and (eq t1 mls.net_read_to_clr_subj_type_attribute) (dom h1 l2)) (eq t1 mls.net_read_subj_type_attribute))
-			(or (or (and (and (eq t1 mls.net_write_ranged_subj_type_attribute) (dom l1 l2)) (domby l1 h2))
-			(and (and (eq t1 mls.net_write_to_clr_subj_type_attribute) (dom h1 l2)) (domby l1 l2)))
+			(and (or (and (eq t1
+				mls.net_read_to_clr_subj_type_attribute)
+					(dom h1 l2)) (eq t1
+						mls.net_read_subj_type_attribute))
+			(or (or (and (and (eq t1
+				mls.net_write_ranged_subj_type_attribute)
+					(dom l1 l2)) (domby l1 h2))
+			(and (and (eq t1
+				mls.net_write_to_clr_subj_type_attribute)
+					(dom h1 l2)) (domby l1 l2)))
 			(eq t1 mls.net_write_subj_type_attribute)))))
 
 		(mlsconstrain (netlink_tcpdiag_socket (accept connect))
 			(or (eq l1 l2)
-			(and (or (and (eq t1 mls.net_read_to_clr_subj_type_attribute) (dom h1 l2)) (eq t1 mls.net_read_subj_type_attribute))
-			(or (or (and (and (eq t1 mls.net_write_ranged_subj_type_attribute) (dom l1 l2)) (domby l1 h2))
-			(and (and (eq t1 mls.net_write_to_clr_subj_type_attribute) (dom h1 l2)) (domby l1 l2)))
+			(and (or (and (eq t1
+				mls.net_read_to_clr_subj_type_attribute)
+					(dom h1 l2)) (eq t1
+						mls.net_read_subj_type_attribute))
+			(or (or (and (and (eq t1
+				mls.net_write_ranged_subj_type_attribute)
+					(dom l1 l2)) (domby l1 h2))
+			(and (and (eq t1
+				mls.net_write_to_clr_subj_type_attribute)
+					(dom h1 l2)) (domby l1 l2)))
 			(eq t1 mls.net_write_subj_type_attribute)))))
 
 		(mlsconstrain (netlink_xfrm_socket (accept connect))
 			(or (eq l1 l2)
-			(and (or (and (eq t1 mls.net_read_to_clr_subj_type_attribute) (dom h1 l2)) (eq t1 mls.net_read_subj_type_attribute))
-			(or (or (and (and (eq t1 mls.net_write_ranged_subj_type_attribute) (dom l1 l2)) (domby l1 h2))
-			(and (and (eq t1 mls.net_write_to_clr_subj_type_attribute) (dom h1 l2)) (domby l1 l2)))
+			(and (or (and (eq t1
+				mls.net_read_to_clr_subj_type_attribute)
+					(dom h1 l2)) (eq t1
+						mls.net_read_subj_type_attribute))
+			(or (or (and (and (eq t1
+				mls.net_write_ranged_subj_type_attribute)
+					(dom l1 l2)) (domby l1 h2))
+			(and (and (eq t1
+				mls.net_write_to_clr_subj_type_attribute)
+					(dom h1 l2)) (domby l1 l2)))
 			(eq t1 mls.net_write_subj_type_attribute)))))
 
 		(mlsconstrain (netlink_iscsi_socket (accept connect))
 			(or (eq l1 l2)
-			(and (or (and (eq t1 mls.net_read_to_clr_subj_type_attribute) (dom h1 l2)) (eq t1 mls.net_read_subj_type_attribute))
-			(or (or (and (and (eq t1 mls.net_write_ranged_subj_type_attribute) (dom l1 l2)) (domby l1 h2))
-			(and (and (eq t1 mls.net_write_to_clr_subj_type_attribute) (dom h1 l2)) (domby l1 l2)))
+			(and (or (and (eq t1
+				mls.net_read_to_clr_subj_type_attribute)
+					(dom h1 l2)) (eq t1
+						mls.net_read_subj_type_attribute))
+			(or (or (and (and (eq t1
+				mls.net_write_ranged_subj_type_attribute)
+					(dom l1 l2)) (domby l1 h2))
+			(and (and (eq t1
+				mls.net_write_to_clr_subj_type_attribute)
+					(dom h1 l2)) (domby l1 l2)))
 			(eq t1 mls.net_write_subj_type_attribute)))))
 
 		(mlsconstrain (netlink_fib_lookup_socket (accept connect))
 			(or (eq l1 l2)
-			(and (or (and (eq t1 mls.net_read_to_clr_subj_type_attribute) (dom h1 l2)) (eq t1 mls.net_read_subj_type_attribute))
-			(or (or (and (and (eq t1 mls.net_write_ranged_subj_type_attribute) (dom l1 l2)) (domby l1 h2))
-			(and (and (eq t1 mls.net_write_to_clr_subj_type_attribute) (dom h1 l2)) (domby l1 l2)))
+			(and (or (and (eq t1
+				mls.net_read_to_clr_subj_type_attribute)
+					(dom h1 l2)) (eq t1
+						mls.net_read_subj_type_attribute))
+			(or (or (and (and (eq t1
+				mls.net_write_ranged_subj_type_attribute)
+					(dom l1 l2)) (domby l1 h2))
+			(and (and (eq t1
+				mls.net_write_to_clr_subj_type_attribute)
+					(dom h1 l2)) (domby l1 l2)))
 			(eq t1 mls.net_write_subj_type_attribute)))))
 
 		(mlsconstrain (netlink_connector_socket (accept connect))
 			(or (eq l1 l2)
-			(and (or (and (eq t1 mls.net_read_to_clr_subj_type_attribute) (dom h1 l2)) (eq t1 mls.net_read_subj_type_attribute))
-			(or (or (and (and (eq t1 mls.net_write_ranged_subj_type_attribute) (dom l1 l2)) (domby l1 h2))
-			(and (and (eq t1 mls.net_write_to_clr_subj_type_attribute) (dom h1 l2)) (domby l1 l2)))
+			(and (or (and (eq t1
+				mls.net_read_to_clr_subj_type_attribute)
+					(dom h1 l2)) (eq t1
+						mls.net_read_subj_type_attribute))
+			(or (or (and (and (eq t1
+				mls.net_write_ranged_subj_type_attribute)
+					(dom l1 l2)) (domby l1 h2))
+			(and (and (eq t1
+				mls.net_write_to_clr_subj_type_attribute)
+					(dom h1 l2)) (domby l1 l2)))
 			(eq t1 mls.net_write_subj_type_attribute)))))
 
 		(mlsconstrain (netlink_netfilter_socket (accept connect))
 			(or (eq l1 l2)
-			(and (or (and (eq t1 mls.net_read_to_clr_subj_type_attribute) (dom h1 l2)) (eq t1 mls.net_read_subj_type_attribute))
-			(or (or (and (and (eq t1 mls.net_write_ranged_subj_type_attribute) (dom l1 l2)) (domby l1 h2))
-			(and (and (eq t1 mls.net_write_to_clr_subj_type_attribute) (dom h1 l2)) (domby l1 l2)))
+			(and (or (and (eq t1
+				mls.net_read_to_clr_subj_type_attribute)
+					(dom h1 l2)) (eq t1
+						mls.net_read_subj_type_attribute))
+			(or (or (and (and (eq t1
+				mls.net_write_ranged_subj_type_attribute)
+					(dom l1 l2)) (domby l1 h2))
+			(and (and (eq t1
+				mls.net_write_to_clr_subj_type_attribute)
+					(dom h1 l2)) (domby l1 l2)))
 			(eq t1 mls.net_write_subj_type_attribute)))))
 
 		(mlsconstrain (netlink_generic_socket (accept connect))
 			(or (eq l1 l2)
-			(and (or (and (eq t1 mls.net_read_to_clr_subj_type_attribute) (dom h1 l2)) (eq t1 mls.net_read_subj_type_attribute))
-			(or (or (and (and (eq t1 mls.net_write_ranged_subj_type_attribute) (dom l1 l2)) (domby l1 h2))
-			(and (and (eq t1 mls.net_write_to_clr_subj_type_attribute) (dom h1 l2)) (domby l1 l2)))
+			(and (or (and (eq t1
+				mls.net_read_to_clr_subj_type_attribute)
+					(dom h1 l2)) (eq t1
+						mls.net_read_subj_type_attribute))
+			(or (or (and (and (eq t1
+				mls.net_write_ranged_subj_type_attribute)
+					(dom l1 l2)) (domby l1 h2))
+			(and (and (eq t1
+				mls.net_write_to_clr_subj_type_attribute)
+					(dom h1 l2)) (domby l1 l2)))
 			(eq t1 mls.net_write_subj_type_attribute)))))
 
 		(mlsconstrain (netlink_scsitransport_socket (accept connect))
 			(or (eq l1 l2)
-			(and (or (and (eq t1 mls.net_read_to_clr_subj_type_attribute) (dom h1 l2)) (eq t1 mls.net_read_subj_type_attribute))
-			(or (or (and (and (eq t1 mls.net_write_ranged_subj_type_attribute) (dom l1 l2)) (domby l1 h2))
-			(and (and (eq t1 mls.net_write_to_clr_subj_type_attribute) (dom h1 l2)) (domby l1 l2)))
+			(and (or (and (eq t1
+				mls.net_read_to_clr_subj_type_attribute)
+					(dom h1 l2)) (eq t1
+						mls.net_read_subj_type_attribute))
+			(or (or (and (and (eq t1
+				mls.net_write_ranged_subj_type_attribute)
+					(dom l1 l2)) (domby l1 h2))
+			(and (and (eq t1
+				mls.net_write_to_clr_subj_type_attribute)
+					(dom h1 l2)) (domby l1 l2)))
 			(eq t1 mls.net_write_subj_type_attribute)))))
 
 		(mlsconstrain (netlink_rdma_socket (accept connect))
 			(or (eq l1 l2)
-			(and (or (and (eq t1 mls.net_read_to_clr_subj_type_attribute) (dom h1 l2)) (eq t1 mls.net_read_subj_type_attribute))
-			(or (or (and (and (eq t1 mls.net_write_ranged_subj_type_attribute) (dom l1 l2)) (domby l1 h2))
-			(and (and (eq t1 mls.net_write_to_clr_subj_type_attribute) (dom h1 l2)) (domby l1 l2)))
+			(and (or (and (eq t1
+				mls.net_read_to_clr_subj_type_attribute)
+					(dom h1 l2)) (eq t1
+						mls.net_read_subj_type_attribute))
+			(or (or (and (and (eq t1
+				mls.net_write_ranged_subj_type_attribute)
+					(dom l1 l2)) (domby l1 h2))
+			(and (and (eq t1
+				mls.net_write_to_clr_subj_type_attribute)
+					(dom h1 l2)) (domby l1 l2)))
 			(eq t1 mls.net_write_subj_type_attribute)))))
 
 		(mlsconstrain (netlink_crypto_socket (accept connect))
 			(or (eq l1 l2)
-			(and (or (and (eq t1 mls.net_read_to_clr_subj_type_attribute) (dom h1 l2)) (eq t1 mls.net_read_subj_type_attribute))
-			(or (or (and (and (eq t1 mls.net_write_ranged_subj_type_attribute) (dom l1 l2)) (domby l1 h2))
-			(and (and (eq t1 mls.net_write_to_clr_subj_type_attribute) (dom h1 l2)) (domby l1 l2)))
+			(and (or (and (eq t1
+				mls.net_read_to_clr_subj_type_attribute)
+					(dom h1 l2)) (eq t1
+						mls.net_read_subj_type_attribute))
+			(or (or (and (and (eq t1
+				mls.net_write_ranged_subj_type_attribute)
+					(dom l1 l2)) (domby l1 h2))
+			(and (and (eq t1
+				mls.net_write_to_clr_subj_type_attribute)
+					(dom h1 l2)) (domby l1 l2)))
 			(eq t1 mls.net_write_subj_type_attribute)))))
 
 		(mlsconstrain (packet_socket (accept connect))
 			(or (eq l1 l2)
-			(and (or (and (eq t1 mls.net_read_to_clr_subj_type_attribute) (dom h1 l2)) (eq t1 mls.net_read_subj_type_attribute))
-			(or (or (and (and (eq t1 mls.net_write_ranged_subj_type_attribute) (dom l1 l2)) (domby l1 h2))
-			(and (and (eq t1 mls.net_write_to_clr_subj_type_attribute) (dom h1 l2)) (domby l1 l2)))
+			(and (or (and (eq t1
+				mls.net_read_to_clr_subj_type_attribute)
+					(dom h1 l2)) (eq t1
+						mls.net_read_subj_type_attribute))
+			(or (or (and (and (eq t1
+				mls.net_write_ranged_subj_type_attribute)
+					(dom l1 l2)) (domby l1 h2))
+			(and (and (eq t1
+				mls.net_write_to_clr_subj_type_attribute)
+					(dom h1 l2)) (domby l1 l2)))
 			(eq t1 mls.net_write_subj_type_attribute)))))
 
 		(mlsconstrain (rawip_socket (accept connect))
 			(or (eq l1 l2)
-			(and (or (and (eq t1 mls.net_read_to_clr_subj_type_attribute) (dom h1 l2)) (eq t1 mls.net_read_subj_type_attribute))
-			(or (or (and (and (eq t1 mls.net_write_ranged_subj_type_attribute) (dom l1 l2)) (domby l1 h2))
-			(and (and (eq t1 mls.net_write_to_clr_subj_type_attribute) (dom h1 l2)) (domby l1 l2)))
+			(and (or (and (eq t1
+				mls.net_read_to_clr_subj_type_attribute)
+					(dom h1 l2)) (eq t1
+						mls.net_read_subj_type_attribute))
+			(or (or (and (and (eq t1
+				mls.net_write_ranged_subj_type_attribute)
+					(dom l1 l2)) (domby l1 h2))
+			(and (and (eq t1
+				mls.net_write_to_clr_subj_type_attribute)
+					(dom h1 l2)) (domby l1 l2)))
 			(eq t1 mls.net_write_subj_type_attribute)))))
 
 		(mlsconstrain (socket (accept connect))
 			(or (eq l1 l2)
-			(and (or (and (eq t1 mls.net_read_to_clr_subj_type_attribute) (dom h1 l2)) (eq t1 mls.net_read_subj_type_attribute))
-			(or (or (and (and (eq t1 mls.net_write_ranged_subj_type_attribute) (dom l1 l2)) (domby l1 h2))
-			(and (and (eq t1 mls.net_write_to_clr_subj_type_attribute) (dom h1 l2)) (domby l1 l2)))
+			(and (or (and (eq t1
+				mls.net_read_to_clr_subj_type_attribute)
+					(dom h1 l2)) (eq t1
+						mls.net_read_subj_type_attribute))
+			(or (or (and (and (eq t1
+				mls.net_write_ranged_subj_type_attribute)
+					(dom l1 l2)) (domby l1 h2))
+			(and (and (eq t1
+				mls.net_write_to_clr_subj_type_attribute)
+					(dom h1 l2)) (domby l1 l2)))
 			(eq t1 mls.net_write_subj_type_attribute)))))
 
 		(mlsconstrain (tcp_socket (accept connect))
 			(or (eq l1 l2)
-			(and (or (and (eq t1 mls.net_read_to_clr_subj_type_attribute) (dom h1 l2)) (eq t1 mls.net_read_subj_type_attribute))
-			(or (or (and (and (eq t1 mls.net_write_ranged_subj_type_attribute) (dom l1 l2)) (domby l1 h2))
-			(and (and (eq t1 mls.net_write_to_clr_subj_type_attribute) (dom h1 l2)) (domby l1 l2)))
+			(and (or (and (eq t1
+				mls.net_read_to_clr_subj_type_attribute)
+					(dom h1 l2)) (eq t1
+						mls.net_read_subj_type_attribute))
+			(or (or (and (and (eq t1
+				mls.net_write_ranged_subj_type_attribute)
+					(dom l1 l2)) (domby l1 h2))
+			(and (and (eq t1
+				mls.net_write_to_clr_subj_type_attribute)
+					(dom h1 l2)) (domby l1 l2)))
 			(eq t1 mls.net_write_subj_type_attribute)))))
 
 		(mlsconstrain (dccp_socket (accept connect))
 			(or (eq l1 l2)
-			(and (or (and (eq t1 mls.net_read_to_clr_subj_type_attribute) (dom h1 l2)) (eq t1 mls.net_read_subj_type_attribute))
-			(or (or (and (and (eq t1 mls.net_write_ranged_subj_type_attribute) (dom l1 l2)) (domby l1 h2))
-			(and (and (eq t1 mls.net_write_to_clr_subj_type_attribute) (dom h1 l2)) (domby l1 l2)))
+			(and (or (and (eq t1
+				mls.net_read_to_clr_subj_type_attribute)
+					(dom h1 l2)) (eq t1
+						mls.net_read_subj_type_attribute))
+			(or (or (and (and (eq t1
+				mls.net_write_ranged_subj_type_attribute)
+					(dom l1 l2)) (domby l1 h2))
+			(and (and (eq t1
+				mls.net_write_to_clr_subj_type_attribute)
+					(dom h1 l2)) (domby l1 l2)))
 			(eq t1 mls.net_write_subj_type_attribute)))))
 
 		(mlsconstrain (udp_socket (accept connect))
 			(or (eq l1 l2)
-			(and (or (and (eq t1 mls.net_read_to_clr_subj_type_attribute) (dom h1 l2)) (eq t1 mls.net_read_subj_type_attribute))
-			(or (or (and (and (eq t1 mls.net_write_ranged_subj_type_attribute) (dom l1 l2)) (domby l1 h2))
-			(and (and (eq t1 mls.net_write_to_clr_subj_type_attribute) (dom h1 l2)) (domby l1 l2)))
+			(and (or (and (eq t1
+				mls.net_read_to_clr_subj_type_attribute)
+					(dom h1 l2)) (eq t1
+						mls.net_read_subj_type_attribute))
+			(or (or (and (and (eq t1
+				mls.net_write_ranged_subj_type_attribute)
+					(dom l1 l2)) (domby l1 h2))
+			(and (and (eq t1
+				mls.net_write_to_clr_subj_type_attribute)
+					(dom h1 l2)) (domby l1 l2)))
 			(eq t1 mls.net_write_subj_type_attribute)))))
 
 		(mlsconstrain (unix_dgram_socket (accept connect))
 			(or (eq l1 l2)
-			(and (or (and (eq t1 mls.net_read_to_clr_subj_type_attribute) (dom h1 l2)) (eq t1 mls.net_read_subj_type_attribute))
-			(or (or (and (and (eq t1 mls.net_write_ranged_subj_type_attribute) (dom l1 l2)) (domby l1 h2))
-			(and (and (eq t1 mls.net_write_to_clr_subj_type_attribute) (dom h1 l2)) (domby l1 l2)))
+			(and (or (and (eq t1
+				mls.net_read_to_clr_subj_type_attribute)
+				(dom h1 l2)) (eq t1
+					mls.net_read_subj_type_attribute))
+			(or (or (and (and (eq t1
+				mls.net_write_ranged_subj_type_attribute)
+					(dom l1 l2)) (domby l1 h2))
+			(and (and (eq t1
+				mls.net_write_to_clr_subj_type_attribute)
+					(dom h1 l2)) (domby l1 l2)))
 			(eq t1 mls.net_write_subj_type_attribute)))))
 
 		(mlsconstrain (unix_stream_socket (accept connect))
 			(or (eq l1 l2)
-			(and (or (and (eq t1 mls.net_read_to_clr_subj_type_attribute) (dom h1 l2)) (eq t1 mls.net_read_subj_type_attribute))
-			(or (or (and (and (eq t1 mls.net_write_ranged_subj_type_attribute) (dom l1 l2)) (domby l1 h2))
-			(and (and (eq t1 mls.net_write_to_clr_subj_type_attribute) (dom h1 l2)) (domby l1 l2)))
+			(and (or (and (eq t1
+				mls.net_read_to_clr_subj_type_attribute)
+					(dom h1 l2)) (eq t1
+						mls.net_read_subj_type_attribute))
+			(or (or (and (and (eq t1
+				mls.net_write_ranged_subj_type_attribute)
+					(dom l1 l2)) (domby l1 h2))
+			(and (and (eq t1
+				mls.net_write_to_clr_subj_type_attribute)
+					(dom h1 l2)) (domby l1 l2)))
 			(eq t1 mls.net_write_subj_type_attribute)))))
 
 		(mlsconstrain (key_socket (read getattr listen accept getopt))
 			(or (or (dom l1 l2)
-			(and (eq t1 mls.net_read_to_clr_subj_type_attribute) (dom h1 l2)))
+			(and (eq t1 mls.net_read_to_clr_subj_type_attribute)
+				(dom h1 l2)))
 			(eq t1 mls.net_read_subj_type_attribute)))
 
-		(mlsconstrain (netlink_audit_socket (read getattr listen accept getopt))
+		(mlsconstrain (netlink_audit_socket (read getattr listen accept
+			getopt))
 			(or (or (dom l1 l2)
-			(and (eq t1 mls.net_read_to_clr_subj_type_attribute) (dom h1 l2)))
+			(and (eq t1 mls.net_read_to_clr_subj_type_attribute)
+				(dom h1 l2)))
 			(eq t1 mls.net_read_subj_type_attribute)))
 
-		(mlsconstrain (netlink_dnrt_socket (read getattr listen accept getopt))
+		(mlsconstrain (netlink_dnrt_socket (read getattr listen accept
+			getopt))
 			(or (or (dom l1 l2)
-			(and (eq t1 mls.net_read_to_clr_subj_type_attribute) (dom h1 l2)))
+			(and (eq t1 mls.net_read_to_clr_subj_type_attribute)
+				(dom h1 l2)))
 			(eq t1 mls.net_read_subj_type_attribute)))
 
-		(mlsconstrain (netlink_nflog_socket (read getattr listen accept getopt))
+		(mlsconstrain (netlink_nflog_socket (read getattr listen accept
+			getopt))
 			(or (or (dom l1 l2)
-			(and (eq t1 mls.net_read_to_clr_subj_type_attribute) (dom h1 l2)))
+			(and (eq t1 mls.net_read_to_clr_subj_type_attribute)
+				(dom h1 l2)))
 			(eq t1 mls.net_read_subj_type_attribute)))
 
-		(mlsconstrain (netlink_route_socket (read getattr listen accept getopt))
+		(mlsconstrain (netlink_route_socket (read getattr listen accept
+			getopt))
 			(or (or (dom l1 l2)
-			(and (eq t1 mls.net_read_to_clr_subj_type_attribute) (dom h1 l2)))
+			(and (eq t1 mls.net_read_to_clr_subj_type_attribute)
+				(dom h1 l2)))
 			(eq t1 mls.net_read_subj_type_attribute)))
 
-		(mlsconstrain (netlink_selinux_socket (read getattr listen accept getopt))
+		(mlsconstrain (netlink_selinux_socket (read getattr listen
+			accept getopt))
 			(or (or (dom l1 l2)
-			(and (eq t1 mls.net_read_to_clr_subj_type_attribute) (dom h1 l2)))
+			(and (eq t1 mls.net_read_to_clr_subj_type_attribute)
+				(dom h1 l2)))
 			(eq t1 mls.net_read_subj_type_attribute)))
 
 		(mlsconstrain (tun_socket (read getattr listen accept getopt))
 			(or (or (dom l1 l2)
-			(and (eq t1 mls.net_read_to_clr_subj_type_attribute) (dom h1 l2)))
+			(and (eq t1 mls.net_read_to_clr_subj_type_attribute)
+				(dom h1 l2)))
 			(eq t1 mls.net_read_subj_type_attribute)))
 
-		(mlsconstrain (netlink_kobject_uevent_socket (read getattr listen accept getopt))
+		(mlsconstrain (netlink_kobject_uevent_socket (read getattr
+			listen accept getopt))
 			(or (or (dom l1 l2)
-			(and (eq t1 mls.net_read_to_clr_subj_type_attribute) (dom h1 l2)))
+			(and (eq t1 mls.net_read_to_clr_subj_type_attribute)
+				(dom h1 l2)))
 			(eq t1 mls.net_read_subj_type_attribute)))
 
-		(mlsconstrain (appletalk_socket (read getattr listen accept getopt))
+		(mlsconstrain (appletalk_socket (read getattr listen accept
+			getopt))
 			(or (or (dom l1 l2)
-			(and (eq t1 mls.net_read_to_clr_subj_type_attribute) (dom h1 l2)))
+			(and (eq t1 mls.net_read_to_clr_subj_type_attribute)
+				(dom h1 l2)))
 			(eq t1 mls.net_read_subj_type_attribute)))
 
-		(mlsconstrain (netlink_tcpdiag_socket (read getattr listen accept getopt))
+		(mlsconstrain (netlink_tcpdiag_socket (read getattr listen
+			accept getopt))
 			(or (or (dom l1 l2)
-			(and (eq t1 mls.net_read_to_clr_subj_type_attribute) (dom h1 l2)))
+			(and (eq t1 mls.net_read_to_clr_subj_type_attribute)
+				(dom h1 l2)))
 			(eq t1 mls.net_read_subj_type_attribute)))
 
-		(mlsconstrain (netlink_xfrm_socket (read getattr listen accept getopt))
+		(mlsconstrain (netlink_xfrm_socket (read getattr listen accept
+			getopt))
 			(or (or (dom l1 l2)
-			(and (eq t1 mls.net_read_to_clr_subj_type_attribute) (dom h1 l2)))
+			(and (eq t1 mls.net_read_to_clr_subj_type_attribute)
+				(dom h1 l2)))
 			(eq t1 mls.net_read_subj_type_attribute)))
 
-		(mlsconstrain (netlink_iscsi_socket (read getattr listen accept getopt))
+		(mlsconstrain (netlink_iscsi_socket (read getattr listen accept
+			getopt))
 			(or (or (dom l1 l2)
-			(and (eq t1 mls.net_read_to_clr_subj_type_attribute) (dom h1 l2)))
+			(and (eq t1 mls.net_read_to_clr_subj_type_attribute)
+				(dom h1 l2)))
 			(eq t1 mls.net_read_subj_type_attribute)))
 
-		(mlsconstrain (netlink_fib_lookup_socket (read getattr listen accept getopt))
+		(mlsconstrain (netlink_fib_lookup_socket (read getattr listen
+			accept getopt))
 			(or (or (dom l1 l2)
-			(and (eq t1 mls.net_read_to_clr_subj_type_attribute) (dom h1 l2)))
+			(and (eq t1 mls.net_read_to_clr_subj_type_attribute)
+				(dom h1 l2)))
 			(eq t1 mls.net_read_subj_type_attribute)))
 
-		(mlsconstrain (netlink_connector_socket (read getattr listen accept getopt))
+		(mlsconstrain (netlink_connector_socket (read getattr listen
+			accept getopt))
 			(or (or (dom l1 l2)
-			(and (eq t1 mls.net_read_to_clr_subj_type_attribute) (dom h1 l2)))
+			(and (eq t1 mls.net_read_to_clr_subj_type_attribute)
+				(dom h1 l2)))
 			(eq t1 mls.net_read_subj_type_attribute)))
 
-		(mlsconstrain (netlink_netfilter_socket (read getattr listen accept getopt))
+		(mlsconstrain (netlink_netfilter_socket (read getattr listen
+			accept getopt))
 			(or (or (dom l1 l2)
-			(and (eq t1 mls.net_read_to_clr_subj_type_attribute) (dom h1 l2)))
+			(and (eq t1 mls.net_read_to_clr_subj_type_attribute)
+				(dom h1 l2)))
 			(eq t1 mls.net_read_subj_type_attribute)))
 
-		(mlsconstrain (netlink_generic_socket (read getattr listen accept getopt))
+		(mlsconstrain (netlink_generic_socket (read getattr listen
+			accept getopt))
 			(or (or (dom l1 l2)
-			(and (eq t1 mls.net_read_to_clr_subj_type_attribute) (dom h1 l2)))
+			(and (eq t1 mls.net_read_to_clr_subj_type_attribute)
+				(dom h1 l2)))
 			(eq t1 mls.net_read_subj_type_attribute)))
 
-		(mlsconstrain (netlink_scsitransport_socket (read getattr listen accept getopt))
+		(mlsconstrain (netlink_scsitransport_socket (read getattr
+			listen accept getopt))
 			(or (or (dom l1 l2)
-			(and (eq t1 mls.net_read_to_clr_subj_type_attribute) (dom h1 l2)))
+			(and (eq t1 mls.net_read_to_clr_subj_type_attribute)
+				(dom h1 l2)))
 			(eq t1 mls.net_read_subj_type_attribute)))
 
-		(mlsconstrain (netlink_rdma_socket (read getattr listen accept getopt))
+		(mlsconstrain (netlink_rdma_socket (read getattr listen accept
+			getopt))
 			(or (or (dom l1 l2)
-			(and (eq t1 mls.net_read_to_clr_subj_type_attribute) (dom h1 l2)))
+			(and (eq t1 mls.net_read_to_clr_subj_type_attribute)
+				(dom h1 l2)))
 			(eq t1 mls.net_read_subj_type_attribute)))
 
-		(mlsconstrain (netlink_crypto_socket (read getattr listen accept getopt))
+		(mlsconstrain (netlink_crypto_socket (read getattr listen
+			accept getopt))
 			(or (or (dom l1 l2)
-			(and (eq t1 mls.net_read_to_clr_subj_type_attribute) (dom h1 l2)))
+			(and (eq t1 mls.net_read_to_clr_subj_type_attribute)
+				(dom h1 l2)))
 			(eq t1 mls.net_read_subj_type_attribute)))
 
-		(mlsconstrain (packet_socket (read getattr listen accept getopt))
+		(mlsconstrain (packet_socket (read getattr listen accept
+			getopt))
 			(or (or (dom l1 l2)
-			(and (eq t1 mls.net_read_to_clr_subj_type_attribute) (dom h1 l2)))
+			(and (eq t1 mls.net_read_to_clr_subj_type_attribute)
+				(dom h1 l2)))
 			(eq t1 mls.net_read_subj_type_attribute)))
 
-		(mlsconstrain (rawip_socket (read getattr listen accept getopt))
+		(mlsconstrain (rawip_socket (read getattr listen accept
+			getopt))
 			(or (or (dom l1 l2)
-			(and (eq t1 mls.net_read_to_clr_subj_type_attribute) (dom h1 l2)))
+			(and (eq t1 mls.net_read_to_clr_subj_type_attribute)
+				(dom h1 l2)))
 			(eq t1 mls.net_read_subj_type_attribute)))
 
 		(mlsconstrain (socket (read getattr listen accept getopt))
 			(or (or (dom l1 l2)
-			(and (eq t1 mls.net_read_to_clr_subj_type_attribute) (dom h1 l2)))
+			(and (eq t1 mls.net_read_to_clr_subj_type_attribute)
+				(dom h1 l2)))
 			(eq t1 mls.net_read_subj_type_attribute)))
 
 		(mlsconstrain (tcp_socket (read getattr listen accept getopt))
 			(or (or (dom l1 l2)
-			(and (eq t1 mls.net_read_to_clr_subj_type_attribute) (dom h1 l2)))
+			(and (eq t1 mls.net_read_to_clr_subj_type_attribute)
+				(dom h1 l2)))
 			(eq t1 mls.net_read_subj_type_attribute)))
 
 		(mlsconstrain (dccp_socket (read getattr listen accept getopt))
 			(or (or (dom l1 l2)
-			(and (eq t1 mls.net_read_to_clr_subj_type_attribute) (dom h1 l2)))
+			(and (eq t1 mls.net_read_to_clr_subj_type_attribute)
+				(dom h1 l2)))
 			(eq t1 mls.net_read_subj_type_attribute)))
 
 		(mlsconstrain (udp_socket (read getattr listen accept getopt))
 			(or (or (dom l1 l2)
-			(and (eq t1 mls.net_read_to_clr_subj_type_attribute) (dom h1 l2)))
+			(and (eq t1 mls.net_read_to_clr_subj_type_attribute)
+				(dom h1 l2)))
 			(eq t1 mls.net_read_subj_type_attribute)))
 
-		(mlsconstrain (unix_dgram_socket (read getattr listen accept getopt))
+		(mlsconstrain (unix_dgram_socket (read getattr listen accept
+			getopt))
 			(or (or (dom l1 l2)
-			(and (eq t1 mls.net_read_to_clr_subj_type_attribute) (dom h1 l2)))
+			(and (eq t1 mls.net_read_to_clr_subj_type_attribute)
+				(dom h1 l2)))
 			(eq t1 mls.net_read_subj_type_attribute)))
 
-		(mlsconstrain (unix_stream_socket (read getattr listen accept getopt))
+		(mlsconstrain (unix_stream_socket (read getattr listen accept
+			getopt))
 			(or (or (dom l1 l2)
-			(and (eq t1 mls.net_read_to_clr_subj_type_attribute) (dom h1 l2)))
+			(and (eq t1 mls.net_read_to_clr_subj_type_attribute)
+				(dom h1 l2)))
 			(eq t1 mls.net_read_subj_type_attribute)))
 
 		(mlsconstrain (netlink_audit_socket (nlmsg_read))
 			(or (or (dom l1 l2)
-			(and (eq t1 mls.net_read_to_clr_subj_type_attribute) (dom h1 l2)))
+			(and (eq t1 mls.net_read_to_clr_subj_type_attribute)
+				(dom h1 l2)))
 			(eq t1 mls.net_read_subj_type_attribute)))
 
 		(mlsconstrain (netlink_route_socket (nlmsg_read))
 			(or (or (dom l1 l2)
-			(and (eq t1 mls.net_read_to_clr_subj_type_attribute) (dom h1 l2)))
+			(and (eq t1 mls.net_read_to_clr_subj_type_attribute)
+				(dom h1 l2)))
 			(eq t1 mls.net_read_subj_type_attribute)))
 
 		(mlsconstrain (netlink_tcpdiag_socket (nlmsg_read))
 			(or (or (dom l1 l2)
-			(and (eq t1 mls.net_read_to_clr_subj_type_attribute) (dom h1 l2)))
+			(and (eq t1 mls.net_read_to_clr_subj_type_attribute)
+				(dom h1 l2)))
 			(eq t1 mls.net_read_subj_type_attribute)))
 
 		(mlsconstrain (netlink_xfrm_socket (nlmsg_read))
 			(or (or (dom l1 l2)
-			(and (eq t1 mls.net_read_to_clr_subj_type_attribute) (dom h1 l2)))
+			(and (eq t1 mls.net_read_to_clr_subj_type_attribute)
+				(dom h1 l2)))
 			(eq t1 mls.net_read_subj_type_attribute)))
 
-		(mlsconstrain (key_socket (write setattr relabelfrom connect setopt shutdown))
+		(mlsconstrain (key_socket (write setattr relabelfrom connect
+			setopt shutdown))
 			(or (or (or (eq l1 l2)
-			(and (and (eq t1 mls.net_write_ranged_subj_type_attribute) (dom l1 l2)) (domby l1 h2)))
-			(and (and (eq t1 mls.net_write_to_clr_subj_type_attribute) (dom h1 l2)) (domby l1 l2)))
+			(and (and (eq t1
+				mls.net_write_ranged_subj_type_attribute)
+					(dom l1 l2)) (domby l1 h2)))
+			(and (and (eq t1
+				mls.net_write_to_clr_subj_type_attribute)
+					(dom h1 l2)) (domby l1 l2)))
 			(eq t1 mls.net_write_subj_type_attribute)))
 
-		(mlsconstrain (netlink_audit_socket (write setattr relabelfrom connect setopt shutdown))
+		(mlsconstrain (netlink_audit_socket (write setattr relabelfrom
+			connect setopt shutdown))
 			(or (or (or (eq l1 l2)
-			(and (and (eq t1 mls.net_write_ranged_subj_type_attribute) (dom l1 l2)) (domby l1 h2)))
-			(and (and (eq t1 mls.net_write_to_clr_subj_type_attribute) (dom h1 l2)) (domby l1 l2)))
+			(and (and (eq t1
+				mls.net_write_ranged_subj_type_attribute)
+					(dom l1 l2)) (domby l1 h2)))
+			(and (and (eq t1
+				mls.net_write_to_clr_subj_type_attribute)
+					(dom h1 l2)) (domby l1 l2)))
 			(eq t1 mls.net_write_subj_type_attribute)))
 
-		(mlsconstrain (netlink_dnrt_socket (write setattr relabelfrom connect setopt shutdown))
+		(mlsconstrain (netlink_dnrt_socket (write setattr relabelfrom
+			connect setopt shutdown))
 			(or (or (or (eq l1 l2)
-			(and (and (eq t1 mls.net_write_ranged_subj_type_attribute) (dom l1 l2)) (domby l1 h2)))
-			(and (and (eq t1 mls.net_write_to_clr_subj_type_attribute) (dom h1 l2)) (domby l1 l2)))
+			(and (and (eq t1
+				mls.net_write_ranged_subj_type_attribute)
+					(dom l1 l2)) (domby l1 h2)))
+			(and (and (eq t1
+				mls.net_write_to_clr_subj_type_attribute)
+					(dom h1 l2)) (domby l1 l2)))
 			(eq t1 mls.net_write_subj_type_attribute)))
 
-		(mlsconstrain (netlink_nflog_socket (write setattr relabelfrom connect setopt shutdown))
+		(mlsconstrain (netlink_nflog_socket (write setattr relabelfrom
+			connect setopt shutdown))
 			(or (or (or (eq l1 l2)
-			(and (and (eq t1 mls.net_write_ranged_subj_type_attribute) (dom l1 l2)) (domby l1 h2)))
-			(and (and (eq t1 mls.net_write_to_clr_subj_type_attribute) (dom h1 l2)) (domby l1 l2)))
+			(and (and (eq t1
+				mls.net_write_ranged_subj_type_attribute)
+					(dom l1 l2)) (domby l1 h2)))
+			(and (and (eq t1
+				mls.net_write_to_clr_subj_type_attribute)
+					(dom h1 l2)) (domby l1 l2)))
 			(eq t1 mls.net_write_subj_type_attribute)))
 
-		(mlsconstrain (netlink_route_socket (write setattr relabelfrom connect setopt shutdown))
+		(mlsconstrain (netlink_route_socket (write setattr relabelfrom
+			connect setopt shutdown))
 			(or (or (or (eq l1 l2)
-			(and (and (eq t1 mls.net_write_ranged_subj_type_attribute) (dom l1 l2)) (domby l1 h2)))
-			(and (and (eq t1 mls.net_write_to_clr_subj_type_attribute) (dom h1 l2)) (domby l1 l2)))
+			(and (and (eq t1
+				mls.net_write_ranged_subj_type_attribute)
+					(dom l1 l2)) (domby l1 h2)))
+			(and (and (eq t1
+				mls.net_write_to_clr_subj_type_attribute)
+					(dom h1 l2)) (domby l1 l2)))
 			(eq t1 mls.net_write_subj_type_attribute)))
 
-		(mlsconstrain (netlink_selinux_socket (write setattr relabelfrom connect setopt shutdown))
+		(mlsconstrain (netlink_selinux_socket (write setattr
+			relabelfrom connect setopt shutdown))
 			(or (or (or (eq l1 l2)
-			(and (and (eq t1 mls.net_write_ranged_subj_type_attribute) (dom l1 l2)) (domby l1 h2)))
-			(and (and (eq t1 mls.net_write_to_clr_subj_type_attribute) (dom h1 l2)) (domby l1 l2)))
+			(and (and (eq t1
+				mls.net_write_ranged_subj_type_attribute)
+					(dom l1 l2)) (domby l1 h2)))
+			(and (and (eq t1
+				mls.net_write_to_clr_subj_type_attribute)
+					(dom h1 l2)) (domby l1 l2)))
 			(eq t1 mls.net_write_subj_type_attribute)))
 
-		(mlsconstrain (tun_socket (write setattr relabelfrom connect setopt shutdown))
+		(mlsconstrain (tun_socket (write setattr relabelfrom connect
+			setopt shutdown))
 			(or (or (or (eq l1 l2)
-			(and (and (eq t1 mls.net_write_ranged_subj_type_attribute) (dom l1 l2)) (domby l1 h2)))
-			(and (and (eq t1 mls.net_write_to_clr_subj_type_attribute) (dom h1 l2)) (domby l1 l2)))
+			(and (and (eq t1
+				mls.net_write_ranged_subj_type_attribute)
+					(dom l1 l2)) (domby l1 h2)))
+			(and (and (eq t1
+				mls.net_write_to_clr_subj_type_attribute)
+					(dom h1 l2)) (domby l1 l2)))
 			(eq t1 mls.net_write_subj_type_attribute)))
 
-		(mlsconstrain (netlink_kobject_uevent_socket (write setattr relabelfrom connect setopt shutdown))
+		(mlsconstrain (netlink_kobject_uevent_socket (write setattr
+			relabelfrom connect setopt shutdown))
 			(or (or (or (eq l1 l2)
-			(and (and (eq t1 mls.net_write_ranged_subj_type_attribute) (dom l1 l2)) (domby l1 h2)))
-			(and (and (eq t1 mls.net_write_to_clr_subj_type_attribute) (dom h1 l2)) (domby l1 l2)))
+			(and (and (eq t1
+				mls.net_write_ranged_subj_type_attribute)
+					(dom l1 l2)) (domby l1 h2)))
+			(and (and (eq t1
+				mls.net_write_to_clr_subj_type_attribute)
+					(dom h1 l2)) (domby l1 l2)))
 			(eq t1 mls.net_write_subj_type_attribute)))
 
-		(mlsconstrain (appletalk_socket (write setattr relabelfrom connect setopt shutdown))
+		(mlsconstrain (appletalk_socket (write setattr relabelfrom
+			connect setopt shutdown))
 			(or (or (or (eq l1 l2)
-			(and (and (eq t1 mls.net_write_ranged_subj_type_attribute) (dom l1 l2)) (domby l1 h2)))
-			(and (and (eq t1 mls.net_write_to_clr_subj_type_attribute) (dom h1 l2)) (domby l1 l2)))
+			(and (and (eq t1
+				mls.net_write_ranged_subj_type_attribute)
+					(dom l1 l2)) (domby l1 h2)))
+			(and (and (eq t1
+				mls.net_write_to_clr_subj_type_attribute)
+					(dom h1 l2)) (domby l1 l2)))
 			(eq t1 mls.net_write_subj_type_attribute)))
 
-		(mlsconstrain (netlink_tcpdiag_socket (write setattr relabelfrom connect setopt shutdown))
+		(mlsconstrain (netlink_tcpdiag_socket (write setattr
+			relabelfrom connect setopt shutdown))
 			(or (or (or (eq l1 l2)
-			(and (and (eq t1 mls.net_write_ranged_subj_type_attribute) (dom l1 l2)) (domby l1 h2)))
-			(and (and (eq t1 mls.net_write_to_clr_subj_type_attribute) (dom h1 l2)) (domby l1 l2)))
+			(and (and (eq t1
+				mls.net_write_ranged_subj_type_attribute)
+					(dom l1 l2)) (domby l1 h2)))
+			(and (and (eq t1
+				mls.net_write_to_clr_subj_type_attribute)
+					(dom h1 l2)) (domby l1 l2)))
 			(eq t1 mls.net_write_subj_type_attribute)))
 
-		(mlsconstrain (netlink_xfrm_socket (write setattr relabelfrom connect setopt shutdown))
+		(mlsconstrain (netlink_xfrm_socket (write setattr relabelfrom
+			connect setopt shutdown))
 			(or (or (or (eq l1 l2)
-			(and (and (eq t1 mls.net_write_ranged_subj_type_attribute) (dom l1 l2)) (domby l1 h2)))
-			(and (and (eq t1 mls.net_write_to_clr_subj_type_attribute) (dom h1 l2)) (domby l1 l2)))
+			(and (and (eq t1
+				mls.net_write_ranged_subj_type_attribute)
+					(dom l1 l2)) (domby l1 h2)))
+			(and (and (eq t1
+				mls.net_write_to_clr_subj_type_attribute)
+					(dom h1 l2)) (domby l1 l2)))
 			(eq t1 mls.net_write_subj_type_attribute)))
 
-		(mlsconstrain (netlink_iscsi_socket (write setattr relabelfrom connect setopt shutdown))
+		(mlsconstrain (netlink_iscsi_socket (write setattr relabelfrom
+			connect setopt shutdown))
 			(or (or (or (eq l1 l2)
-			(and (and (eq t1 mls.net_write_ranged_subj_type_attribute) (dom l1 l2)) (domby l1 h2)))
-			(and (and (eq t1 mls.net_write_to_clr_subj_type_attribute) (dom h1 l2)) (domby l1 l2)))
+			(and (and (eq t1
+				mls.net_write_ranged_subj_type_attribute)
+					(dom l1 l2)) (domby l1 h2)))
+			(and (and (eq t1
+				mls.net_write_to_clr_subj_type_attribute)
+					(dom h1 l2)) (domby l1 l2)))
 			(eq t1 mls.net_write_subj_type_attribute)))
 
-		(mlsconstrain (netlink_fib_lookup_socket (write setattr relabelfrom connect setopt shutdown))
+		(mlsconstrain (netlink_fib_lookup_socket (write setattr
+			relabelfrom connect setopt shutdown))
 			(or (or (or (eq l1 l2)
-			(and (and (eq t1 mls.net_write_ranged_subj_type_attribute) (dom l1 l2)) (domby l1 h2)))
-			(and (and (eq t1 mls.net_write_to_clr_subj_type_attribute) (dom h1 l2)) (domby l1 l2)))
+			(and (and (eq t1
+				mls.net_write_ranged_subj_type_attribute)
+					(dom l1 l2)) (domby l1 h2)))
+			(and (and (eq t1
+				mls.net_write_to_clr_subj_type_attribute)
+					(dom h1 l2)) (domby l1 l2)))
 			(eq t1 mls.net_write_subj_type_attribute)))
 
-		(mlsconstrain (netlink_connector_socket (write setattr relabelfrom connect setopt shutdown))
+		(mlsconstrain (netlink_connector_socket (write setattr
+			relabelfrom connect setopt shutdown))
 			(or (or (or (eq l1 l2)
-			(and (and (eq t1 mls.net_write_ranged_subj_type_attribute) (dom l1 l2)) (domby l1 h2)))
-			(and (and (eq t1 mls.net_write_to_clr_subj_type_attribute) (dom h1 l2)) (domby l1 l2)))
+			(and (and (eq t1
+				mls.net_write_ranged_subj_type_attribute)
+					(dom l1 l2)) (domby l1 h2)))
+			(and (and (eq t1
+				mls.net_write_to_clr_subj_type_attribute)
+					(dom h1 l2)) (domby l1 l2)))
 			(eq t1 mls.net_write_subj_type_attribute)))
 
-		(mlsconstrain (netlink_netfilter_socket (write setattr relabelfrom connect setopt shutdown))
+		(mlsconstrain (netlink_netfilter_socket (write setattr
+			relabelfrom connect setopt shutdown))
 			(or (or (or (eq l1 l2)
-			(and (and (eq t1 mls.net_write_ranged_subj_type_attribute) (dom l1 l2)) (domby l1 h2)))
-			(and (and (eq t1 mls.net_write_to_clr_subj_type_attribute) (dom h1 l2)) (domby l1 l2)))
+			(and (and (eq t1
+				mls.net_write_ranged_subj_type_attribute)
+					(dom l1 l2)) (domby l1 h2)))
+			(and (and (eq t1
+				mls.net_write_to_clr_subj_type_attribute)
+					(dom h1 l2)) (domby l1 l2)))
 			(eq t1 mls.net_write_subj_type_attribute)))
 
-		(mlsconstrain (netlink_generic_socket (write setattr relabelfrom connect setopt shutdown))
+		(mlsconstrain (netlink_generic_socket (write setattr
+			relabelfrom connect setopt shutdown))
 			(or (or (or (eq l1 l2)
-			(and (and (eq t1 mls.net_write_ranged_subj_type_attribute) (dom l1 l2)) (domby l1 h2)))
-			(and (and (eq t1 mls.net_write_to_clr_subj_type_attribute) (dom h1 l2)) (domby l1 l2)))
+			(and (and (eq t1
+				mls.net_write_ranged_subj_type_attribute)
+					(dom l1 l2)) (domby l1 h2)))
+			(and (and (eq t1
+				mls.net_write_to_clr_subj_type_attribute)
+					(dom h1 l2)) (domby l1 l2)))
 			(eq t1 mls.net_write_subj_type_attribute)))
 
-		(mlsconstrain (netlink_scsitransport_socket (write setattr relabelfrom connect setopt shutdown))
+		(mlsconstrain (netlink_scsitransport_socket (write setattr
+			relabelfrom connect setopt shutdown))
 			(or (or (or (eq l1 l2)
-			(and (and (eq t1 mls.net_write_ranged_subj_type_attribute) (dom l1 l2)) (domby l1 h2)))
-			(and (and (eq t1 mls.net_write_to_clr_subj_type_attribute) (dom h1 l2)) (domby l1 l2)))
+			(and (and (eq t1
+				mls.net_write_ranged_subj_type_attribute)
+					(dom l1 l2)) (domby l1 h2)))
+			(and (and (eq t1
+				mls.net_write_to_clr_subj_type_attribute)
+					(dom h1 l2)) (domby l1 l2)))
 			(eq t1 mls.net_write_subj_type_attribute)))
 
-		(mlsconstrain (netlink_rdma_socket (write setattr relabelfrom connect setopt shutdown))
+		(mlsconstrain (netlink_rdma_socket (write setattr relabelfrom
+			connect setopt shutdown))
 			(or (or (or (eq l1 l2)
-			(and (and (eq t1 mls.net_write_ranged_subj_type_attribute) (dom l1 l2)) (domby l1 h2)))
-			(and (and (eq t1 mls.net_write_to_clr_subj_type_attribute) (dom h1 l2)) (domby l1 l2)))
+			(and (and (eq t1
+				mls.net_write_ranged_subj_type_attribute)
+					(dom l1 l2)) (domby l1 h2)))
+			(and (and (eq t1
+				mls.net_write_to_clr_subj_type_attribute)
+					(dom h1 l2)) (domby l1 l2)))
 			(eq t1 mls.net_write_subj_type_attribute)))
 
-		(mlsconstrain (netlink_crypto_socket (write setattr relabelfrom connect setopt shutdown))
+		(mlsconstrain (netlink_crypto_socket (write setattr relabelfrom
+			connect setopt shutdown))
 			(or (or (or (eq l1 l2)
-			(and (and (eq t1 mls.net_write_ranged_subj_type_attribute) (dom l1 l2)) (domby l1 h2)))
-			(and (and (eq t1 mls.net_write_to_clr_subj_type_attribute) (dom h1 l2)) (domby l1 l2)))
+			(and (and (eq t1
+				mls.net_write_ranged_subj_type_attribute)
+					(dom l1 l2)) (domby l1 h2)))
+			(and (and (eq t1
+				mls.net_write_to_clr_subj_type_attribute)
+					(dom h1 l2)) (domby l1 l2)))
 			(eq t1 mls.net_write_subj_type_attribute)))
 
-		(mlsconstrain (packet_socket (write setattr relabelfrom connect setopt shutdown))
+		(mlsconstrain (packet_socket (write setattr relabelfrom connect
+			setopt shutdown))
 			(or (or (or (eq l1 l2)
-			(and (and (eq t1 mls.net_write_ranged_subj_type_attribute) (dom l1 l2)) (domby l1 h2)))
-			(and (and (eq t1 mls.net_write_to_clr_subj_type_attribute) (dom h1 l2)) (domby l1 l2)))
+			(and (and (eq t1
+				mls.net_write_ranged_subj_type_attribute)
+					(dom l1 l2)) (domby l1 h2)))
+			(and (and (eq t1
+				mls.net_write_to_clr_subj_type_attribute)
+					(dom h1 l2)) (domby l1 l2)))
 			(eq t1 mls.net_write_subj_type_attribute)))
 
-		(mlsconstrain (rawip_socket (write setattr relabelfrom connect setopt shutdown))
+		(mlsconstrain (rawip_socket (write setattr relabelfrom connect
+			setopt shutdown))
 			(or (or (or (eq l1 l2)
-			(and (and (eq t1 mls.net_write_ranged_subj_type_attribute) (dom l1 l2)) (domby l1 h2)))
-			(and (and (eq t1 mls.net_write_to_clr_subj_type_attribute) (dom h1 l2)) (domby l1 l2)))
+			(and (and (eq t1
+				mls.net_write_ranged_subj_type_attribute)
+					(dom l1 l2)) (domby l1 h2)))
+			(and (and (eq t1
+				mls.net_write_to_clr_subj_type_attribute)
+					(dom h1 l2)) (domby l1 l2)))
 			(eq t1 mls.net_write_subj_type_attribute)))
 
-		(mlsconstrain (socket (write setattr relabelfrom connect setopt shutdown))
+		(mlsconstrain (socket (write setattr relabelfrom connect setopt
+			shutdown))
 			(or (or (or (eq l1 l2)
-			(and (and (eq t1 mls.net_write_ranged_subj_type_attribute) (dom l1 l2)) (domby l1 h2)))
-			(and (and (eq t1 mls.net_write_to_clr_subj_type_attribute) (dom h1 l2)) (domby l1 l2)))
+			(and (and (eq t1
+				mls.net_write_ranged_subj_type_attribute)
+					(dom l1 l2)) (domby l1 h2)))
+			(and (and (eq t1
+				mls.net_write_to_clr_subj_type_attribute)
+					(dom h1 l2)) (domby l1 l2)))
 			(eq t1 mls.net_write_subj_type_attribute)))
 
-		(mlsconstrain (tcp_socket (write setattr relabelfrom connect setopt shutdown))
+		(mlsconstrain (tcp_socket (write setattr relabelfrom connect
+			setopt shutdown))
 			(or (or (or (eq l1 l2)
-			(and (and (eq t1 mls.net_write_ranged_subj_type_attribute) (dom l1 l2)) (domby l1 h2)))
-			(and (and (eq t1 mls.net_write_to_clr_subj_type_attribute) (dom h1 l2)) (domby l1 l2)))
+			(and (and (eq t1
+				mls.net_write_ranged_subj_type_attribute)
+					(dom l1 l2)) (domby l1 h2)))
+			(and (and (eq t1
+				mls.net_write_to_clr_subj_type_attribute)
+					(dom h1 l2)) (domby l1 l2)))
 			(eq t1 mls.net_write_subj_type_attribute)))
 
-		(mlsconstrain (dccp_socket (write setattr relabelfrom connect setopt shutdown))
+		(mlsconstrain (dccp_socket (write setattr relabelfrom connect
+			setopt shutdown))
 			(or (or (or (eq l1 l2)
-			(and (and (eq t1 mls.net_write_ranged_subj_type_attribute) (dom l1 l2)) (domby l1 h2)))
-			(and (and (eq t1 mls.net_write_to_clr_subj_type_attribute) (dom h1 l2)) (domby l1 l2)))
+			(and (and (eq t1
+				mls.net_write_ranged_subj_type_attribute)
+					(dom l1 l2)) (domby l1 h2)))
+			(and (and (eq t1
+				mls.net_write_to_clr_subj_type_attribute)
+					(dom h1 l2)) (domby l1 l2)))
 			(eq t1 mls.net_write_subj_type_attribute)))
 
-		(mlsconstrain (udp_socket (write setattr relabelfrom connect setopt shutdown))
+		(mlsconstrain (udp_socket (write setattr relabelfrom connect
+			setopt shutdown))
 			(or (or (or (eq l1 l2)
-			(and (and (eq t1 mls.net_write_ranged_subj_type_attribute) (dom l1 l2)) (domby l1 h2)))
-			(and (and (eq t1 mls.net_write_to_clr_subj_type_attribute) (dom h1 l2)) (domby l1 l2)))
+			(and (and (eq t1
+				mls.net_write_ranged_subj_type_attribute)
+					(dom l1 l2)) (domby l1 h2)))
+			(and (and (eq t1
+				mls.net_write_to_clr_subj_type_attribute)
+					(dom h1 l2)) (domby l1 l2)))
 			(eq t1 mls.net_write_subj_type_attribute)))
 
-		(mlsconstrain (unix_dgram_socket (write setattr relabelfrom connect setopt shutdown))
+		(mlsconstrain (unix_dgram_socket (write setattr relabelfrom
+			connect setopt shutdown))
 			(or (or (or (eq l1 l2)
-			(and (and (eq t1 mls.net_write_ranged_subj_type_attribute) (dom l1 l2)) (domby l1 h2)))
-			(and (and (eq t1 mls.net_write_to_clr_subj_type_attribute) (dom h1 l2)) (domby l1 l2)))
+			(and (and (eq t1
+				mls.net_write_ranged_subj_type_attribute)
+					(dom l1 l2)) (domby l1 h2)))
+			(and (and (eq t1
+				mls.net_write_to_clr_subj_type_attribute)
+					(dom h1 l2)) (domby l1 l2)))
 			(eq t1 mls.net_write_subj_type_attribute)))
 
-		(mlsconstrain (unix_stream_socket (write setattr relabelfrom connect setopt shutdown))
+		(mlsconstrain (unix_stream_socket (write setattr relabelfrom
+			connect setopt shutdown))
 			(or (or (or (eq l1 l2)
-			(and (and (eq t1 mls.net_write_ranged_subj_type_attribute) (dom l1 l2)) (domby l1 h2)))
-			(and (and (eq t1 mls.net_write_to_clr_subj_type_attribute) (dom h1 l2)) (domby l1 l2)))
+			(and (and (eq t1
+				mls.net_write_ranged_subj_type_attribute)
+					(dom l1 l2)) (domby l1 h2)))
+			(and (and (eq t1
+				mls.net_write_to_clr_subj_type_attribute)
+					(dom h1 l2)) (domby l1 l2)))
 			(eq t1 mls.net_write_subj_type_attribute)))
 
 		(mlsconstrain (rawip_socket (recvfrom))
 			(or (or (eq l1 l2)
-			(and (eq t1 mls.net_read_to_clr_subj_type_attribute) (dom h1 l2)))
+			(and (eq t1 mls.net_read_to_clr_subj_type_attribute)
+				(dom h1 l2)))
 			(eq t1 mls.net_read_subj_type_attribute)))
 
 		(mlsconstrain (tcp_socket (recvfrom))
 			(or (or (eq l1 l2)
-			(and (eq t1 mls.net_read_to_clr_subj_type_attribute) (dom h1 l2)))
+			(and (eq t1 mls.net_read_to_clr_subj_type_attribute)
+				(dom h1 l2)))
 			(eq t1 mls.net_read_subj_type_attribute)))
 
 		(mlsconstrain (dccp_socket (recvfrom))
 			(or (or (eq l1 l2)
-			(and (eq t1 mls.net_read_to_clr_subj_type_attribute) (dom h1 l2)))
+			(and (eq t1 mls.net_read_to_clr_subj_type_attribute)
+				(dom h1 l2)))
 			(eq t1 mls.net_read_subj_type_attribute)))
 
 		(mlsconstrain (udp_socket (recvfrom))
 			(or (or (eq l1 l2)
-			(and (eq t1 mls.net_read_to_clr_subj_type_attribute) (dom h1 l2)))
+			(and (eq t1 mls.net_read_to_clr_subj_type_attribute)
+				(dom h1 l2)))
 			(eq t1 mls.net_read_subj_type_attribute)))
 
 		(mlsconstrain (unix_stream_socket (connectto))
 			(or (or (or (or (eq l1 l2)
-			(and (and (eq t1 mls.net_write_ranged_subj_type_attribute) (dom l1 l2)) (domby l1 h2)))
-			(and (and (eq t1 mls.net_write_to_clr_subj_type_attribute) (dom h1 l2)) (domby l1 l2)))
-			(eq t1 mls.net_write_subj_type_attribute)) (eq t2 mls.trusted_obj_type_attribute)))
+			(and (and (eq t1
+				mls.net_write_ranged_subj_type_attribute)
+					(dom l1 l2)) (domby l1 h2)))
+			(and (and (eq t1
+				mls.net_write_to_clr_subj_type_attribute)
+					(dom h1 l2)) (domby l1 l2)))
+			(eq t1 mls.net_write_subj_type_attribute))
+				(eq t2 mls.trusted_obj_type_attribute)))
 
 		(mlsconstrain (unix_dgram_socket (sendto))
 			(or (or (or (or (eq l1 l2)
-			(and (and (eq t1 mls.net_write_ranged_subj_type_attribute) (dom l1 l2)) (domby l1 h2)))
-			(and (and (eq t1 mls.net_write_to_clr_subj_type_attribute) (dom h1 l2)) (domby l1 l2)))
-			(eq t1 mls.net_write_subj_type_attribute)) (eq t2 mls.trusted_obj_type_attribute)))
+			(and (and (eq t1
+				mls.net_write_ranged_subj_type_attribute)
+					(dom l1 l2)) (domby l1 h2)))
+			(and (and (eq t1
+				mls.net_write_to_clr_subj_type_attribute)
+					(dom h1 l2)) (domby l1 l2)))
+			(eq t1 mls.net_write_subj_type_attribute))
+				(eq t2 mls.trusted_obj_type_attribute)))
 
 		(mlsconstrain (ipc (getattr read unix_read))
 			(or (or (dom l1 l2)
-			(and (eq t1 mls.ipc_read_to_clr_subj_type_attribute) (dom h1 l2)))
+			(and (eq t1 mls.ipc_read_to_clr_subj_type_attribute)
+				(dom h1 l2)))
 			(eq t1 mls.ipc_read_subj_type_attribute)))
 
 		(mlsconstrain (msgq (getattr read unix_read))
 			(or (or (dom l1 l2)
-			(and (eq t1 mls.ipc_read_to_clr_subj_type_attribute) (dom h1 l2)))
+			(and (eq t1 mls.ipc_read_to_clr_subj_type_attribute)
+				(dom h1 l2)))
 			(eq t1 mls.ipc_read_subj_type_attribute)))
 
 		(mlsconstrain (sem (getattr read unix_read))
 			(or (or (dom l1 l2)
-			(and (eq t1 mls.ipc_read_to_clr_subj_type_attribute) (dom h1 l2)))
+			(and (eq t1 mls.ipc_read_to_clr_subj_type_attribute)
+				(dom h1 l2)))
 			(eq t1 mls.ipc_read_subj_type_attribute)))
 
 		(mlsconstrain (shm (getattr read unix_read))
 			(or (or (dom l1 l2)
-			(and (eq t1 mls.ipc_read_to_clr_subj_type_attribute) (dom h1 l2)))
+			(and (eq t1 mls.ipc_read_to_clr_subj_type_attribute)
+				(dom h1 l2)))
 			(eq t1 mls.ipc_read_subj_type_attribute)))
 
 		(mlsconstrain (msg (receive))
 			(or (or (dom l1 l2)
-			(and (eq t1 mls.ipc_read_to_clr_subj_type_attribute) (dom h1 l2)))
+			(and (eq t1 mls.ipc_read_to_clr_subj_type_attribute)
+				(dom h1 l2)))
 			(eq t1 mls.ipc_read_subj_type_attribute)))
 
 		(mlsconstrain (ipc (create destroy setattr write unix_write))
 			(or (or (eq l1 l2)
-			(and (and (eq t1 mls.ipc_write_to_clr_subj_type_attribute) (dom h1 l2)) (domby l1 l2)))
+			(and (and (eq t1
+				mls.ipc_write_to_clr_subj_type_attribute)
+					(dom h1 l2)) (domby l1 l2)))
 			(eq t1 mls.ipc_write_subj_type_attribute)))
 
 		(mlsconstrain (msgq (create destroy setattr write unix_write))
 			(or (or (eq l1 l2)
-			(and (and (eq t1 mls.ipc_write_to_clr_subj_type_attribute) (dom h1 l2)) (domby l1 l2)))
+			(and (and (eq t1
+				mls.ipc_write_to_clr_subj_type_attribute)
+					(dom h1 l2)) (domby l1 l2)))
 			(eq t1 mls.ipc_write_subj_type_attribute)))
 
 		(mlsconstrain (sem (create destroy setattr write unix_write))
 			(or (or (eq l1 l2)
-			(and (and (eq t1 mls.ipc_write_to_clr_subj_type_attribute) (dom h1 l2)) (domby l1 l2)))
+			(and (and (eq t1
+				mls.ipc_write_to_clr_subj_type_attribute)
+					(dom h1 l2)) (domby l1 l2)))
 			(eq t1 mls.ipc_write_subj_type_attribute)))
 
 		(mlsconstrain (shm (create destroy setattr write unix_write))
 			(or (or (eq l1 l2)
-			(and (and (eq t1 mls.ipc_write_to_clr_subj_type_attribute) (dom h1 l2)) (domby l1 l2)))
+			(and (and (eq t1
+				mls.ipc_write_to_clr_subj_type_attribute)
+					(dom h1 l2)) (domby l1 l2)))
 			(eq t1 mls.ipc_write_subj_type_attribute)))
 
 		(mlsconstrain (msgq (enqueue))
 			(or (or (eq l1 l2)
-			(and (and (eq t1 mls.ipc_write_to_clr_subj_type_attribute) (dom h1 l2)) (domby l1 l2)))
+			(and (and (eq t1
+				mls.ipc_write_to_clr_subj_type_attribute)
+					(dom h1 l2)) (domby l1 l2)))
 			(eq t1 mls.ipc_write_subj_type_attribute)))
 
 		(mlsconstrain (shm (lock))
 			(or (or (eq l1 l2)
-			(and (and (eq t1 mls.ipc_write_to_clr_subj_type_attribute) (dom h1 l2)) (domby l1 l2)))
+			(and (and (eq t1
+				mls.ipc_write_to_clr_subj_type_attribute)
+					(dom h1 l2)) (domby l1 l2)))
 			(eq t1 mls.ipc_write_subj_type_attribute)))
 
 		(mlsconstrain (msg (send))
 			(or (or (eq l1 l2)
-			(and (and (eq t1 mls.ipc_write_to_clr_subj_type_attribute) (dom h1 l2)) (domby l1 l2)))
+			(and (and (eq t1
+				mls.ipc_write_to_clr_subj_type_attribute)
+					(dom h1 l2)) (domby l1 l2)))
 			(eq t1 mls.ipc_write_subj_type_attribute)))
 
 		(mlsconstrain (fd (use))
-			(or (or (eq l1 l2) (eq t1 mls.fd_use_subj_type_attribute))
+			(or (or (eq l1 l2) (eq t1
+				mls.fd_use_subj_type_attribute))
 			(eq t2 mls.fd_share_subj_type_attribute)))
 
 		(mlsconstrain (netif (ingress))
 			(or (or (and (dom l1 l2) (domby l1 h2))
-			(eq t1 mls.net_inbound_subj_type_attribute)) (eq t1 unlabeled.isid)))
+			(eq t1 mls.net_inbound_subj_type_attribute))
+				(eq t1 unlabeled.isid)))
 
 		(mlsconstrain (netif (egress))
 			(or (and (dom l1 l2) (domby l1 h2))
@@ -952,7 +1516,8 @@
 
 		(mlsconstrain (node (recvfrom))
 			(or (or (and (dom l1 l2) (domby l1 h2))
-			(eq t1 mls.net_inbound_subj_type_attribute)) (eq t1 unlabeled.isid)))
+			(eq t1 mls.net_inbound_subj_type_attribute))
+				(eq t1 unlabeled.isid)))
 
 		(mlsconstrain (node (sendto))
 			(or (and (dom l1 l2) (domby l1 h2))
@@ -960,54 +1525,73 @@
 
 		(mlsconstrain (packet (forward_in))
 			(or (or (and (dom l1 l2) (domby l1 h2))
-			(eq t1 mls.net_inbound_subj_type_attribute)) (eq t1 unlabeled.isid)))
+			(eq t1 mls.net_inbound_subj_type_attribute))
+				(eq t1 unlabeled.isid)))
 
 		(mlsconstrain (packet (forward_out))
 			(or (or (and (dom l1 l2) (domby l1 h2))
-			(eq t1 mls.net_outbound_subj_type_attribute)) (eq t1 unlabeled.isid)))
+			(eq t1 mls.net_outbound_subj_type_attribute))
+				(eq t1 unlabeled.isid)))
 
 		(mlsconstrain (packet (recv))
 			(or (or (dom l1 l2)
-			(and (eq t1 mls.net_read_to_clr_subj_type_attribute) (dom h1 l2)))
+			(and (eq t1 mls.net_read_to_clr_subj_type_attribute)
+				(dom h1 l2)))
 			(eq t1 mls.net_read_subj_type_attribute)))
 
 		(mlsconstrain (peer (recv))
 			(or (or (dom l1 l2)
-			(and (eq t1 mls.net_read_to_clr_subj_type_attribute) (dom h1 l2)))
+			(and (eq t1 mls.net_read_to_clr_subj_type_attribute)
+				(dom h1 l2)))
 			(eq t1 mls.net_read_subj_type_attribute)))
 
 		(mlsconstrain (process (transition))
 			(and (dom h1 h2)
-			(or (or (eq l1 l2) (eq t1 mls.proc_set_sl_subj_type_attribute))
-			(and (eq t1 mls.priv_range_trans_subj_type_attribute) (eq t2 mls.range_trans_subj_type_attribute)))))
+			(or (or (eq l1 l2) (eq t1
+				mls.proc_set_sl_subj_type_attribute))
+			(and (eq t1 mls.priv_range_trans_subj_type_attribute)
+				(eq t2 mls.range_trans_subj_type_attribute)))))
 
 		(mlsconstrain (process (dyntransition))
 			(and (dom h1 h2)
-			(or (eq l1 l2) (eq t1 mls.proc_set_sl_subj_type_attribute))))
+			(or (eq l1 l2) (eq t1
+				mls.proc_set_sl_subj_type_attribute))))
 
-		(mlsconstrain (process (getsched getsession getpgid getcap getattr ptrace share))
+		(mlsconstrain (process (getsched getsession getpgid getcap
+			getattr ptrace share))
 			(or (or (dom l1 l2)
-			(and (eq t1 mls.proc_read_to_clr_subj_type_attribute) (dom h1 l2)))
+			(and (eq t1 mls.proc_read_to_clr_subj_type_attribute)
+				(dom h1 l2)))
 			(eq t1 mls.proc_read_subj_type_attribute)))
 
-		(mlsconstrain (process (sigkill sigstop signal setsched setpgid setcap setexec setfscreate setcurrent ptrace share))
+		(mlsconstrain (process (sigkill sigstop signal setsched setpgid
+			setcap setexec setfscreate setcurrent ptrace share))
 			(or (or (eq l1 l2)
-			(and (and (eq t1 mls.proc_write_to_clr_subj_type_attribute) (dom h1 l2)) (domby l1 l2)))
+			(and (and (eq t1
+				mls.proc_write_to_clr_subj_type_attribute)
+					(dom h1 l2)) (domby l1 l2)))
 			(eq t1 mls.proc_write_subj_type_attribute)))
 
-		(mlsconstrain (key (create link read search setattr view write))
+		(mlsconstrain (key (create link read search setattr view
+			write))
 			(or (or (eq l1 l2)
-			(and (and (eq t1 mls.proc_write_to_clr_subj_type_attribute) (dom h1 l2)) (domby l1 l2)))
+			(and (and (eq t1
+				mls.proc_write_to_clr_subj_type_attribute)
+					(dom h1 l2)) (domby l1 l2)))
 			(eq t1 mls.proc_write_subj_type_attribute)))
 
 		(mlsconstrain (association (recvfrom))
 			(or (or (or (and (dom l1 l2) (domby l1 h2))
-			(and (eq t1 mls.net_read_to_clr_subj_type_attribute) (dom h1 l2)))
-			(eq t1 mls.net_read_subj_type_attribute)) (eq t2 unlabeled.isid)))
+			(and (eq t1 mls.net_read_to_clr_subj_type_attribute)
+				(dom h1 l2)))
+			(eq t1 mls.net_read_subj_type_attribute))
+				(eq t2 unlabeled.isid)))
 
 		(mlsconstrain (association (sendto))
 			(or (or (eq l1 l2)
-			(and (and (eq t1 mls.net_write_ranged_subj_type_attribute) (dom l1 l2)) (domby l1 h2)))
+			(and (and (eq t1
+				mls.net_write_ranged_subj_type_attribute)
+					(dom l1 l2)) (domby l1 h2)))
 			(eq t2 unlabeled.isid)))
 
 		(mlsconstrain (association (polmatch))

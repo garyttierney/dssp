@@ -1,27 +1,35 @@
-(class security (compute_av compute_create compute_member check_context load_policy compute_relabel compute_user
-	setenforce setbool setsecparam setcheckreqprot read_policy))
+(class security (compute_av compute_create compute_member check_context
+	load_policy compute_relabel compute_user setenforce setbool setsecparam
+	setcheckreqprot read_policy))
 
-(class process (fork transition sigchld sigkill sigstop signull signal ptrace getsched setsched getsession getpgid setpgid getcap
-	setcap share getattr setexec setfscreate noatsecure siginh setrlimit rlimitinh dyntransition setcurrent execmem execstack
-	execheap setkeycreate setsockcreate))
+(class process (fork transition sigchld sigkill sigstop signull signal ptrace
+	getsched setsched getsession getpgid setpgid getcap setcap share
+	getattr setexec setfscreate noatsecure siginh setrlimit rlimitinh
+	dyntransition setcurrent execmem execstack execheap setkeycreate
+	setsockcreate))
 
 (class system (ipc_info syslog_read syslog_mod syslog_console
-	module_request halt reboot status start stop undefined enable disable reload))
+	module_request halt reboot status start stop undefined enable disable
+	reload))
 
-(class capability (chown dac_override dac_read_search fowner fsetid kill setgid setuid setpcap linux_immutable net_bind_service
-	net_broadcast net_admin net_raw ipc_lock ipc_owner sys_module sys_rawio sys_chroot sys_ptrace sys_pacct sys_admin sys_boot
-	sys_nice sys_resource sys_time sys_tty_config mknod lease audit_write audit_control setfcap))
+(class capability (chown dac_override dac_read_search fowner fsetid kill setgid
+	setuid setpcap linux_immutable net_bind_service net_broadcast net_admin
+	net_raw ipc_lock ipc_owner sys_module sys_rawio sys_chroot sys_ptrace
+	sys_pacct sys_admin sys_boot sys_nice sys_resource sys_time
+	sys_tty_config mknod lease audit_write audit_control setfcap))
 
-(class filesystem (mount remount unmount getattr relabelfrom
-	relabelto associate quotamod quotaget))
+(class filesystem (mount remount unmount getattr relabelfrom relabelto
+	associate quotamod quotaget))
 
-(common file (ioctl read write create getattr setattr lock relabelfrom relabelto append unlink link rename execute quotaon mounton))
+(common file (ioctl read write create getattr setattr lock relabelfrom
+	relabelto append unlink link rename execute quotaon mounton))
 
 (classcommon file file)
 (class file (audit_access open execmod execute_no_trans entrypoint))
 
 (classcommon dir file)
-(class dir (audit_access open execmod add_name remove_name reparent search rmdir))
+(class dir (audit_access open execmod add_name remove_name reparent search
+	rmdir))
 
 (class fd (use))
 
@@ -40,8 +48,9 @@
 (classcommon fifo_file file)
 (class fifo_file (audit_access open execmod))
 
-(common socket (ioctl read write create getattr setattr lock relabelfrom relabelto append bind connect listen accept getopt
-	setopt shutdown recvfrom sendto name_bind))
+(common socket (ioctl read write create getattr setattr lock relabelfrom
+	relabelto append bind connect listen accept getopt setopt shutdown
+	recvfrom sendto name_bind))
 
 (classcommon socket socket)
 (class socket ())
@@ -71,7 +80,8 @@
 (classcommon unix_dgram_socket socket)
 (class unix_dgram_socket ())
 
-(common ipc (create destroy getattr setattr read write associate unix_read unix_write))
+(common ipc (create destroy getattr setattr read write associate unix_read
+	unix_write))
 
 (classcommon sem ipc)
 (class sem ())
@@ -103,7 +113,8 @@
 (class netlink_selinux_socket ())
 
 (classcommon netlink_audit_socket socket)
-(class netlink_audit_socket (nlmsg_read nlmsg_write nlmsg_relay nlmsg_readpriv nlmsg_tty_audit))
+(class netlink_audit_socket (nlmsg_read nlmsg_write nlmsg_relay nlmsg_readpriv
+	nlmsg_tty_audit))
 
 (classcommon netlink_dnrt_socket socket)
 (class netlink_dnrt_socket ())
@@ -127,7 +138,8 @@
 
 (class peer (recv))
 
-(class capability2 (audit_read mac_override mac_admin syslog wake_alarm block_suspend))
+(class capability2 (audit_read mac_override mac_admin syslog wake_alarm
+	block_suspend))
 
 (class kernel_service (use_as_override create_files_as))
 
@@ -163,10 +175,15 @@
 (classcommon netlink_crypto_socket socket)
 (class netlink_crypto_socket ())
 
-(classorder (security process system capability filesystem file dir fd lnk_file chr_file blk_file sock_file fifo_file socket
-	tcp_socket udp_socket rawip_socket node netif packet_socket key_socket unix_stream_socket unix_dgram_socket
-	sem msg msgq shm ipc netlink_route_socket netlink_tcpdiag_socket netlink_nflog_socket
-	netlink_xfrm_socket netlink_selinux_socket netlink_audit_socket netlink_dnrt_socket association
-	netlink_kobject_uevent_socket appletalk_socket packet key dccp_socket memprotect peer capability2 kernel_service
-	tun_socket service binder netlink_iscsi_socket netlink_fib_lookup_socket netlink_connector_socket netlink_netfilter_socket
-	netlink_generic_socket netlink_scsitransport_socket netlink_rdma_socket netlink_crypto_socket))
+(classorder (security process system capability filesystem file dir fd lnk_file
+	chr_file blk_file sock_file fifo_file socket tcp_socket udp_socket
+	rawip_socket node netif packet_socket key_socket unix_stream_socket
+	unix_dgram_socket sem msg msgq shm ipc netlink_route_socket
+	netlink_tcpdiag_socket netlink_nflog_socket netlink_xfrm_socket
+	netlink_selinux_socket netlink_audit_socket netlink_dnrt_socket
+	association netlink_kobject_uevent_socket appletalk_socket packet key
+	dccp_socket memprotect peer capability2 kernel_service tun_socket
+	service binder netlink_iscsi_socket netlink_fib_lookup_socket
+	netlink_connector_socket netlink_netfilter_socket
+	netlink_generic_socket netlink_scsitransport_socket netlink_rdma_socket
+	netlink_crypto_socket))

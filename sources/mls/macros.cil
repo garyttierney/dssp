@@ -18,7 +18,8 @@
 		(typeattributeset file_downgrade_subj_type_attribute ARG1))
 
 	(macro file_write_in_range_subj_type ((type ARG1))
-		(typeattributeset file_write_in_range_subj_type_attribute ARG1))
+		(typeattributeset file_write_in_range_subj_type_attribute
+			ARG1))
 
 	(macro net_read_subj_type ((type ARG1))
 		(typeattributeset net_read_subj_type_attribute ARG1))

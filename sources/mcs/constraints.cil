@@ -1,94 +1,124 @@
 (tunableif enable_mcs
 	(true
-		(mlsconstrain (file (read ioctl lock execute execute_no_trans write setattr append unlink rename relabelfrom))
-			(or (dom h1 h2) (neq t1 mcs.constrained_subj_type_attribute)))
+		(mlsconstrain (file (read ioctl lock execute execute_no_trans
+			write setattr append unlink rename relabelfrom))
+			(or (dom h1 h2) (neq t1
+				mcs.constrained_subj_type_attribute)))
 
 		(mlsconstrain (file (create relabelto))
 			(or (neq t1 mcs.constrained_subj_type_attribute)
 			(and (dom h1 h2) (eq l2 h2))))
 
-		(mlsconstrain (dir (search read ioctl lock write setattr append unlink rename add_name remove_name relabelfrom))
-			(or (dom h1 h2) (neq t1 mcs.constrained_subj_type_attribute)))
+		(mlsconstrain (dir (search read ioctl lock write setattr append
+			unlink rename add_name remove_name relabelfrom))
+			(or (dom h1 h2) (neq t1
+				mcs.constrained_subj_type_attribute)))
 
 		(mlsconstrain (dir (create relabelto))
 			(or (neq t1 mcs.constrained_subj_type_attribute)
 			(and (dom h1 h2) (eq l2 h2))))
 
 		(mlsconstrain (fifo_file (open relabelfrom))
-			(or (dom h1 h2) (neq t1 mcs.constrained_subj_type_attribute)))
+			(or (dom h1 h2) (neq t1
+				mcs.constrained_subj_type_attribute)))
 
 		(mlsconstrain (fifo_file (create relabelto))
 			(or (neq t1 mcs.constrained_subj_type_attribute)
 			(and (dom h1 h2) (eq l2 h2))))
 
-		(mlsconstrain (lnk_file (getattr read ioctl write setattr relabelfrom))
-			(or (dom h1 h2) (neq t1 mcs.constrained_subj_type_attribute)))
+		(mlsconstrain (lnk_file (getattr read ioctl write setattr
+			relabelfrom))
+			(or (dom h1 h2) (neq t1
+				mcs.constrained_subj_type_attribute)))
 
 		(mlsconstrain (lnk_file (create relabelto))
 			(or (neq t1 mcs.constrained_subj_type_attribute)
 			(and (dom h1 h2) (eq l2 h2))))
 
-		(mlsconstrain (sock_file (getattr read ioctl write setattr relabelfrom))
-			(or (dom h1 h2) (neq t1 mcs.constrained_subj_type_attribute)))
+		(mlsconstrain (sock_file (getattr read ioctl write setattr
+			relabelfrom))
+			(or (dom h1 h2) (neq t1
+				mcs.constrained_subj_type_attribute)))
 
 		(mlsconstrain (sock_file (create relabelto))
 			(or (neq t1 mcs.constrained_subj_type_attribute)
 			(and (dom h1 h2) (eq l2 h2))))
 
-		(mlsconstrain (blk_file (getattr read ioctl write setattr relabelfrom))
-			(or (dom h1 h2) (neq t1 mcs.constrained_subj_type_attribute)))
+		(mlsconstrain (blk_file (getattr read ioctl write setattr
+			relabelfrom))
+			(or (dom h1 h2) (neq t1
+				mcs.constrained_subj_type_attribute)))
 
 		(mlsconstrain (blk_file (create relabelto))
 			(or (neq t1 mcs.constrained_subj_type_attribute)
 			(and (dom h1 h2) (eq l2 h2))))
 
-		(mlsconstrain (chr_file (getattr read ioctl write setattr relabelfrom))
-			(or (dom h1 h2) (neq t1 mcs.constrained_subj_type_attribute)))
+		(mlsconstrain (chr_file (getattr read ioctl write setattr
+			relabelfrom))
+			(or (dom h1 h2) (neq t1
+				mcs.constrained_subj_type_attribute)))
 
 		(mlsconstrain (chr_file (create relabelto))
 			(or (neq t1 mcs.constrained_subj_type_attribute)
 			(and (dom h1 h2) (eq l2 h2))))
 
-		(mlsconstrain (key (create link read search setattr view write))
-			(or (dom h1 h2) (neq t1 mcs.constrained_subj_type_attribute)))
+		(mlsconstrain (key (create link read search setattr view
+			write))
+			(or (dom h1 h2) (neq t1
+				mcs.constrained_subj_type_attribute)))
 
 		(mlsconstrain (ipc (create destroy setattr write unix_write))
-			(or (dom h1 h2) (neq t1 mcs.constrained_subj_type_attribute)))
+			(or (dom h1 h2) (neq t1
+				mcs.constrained_subj_type_attribute)))
 
 		(mlsconstrain (sem (create destroy setattr write unix_write))
-			(or (dom h1 h2) (neq t1 mcs.constrained_subj_type_attribute)))
+			(or (dom h1 h2) (neq t1
+				mcs.constrained_subj_type_attribute)))
 
 		(mlsconstrain (msgq (create destroy setattr write unix_write))
-			(or (dom h1 h2) (neq t1 mcs.constrained_subj_type_attribute)))
+			(or (dom h1 h2) (neq t1
+				mcs.constrained_subj_type_attribute)))
 
 		(mlsconstrain (shm (create destroy setattr write unix_write))
-			(or (dom h1 h2) (neq t1 mcs.constrained_subj_type_attribute)))
+			(or (dom h1 h2) (neq t1
+				mcs.constrained_subj_type_attribute)))
 
-		(mlsconstrain (process (transition dyntransition ptrace sigkill sigstop signal))
-			(or (dom h1 h2) (neq t1 mcs.constrained_subj_type_attribute)))
+		(mlsconstrain (process (transition dyntransition ptrace sigkill
+			sigstop signal))
+			(or (dom h1 h2) (neq t1
+				mcs.constrained_subj_type_attribute)))
 
 		(mlsconstrain (rawip_socket (node_bind))
-			(or (dom h1 h2) (neq t1 mcs.constrained_subj_type_attribute)))
+			(or (dom h1 h2) (neq t1
+				mcs.constrained_subj_type_attribute)))
 
 		(mlsconstrain (dccp_socket (node_bind))
-			(or (dom h1 h2) (neq t1 mcs.constrained_subj_type_attribute)))
+			(or (dom h1 h2) (neq t1
+				mcs.constrained_subj_type_attribute)))
 
 		(mlsconstrain (tcp_socket (node_bind))
-			(or (dom h1 h2) (neq t1 mcs.constrained_subj_type_attribute)))
+			(or (dom h1 h2) (neq t1
+				mcs.constrained_subj_type_attribute)))
 
 		(mlsconstrain (udp_socket (node_bind))
-			(or (dom h1 h2) (neq t1 mcs.constrained_subj_type_attribute)))
+			(or (dom h1 h2) (neq t1
+				mcs.constrained_subj_type_attribute)))
 
 		(mlsconstrain (node (recvfrom sendto))
-			(or (dom h1 h2) (neq t1 mcs.constrained_subj_type_attribute)))
+			(or (dom h1 h2) (neq t1
+				mcs.constrained_subj_type_attribute)))
 
 		(mlsconstrain (netif (egress ingress))
-			(or (dom h1 h2) (neq t1 mcs.constrained_subj_type_attribute)))
+			(or (dom h1 h2) (neq t1
+				mcs.constrained_subj_type_attribute)))
 
 		(mlsconstrain (packet (recv))
 			(or (dom h1 h2)
-			(and (neq t1 mcs.constrained_subj_type_attribute) (neq t1 mcs.constrained_subj_type_attribute))))
+			(and (neq t1 mcs.constrained_subj_type_attribute)
+				(neq t1 mcs.constrained_subj_type_attribute))))
 
 		(mlsconstrain (peer (recv))
 			(or (dom h1 h2)
-			(and (neq t1 mcs.constrained_subj_type_attribute) (neq t1 mcs.constrained_subj_type_attribute))))))
+			(and (neq t1 mcs.constrained_subj_type_attribute)
+				(neq t1
+					mcs.constrained_subj_type_attribute))))))
