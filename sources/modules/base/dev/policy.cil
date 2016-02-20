@@ -12,34 +12,46 @@
 	(call fs.associate_devtmpfs (obj_type_attribute))
 
 	(typeattribute read_memory_subj_type_attribute)
-	(typeattribute not_read_memory_subj_type_or_unconfined_subj_type_attribute)
+	(typeattribute
+		not_read_memory_subj_type_or_unconfined_subj_type_attribute)
 
-	(typeattributeset not_read_memory_subj_type_or_unconfined_subj_type_attribute
-		(not (read_memory_subj_type_attribute unconfined_subj_type_attribute)))
+	(typeattributeset
+		not_read_memory_subj_type_or_unconfined_subj_type_attribute
+		(not (read_memory_subj_type_attribute
+			unconfined_subj_type_attribute)))
 
 	(neverallow not_read_memory_subj_type_or_unconfined_subj_type_attribute
 		memory.dev (chr_file (read)))
 
 	(typeattribute write_memory_subj_type_attribute)
-	(typeattribute not_write_memory_subj_type_or_unconfined_subj_type_attribute)
+	(typeattribute
+		not_write_memory_subj_type_or_unconfined_subj_type_attribute)
 
-	(typeattributeset not_write_memory_subj_type_or_unconfined_subj_type_attribute
-		(not (write_memory_subj_type_attribute unconfined_subj_type_attribute)))
+	(typeattributeset
+		not_write_memory_subj_type_or_unconfined_subj_type_attribute
+		(not (write_memory_subj_type_attribute
+			unconfined_subj_type_attribute)))
 
-	(neverallow not_write_memory_subj_type_or_unconfined_subj_type_attribute
+	(neverallow
+		not_write_memory_subj_type_or_unconfined_subj_type_attribute
 		memory.dev (chr_file (append write)))
 
 	(allow unconfined_subj_type_attribute self (capability (sys_rawio)))
 
 	(typeattribute except_storage_obj_type_attribute)
 
-	(typeattributeset except_storage_obj_type_attribute (and (obj_type_attribute) (not (storage_obj_type_attribute))))
+	(typeattributeset except_storage_obj_type_attribute (and
+		(obj_type_attribute) (not (storage_obj_type_attribute))))
 
-	(allow unconfined_subj_type_attribute except_storage_obj_type_attribute all_chr_file_perms_except_mounton_and_execmod)
+	(allow unconfined_subj_type_attribute
+		except_storage_obj_type_attribute
+			all_chr_file_perms_except_mounton_and_execmod)
 
 	(optional null_sd_status_subj_type_optional_sd
-		(allow null_sd_status_subj_type_attribute null.dev (service (status)))
-		(call fs.search_devtmpfs (null_sd_status_subj_type_attribute))))
+		(allow null_sd_status_subj_type_attribute null.dev (service
+			(status)))
+		(call fs.search_devtmpfs
+			(null_sd_status_subj_type_attribute))))
 
 (block apm
 	(blockinherit dev.obj_blk))
