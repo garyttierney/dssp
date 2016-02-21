@@ -7,9 +7,11 @@
 
 		(tunableif enable_rbacsep
 			(true
-				(context bool_obj_context (sys.id sys.role bool (systemlow systemlow))))
+				(context bool_obj_context (sys.id sys.role bool
+					(systemlow systemlow))))
 			(false
-				(context bool_obj_context (sys.id object_r bool (systemlow systemlow))))))
+				(context bool_obj_context (sys.id object_r bool
+					(systemlow systemlow))))))
 
 	(macro bool_obj_type ((type ARG1))
 		(typeattributeset bool_obj_type_attribute ARG1))
@@ -74,10 +76,13 @@
 	(macro set_all_booleans ((type ARG1))
 		(call fs.search_sysfs (ARG1))
 		(allow ARG1 bool_obj_type_attribute read_file_perms)
-		(allow ARG1 bool_obj_type_except_sec_load_policy_obj_type_attribute (file (append write)))
+		(allow ARG1
+			bool_obj_type_except_sec_load_policy_obj_type_attribute
+				(file (append write)))
 		(call rw_files_pattern (ARG1 securityfs.fs securityfs.fs))
 		(allow ARG1 securityfs.fs (security (setbool)))
-		(booleanif (sec_load_policy) (true (allow ARG1 sec_load_policy.bool (file (append write))))))
+		(booleanif (sec_load_policy) (true (allow ARG1
+			sec_load_policy.bool (file (append write))))))
 
 	(macro set_spec_boolean ((type ARG1)(type ARG2))
 		(call fs.search_sysfs (ARG1))

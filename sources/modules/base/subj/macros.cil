@@ -92,7 +92,8 @@
 		(blockabstract append_inherited_unix_stream_sockets_blk)
 		(macro append_inherited_unix_stream_sockets ((type ARG1))
 			(allow ARG1 subj (fd (use)))
-			(allow ARG1 subj append_inherited_unix_stream_socket_perms)))
+			(allow ARG1 subj
+				append_inherited_unix_stream_socket_perms)))
 
 	(block rw_unix_stream_sockets_blk
 		(blockabstract rw_unix_stream_sockets_blk)
@@ -103,13 +104,15 @@
 		(blockabstract rw_inherited_unix_stream_sockets_blk)
 		(macro rw_inherited_unix_stream_sockets ((type ARG1))
 			(allow ARG1 subj (fd (use)))
-			(allow ARG1 subj rw_inherited_unix_stream_socket_perms)))
+			(allow ARG1 subj
+				rw_inherited_unix_stream_socket_perms)))
 
 	(block rw_inherited_unix_dgram_sockets_blk
 		(blockabstract rw_inherited_unix_dgram_sockets_blk)
 		(macro rw_inherited_unix_dgram_sockets ((type ARG1))
 			(allow ARG1 subj (fd (use)))
-			(allow ARG1 subj rw_inherited_unix_dgram_socket_perms)))
+			(allow ARG1 subj
+				rw_inherited_unix_dgram_socket_perms)))
 
 	(block share_blk
 		(blockabstract share_blk)
@@ -138,7 +141,7 @@
 
 	(block send_sigstop_blk
 		(blockabstract send_sigstop_blk)
-		(macro send_sigstop ((type ARG1))
+			(macro send_sigstop ((type ARG1))
 			(allow ARG1 subj (process (sigstop)))))
 
 	(block setsched_blk
@@ -169,12 +172,14 @@
 	(block getsession_all_blk
 		(blockabstract getsession_all_blk)
 		(macro getsession_all_subj ((type ARG1))
-			(allow ARG1 subj_type_attribute (process (getsession)))))
+			(allow ARG1 subj_type_attribute (process
+				(getsession)))))
 
 	(block noatsecure_all_blk
 		(blockabstract noatsecure_all_blk)
 		(macro noatsecure_all_subj ((type ARG1))
-			(allow ARG1 subj_type_attribute (process (noatsecure)))))
+			(allow ARG1 subj_type_attribute (process
+				(noatsecure)))))
 
 	(block ptrace_all_blk
 		(blockabstract ptrace_all_blk)
@@ -209,42 +214,50 @@
 		(blockabstract append_inherited_fifo_files_all_blk)
 		(macro append_inherited_fifo_files_all_subj ((type ARG1))
 			(allow ARG1 subj_type_attribute (fd (use)))
-			(allow ARG1 subj_type_attribute append_inherited_fifo_file_perms)))
+			(allow ARG1 subj_type_attribute
+				append_inherited_fifo_file_perms)))
 
 	(block write_inherited_fifo_files_all_blk
 		(blockabstract write_inherited_fifo_files_all_blk)
 		(macro write_inherited_fifo_files_all_subj ((type ARG1))
 			(allow ARG1 subj_type_attribute (fd (use)))
-			(allow ARG1 subj_type_attribute write_inherited_fifo_file_perms)))
+			(allow ARG1 subj_type_attribute
+				write_inherited_fifo_file_perms)))
 
 	(block rw_inherited_fifo_files_all_blk
 		(blockabstract rw_inherited_fifo_files_all_blk)
 		(macro rw_inherited_fifo_files_all_subj ((type ARG1))
 			(allow ARG1 subj_type_attribute (fd (use)))
-			(allow ARG1 subj_type_attribute rw_inherited_fifo_file_perms)))
+			(allow ARG1 subj_type_attribute
+				rw_inherited_fifo_file_perms)))
 
 	(block append_inherited_unix_stream_sockets_all_blk
 		(blockabstract append_inherited_unix_stream_sockets_all_blk)
-		(macro append_inherited_unix_stream_sockets_all_subj ((type ARG1))
+		(macro append_inherited_unix_stream_sockets_all_subj ((type
+			ARG1))
 			(allow ARG1 subj_type_attribute (fd (use)))
-			(allow ARG1 subj_type_attribute append_inherited_unix_stream_socket_perms)))
+			(allow ARG1 subj_type_attribute
+				append_inherited_unix_stream_socket_perms)))
 
 	(block rw_unix_stream_sockets_all_blk
 		(blockabstract rw_unix_stream_sockets_all_blk)
 		(macro rw_unix_stream_sockets_all_subj ((type ARG1))
-			(allow ARG1 subj_type_attribute rw_unix_stream_socket_perms)))
+			(allow ARG1 subj_type_attribute
+				rw_unix_stream_socket_perms)))
 
 	(block rw_inherited_unix_stream_sockets_all_blk
 		(blockabstract rw_inherited_unix_stream_sockets_all_blk)
 		(macro rw_inherited_unix_stream_sockets_all_subj ((type ARG1))
 			(allow ARG1 subj_type_attribute (fd (use)))
-			(allow ARG1 subj_type_attribute rw_inherited_unix_stream_socket_perms)))
+			(allow ARG1 subj_type_attribute
+				rw_inherited_unix_stream_socket_perms)))
 
 	(block rw_inherited_unix_dgram_sockets_all_blk
 		(blockabstract rw_inherited_unix_dgram_sockets_all_blk)
 		(macro rw_inherited_unix_dgram_sockets_all_subj ((type ARG1))
 			(allow ARG1 subj_type_attribute (fd (use)))
-			(allow ARG1 subj_type_attribute rw_inherited_unix_dgram_socket_perms)))
+			(allow ARG1 subj_type_attribute
+				rw_inherited_unix_dgram_socket_perms)))
 
 	(block share_all_blk
 		(blockabstract share_all_blk)
@@ -302,11 +315,13 @@
 		(typeattributeset entry_obj_type_attribute ARG1))
 
 	(macro dynamic_type_transition_subj_type ((type ARG1))
-		(typeattributeset dynamic_type_transition_subj_type_attribute ARG1))
+		(typeattributeset dynamic_type_transition_subj_type_attribute
+			ARG1))
 
 	(macro execheap_subj_type ((type ARG1))
 		(typeattributeset execheap_subj_type_attribute ARG1)
-		(booleanif subj_execheap (true (allow ARG1 self (process (execheap))))))
+		(booleanif subj_execheap (true (allow ARG1 self (process
+			(execheap))))))
 
 	(macro execheap_uncond_subj_type ((type ARG1))
 		(allow ARG1 self (process (execheap)))
@@ -314,7 +329,8 @@
 
 	(macro execmem_subj_type ((type ARG1))
 		(typeattributeset execmem_subj_type_attribute ARG1)
-		(booleanif subj_execmem (true (allow ARG1 self (process (execmem))))))
+		(booleanif subj_execmem (true (allow ARG1 self (process
+			(execmem))))))
 
 	(macro execmem_uncond_subj_type ((type ARG1))
 		(allow ARG1 self (process (execmem)))
@@ -323,7 +339,8 @@
 	(macro execstack_subj_type ((type ARG1))
 		(typeattributeset execmem_subj_type_attribute ARG1)
 		(typeattributeset execstack_subj_type_attribute ARG1)
-		(booleanif subj_execstack (true (allow ARG1 self (process (execmem execstack))))))
+		(booleanif subj_execstack (true (allow ARG1 self (process
+			(execmem execstack))))))
 
 	(macro execstack_uncond_subj_type ((type ARG1))
 		(allow ARG1 self (process (execmem execstack)))
@@ -332,7 +349,8 @@
 
 	(macro mmap_low_subj_type ((type ARG1))
 		(typeattributeset mmap_low_subj_type_attribute ARG1)
-		(booleanif subj_mmap_low (true (allow ARG1 self (memprotect (mmap_zero))))))
+		(booleanif subj_mmap_low (true (allow ARG1 self (memprotect
+			(mmap_zero))))))
 
 	(macro mmap_low_uncond_subj_type ((type ARG1))
 		(allow ARG1 self (memprotect (mmap_zero)))
@@ -340,7 +358,8 @@
 
 	(macro ptrace_subj_type ((type ARG1))
 		(typeattributeset ptrace_subj_type_attribute ARG1)
-		(booleanif subj_ptrace (true (allow ARG1 self (capability (sys_ptrace))))))
+		(booleanif subj_ptrace (true (allow ARG1 self (capability
+			(sys_ptrace))))))
 
 	(macro ptrace_uncond_subj_type ((type ARG1))
 		(allow ARG1 self (capability (sys_ptrace)))
@@ -358,7 +377,8 @@
 	(macro dontaudit_read_state_common_subj ((type ARG1))
 		(dontaudit ARG1 common_subj_type_attribute read_file_perms)
 		(dontaudit ARG1 common_subj_type_attribute list_dir_perms)
-		(dontaudit ARG1 common_subj_type_attribute read_lnk_file_perms))
+		(dontaudit ARG1 common_subj_type_attribute
+			read_lnk_file_perms))
 
 	(macro read_state_common_subj ((type ARG1))
 		(call fs.search_proc (ARG1))

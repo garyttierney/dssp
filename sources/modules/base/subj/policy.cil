@@ -17,9 +17,11 @@
 
 	(call cmd.cmd_obj_type (entry_obj_type_attribute))
 
-	(allow use_interactive_fd_subj_type_attribute interactive_fd_subj_type_attribute (fd (use)))
+	(allow use_interactive_fd_subj_type_attribute
+		interactive_fd_subj_type_attribute (fd (use)))
 
-	(allow subj_type_attribute self (process (sigkill signal signull sigstop)))
+	(allow subj_type_attribute self (process (sigkill signal signull
+		sigstop)))
 
 	(allow subj_type_attribute self rw_file_perms)
 	(allow subj_type_attribute self list_dir_perms)
@@ -57,143 +59,250 @@
 		(call mcstransd.client_subj_type (common_subj_type_attribute)))
 
 	(optional common_subj_type_optional_seutil
-		(call seutil.libselinux_linked_client_subj_type (common_subj_type_attribute)))
+		(call seutil.libselinux_linked_client_subj_type
+			(common_subj_type_attribute)))
 
 	(typeattribute not_entry_obj_type_attribute)
 
-	(typeattributeset not_entry_obj_type_attribute (not (entry_obj_type_attribute)))
+	(typeattributeset not_entry_obj_type_attribute (not
+		(entry_obj_type_attribute)))
 
-	(neverallow subj_type_attribute not_entry_obj_type_attribute (file (entrypoint)))
+	(neverallow subj_type_attribute not_entry_obj_type_attribute (file
+		(entrypoint)))
 
 	(typeattribute not_subj_type_attribute)
 
 	(typeattributeset not_subj_type_attribute (not subj_type_attribute))
 
-	(neverallow subj_type_attribute not_subj_type_attribute (process (transition dyntransition)))
+	(neverallow subj_type_attribute not_subj_type_attribute (process
+		(transition dyntransition)))
 
 	(typeattribute dynamic_type_transition_subj_type_attribute)
 	(typeattribute not_dynamic_type_transition_subj_type_attribute)
 
-	(typeattributeset not_dynamic_type_transition_subj_type_attribute (and (subj_type_attribute) (not (dynamic_type_transition_subj_type_attribute))))
+	(typeattributeset not_dynamic_type_transition_subj_type_attribute (and
+		(subj_type_attribute) (not
+			(dynamic_type_transition_subj_type_attribute))))
 
-	(neverallow not_dynamic_type_transition_subj_type_attribute self (process (setcurrent)))
+	(neverallow not_dynamic_type_transition_subj_type_attribute self
+		(process (setcurrent)))
 
 	(typeattribute execheap_subj_type_attribute)
 	(typeattribute not_execheap_subj_type_attribute)
 
-	(typeattributeset not_execheap_subj_type_attribute (and (subj_type_attribute) (not (execheap_subj_type_attribute))))
+	(typeattributeset not_execheap_subj_type_attribute (and
+		(subj_type_attribute) (not (execheap_subj_type_attribute))))
 	(neverallow not_execheap_subj_type_attribute self (process (execheap)))
 
 	(typeattribute execmem_subj_type_attribute)
 	(typeattribute not_execmem_subj_type_attribute)
 
-	(typeattributeset not_execmem_subj_type_attribute (and (subj_type_attribute) (not (execmem_subj_type_attribute))))
+	(typeattributeset not_execmem_subj_type_attribute (and
+		(subj_type_attribute) (not (execmem_subj_type_attribute))))
 
 	(neverallow not_execmem_subj_type_attribute self (process (execmem)))
 
 	(typeattribute execstack_subj_type_attribute)
 	(typeattribute not_execstack_subj_type_attribute)
 
-	(typeattributeset not_execstack_subj_type_attribute (and (subj_type_attribute) (not (execstack_subj_type_attribute))))
+	(typeattributeset not_execstack_subj_type_attribute (and
+		(subj_type_attribute) (not (execstack_subj_type_attribute))))
 
-	(neverallow not_execstack_subj_type_attribute self (process (execstack)))
+	(neverallow not_execstack_subj_type_attribute self (process
+		(execstack)))
 
 	(typeattribute mmap_low_subj_type_attribute)
 	(typeattribute not_mmap_low_subj_type_attribute)
 
-	(typeattributeset not_mmap_low_subj_type_attribute (and (subj_type_attribute) (not (mmap_low_subj_type_attribute))))
+	(typeattributeset not_mmap_low_subj_type_attribute (and
+		(subj_type_attribute) (not (mmap_low_subj_type_attribute))))
 
-	(neverallow not_mmap_low_subj_type_attribute self (memprotect (mmap_zero)))
+	(neverallow not_mmap_low_subj_type_attribute self (memprotect
+		(mmap_zero)))
 
 	(typeattribute ptrace_subj_type_attribute)
 	(typeattribute not_ptrace_subj_type_attribute)
 
-	(typeattributeset not_ptrace_subj_type_attribute (and (subj_type_attribute) (not (ptrace_subj_type_attribute))))
+	(typeattributeset not_ptrace_subj_type_attribute (and
+		(subj_type_attribute) (not (ptrace_subj_type_attribute))))
 
-	(neverallow not_ptrace_subj_type_attribute self (capability (sys_ptrace)))
+	(neverallow not_ptrace_subj_type_attribute self (capability
+		(sys_ptrace)))
 
-	(allow unconfined_subj_type_attribute self all_capability_perms_except_sys_module_sys_ptrace_and_sys_nice)
-	(allow unconfined_subj_type_attribute self all_capability2_perms_except_mac_override_and_mac_admin)
-	(allow unconfined_subj_type_attribute self all_fifo_file_perms_except_mounton_and_execmod)
+	(allow unconfined_subj_type_attribute self
+		all_capability_perms_except_sys_module_sys_ptrace_and_sys_nice)
+	(allow unconfined_subj_type_attribute self
+		all_capability2_perms_except_mac_override_and_mac_admin)
+	(allow unconfined_subj_type_attribute self
+		all_fifo_file_perms_except_mounton_and_execmod)
 
 	(allow unconfined_subj_type_attribute subj_type_attribute
 		all_process_perms_except_transition_dyntransition_setcurrent_execmem_execstack_and_execheap)
-	(allow unconfined_subj_type_attribute subj_type_attribute (file (getattr open read write ioctl append lock)))
-	(allow unconfined_subj_type_attribute subj_type_attribute (dir (getattr search open read lock ioctl)))
-	(allow unconfined_subj_type_attribute subj_type_attribute (lnk_file (getattr read)))
+	(allow unconfined_subj_type_attribute subj_type_attribute (file
+		(getattr open read write ioctl append lock)))
+	(allow unconfined_subj_type_attribute subj_type_attribute (dir (getattr
+		search open read lock ioctl)))
+	(allow unconfined_subj_type_attribute subj_type_attribute (lnk_file
+		(getattr read)))
 	(allow unconfined_subj_type_attribute subj_type_attribute (fd (use)))
-	(allow unconfined_subj_type_attribute subj_type_attribute (socket (ioctl read write create getattr setattr lock relabelfrom relabelto append
-		bind connect listen accept getopt setopt shutdown recvfrom sendto name_bind)))
-	(allow unconfined_subj_type_attribute subj_type_attribute (tcp_socket (create ioctl read getattr write setattr append bind connect getopt
-		setopt shutdown)))
-	(allow unconfined_subj_type_attribute subj_type_attribute (udp_socket (create ioctl read getattr write setattr append bind connect getopt
-		setopt shutdown)))
-	(allow unconfined_subj_type_attribute subj_type_attribute (rawip_socket (create ioctl read getattr write setattr append bind connect getopt
-		setopt shutdown)))
-	(allow unconfined_subj_type_attribute subj_type_attribute (packet_socket (ioctl read write create getattr setattr lock relabelfrom relabelto append
-		bind connect listen accept getopt setopt shutdown recvfrom sendto name_bind)))
-	(allow unconfined_subj_type_attribute subj_type_attribute (unix_stream_socket (ioctl read write create getattr setattr lock relabelfrom relabelto append
-		bind connect listen accept getopt setopt shutdown recvfrom sendto name_bind connectto)))
-	(allow unconfined_subj_type_attribute subj_type_attribute (unix_dgram_socket (ioctl read write create getattr setattr lock relabelfrom relabelto append
-		bind connect listen accept getopt setopt shutdown recvfrom sendto name_bind)))
-	(allow unconfined_subj_type_attribute subj_type_attribute (sem (create destroy getattr setattr read write associate unix_read unix_write)))
-	(allow unconfined_subj_type_attribute subj_type_attribute (msg (send receive)))
-	(allow unconfined_subj_type_attribute subj_type_attribute (msgq (create destroy getattr setattr read write associate unix_read unix_write enqueue)))
-	(allow unconfined_subj_type_attribute subj_type_attribute (shm (create destroy getattr setattr read write associate unix_read unix_write lock)))
-	(allow unconfined_subj_type_attribute subj_type_attribute (ipc (create destroy getattr setattr read write associate unix_read unix_write)))
-	(allow unconfined_subj_type_attribute subj_type_attribute (netlink_route_socket (ioctl read write create getattr setattr lock relabelfrom relabelto
-		append bind connect listen accept getopt setopt shutdown recvfrom sendto name_bind nlmsg_read nlmsg_write)))
-	(allow unconfined_subj_type_attribute subj_type_attribute (netlink_tcpdiag_socket (ioctl read write create getattr setattr lock relabelfrom
-		relabelto append bind connect listen accept getopt setopt shutdown recvfrom sendto name_bind nlmsg_read nlmsg_write)))
-	(allow unconfined_subj_type_attribute subj_type_attribute (netlink_nflog_socket (ioctl read write create getattr setattr lock relabelfrom
-		relabelto append bind connect listen accept getopt setopt shutdown recvfrom sendto name_bind)))
-	(allow unconfined_subj_type_attribute subj_type_attribute (netlink_xfrm_socket (ioctl read write create getattr setattr lock relabelfrom
-		relabelto append bind connect listen accept getopt setopt shutdown recvfrom sendto name_bind nlmsg_read nlmsg_write)))
-	(allow unconfined_subj_type_attribute subj_type_attribute (netlink_selinux_socket (ioctl read write create getattr setattr lock relabelfrom
-		relabelto append bind connect listen accept getopt setopt shutdown recvfrom sendto name_bind)))
-	(allow unconfined_subj_type_attribute subj_type_attribute (netlink_audit_socket (ioctl read write create getattr setattr lock relabelfrom
-		relabelto append bind connect listen accept getopt setopt shutdown recvfrom sendto name_bind nlmsg_read nlmsg_write
-		nlmsg_relay nlmsg_readpriv nlmsg_tty_audit)))
-	(allow unconfined_subj_type_attribute subj_type_attribute (netlink_dnrt_socket (ioctl read write create getattr setattr lock relabelfrom relabelto
-		append bind connect listen accept getopt setopt shutdown recvfrom sendto name_bind)))
-	(allow unconfined_subj_type_attribute subj_type_attribute (netlink_kobject_uevent_socket (ioctl read write create getattr setattr lock
-		relabelfrom relabelto append bind connect listen accept getopt setopt shutdown recvfrom sendto name_bind)))
-	(allow unconfined_subj_type_attribute subj_type_attribute (appletalk_socket (ioctl read write create getattr setattr lock relabelfrom relabelto
-		append bind connect listen accept getopt setopt shutdown recvfrom sendto name_bind)))
-	(allow unconfined_subj_type_attribute subj_type_attribute (key (view read write search link setattr create)))
-	(allow unconfined_subj_type_attribute subj_type_attribute (dccp_socket (create ioctl read getattr write setattr append bind connect getopt
-		setopt shutdown)))
-	(allow unconfined_subj_type_attribute subj_type_attribute (tun_socket (ioctl read write create getattr setattr lock relabelfrom relabelto append
-		bind connect listen accept getopt setopt shutdown recvfrom sendto name_bind)))
-	(allow unconfined_subj_type_attribute subj_type_attribute (binder (impersonate call set_context_mgr transfer)))
-	(allow unconfined_subj_type_attribute subj_type_attribute (netlink_iscsi_socket (ioctl read write create getattr setattr lock relabelfrom
-		relabelto append bind connect listen accept getopt setopt shutdown recvfrom sendto name_bind)))
-	(allow unconfined_subj_type_attribute subj_type_attribute (netlink_fib_lookup_socket (ioctl read write create getattr setattr lock relabelfrom
-		relabelto append bind connect listen accept getopt setopt shutdown recvfrom sendto name_bind)))
-	(allow unconfined_subj_type_attribute subj_type_attribute (netlink_connector_socket (ioctl read write create getattr setattr lock relabelfrom
-		relabelto append bind connect listen accept getopt setopt shutdown recvfrom sendto name_bind)))
-	(allow unconfined_subj_type_attribute subj_type_attribute (netlink_netfilter_socket (ioctl read write create getattr setattr lock relabelfrom
-		relabelto append bind connect listen accept getopt setopt shutdown recvfrom sendto name_bind)))
-	(allow unconfined_subj_type_attribute subj_type_attribute (netlink_generic_socket (ioctl read write create getattr setattr lock relabelfrom
-		relabelto append bind connect listen accept getopt setopt shutdown recvfrom sendto name_bind)))
-	(allow unconfined_subj_type_attribute subj_type_attribute (netlink_scsitransport_socket (ioctl read write create getattr setattr lock
-		relabelfrom relabelto append bind connect listen accept getopt setopt shutdown recvfrom sendto name_bind)))
-	(allow unconfined_subj_type_attribute subj_type_attribute (netlink_rdma_socket (ioctl read write create getattr setattr lock relabelfrom relabelto
-		append bind connect listen accept getopt setopt shutdown recvfrom sendto name_bind)))
-	(allow unconfined_subj_type_attribute subj_type_attribute (netlink_crypto_socket (ioctl read write create getattr setattr lock relabelfrom
-		relabelto append bind connect listen accept getopt setopt shutdown recvfrom sendto name_bind)))
+	(allow unconfined_subj_type_attribute subj_type_attribute (socket
+		(ioctl read write create getattr setattr lock relabelfrom
+			relabelto append bind connect listen accept getopt
+				setopt shutdown recvfrom sendto name_bind)))
+	(allow unconfined_subj_type_attribute subj_type_attribute (tcp_socket
+			(create ioctl read getattr write setattr append bind
+				connect getopt setopt shutdown)))
+	(allow unconfined_subj_type_attribute subj_type_attribute (udp_socket
+			(create ioctl read getattr write setattr append bind
+				connect getopt setopt shutdown)))
+	(allow unconfined_subj_type_attribute subj_type_attribute (rawip_socket
+		(create ioctl read getattr write setattr append bind connect
+			getopt setopt shutdown)))
+	(allow unconfined_subj_type_attribute subj_type_attribute
+			(packet_socket (ioctl read write create getattr setattr
+				lock relabelfrom relabelto append bind connect
+					listen accept getopt setopt shutdown
+						recvfrom sendto name_bind)))
+	(allow unconfined_subj_type_attribute subj_type_attribute
+		(unix_stream_socket (ioctl read write create getattr setattr
+			lock relabelfrom relabelto append bind connect listen
+				accept getopt setopt shutdown recvfrom sendto
+					name_bind connectto)))
+	(allow unconfined_subj_type_attribute subj_type_attribute
+			(unix_dgram_socket (ioctl read write create getattr
+				setattr lock relabelfrom relabelto append bind
+					connect listen accept getopt setopt
+						shutdown recvfrom sendto
+							name_bind)))
+	(allow unconfined_subj_type_attribute subj_type_attribute (sem (create
+		destroy getattr setattr read write associate unix_read
+			unix_write)))
+	(allow unconfined_subj_type_attribute subj_type_attribute (msg (send
+		receive)))
+	(allow unconfined_subj_type_attribute subj_type_attribute (msgq (create
+		destroy getattr setattr read write associate unix_read
+			unix_write enqueue)))
+	(allow unconfined_subj_type_attribute subj_type_attribute (shm (create
+		destroy getattr setattr read write associate unix_read
+			unix_write lock)))
+	(allow unconfined_subj_type_attribute subj_type_attribute (ipc (create
+		destroy getattr setattr read write associate unix_read
+			unix_write)))
+	(allow unconfined_subj_type_attribute subj_type_attribute
+		(netlink_route_socket (ioctl read write create getattr setattr
+			lock relabelfrom relabelto append bind connect listen
+				accept getopt setopt shutdown recvfrom sendto
+					name_bind nlmsg_read nlmsg_write)))
+	(allow unconfined_subj_type_attribute subj_type_attribute
+		(netlink_tcpdiag_socket (ioctl read write create getattr
+			setattr lock relabelfrom relabelto append bind connect
+				listen accept getopt setopt shutdown recvfrom
+					sendto name_bind nlmsg_read
+						nlmsg_write)))
+	(allow unconfined_subj_type_attribute subj_type_attribute
+		(netlink_nflog_socket (ioctl read write create getattr setattr
+			lock relabelfrom relabelto append bind connect listen
+				accept getopt setopt shutdown recvfrom sendto
+					name_bind)))
+	(allow unconfined_subj_type_attribute subj_type_attribute
+		(netlink_xfrm_socket (ioctl read write create getattr setattr
+			lock relabelfrom relabelto append bind connect listen
+				accept getopt setopt shutdown recvfrom sendto
+					name_bind nlmsg_read nlmsg_write)))
+	(allow unconfined_subj_type_attribute subj_type_attribute
+		(netlink_selinux_socket (ioctl read write create getattr
+			setattr lock relabelfrom relabelto append bind connect
+				listen accept getopt setopt shutdown recvfrom
+					sendto name_bind)))
+	(allow unconfined_subj_type_attribute subj_type_attribute
+		(netlink_audit_socket (ioctl read write create getattr setattr
+			lock relabelfrom relabelto append bind connect listen
+				accept getopt setopt shutdown recvfrom sendto
+					name_bind nlmsg_read nlmsg_write
+						nlmsg_relay nlmsg_readpriv
+							nlmsg_tty_audit)))
+	(allow unconfined_subj_type_attribute subj_type_attribute
+		(netlink_dnrt_socket (ioctl read write create getattr setattr
+			lock relabelfrom relabelto append bind connect listen
+				accept getopt setopt shutdown recvfrom sendto
+					name_bind)))
+	(allow unconfined_subj_type_attribute subj_type_attribute
+		(netlink_kobject_uevent_socket (ioctl read write create
+			getattr setattr lock relabelfrom relabelto append bind
+				connect listen accept getopt setopt shutdown
+					recvfrom sendto name_bind)))
+	(allow unconfined_subj_type_attribute subj_type_attribute
+		(appletalk_socket (ioctl read write create getattr setattr lock
+			relabelfrom relabelto append bind connect listen accept
+				getopt setopt shutdown recvfrom sendto
+					name_bind)))
+	(allow unconfined_subj_type_attribute subj_type_attribute (key (view
+		read write search link setattr create)))
+	(allow unconfined_subj_type_attribute subj_type_attribute (dccp_socket
+		(create ioctl read getattr write setattr append bind connect
+			getopt setopt shutdown)))
+	(allow unconfined_subj_type_attribute subj_type_attribute (tun_socket
+		(ioctl read write create getattr setattr lock relabelfrom
+			relabelto append bind connect listen accept getopt
+				setopt shutdown recvfrom sendto name_bind)))
+	(allow unconfined_subj_type_attribute subj_type_attribute (binder
+		(impersonate call set_context_mgr transfer)))
+	(allow unconfined_subj_type_attribute subj_type_attribute
+		(netlink_iscsi_socket (ioctl read write create getattr setattr
+			lock relabelfrom relabelto append bind connect listen
+				accept getopt setopt shutdown recvfrom sendto
+					name_bind)))
+	(allow unconfined_subj_type_attribute subj_type_attribute
+		(netlink_fib_lookup_socket (ioctl read write create getattr
+			setattr lock relabelfrom relabelto append bind connect
+				listen accept getopt setopt shutdown recvfrom
+					sendto name_bind)))
+	(allow unconfined_subj_type_attribute subj_type_attribute
+		(netlink_connector_socket (ioctl read write create getattr
+			setattr lock relabelfrom relabelto append bind connect
+				listen accept getopt setopt shutdown recvfrom
+					sendto name_bind)))
+	(allow unconfined_subj_type_attribute subj_type_attribute
+		(netlink_netfilter_socket (ioctl read write create getattr
+			setattr lock relabelfrom relabelto append bind connect
+				listen accept getopt setopt shutdown recvfrom
+					sendto name_bind)))
+	(allow unconfined_subj_type_attribute subj_type_attribute
+		(netlink_generic_socket (ioctl read write create getattr
+			setattr lock relabelfrom relabelto append bind connect
+				listen accept getopt setopt shutdown recvfrom
+					sendto name_bind)))
+	(allow unconfined_subj_type_attribute subj_type_attribute
+		(netlink_scsitransport_socket (ioctl read write create getattr
+			setattr lock relabelfrom relabelto append bind connect
+				listen accept getopt setopt shutdown recvfrom
+					sendto name_bind)))
+	(allow unconfined_subj_type_attribute subj_type_attribute
+		(netlink_rdma_socket (ioctl read write create getattr setattr
+			lock relabelfrom relabelto append bind connect listen
+				accept getopt setopt shutdown recvfrom sendto
+					name_bind)))
+	(allow unconfined_subj_type_attribute subj_type_attribute
+		(netlink_crypto_socket (ioctl read write create getattr setattr
+			lock relabelfrom relabelto append bind connect listen
+				accept getopt setopt shutdown recvfrom sendto
+					name_bind)))
 
-	(call dynamic_type_transition_subj_type (unconfined_subj_type_attribute))
+	(call dynamic_type_transition_subj_type
+		(unconfined_subj_type_attribute))
 
 	(call execheap_subj_type (unconfined_subj_type_attribute))
 	(call execmem_subj_type (unconfined_subj_type_attribute))
 	(call execstack_subj_type (unconfined_subj_type_attribute))
 	(call mmap_low_subj_type (unconfined_subj_type_attribute))
 
-	(call standard.uncond_exemption_subj_type (unconfined_subj_type_attribute))
-	(call standard.obj_change_exemption_subj_type (unconfined_subj_type_attribute))
+	(call standard.uncond_exemption_subj_type
+		(unconfined_subj_type_attribute))
+	(call standard.obj_change_exemption_subj_type
+		(unconfined_subj_type_attribute))
 
-	(allow unconfined_subj_type_attribute entry_obj_type_attribute (file (entrypoint))))
+	(allow unconfined_subj_type_attribute entry_obj_type_attribute (file
+		(entrypoint))))
 
 (block subj_execheap
 	(blockinherit sec.bool_obj_blk))

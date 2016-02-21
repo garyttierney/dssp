@@ -4,10 +4,13 @@
 
 		(tunableif enable_rbacsep
 			(true
-				(call rbacsep.obj_role_change_exemption_subj_type (ARG1)))))
+				(call
+					rbacsep.obj_role_change_exemption_subj_type
+						(ARG1)))))
 
 	(macro obj_id_change_exemption_subj_type ((type ARG1))
-		(typeattributeset obj_id_change_exemption_subj_type_attribute ARG1))
+		(typeattributeset obj_id_change_exemption_subj_type_attribute
+			ARG1))
 
 	(macro uncond_exemption_subj_type ((type ARG1))
 		(typeattributeset uncond_exempt_subj_type_attribute ARG1))
@@ -17,30 +20,38 @@
 		(call sys_role_change_exemption_subj_type (ARG1)))
 
 	(macro sys_id_change_exemption_subj_type ((type ARG1))
-		(typeattributeset sys_id_change_exemption_subj_type_attribute ARG1))
+		(typeattributeset sys_id_change_exemption_subj_type_attribute
+			ARG1))
 
 	(macro sys_role_change_exemption_subj_type ((type ARG1))
-		(typeattributeset sys_role_change_exemption_subj_type_attribute ARG1))
+		(typeattributeset sys_role_change_exemption_subj_type_attribute
+			ARG1))
 
 	(macro obj_sys_change_exemption_subj_type ((type ARG1))
 		(call obj_sys_id_change_exemption_subj_type (ARG1))
 
 		(tunableif enable_rbacsep
 			(true
-				(call rbacsep.obj_sys_role_change_exemption_subj_type (ARG1)))))
+				(call
+					rbacsep.obj_sys_role_change_exemption_subj_type
+						(ARG1)))))
 
 	(macro obj_sys_id_change_exemption_subj_type ((type ARG1))
-		(typeattributeset obj_sys_id_change_exemption_subj_type_attribute ARG1))
+		(typeattributeset
+			obj_sys_id_change_exemption_subj_type_attribute ARG1))
 
 	(macro change_exemption_subj_type ((type ARG1))
 		(call id_change_exemption_subj_type (ARG1))
 		(call role_change_exemption_subj_type (ARG1)))
 
 	(macro id_change_exemption_subj_type ((type ARG1))
-		(typeattributeset id_change_exemption_subj_type_attribute ARG1))
+		(typeattributeset id_change_exemption_subj_type_attribute
+			ARG1))
 
 	(macro role_change_exemption_subj_type ((type ARG1))
-		(typeattributeset role_change_exemption_subj_type_attribute ARG1))
+		(typeattributeset role_change_exemption_subj_type_attribute
+			ARG1))
 
 	(macro user_exemption_target_subj_type ((type ARG1))
-		(typeattributeset user_exemption_target_subj_type_attribute ARG1)))
+		(typeattributeset user_exemption_target_subj_type_attribute
+			ARG1)))

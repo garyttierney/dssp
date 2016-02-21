@@ -23,24 +23,39 @@
 
 	(allow unconfined_subj_type_attribute peer.peer (peer (recv)))
 
-	(allow unconfined_subj_type_attribute node_obj_type_attribute (node (recvfrom sendto)))
-	(allow unconfined_subj_type_attribute if_obj_type_attribute (netif (ingress egress)))
-	(allow unconfined_subj_type_attribute packet_obj_type_attribute (packet (send recv relabelto forward_in forward_out)))
+	(allow unconfined_subj_type_attribute node_obj_type_attribute (node
+		(recvfrom sendto)))
+	(allow unconfined_subj_type_attribute if_obj_type_attribute (netif
+		(ingress egress)))
+	(allow unconfined_subj_type_attribute packet_obj_type_attribute (packet
+		(send recv relabelto forward_in forward_out)))
 
-	(allow unconfined_subj_type_attribute port_obj_type_attribute (tcp_socket (name_bind name_connect)))
-	(allow unconfined_subj_type_attribute port_obj_type_attribute (udp_socket (name_bind)))
-	(allow unconfined_subj_type_attribute port_obj_type_attribute (rawip_socket (name_bind)))
-	(allow unconfined_subj_type_attribute port_obj_type_attribute (dccp_socket (name_bind name_connect)))
+	(allow unconfined_subj_type_attribute port_obj_type_attribute
+		(tcp_socket (name_bind name_connect)))
+	(allow unconfined_subj_type_attribute port_obj_type_attribute
+		(udp_socket (name_bind)))
+	(allow unconfined_subj_type_attribute port_obj_type_attribute
+		(rawip_socket (name_bind)))
+	(allow unconfined_subj_type_attribute port_obj_type_attribute
+		(dccp_socket (name_bind name_connect)))
 
-	(allow unconfined_subj_type_attribute node_obj_type_attribute (tcp_socket (node_bind)))
-	(allow unconfined_subj_type_attribute node_obj_type_attribute (udp_socket (node_bind)))
-	(allow unconfined_subj_type_attribute node_obj_type_attribute (rawip_socket (node_bind)))
-	(allow unconfined_subj_type_attribute node_obj_type_attribute (dccp_socket (node_bind)))
+	(allow unconfined_subj_type_attribute node_obj_type_attribute
+		(tcp_socket (node_bind)))
+	(allow unconfined_subj_type_attribute node_obj_type_attribute
+		(udp_socket (node_bind)))
+	(allow unconfined_subj_type_attribute node_obj_type_attribute
+		(rawip_socket (node_bind)))
+	(allow unconfined_subj_type_attribute node_obj_type_attribute
+		(dccp_socket (node_bind)))
 
-	(call sys.recvfrom_unlabeled_tcp_sockets (unconfined_subj_type_attribute))
-	(call sys.recvfrom_unlabeled_udp_sockets (unconfined_subj_type_attribute))
-	(call sys.recvfrom_unlabeled_rawip_sockets (unconfined_subj_type_attribute))
-	(call sys.recvfrom_unlabeled_dccp_sockets (unconfined_subj_type_attribute))
+	(call sys.recvfrom_unlabeled_tcp_sockets
+		(unconfined_subj_type_attribute))
+	(call sys.recvfrom_unlabeled_udp_sockets
+		(unconfined_subj_type_attribute))
+	(call sys.recvfrom_unlabeled_rawip_sockets
+		(unconfined_subj_type_attribute))
+	(call sys.recvfrom_unlabeled_dccp_sockets
+		(unconfined_subj_type_attribute))
 
 	(call sys.recv_unlabeled_peers (unconfined_subj_type_attribute)))
 

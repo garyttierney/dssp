@@ -42,25 +42,38 @@
 	(call read_debugfs (trace_client_subj_type_attribute))
 	(call read_tracefs (trace_client_subj_type_attribute))
 
-	(allow unconfined_subj_type_attribute obj_type_attribute all_file_perms_except_mounton_execmod_and_entrypoint)
-	(allow unconfined_subj_type_attribute obj_type_attribute all_dir_perms_except_execmod)
-	(allow unconfined_subj_type_attribute obj_type_attribute all_fifo_file_perms_except_mounton_and_execmod)
-	(allow unconfined_subj_type_attribute obj_type_attribute all_lnk_file_perms_except_mounton_and_execmod)
-	(allow unconfined_subj_type_attribute obj_type_attribute all_sock_file_perms_except_mounton_and_execmod)
-	(allow unconfined_subj_type_attribute obj_type_attribute all_blk_file_perms_except_mounton_and_execmod)
-	(allow unconfined_subj_type_attribute obj_type_attribute all_chr_file_perms_except_mounton_and_execmod)
+	(allow unconfined_subj_type_attribute obj_type_attribute
+		all_file_perms_except_mounton_execmod_and_entrypoint)
+	(allow unconfined_subj_type_attribute obj_type_attribute
+		all_dir_perms_except_execmod)
+	(allow unconfined_subj_type_attribute obj_type_attribute
+		all_fifo_file_perms_except_mounton_and_execmod)
+	(allow unconfined_subj_type_attribute obj_type_attribute
+		all_lnk_file_perms_except_mounton_and_execmod)
+	(allow unconfined_subj_type_attribute obj_type_attribute
+		all_sock_file_perms_except_mounton_and_execmod)
+	(allow unconfined_subj_type_attribute obj_type_attribute
+		all_blk_file_perms_except_mounton_and_execmod)
+	(allow unconfined_subj_type_attribute obj_type_attribute
+		all_chr_file_perms_except_mounton_and_execmod)
 
-	(allow unconfined_subj_type_attribute obj_type_attribute (filesystem (mount remount unmount getattr relabelfrom relabelto associate quotamod quotaget))))
+	(allow unconfined_subj_type_attribute obj_type_attribute (filesystem
+		(mount remount unmount getattr relabelfrom relabelto associate
+			quotamod quotaget))))
 
 (block fs_use_dosfs
 	(blockinherit sec.bool_obj_blk)
 
 	(booleanif fs_use_dosfs
 		(true
-			(call fs.read_dosfs (fs.read_dosfs_subj_type_attribute))
-			(call fs.getattr_dosfs_fs (fs.read_dosfs_subj_type_attribute))
-			(call fs.manage_dosfs (fs.manage_dosfs_subj_type_attribute))
-			(call fs.getattr_dosfs_fs (fs.manage_dosfs_subj_type_attribute)))))
+			(call fs.read_dosfs
+				(fs.read_dosfs_subj_type_attribute))
+			(call fs.getattr_dosfs_fs
+				(fs.read_dosfs_subj_type_attribute))
+			(call fs.manage_dosfs
+				(fs.manage_dosfs_subj_type_attribute))
+			(call fs.getattr_dosfs_fs
+				(fs.manage_dosfs_subj_type_attribute)))))
 
 (block fs_use_cifs
 	(blockinherit sec.bool_obj_blk)
@@ -68,9 +81,12 @@
 	(booleanif fs_use_cifs
 		(true
 			(call fs.read_cifs (fs.read_cifs_subj_type_attribute))
-			(call fs.getattr_cifs_fs (fs.read_cifs_subj_type_attribute))
-			(call fs.manage_cifs (fs.manage_cifs_subj_type_attribute))
-			(call fs.getattr_cifs_fs (fs.manage_cifs_subj_type_attribute)))))
+			(call fs.getattr_cifs_fs
+				(fs.read_cifs_subj_type_attribute))
+			(call fs.manage_cifs
+				(fs.manage_cifs_subj_type_attribute))
+			(call fs.getattr_cifs_fs
+				(fs.manage_cifs_subj_type_attribute)))))
 
 (block fs_use_fuse
 	(blockinherit sec.bool_obj_blk)
@@ -78,17 +94,22 @@
 	(booleanif fs_use_fuse
 		(true
 			(call fs.read_fuse (fs.read_fuse_subj_type_attribute))
-			(call fs.getattr_fuse_fs (fs.read_fuse_subj_type_attribute))
-			(call fs.manage_fuse (fs.manage_fuse_subj_type_attribute))
-			(call fs.getattr_fuse_fs (fs.manage_fuse_subj_type_attribute)))))
+			(call fs.getattr_fuse_fs
+				(fs.read_fuse_subj_type_attribute))
+			(call fs.manage_fuse
+				(fs.manage_fuse_subj_type_attribute))
+			(call fs.getattr_fuse_fs
+				(fs.manage_fuse_subj_type_attribute)))))
 
 (block fs_use_iso9660
 	(blockinherit sec.bool_obj_blk)
 
 	(booleanif fs_use_iso9660
 		(true
-			(call fs.read_iso9660 (fs.read_iso9660_subj_type_attribute))
-			(call fs.getattr_iso9660_fs (fs.read_iso9660_subj_type_attribute)))))
+			(call fs.read_iso9660
+				(fs.read_iso9660_subj_type_attribute))
+			(call fs.getattr_iso9660_fs
+				(fs.read_iso9660_subj_type_attribute)))))
 
 (block fs_use_nfs
 	(blockinherit sec.bool_obj_blk)
@@ -96,19 +117,26 @@
 	(booleanif fs_use_nfs
 		(true
 			(call fs.read_nfs (fs.read_nfs_subj_type_attribute))
-			(call fs.getattr_nfs_fs (fs.read_nfs_subj_type_attribute))
-			(call fs.manage_nfs (fs.manage_nfs_subj_type_attribute))
-			(call fs.getattr_nfs_fs (fs.manage_nfs_subj_type_attribute)))))
+			(call fs.getattr_nfs_fs
+				(fs.read_nfs_subj_type_attribute))
+			(call fs.manage_nfs
+				(fs.manage_nfs_subj_type_attribute))
+			(call fs.getattr_nfs_fs
+				(fs.manage_nfs_subj_type_attribute)))))
 
 (block fs_use_removable
 	(blockinherit sec.bool_obj_blk)
 
 	(booleanif fs_use_removable
 		(true
-			(call fs.read_removable (fs.read_removable_subj_type_attribute))
-			(call fs.getattr_removable_fs (fs.read_removable_subj_type_attribute))
-			(call fs.manage_removable (fs.manage_removable_subj_type_attribute))
-			(call fs.getattr_removable_fs (fs.manage_removable_subj_type_attribute)))))
+			(call fs.read_removable
+				(fs.read_removable_subj_type_attribute))
+			(call fs.getattr_removable_fs
+				(fs.read_removable_subj_type_attribute))
+			(call fs.manage_removable
+				(fs.manage_removable_subj_type_attribute))
+			(call fs.getattr_removable_fs
+				(fs.manage_removable_subj_type_attribute)))))
 
 (block aio
 	(blockinherit fs.obj_blk))

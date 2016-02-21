@@ -75,7 +75,8 @@
 	(macro read_kernel_message_subj_type ((type ARG1))
 		(call fs.search_proc (ARG1))
 		(allow ARG1 kmsg_proc.proc read_file_perms)
-		(typeattributeset read_kernel_message_subj_type_attribute ARG1))
+		(typeattributeset read_kernel_message_subj_type_attribute
+			ARG1))
 
 	(macro request_load_module ((type ARG1))
 		(allow ARG1 subj (system (module_request))))
@@ -99,16 +100,20 @@
 		(allow ARG1 subj (netlink_audit_socket (getattr read write))))
 
 	(macro dontaudit_audit_access_mountpoint_dirs ((type ARG1))
-		(dontaudit ARG1 mountpoint_obj_type_attribute (dir (audit_access))))
+		(dontaudit ARG1 mountpoint_obj_type_attribute (dir
+			(audit_access))))
 
 	(macro getattr_mountpoints ((type ARG1))
 		(allow ARG1 mountpoint_obj_type_attribute (file (getattr)))
 		(allow ARG1 mountpoint_obj_type_attribute (dir (getattr)))
-		(allow ARG1 mountpoint_obj_type_attribute (fifo_file (getattr)))
+		(allow ARG1 mountpoint_obj_type_attribute (fifo_file
+			(getattr)))
 		(allow ARG1 mountpoint_obj_type_attribute (lnk_file (getattr)))
-		(allow ARG1 mountpoint_obj_type_attribute (sock_file (getattr)))
+		(allow ARG1 mountpoint_obj_type_attribute (sock_file
+			(getattr)))
 		(allow ARG1 mountpoint_obj_type_attribute (chr_file (getattr)))
-		(allow ARG1 mountpoint_obj_type_attribute (blk_file (getattr))))
+		(allow ARG1 mountpoint_obj_type_attribute (blk_file
+			(getattr))))
 
 	(macro dontaudit_link_keyring ((type ARG1))
 		(dontaudit ARG1 subj (key (search link))))
@@ -143,8 +148,10 @@
 	(macro mounton_mountpoint_dirs ((type ARG1))
 		(allow ARG1 mountpoint_obj_type_attribute (dir (mounton))))
 
-	(macro mountpoint_obj_type_transition ((type ARG1)(type ARG2)(class ARG3)(name ARG4))
-		(call obj_type_transition_pattern (ARG1 mountpoint_obj_type_attribute ARG2 ARG3 ARG4)))
+	(macro mountpoint_obj_type_transition ((type ARG1)(type ARG2)(class
+		ARG3)(name ARG4))
+		(call obj_type_transition_pattern (ARG1
+			mountpoint_obj_type_attribute ARG2 ARG3 ARG4)))
 
 	(macro dontaudit_audit_access_sysctl_dirs ((type ARG1))
 		(dontaudit ARG1 sysctl.sysctl (dir (audit_access))))
@@ -183,7 +190,8 @@
 		(allow ARG1 var_log_file manage_file_perms))
 
 	(macro var_log_obj_type_transition_var_log ((type ARG1))
-		(call file.var_log_obj_type_transition (ARG1 var_log_file file "boot.log")))
+		(call file.var_log_obj_type_transition (ARG1 var_log_file file
+			"boot.log")))
 
 	(macro search_sysctl ((type ARG1))
 		(call fs.search_proc (ARG1))
@@ -219,15 +227,18 @@
 
 	(macro read_dev_sysctl_files ((type ARG1))
 		(call search_sysctl (ARG1))
-		(call read_files_pattern (ARG1 dev_sysctl.sysctl dev_sysctl.sysctl)))
+		(call read_files_pattern (ARG1 dev_sysctl.sysctl
+			dev_sysctl.sysctl)))
 
 	(macro rw_dev_sysctl_files ((type ARG1))
 		(call search_sysctl (ARG1))
-		(call rw_files_pattern (ARG1 dev_sysctl.sysctl dev_sysctl.sysctl)))
+		(call rw_files_pattern (ARG1 dev_sysctl.sysctl
+			dev_sysctl.sysctl)))
 
 	(macro write_dev_sysctl_files ((type ARG1))
 		(call search_sysctl (ARG1))
-		(call write_files_pattern (ARG1 dev_sysctl.sysctl dev_sysctl.sysctl)))
+		(call write_files_pattern (ARG1 dev_sysctl.sysctl
+			dev_sysctl.sysctl)))
 
 	(macro search_crypto_sysctl ((type ARG1))
 		(call search_sysctl (ARG1))
@@ -251,15 +262,18 @@
 
 	(macro read_fs_sysctl_files ((type ARG1))
 		(call search_sysctl (ARG1))
-		(call read_files_pattern (ARG1 fs_sysctl.sysctl fs_sysctl.sysctl)))
+		(call read_files_pattern (ARG1 fs_sysctl.sysctl
+			fs_sysctl.sysctl)))
 
 	(macro rw_fs_sysctl_files ((type ARG1))
 		(call search_sysctl (ARG1))
-		(call rw_files_pattern (ARG1 fs_sysctl.sysctl fs_sysctl.sysctl)))
+		(call rw_files_pattern (ARG1 fs_sysctl.sysctl
+			fs_sysctl.sysctl)))
 
 	(macro write_fs_sysctl_files ((type ARG1))
 		(call search_sysctl (ARG1))
-		(call write_files_pattern (ARG1 fs_sysctl.sysctl fs_sysctl.sysctl)))
+		(call write_files_pattern (ARG1 fs_sysctl.sysctl
+			fs_sysctl.sysctl)))
 
 	(macro search_kernel_sysctl ((type ARG1))
 		(call search_sysctl (ARG1))
@@ -287,15 +301,18 @@
 
 	(macro read_net_sysctl_files ((type ARG1))
 		(call search_sysctl (ARG1))
-		(call read_files_pattern (ARG1 net_sysctl.sysctl net_sysctl.sysctl)))
+		(call read_files_pattern (ARG1 net_sysctl.sysctl
+			net_sysctl.sysctl)))
 
 	(macro rw_net_sysctl_files ((type ARG1))
 		(call search_sysctl (ARG1))
-		(call rw_files_pattern (ARG1 net_sysctl.sysctl net_sysctl.sysctl)))
+		(call rw_files_pattern (ARG1 net_sysctl.sysctl
+			net_sysctl.sysctl)))
 
 	(macro write_net_sysctl_files ((type ARG1))
 		(call search_sysctl (ARG1))
-		(call write_files_pattern (ARG1 net_sysctl.sysctl net_sysctl.sysctl)))
+		(call write_files_pattern (ARG1 net_sysctl.sysctl
+			net_sysctl.sysctl)))
 
 	(macro search_net_unix_sysctl ((type ARG1))
 		(call search_sysctl (ARG1))
@@ -307,7 +324,8 @@
 
 	(macro read_net_unix_sysctl_files ((type ARG1))
 		(call search_sysctl (ARG1))
-		(call read_files_pattern (ARG1 net_unix.sysctl net_unix.sysctl)))
+		(call read_files_pattern (ARG1 net_unix.sysctl
+			net_unix.sysctl)))
 
 	(macro rw_net_unix_sysctl_files ((type ARG1))
 		(call search_sysctl (ARG1))
@@ -315,7 +333,8 @@
 
 	(macro write_net_unix_sysctl_files ((type ARG1))
 		(call search_sysctl (ARG1))
-		(call write_files_pattern (ARG1 net_unix.sysctl net_unix.sysctl)))
+		(call write_files_pattern (ARG1 net_unix.sysctl
+			net_unix.sysctl)))
 
 	(macro read_security_sysctl_files ((type ARG1))
 		(call search_sysctl (ARG1))
@@ -330,16 +349,22 @@
 		(allow ARG1 kernel.sysctl search_dir_perms)
 		(allow ARG1 vm.sysctl search_dir_perms)
 		(allow ARG1 security.sysctl rw_file_perms)
-		(typeattributeset write_security_and_usermodehelper_sysctl_subj_type_attribute ARG1))
+		(typeattributeset
+			write_security_and_usermodehelper_sysctl_subj_type_attribute
+				ARG1))
 
 	(macro read_usermodehelper_sysctl_files ((type ARG1))
 		(call search_kernel_sysctl (ARG1))
-		(call read_files_pattern (ARG1 usermodehelper.sysctl usermodehelper.sysctl)))
+		(call read_files_pattern (ARG1 usermodehelper.sysctl
+			usermodehelper.sysctl)))
 
 	(macro rw_usermodehelper_sysctl_files ((type ARG1))
 		(call search_kernel_sysctl (ARG1))
-		(call rw_files_pattern (ARG1 usermodehelper.sysctl usermodehelper.sysctl))
-		(typeattributeset write_security_and_usermodehelper_sysctl_subj_type_attribute ARG1))
+		(call rw_files_pattern (ARG1 usermodehelper.sysctl
+			usermodehelper.sysctl))
+		(typeattributeset
+			write_security_and_usermodehelper_sysctl_subj_type_attribute
+				ARG1))
 
 	(macro search_vm_sysctl ((type ARG1))
 		(call search_sysctl (ARG1))
@@ -384,14 +409,17 @@
 		(allow ARG1 sysctl_obj_type_attribute read_lnk_file_perms))
 
 	(macro getattr_all_sysctl_files ((type ARG1))
-		(call getattr_files_pattern (ARG1 sysctl_obj_type_attribute sysctl_obj_type_attribute)))
+		(call getattr_files_pattern (ARG1 sysctl_obj_type_attribute
+			sysctl_obj_type_attribute)))
 
 	(macro getattr_all_sysctl_lnk_files ((type ARG1))
-		(call getattr_lnk_files_pattern (ARG1 sysctl_obj_type_attribute sysctl_obj_type_attribute)))
+		(call getattr_lnk_files_pattern (ARG1 sysctl_obj_type_attribute
+			sysctl_obj_type_attribute)))
 
 	(macro list_all_sysctl ((type ARG1))
 		(call fs.search_proc (ARG1))
-		(call list_dirs_pattern (ARG1 sysctl_obj_type_attribute sysctl_obj_type_attribute)))
+		(call list_dirs_pattern (ARG1 sysctl_obj_type_attribute
+			sysctl_obj_type_attribute)))
 
 	(macro read_all_sysctl_files ((type ARG1))
 		(call read_crypto_sysctl_files (ARG1))
@@ -461,9 +489,11 @@
 
 	(macro read_all_proc_files ((type ARG1))
 		(call fs.search_proc (ARG1))
-		(call read_files_pattern (ARG1 proc_obj_type_attribute proc_obj_type_attribute))
+		(call read_files_pattern (ARG1 proc_obj_type_attribute
+			proc_obj_type_attribute))
 		(typeattributeset dump_kernel_subj_type_attribute ARG1)
-		(typeattributeset read_kernel_message_subj_type_attribute ARG1))
+		(typeattributeset read_kernel_message_subj_type_attribute
+			ARG1))
 
 	(macro search_all_proc ((type ARG1))
 		(call fs.search_proc (ARG1))
@@ -471,11 +501,13 @@
 
 	(macro getattr_all_proc_files ((type ARG1))
 		(call fs.search_proc (ARG1))
-		(call getattr_files_pattern (ARG1 proc_obj_type_attribute proc_obj_type_attribute)))
+		(call getattr_files_pattern (ARG1 proc_obj_type_attribute
+			proc_obj_type_attribute)))
 
 	(macro getattr_all_proc_lnk_files ((type ARG1))
 		(call fs.search_proc (ARG1))
-		(call getattr_lnk_files_pattern (ARG1 proc_obj_type_attribute proc_obj_type_attribute)))
+		(call getattr_lnk_files_pattern (ARG1 proc_obj_type_attribute
+			proc_obj_type_attribute)))
 
 	(macro dontaudit_read_all_sysfs ((type ARG1))
 		(dontaudit ARG1 sysfs_obj_type_attribute read_file_perms)
@@ -512,7 +544,8 @@
 
 	(macro read_cpu_online_sysfs_files ((type ARG1))
 		(call fs.read_sysfs_lnk_files (ARG1))
-		(call read_files_pattern (ARG1 cpu_sysfs.sysfs cpu_online_sysfs.sysfs)))
+		(call read_files_pattern (ARG1 cpu_sysfs.sysfs
+			cpu_online_sysfs.sysfs)))
 
 	(macro search_memory_sysfs ((type ARG1))
 		(call fs.read_sysfs_lnk_files (ARG1))
@@ -524,11 +557,13 @@
 
 	(macro read_memory_sysfs_files ((type ARG1))
 		(call fs.read_sysfs_lnk_files (ARG1))
-		(call read_files_pattern (ARG1 memory_sysfs.sysfs memory_sysfs.sysfs)))
+		(call read_files_pattern (ARG1 memory_sysfs.sysfs
+			memory_sysfs.sysfs)))
 
 	(macro rw_memory_sysfs_files ((type ARG1))
 		(call fs.read_sysfs_lnk_files (ARG1))
-		(call rw_files_pattern (ARG1 memory_sysfs.sysfs memory_sysfs.sysfs)))
+		(call rw_files_pattern (ARG1 memory_sysfs.sysfs
+			memory_sysfs.sysfs)))
 
 	(macro read_memory_sysfs ((type ARG1))
 		(call fs.read_sysfs_lnk_files (ARG1))
@@ -560,7 +595,8 @@
 
 	(macro read_node_online_sysfs_files ((type ARG1))
 		(call fs.read_sysfs_lnk_files (ARG1))
-		(call read_files_pattern (ARG1 node_sysfs.sysfs node_online_sysfs.sysfs)))
+		(call read_files_pattern (ARG1 node_sysfs.sysfs
+			node_online_sysfs.sysfs)))
 
 	(macro read_state_files ((type ARG1))
 		(call fs.search_proc (ARG1))
@@ -618,7 +654,8 @@
 		(allow ARG1 unlabeled.isid list_dir_perms))
 
 	(macro read_unlabeled_lnk_files ((type ARG1))
-		(call read_lnk_files_pattern (ARG1 unlabeled.isid unlabeled.isid)))
+		(call read_lnk_files_pattern (ARG1 unlabeled.isid
+			unlabeled.isid)))
 
 	(macro relabelfrom_unlabeled ((type ARG1))
 		(allow ARG1 unlabeled.isid relabelfrom_file_perms)

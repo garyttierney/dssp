@@ -15,7 +15,10 @@
 		(typeattributeset exempt_subj_type_attribute ARG1))
 
 	(macro obj_role_change_exemption_subj_type ((type ARG1))
-		(typeattributeset obj_role_change_exemption_subj_type_attribute ARG1))
+		(typeattributeset obj_role_change_exemption_subj_type_attribute
+			ARG1))
 
 	(macro obj_sys_role_change_exemption_subj_type ((type ARG1))
-		(typeattributeset obj_sys_role_change_exemption_subj_type_attribute ARG1)))
+		(typeattributeset
+			obj_sys_role_change_exemption_subj_type_attribute
+				ARG1)))

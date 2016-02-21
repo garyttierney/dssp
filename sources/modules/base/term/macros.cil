@@ -177,25 +177,42 @@
 
 	(macro user_tty ((type ARG1)(type ARG2))
 		(typechange ARG1 tty.serial_dev chr_file ARG2)
-		(booleanif term_console_login (true (typechange ARG1 console.dev chr_file ARG2))))
+		(booleanif term_console_login (true (typechange ARG1
+			console.dev chr_file ARG2))))
 
 	(macro devtmpfs_obj_type_transition_unallocated_tty ((type ARG1))
-		(call fs.devtmpfs_obj_type_transition (ARG1 tty.serial_dev chr_file "vcs"))
-		(call fs.devtmpfs_obj_type_transition (ARG1 tty.serial_dev chr_file "vcs1"))
-		(call fs.devtmpfs_obj_type_transition (ARG1 tty.serial_dev chr_file "vcs2"))
-		(call fs.devtmpfs_obj_type_transition (ARG1 tty.serial_dev chr_file "vcs3"))
-		(call fs.devtmpfs_obj_type_transition (ARG1 tty.serial_dev chr_file "vcs4"))
-		(call fs.devtmpfs_obj_type_transition (ARG1 tty.serial_dev chr_file "vcs5"))
-		(call fs.devtmpfs_obj_type_transition (ARG1 tty.serial_dev chr_file "vcs6"))
-		(call fs.devtmpfs_obj_type_transition (ARG1 tty.serial_dev chr_file "vcs63"))
-		(call fs.devtmpfs_obj_type_transition (ARG1 tty.serial_dev chr_file "vcsa"))
-		(call fs.devtmpfs_obj_type_transition (ARG1 tty.serial_dev chr_file "vcsa1"))
-		(call fs.devtmpfs_obj_type_transition (ARG1 tty.serial_dev chr_file "vcsa2"))
-		(call fs.devtmpfs_obj_type_transition (ARG1 tty.serial_dev chr_file "vcsa3"))
-		(call fs.devtmpfs_obj_type_transition (ARG1 tty.serial_dev chr_file "vcsa4"))
-		(call fs.devtmpfs_obj_type_transition (ARG1 tty.serial_dev chr_file "vcsa5"))
-		(call fs.devtmpfs_obj_type_transition (ARG1 tty.serial_dev chr_file "vcsa6"))
-		(call fs.devtmpfs_obj_type_transition (ARG1 tty.serial_dev chr_file "vcsa63")))
+		(call fs.devtmpfs_obj_type_transition (ARG1 tty.serial_dev
+			chr_file "vcs"))
+		(call fs.devtmpfs_obj_type_transition (ARG1 tty.serial_dev
+			chr_file "vcs1"))
+		(call fs.devtmpfs_obj_type_transition (ARG1 tty.serial_dev
+			chr_file "vcs2"))
+		(call fs.devtmpfs_obj_type_transition (ARG1 tty.serial_dev
+			chr_file "vcs3"))
+		(call fs.devtmpfs_obj_type_transition (ARG1 tty.serial_dev
+			chr_file "vcs4"))
+		(call fs.devtmpfs_obj_type_transition (ARG1 tty.serial_dev
+			chr_file "vcs5"))
+		(call fs.devtmpfs_obj_type_transition (ARG1 tty.serial_dev
+			chr_file "vcs6"))
+		(call fs.devtmpfs_obj_type_transition (ARG1 tty.serial_dev
+			chr_file "vcs63"))
+		(call fs.devtmpfs_obj_type_transition (ARG1 tty.serial_dev
+			chr_file "vcsa"))
+		(call fs.devtmpfs_obj_type_transition (ARG1 tty.serial_dev
+			chr_file "vcsa1"))
+		(call fs.devtmpfs_obj_type_transition (ARG1 tty.serial_dev
+			chr_file "vcsa2"))
+		(call fs.devtmpfs_obj_type_transition (ARG1 tty.serial_dev
+			chr_file "vcsa3"))
+		(call fs.devtmpfs_obj_type_transition (ARG1 tty.serial_dev
+			chr_file "vcsa4"))
+		(call fs.devtmpfs_obj_type_transition (ARG1 tty.serial_dev
+			chr_file "vcsa5"))
+		(call fs.devtmpfs_obj_type_transition (ARG1 tty.serial_dev
+			chr_file "vcsa6"))
+		(call fs.devtmpfs_obj_type_transition (ARG1 tty.serial_dev
+			chr_file "vcsa63")))
 
 	(macro set_console_login_boolean ((type ARG1))
 		(call sec.set_spec_boolean (ARG1 term_console_login.bool))

@@ -7,9 +7,11 @@
 
 		(tunableif enable_rbacsep
 			(true
-				(context fs_obj_context (sys.id sys.role fs (systemlow systemlow))))
+				(context fs_obj_context (sys.id sys.role fs
+					(systemlow systemlow))))
 			(false
-				(context fs_obj_context (sys.id object_r fs (systemlow systemlow))))))
+				(context fs_obj_context (sys.id object_r fs
+					(systemlow systemlow))))))
 
 	(macro trace_client_subj_type ((type ARG1))
 		(typeattributeset trace_client_subj_type_attribute ARG1))
@@ -105,7 +107,8 @@
 
 	(macro read_binfmt_misc_lnk_files ((type ARG1))
 		(call search_autofs (ARG1))
-		(call read_lnk_files_pattern (ARG1 binfmt_misc.fs binfmt_misc.fs)))
+		(call read_lnk_files_pattern (ARG1 binfmt_misc.fs
+			binfmt_misc.fs)))
 
 	(macro read_binfmt_misc ((type ARG1))
 		(call search_autofs (ARG1))
@@ -254,9 +257,11 @@
 	(macro relabelfrom_devpts_fs ((type ARG1))
 		(allow ARG1 devpts.fs (filesystem (relabelfrom))))
 
-	(macro devpts_obj_type_transition ((type ARG1)(type ARG2) (class ARG3)(name ARG4))
+	(macro devpts_obj_type_transition ((type ARG1)(type ARG2) (class
+		ARG3)(name ARG4))
 		(call search_devtmpfs (ARG1))
-		(call obj_type_transition_pattern (ARG1 devpts.fs ARG2 ARG3 ARG4)))
+		(call obj_type_transition_pattern (ARG1 devpts.fs ARG2 ARG3
+			ARG4)))
 
 	(macro mount_devpts_fs ((type ARG1))
 		(allow ARG1 devpts.fs (filesystem (mount))))
@@ -336,10 +341,12 @@
 		(call relabelfrom_dirs_pattern (ARG1 devtmpfs.fs devtmpfs.fs)))
 
 	(macro relabelfrom_devtmpfs_chr_files ((type ARG1))
-		(call relabelfrom_chr_files_pattern (ARG1 devtmpfs.fs devtmpfs.fs)))
+		(call relabelfrom_chr_files_pattern (ARG1 devtmpfs.fs
+			devtmpfs.fs)))
 
 	(macro relabelfrom_devtmpfs_blk_files ((type ARG1))
-		(call relabelfrom_blk_files_pattern (ARG1 devtmpfs.fs devtmpfs.fs)))
+		(call relabelfrom_blk_files_pattern (ARG1 devtmpfs.fs
+			devtmpfs.fs)))
 
 	(macro dontaudit_getattr_devtmpfs_chr_files ((type ARG1))
 		(dontaudit ARG1 devtmpfs.fs (chr_file (getattr))))
@@ -362,8 +369,10 @@
 	(macro rw_devtmpfs_dirs ((type ARG1))
 		(allow ARG1 devtmpfs.fs rw_dir_perms))
 
-	(macro devtmpfs_obj_type_transition ((type ARG1)(type ARG2)(class ARG3)(name ARG4))
-		(call obj_type_transition_pattern (ARG1 devtmpfs.fs ARG2 ARG3 ARG4)))
+	(macro devtmpfs_obj_type_transition ((type ARG1)(type ARG2)(class
+		ARG3)(name ARG4))
+		(call obj_type_transition_pattern (ARG1 devtmpfs.fs ARG2 ARG3
+			ARG4)))
 
 	(macro search_dosfs ((type ARG1))
 		(allow ARG1 dosfs.fs search_dir_perms))
@@ -601,7 +610,8 @@
 		(allow ARG1 removable_fs.fs list_dir_perms))
 
 	(macro read_removable_files ((type ARG1))
-		(call read_files_pattern (ARG1 removable_fs.fs removable_fs.fs)))
+		(call read_files_pattern (ARG1 removable_fs.fs
+			removable_fs.fs)))
 
 	(macro read_removable ((type ARG1))
 		(allow ARG1 removable_fs.fs list_dir_perms)
@@ -643,8 +653,10 @@
 	(macro mounton_rootfs_dirs ((type ARG1))
 		(allow ARG1 rootfs.fs (dir (mounton))))
 
-	(macro rootfs_obj_type_transition ((type ARG1)(type ARG2)(class ARG3)(name ARG4))
-		(call obj_type_transition_pattern (ARG1 rootfs.fs ARG2 ARG3 ARG4)))
+	(macro rootfs_obj_type_transition ((type ARG1)(type ARG2)(class
+		ARG3)(name ARG4))
+		(call obj_type_transition_pattern (ARG1 rootfs.fs ARG2 ARG3
+			ARG4)))
 
 	(macro search_sysfs ((type ARG1))
 		(allow ARG1 sysfs.fs search_dir_perms))
@@ -793,9 +805,11 @@
 	(macro unmount_tmpfs_fs ((type ARG1))
 		(allow ARG1 tmpfs.fs (filesystem (unmount))))
 
-	(macro tmpfs_obj_type_transition ((type ARG1)(type ARG2)(class ARG3)(name ARG4))
+	(macro tmpfs_obj_type_transition ((type ARG1)(type ARG2)(class
+		ARG3)(name ARG4))
 		(call search_devtmpfs (ARG1))
-		(call obj_type_transition_pattern (ARG1 tmpfs.fs ARG2 ARG3 ARG4)))
+		(call obj_type_transition_pattern (ARG1 tmpfs.fs ARG2 ARG3
+			ARG4)))
 
 	(macro mount_tracefs_fs ((type ARG1))
 		(allow ARG1 tracefs.fs (filesystem (mount))))
@@ -843,7 +857,8 @@
 		(allow ARG1 obj_type_attribute relabel_chr_file_perms))
 
 	(macro read_all_lnk_files ((type ARG1))
-		(call read_lnk_files_pattern (ARG1 obj_type_attribute obj_type_attribute)))
+		(call read_lnk_files_pattern (ARG1 obj_type_attribute
+			obj_type_attribute)))
 
 	(macro dontaudit_getattr_all_fs ((type ARG1))
 		(dontaudit ARG1 obj_type_attribute (filesystem (getattr))))
