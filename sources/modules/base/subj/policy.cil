@@ -151,7 +151,7 @@
 				setopt shutdown recvfrom sendto name_bind)))
 	(allow unconfined_subj_type_attribute subj_type_attribute (tcp_socket
 			(create ioctl read getattr write setattr append bind
-				connect getopt setopt shutdown)))
+				connect getopt setopt shutdown listen accept)))
 	(allow unconfined_subj_type_attribute subj_type_attribute (udp_socket
 			(create ioctl read getattr write setattr append bind
 				connect getopt setopt shutdown)))
@@ -240,7 +240,7 @@
 		read write search link setattr create)))
 	(allow unconfined_subj_type_attribute subj_type_attribute (dccp_socket
 		(create ioctl read getattr write setattr append bind connect
-			getopt setopt shutdown)))
+			getopt setopt shutdown listen accept)))
 	(allow unconfined_subj_type_attribute subj_type_attribute (tun_socket
 		(ioctl read write create getattr setattr lock relabelfrom
 			relabelto append bind connect listen accept getopt
