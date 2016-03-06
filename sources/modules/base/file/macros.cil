@@ -5192,6 +5192,9 @@
 		(call search_var (ARG1))
 		(allow ARG1 var_lib.var_lib_file search_dir_perms))
 
+	(macro dontaudit_list_var_lib ((type ARG1))
+		(dontaudit ARG1 var_lib.var_lib_file list_dir_perms))
+
 	(macro list_var_lib ((type ARG1))
 		(call search_var (ARG1))
 		(allow ARG1 var_lib.var_lib_file list_dir_perms))
@@ -5651,6 +5654,9 @@
 	(macro search_lost_found ((type ARG1))
 		(call sys.search_mountpoints (ARG1))
 		(allow ARG1 lost_found.file search_dir_perms))
+
+	(macro dontaudit_list_lost_found ((type ARG1))
+		(dontaudit ARG1 lost_found.file list_dir_perms))
 
 	(macro list_lost_found ((type ARG1))
 		(call sys.search_mountpoints (ARG1))

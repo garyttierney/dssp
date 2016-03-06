@@ -269,6 +269,9 @@
 	(macro remount_devpts_fs ((type ARG1))
 		(allow ARG1 devpts.fs (filesystem (remount))))
 
+	(macro dontaudit_list_devtmpfs ((type ARG1))
+		(dontaudit ARG1 devtmpfs.fs list_dir_perms))
+
 	(macro list_devtmpfs ((type ARG1))
 		(allow ARG1 devtmpfs.fs list_dir_perms))
 
