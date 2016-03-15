@@ -10,7 +10,7 @@ DSSP uses CIL as a high level language because the author appreciates the design
 
 What CIL brings to the table and what other high level languages are unable to provide in a compelling way is the ability to write complex policy. Complex policy is required to be able to write policy for complex environments suchs as graphical desktop environments.
 
-CIL also allows DSSP to be truly modular. With module policy, policy modules are compiled individually and their compiled representations are linked together into the policy database. This makes dependency resolution impossible. Because there is no human readable policy involved at the point of linking. DSSP is modular and dependency resolution is useful because the security policy is human readable.
+The source policy oriented nature of CIL also allows DSSP to be truly modular. With module policy, policy modules are compiled individually and their compiled representations are linked together into the policy database. This makes dependency resolution impossible. Because there is no human readable policy involved at the point of linking. DSSP is modular and dependency resolution is useful because this.
 
 DSSP is designed to facilitate complex environments such as desktop environments. Processes associated with your user identity have just as much priority as processes associated with the root identity. This is unlike most common SELinux policy widely available. These SELinux security policies focus on a selection of system services only, and mostly ignore user agents.
 
@@ -18,15 +18,15 @@ The reason for this is that enforcing integrity in complex desktop environments 
 
 Any alternatives such as selinux-sandbox, or XDG-app face the same challenges of dealing with complex requirements. They are still complex just in different way. Plus these technologies require additional dependencies, whereas DSSP only requires SELinux, the CIL compiler and libsepol.
 
-DSSP is just a Git repository with human readable files, and a few shell scripts. Commands like "semanage" and "semodule" are no longer needed. Everything can be tuned by just editing or replacing files and then compiling, installing and loading the resulting policy database and configuration files.
+DSSP is just a Git repository with human readable files, and a few shell scripts. Commands like "semanage" and "semodule" are no longer needed. Everything can be tuned by just editing or replacing files and then compiling, installing and loading the resulting policy configuration and database files.
 
 DSSP is accessible because of this. Everything can be adjusted easily. DSSP is truly modular because it makes dependency resolution usable. DSSP can be used in any scenario because of the two aforementioned reasons, plus because it was designed with process equality in mind for the start.
 
-Like CIL, DSSP is not designed to be user friendly, but that does not mean that it is unfriendly to users. It is designed to be flexible first and foremost, and thus useful for complex policies. DSSP just requires that you know the CIL language and the SELinux security models. It requires an initial investment. When this investment is made then DSSP actually becomes really user friendly because there are no abstractions for the sake of being "user friendly". It is very easy to maintain and configure.
+Like CIL, DSSP is not designed to be user friendly, but that does not mean that it is unfriendly to users. It is designed to be flexible, and accessible first and foremost, and thus useful for complex policies. DSSP just requires that you know the CIL language and the SELinux security models. It requires an initial investment. When this investment is made then DSSP actually becomes user friendly because there are no abstractions just for the sake of trying to be "user friendly". DSSP does not hide anything and every aspect is easy to customize, maintain and configure.
 
-If you value integrity on the desktop, if you have complex integrity requirements, or if you just want to build on a solid foundation and if you are willing to invest in learning how to effectively and efficiently use SELinux and speak CIL, then DSSP may just be what you are looking for.
+If you value integrity on the desktop, if you have complex integrity requirements, or if you just want to build on a flexible foundation and if you are willing to invest in learning how to effectively and efficiently use SELinux and speak CIL, then DSSP may just be what you are looking for.
 
-DSSP shares CIL's motto: less is more.
+DSSP is also very suitable for embedded environments and shares CIL's motto: "less is more."
 
 [1] https://github.com/SELinuxProject/selinux/blob/master/secilc/docs/cil_introduction.md
 
