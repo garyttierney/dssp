@@ -8,7 +8,7 @@ DSSP is a SELinux security policy written in the SELinux Common Intermediate Lan
 
 DSSP uses CIL as a high level language because the author appreciates the design philosophy of CIL and he decided that CIL is as good as any, even if it is meant to be an intermediate language. If you want to learn more about the CIL design goals then please see the SECILC documentation [1]. Most of the arguments there also apply to DSSP.
 
-What CIL brings to the table and what other high level languages are unable to provide in a compelling way is the ability to write complex policy. Complex policy is required to be able to write policy for complex environments suchs as graphical desktop environments.
+What CIL brings to the table and what other high level languages are unable to provide in a compelling way is the ability to write complex policy. Complex policy is required to be able to write policy for complex environments such as graphical desktop environments.
 
 The source policy oriented nature of CIL also allows DSSP to be truly modular. With module policy, policy modules are compiled individually and their compiled representations are linked together into the policy database. This makes dependency resolution impossible. Because there is no human readable policy involved at the point of linking. DSSP is modular and dependency resolution is useful because this.
 
@@ -20,7 +20,7 @@ Any alternatives such as selinux-sandbox, or XDG-app face the same challenges of
 
 DSSP is just a Git repository with human readable files, and a few shell scripts. Commands like "semanage" and "semodule" are no longer needed. Everything can be tuned by just editing or replacing files and then compiling, installing and loading the resulting policy configuration and database files.
 
-DSSP is accessible because of this. Everything can be adjusted easily. DSSP is truly modular because it makes dependency resolution usable. DSSP can be used in any scenario because of the two aforementioned reasons, plus because it was designed with process equality in mind for the start.
+DSSP is accessible because of this. Everything can be adjusted easily. DSSP is truly modular because it makes dependency resolution usable. DSSP can be used in any scenario because of the two aforementioned reasons, plus because it was designed with process equality in mind from the start.
 
 Like CIL, DSSP is not designed to be user friendly, but that does not mean that it is unfriendly to users. It is designed to be flexible, and accessible first and foremost, and thus useful for complex policies. DSSP just requires that you know the CIL language and the SELinux security models. It requires an initial investment. When this investment is made then DSSP actually becomes user friendly because there are no abstractions just for the sake of trying to be "user friendly". DSSP does not hide anything and every aspect is easy to customize, maintain and configure.
 
