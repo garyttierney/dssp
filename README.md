@@ -8,11 +8,11 @@ DSSP is a SELinux security policy written in the SELinux Common Intermediate Lan
 
 DSSP uses CIL as a high level language because the author appreciates the design philosophy of CIL and he decided that CIL is as good as any, even if it is meant to be an intermediate language. If you want to learn more about the CIL design goals then please see the SECILC documentation [1]. Most of the arguments there also apply to DSSP.
 
-What CIL brings to the table and what other high level languages are unable to provide in a compelling way is the ability to write complex policy. Complex policy is required to be able to write policy for complex environments such as graphical desktop environments.
+What CIL brings to the table and what other high level languages are unable to provide in a compelling way is the ability to write complex policy. Complex policy is required to be able to enforce fine-grained mandatory access control in complex environments such as graphical desktop environments.
 
 The source policy oriented nature of CIL also allows DSSP to be truly modular. With module policy, policy modules are compiled individually and their compiled representations are linked together into the policy database. This makes dependency resolution impossible. Because there is no human readable policy involved at the point of linking. DSSP is modular and dependency resolution is useful because this.
 
-DSSP is designed to facilitate complex environments such as desktop environments. Processes associated with your user identity have just as much priority as processes associated with the root identity. This is unlike most common SELinux policy widely available. These SELinux security policies focus on a selection of system services only, and mostly ignore user agents.
+DSSP is designed to enforce fine-grained mandatory access control in complex environments such as desktop environments. Processes associated with your user identity have just as much priority as processes associated with the root identity. This is unlike most common SELinux policy widely available. These SELinux security policies focus on a selection of system services only, and mostly ignore user agents.
 
 The reason for this is that enforcing integrity in complex desktop environments is expensive, and hard without a language that enables one to write complex security policy. Even though some claim that using SELinux to enforce integrity in desktop environments is not practical, it can certainly be worth the investment.
 
