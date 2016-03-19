@@ -374,6 +374,14 @@
 		(call fs.devtmpfs_obj_type_transition (ARG1 usb.dev chr_file
 			"050"))
 		(call fs.devtmpfs_obj_type_transition (ARG1 usb.dev chr_file
+			"hiddev0"))
+		(call fs.devtmpfs_obj_type_transition (ARG1 usb.dev chr_file
+			"hiddev1"))
+		(call fs.devtmpfs_obj_type_transition (ARG1 usb.dev chr_file
+			"hiddev2"))
+		(call fs.devtmpfs_obj_type_transition (ARG1 usb.dev chr_file
+			"hiddev3"))
+		(call fs.devtmpfs_obj_type_transition (ARG1 usb.dev chr_file
 			"hidraw0"))
 		(call fs.devtmpfs_obj_type_transition (ARG1 usb.dev chr_file
 			"hidraw1"))
@@ -447,6 +455,19 @@
 	(macro read_cpu ((type ARG1))
 		(call fs.search_devtmpfs (ARG1))
 		(allow ARG1 cpu.dev read_chr_file_perms))
+
+	(macro create_cuse ((type ARG1))
+		(allow ARG1 self (capability (mknod)))
+		(call fs.add_entry_devtmpfs (ARG1))
+		(allow ARG1 cuse.dev create_chr_file_perms))
+
+	(macro devtmpfs_obj_type_transition_cuse ((type ARG1))
+		(call fs.devtmpfs_obj_type_transition (ARG1 cuse.dev
+			chr_file "cuse")))
+
+	(macro read_cuse ((type ARG1))
+		(call fs.search_devtmpfs (ARG1))
+		(allow ARG1 cuse.dev read_chr_file_perms))
 
 	(macro read_event ((type ARG1))
 		(call fs.search_devtmpfs (ARG1))

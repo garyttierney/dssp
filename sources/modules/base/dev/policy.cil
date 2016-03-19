@@ -65,6 +65,9 @@
 (block cpu
 	(blockinherit dev.obj_blk))
 
+(block cuse
+	(blockinherit dev.obj_blk))
+
 (block devtty
 	(blockinherit dev.obj_blk)
 

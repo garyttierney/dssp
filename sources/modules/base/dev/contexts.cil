@@ -6,6 +6,7 @@
 		(context clock (sys.id sys.role clock.dev (systemlow
 			systemlow)))
 		(context cpu (sys.id sys.role cpu.dev (systemlow systemlow)))
+		(context cuse (sys.id sys.role cuse.dev (systemlow systemlow)))
 		(context devtty (sys.id sys.role devtty.dev (systemlow
 			systemlow)))
 		(context dri (sys.id sys.role dri.dev (systemlow systemlow)))
@@ -61,6 +62,7 @@
 		(context clock (sys.id object_r clock.dev (systemlow
 			systemlow)))
 		(context cpu (sys.id object_r cpu.dev (systemlow systemlow)))
+		(context cuse (sys.id object_r cuse.dev (systemlow systemlow)))
 		(context devtty (sys.id object_r devtty.dev (systemlow
 			systemlow)))
 		(context dri (sys.id object_r dri.dev (systemlow systemlow)))
@@ -149,6 +151,7 @@
 (filecon "/dev/bus/usb/.+" char usb)
 (filecon "/dev/cpu/.+" char cpu)
 (filecon "/dev/cpu_dma_latency" char pm_qos_misc)
+(filecon "/dev/cuse" char cuse)
 (filecon "/dev/dri/.+" char dri)
 (filecon "/dev/fb([0-9]+)?" char framebuf)
 (filecon "/dev/full" char null)
@@ -188,6 +191,7 @@
 (filecon "/dev/uhid" char uhid)
 (filecon "/dev/uinput" char event)
 (filecon "/dev/urandom" char urandom)
+(filecon "/dev/usb.+" char usb)
 (filecon "/dev/usbmon[0-9]+" char usbmon)
 (filecon "/dev/vfio/.+" char vfio)
 (filecon "/dev/vga_arbiter" char xserver_misc)
