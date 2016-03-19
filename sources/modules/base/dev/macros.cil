@@ -191,7 +191,17 @@
 		(call fs.devtmpfs_obj_type_transition (ARG1 event.dev chr_file
 			"event14"))
 		(call fs.devtmpfs_obj_type_transition (ARG1 event.dev chr_file
-			"event15")))
+			"event15"))
+		(call fs.devtmpfs_obj_type_transition (ARG1 event.dev chr_file
+			"event16"))
+		(call fs.devtmpfs_obj_type_transition (ARG1 event.dev chr_file
+			"event17"))
+		(call fs.devtmpfs_obj_type_transition (ARG1 event.dev chr_file
+			"event18"))
+		(call fs.devtmpfs_obj_type_transition (ARG1 event.dev chr_file
+			"event19"))
+		(call fs.devtmpfs_obj_type_transition (ARG1 event.dev chr_file
+			"event20")))
 
 	(macro create_printer ((type ARG1))
 		(allow ARG1 self (capability (mknod)))
@@ -492,7 +502,21 @@
 		(call fs.add_entry_devtmpfs (ARG1))
 		(allow ARG1 mouse.dev create_chr_file_perms))
 
+	(macro read_mouse ((type ARG1))
+		(call fs.search_devtmpfs (ARG1))
+		(allow ARG1 mouse.dev read_chr_file_perms))
+
+	(macro rw_mouse ((type ARG1))
+		(call fs.search_devtmpfs (ARG1))
+		(allow ARG1 mouse.dev rw_chr_file_perms))
+
 	(macro devtmpfs_obj_type_transition_mouse ((type ARG1))
+		(call fs.devtmpfs_obj_type_transition (ARG1 mouse.dev chr_file
+			"js0"))
+		(call fs.devtmpfs_obj_type_transition (ARG1 mouse.dev chr_file
+			"js1"))
+		(call fs.devtmpfs_obj_type_transition (ARG1 mouse.dev chr_file
+			"js2"))
 		(call fs.devtmpfs_obj_type_transition (ARG1 mouse.dev chr_file
 			"mouse0"))
 		(call fs.devtmpfs_obj_type_transition (ARG1 mouse.dev chr_file
