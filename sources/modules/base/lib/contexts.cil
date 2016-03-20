@@ -17,7 +17,6 @@
 (filecon "/etc/ld\.so\.cache.*" file ld_so_cache)
 (filecon "/etc/ld\.so\.preload.*" file ld_so_cache)
 
-(filecon "/etc/alternatives/.*\.so(\.[^/]*)*" symlink lib)
 (filecon "/usr/lib(/.*)?" any lib)
 (filecon "/usr/libexec/sudo/.*" any lib)
 (filecon "/usr/lib/ld-[^/]*\.so(\.[^/]*)*" file ld_so)

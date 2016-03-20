@@ -33,6 +33,7 @@
 
 	(macro read_cmd ((type ARG1))
 		(call file.search_data (ARG1))
+		(call file.read_config_lnk_files (ARG1))
 		(allow ARG1 cmd_file list_dir_perms)
 		(allow ARG1 cmd_file read_file_perms)
 		(allow ARG1 cmd_file read_lnk_file_perms))
@@ -43,15 +44,18 @@
 
 	(macro read_cmd_lnk_files ((type ARG1))
 		(call file.search_data (ARG1))
+		(call file.read_config_lnk_files (ARG1))
 		(call read_lnk_files_pattern (ARG1 cmd_file cmd_file)))
 
 	(macro search_cmd ((type ARG1))
 		(call file.search_data (ARG1))
+		(call file.read_config_lnk_files (ARG1))
 		(allow ARG1 cmd_file read_lnk_file_perms)
 		(allow ARG1 cmd_file search_dir_perms))
 
 	(macro list_cmd ((type ARG1))
 		(call file.search_data (ARG1))
+		(call file.read_config_lnk_files (ARG1))
 		(allow ARG1 cmd_file read_lnk_file_perms)
 		(allow ARG1 cmd_file list_dir_perms))
 
