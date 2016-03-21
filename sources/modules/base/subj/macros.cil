@@ -11,6 +11,18 @@
 		(type subj)
 		(call subj.common_subj_type (subj)))
 
+	(block rbac_roleallow_blk
+		(blockabstract rbac_roleallow_blk)
+
+		(macro rbac_roleallow ((role ARG1))
+			(roleallow ARG1 role)))
+
+	(block rbac_userrole_blk
+		(blockabstract rbac_userrole_blk)
+
+		(macro rbac_userrole ((user ARG1))
+			(userrole ARG1 role)))
+
 	(block bounded_blk
 		(blockabstract bounded_blk)
 		(macro bounded ((type ARG1))
