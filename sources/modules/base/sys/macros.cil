@@ -366,6 +366,14 @@
 			write_security_and_usermodehelper_sysctl_subj_type_attribute
 				ARG1))
 
+	(macro write_usermodehelper_sysctl_files ((type ARG1))
+		(call search_kernel_sysctl (ARG1))
+		(call write_files_pattern (ARG1 usermodehelper.sysctl
+			usermodehelper.sysctl))
+		(typeattributeset
+			write_security_and_usermodehelper_sysctl_subj_type_attribute
+				ARG1))
+
 	(macro search_vm_sysctl ((type ARG1))
 		(call search_sysctl (ARG1))
 		(allow ARG1 vm.sysctl search_dir_perms))
