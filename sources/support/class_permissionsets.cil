@@ -356,10 +356,7 @@
 (classpermission rw_unix_dgram_socket_perms)
 (classpermission rw_inherited_unix_dgram_socket_perms)
 (classpermission create_unix_dgram_socket_perms)
-(classpermission rw_unix_dgram_stream_socket_perms)
-(classpermission create_unix_dgram_stream_socket_perms)
 (classpermission connected_unix_dgram_socket_perms)
-(classpermission connected_unix_dgram_stream_socket_perms)
 (classpermission create_netlink_route_socket_perms)
 (classpermission r_netlink_route_socket_perms)
 (classpermission create_netlink_tcpdiag_socket_perms)
@@ -599,21 +596,9 @@
 		(classpermissionset create_unix_dgram_socket_perms
 			(unix_dgram_socket (create read getattr write setattr
 				append bind connect getopt setopt shutdown)))
-		(classpermissionset rw_unix_dgram_stream_socket_perms
-			(unix_dgram_socket (read getattr write setattr append
-				bind connect getopt setopt shutdown listen
-					accept)))
-		(classpermissionset create_unix_dgram_stream_socket_perms
-			(unix_dgram_socket (create read getattr write setattr
-				append bind connect getopt setopt shutdown
-					listen accept)))
 		(classpermissionset connected_unix_dgram_socket_perms
 			(unix_dgram_socket (create read getattr write setattr
 				append bind getopt setopt shutdown)))
-		(classpermissionset connected_unix_dgram_stream_socket_perms
-			(unix_dgram_socket (create read getattr write setattr
-				append bind getopt setopt shutdown listen
-					accept)))
 		(classpermissionset create_netlink_route_socket_perms
 			(netlink_route_socket (create read getattr write
 				setattr append bind connect getopt setopt
@@ -961,21 +946,9 @@
 			(unix_dgram_socket (create ioctl read getattr write
 				setattr append bind connect getopt setopt
 					shutdown)))
-		(classpermissionset rw_unix_dgram_stream_socket_perms
-			(unix_dgram_socket (ioctl read getattr write setattr
-				append bind connect getopt setopt shutdown
-					listen accept)))
-		(classpermissionset create_unix_dgram_stream_socket_perms
-			(unix_dgram_socket (create ioctl read getattr write
-				setattr append bind connect getopt setopt
-					shutdown listen accept)))
 		(classpermissionset connected_unix_dgram_socket_perms
 			(unix_dgram_socket (create ioctl read getattr write
 				setattr append bind getopt setopt shutdown)))
-		(classpermissionset connected_unix_dgram_stream_socket_perms
-			(unix_dgram_socket (create ioctl read getattr write
-				setattr append bind getopt setopt shutdown
-					listen accept)))
 		(classpermissionset create_netlink_route_socket_perms
 			(netlink_route_socket (create ioctl read getattr write
 				setattr append bind connect getopt setopt
