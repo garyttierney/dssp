@@ -4,6 +4,8 @@
 
 (block sec
 	(typeattribute bool_obj_type_attribute)
+
+	(typeattribute setfscreate_subj_type_attribute)
 	(typeattribute unconfined_subj_type_attribute)
 
 	(call sys.sys_obj_type (bool_obj_type_attribute))
@@ -96,7 +98,10 @@
 	(typeattributeset
 		setenforce_subj_type_and_unconfined_subj_type_attribute
 		(setenforce_subj_type_attribute
-			unconfined_subj_type_attribute)))
+			unconfined_subj_type_attribute))
+
+	(allow setfscreate_subj_type_attribute self (process (setfscreate)))
+	(call get_enforce_mode (setfscreate_subj_type_attribute)))
 
 (block securityfs
 	(blockinherit fs.obj_blk)

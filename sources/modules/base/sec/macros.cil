@@ -60,6 +60,9 @@
 		(call fs.search_sysfs (ARG1))
 		(call read_files_pattern (ARG1 securityfs.fs securityfs.fs)))
 
+	(macro setfscreate_subj_type ((type ARG1))
+		(typeattributeset setfscreate_subj_type_attribute ARG1))
+
 	(macro load_policy_subj_type ((type ARG1))
 		(typeattributeset load_policy_subj_type_attribute ARG1))
 
