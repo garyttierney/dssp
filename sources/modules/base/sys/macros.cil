@@ -568,6 +568,11 @@
 		(call read_files_pattern (ARG1 memory_sysfs.sysfs
 			memory_sysfs.sysfs)))
 
+	(macro write_memory_sysfs_files ((type ARG1))
+		(call fs.read_sysfs_lnk_files (ARG1))
+		(call write_files_pattern (ARG1 memory_sysfs.sysfs
+			memory_sysfs.sysfs)))
+
 	(macro rw_memory_sysfs_files ((type ARG1))
 		(call fs.read_sysfs_lnk_files (ARG1))
 		(call rw_files_pattern (ARG1 memory_sysfs.sysfs
