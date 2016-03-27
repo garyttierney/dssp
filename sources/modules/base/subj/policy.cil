@@ -20,9 +20,6 @@
 	(allow use_interactive_fd_subj_type_attribute
 		interactive_fd_subj_type_attribute (fd (use)))
 
-	(allow subj_type_attribute self (process (sigkill signal signull
-		sigstop)))
-
 	(allow subj_type_attribute self rw_file_perms)
 	(allow subj_type_attribute self list_dir_perms)
 	(allow subj_type_attribute self read_lnk_file_perms)
@@ -37,7 +34,8 @@
 	(optional subj_type_optional_sd_shutdown
 		(call sd_shutdown.send_sigchld (subj_type_attribute)))
 
-	(allow common_subj_type_attribute self (process (fork sigchld)))
+	(allow common_subj_type_attribute self (process (fork sigchld signal
+		sigkill signull sigstop)))
 
 	(call sys.read_vm_overcommit_sysctl_files (common_subj_type_attribute))
 	(call sys.search_invalid (common_subj_type_attribute))
