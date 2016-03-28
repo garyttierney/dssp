@@ -21,6 +21,7 @@ discretionary options
 -b	: build dssp sources
 -d	: disable dontaudit
 -f	: update dssp sources
+-F	: update and verify dssp sources
 -i	: path to secilc
 -n	: policy version
 -r	: disable RBACSEP
@@ -44,7 +45,8 @@ exit codes
 203	: no path entries to be included
 204	: no real users to list
 205	: no seuser tuple to list
-206	: unable to execute /bin/git"
+206	: unable to execute /bin/git
+207	: unable to verify DSSP"
 	exit
 }
 
@@ -60,6 +62,10 @@ do
 		\-f)
 
 		UPDATEDSSP=1
+		;;
+		\-F)
+
+		UPDATEANDVERIFYDSSP=1
 		;;
 		\-m)
 		shift
@@ -220,20 +226,50 @@ fi
 
 if [[ $UPDATEDSSP == 1 ]]
 then
-	updatetoupstream $PATHTODSSP
-
-	retval=`echo $?`
-
-	if ! [[ $retval == 0 ]]
+	if [[ -z $UPDATEANDVERIFYDSSP ]]
 	then
-		case retval in
-			1) debug "general fault" ;;
-			196) debug "file is not a directory" ;;
-			206) debug "unable to execute /bin/git" ;;
-			*) debug "unhandled exception" ;;
-		esac
+		updatetoupstream $PATHTODSSP
 
-		exit `echo $retval`
+		retval=`echo $?`
+
+		if ! [[ $retval == 0 ]]
+		then
+			case retval in
+				1) debug "general fault" ;;
+				196) debug "file is not a directory" ;;
+				206) debug "unable to execute /bin/git" ;;
+				*) debug "unhandled exception" ;;
+			esac
+
+			exit `echo $retval`
+		fi
+	else
+		echo "option -f and -F are mutually exclusive: not updating."
+	fi
+fi
+
+if [[ $UPDATEANDVERIFYDSSP == 1 ]]
+then
+	if [[ -z $UPDATEDSSP ]]
+	then
+		updateandverifytoupstream $PATHTODSSP
+
+		retval=`echo $?`
+
+		if ! [[ $retval == 0 ]]
+		then
+			case retval in
+				1) debug "general fault" ;;
+				196) debug "file is not a directory" ;;
+				206) debug "unable to execute /bin/git" ;;
+				207) debug "unable to verify DSSP" ;;
+				*) debug "unhandled exception" ;;
+			esac
+
+			exit `echo $retval`
+		fi
+	else
+		echo "option -F and -f are mutually exclusive: not updating."
 	fi
 fi
 

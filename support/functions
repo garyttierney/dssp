@@ -195,10 +195,54 @@ updatetoupstream () {
 			&& /bin/git --git-dir=${_PATHTODSSP}/.git submodule update
 
 		retval=`echo $?`
+	fi
+}
 
-		# TODO: check authenticity. something like this might work (would require imported public key):
-		# [[ `/bin/git log --show-signature -1 1>/dev/null` ]] || exitstatus=`eoho $?`
-		# if ! [[ "$exitstatus" == "0" ]] ; then echo "ERROR: unable to verify authenticity!" ; exit `echo $exitstatus` ; fi
+## @brief updates and verifies dssp
+#
+# @param1 path to dssp source
+# @retval 0 success
+# @retval 1 general fault
+# @retval 196 file is not a directory
+# @retval 206 unable to execute /bin/git
+# @retval 207 unable to verify DSSP
+
+updateandverifytoupstream () {
+	local _PATHTODSSP=$1
+
+	if ! [[ -x /bin/git ]]
+	then
+		debug "unable to execute /bin/git"
+
+		return 206
+
+	elif ! (( $# == 1 ))
+	then
+		debug "expects a single parameter: path to dssp"
+
+		return 1
+
+	else
+		filetestandresult -d $_PATHTODSSP
+
+		retval=`echo $?`
+
+		if ! [[ $retval == 0 ]]
+		then
+			return `echo $retval`
+		fi
+
+		/bin/git --git-dir=${_PATHTODSSP}/.git pull \
+			--verify-signatures --recurse-submodules \
+				https://github.com/defensec/dssp \
+					&& /bin/git --git-dir=${_PATHTODSSP}/.git submodule update
+
+		retval=`echo $?`
+
+		if ! [[ $retval == 0 ]]
+		then
+			return 207
+		fi
 	fi
 }
 
