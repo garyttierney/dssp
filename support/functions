@@ -191,8 +191,20 @@ updatetoupstream () {
 			return `echo $retval`
 		fi
 
-		/bin/git --git-dir=${_PATHTODSSP}/.git pull --recurse-submodules https://github.com/defensec/dssp \
-			&& /bin/git --git-dir=${_PATHTODSSP}/.git submodule update
+		( cd "$_PATHTODSSP" && \
+			/bin/git --git-dir=${_PATHTODSSP}/.git pull \
+				--recurse-submodules \
+					https://github.com/defensec/dssp )
+
+		retval=`echo $?`
+
+		if ! [[ $retval == 0 ]]
+		then
+			return `echo $retval`
+		fi
+
+		( cd "$_PATHTODSSP" && \
+			/bin/git --git-dir=${_PATHTODSSP}/.git submodule update )
 
 		retval=`echo $?`
 	fi
@@ -232,10 +244,10 @@ updateandverifytoupstream () {
 			return `echo $retval`
 		fi
 
-		/bin/git --git-dir=${_PATHTODSSP}/.git pull \
-			--verify-signatures --recurse-submodules \
-				https://github.com/defensec/dssp \
-					&& /bin/git --git-dir=${_PATHTODSSP}/.git submodule update
+		(cd "$_PATHTODSSP" && \
+			/bin/git --git-dir=${_PATHTODSSP}/.git pull \
+				--verify-signatures --recurse-submodules \
+					https://github.com/defensec/dssp )
 
 		retval=`echo $?`
 
@@ -243,6 +255,11 @@ updateandverifytoupstream () {
 		then
 			return 207
 		fi
+
+		(cd "$_PATHTODSSP" && \
+			/bin/git --git-dir=${_PATHTODSSP}/.git submodule update )
+
+		retval=`echo $?`
 	fi
 }
 
