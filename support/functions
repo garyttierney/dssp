@@ -244,7 +244,7 @@ updateandverifytoupstream () {
 			return `echo $retval`
 		fi
 
-		(cd "$_PATHTODSSP" && \
+		( cd "$_PATHTODSSP" && \
 			/bin/git --git-dir=${_PATHTODSSP}/.git pull \
 				--verify-signatures --recurse-submodules \
 					https://github.com/defensec/dssp )
@@ -256,7 +256,7 @@ updateandverifytoupstream () {
 			return 207
 		fi
 
-		(cd "$_PATHTODSSP" && \
+		( cd "$_PATHTODSSP" && \
 			/bin/git --git-dir=${_PATHTODSSP}/.git submodule update )
 
 		retval=`echo $?`
