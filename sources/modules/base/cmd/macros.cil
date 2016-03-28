@@ -97,6 +97,9 @@
 		(call search_cmd (ARG1))
 		(allow ARG1 cmd_file (file (getattr))))
 
+	(macro dontaudit_getattr_all_cmd_files ((type ARG1))
+		(dontaudit ARG1 obj_type_attribute (file (getattr))))
+
 	(macro getattr_all_cmd_files ((type ARG1))
 		(call search_cmd (ARG1))
 		(allow ARG1 obj_type_attribute (file (getattr))))
