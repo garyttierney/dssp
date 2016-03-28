@@ -90,7 +90,7 @@ do
 
 	! [[ $retval == 0 ]] && exit `echo $retval`
 
-	MODULES+=(`/bin/find /${PATHTODSSP}/${PATHTOMODULESRELATIVETODSSP} -type f \( -iname "*.cil" \) | /bin/cut -d/ -f2-`)
+	MODULES+=(`/bin/find ${PATHTODSSP}/${PATHTOMODULESRELATIVETODSSP} -type f \( -iname "*.cil" \) | /bin/cut -d/ -f2-`)
 
 	retval=`echo $?`
 done
