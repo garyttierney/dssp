@@ -92,6 +92,34 @@
 				(context port_obj_context (sys.id object_r
 					port (systemlow systemlow))))))
 
+	(block dccp_connect_port_blk
+		(blockabstract dccp_connect_port_blk)
+		(macro dccp_connect_port ((type ARG1))
+			(allow ARG1 port (dccp_socket (name_connect)))))
+
+	(block dccp_connect_all_ports_blk
+		(blockabstract dccp_connect_all_ports_blk)
+		(macro dccp_connect_all_ports ((type ARG1))
+			(allow ARG1 port_obj_type_attribute (dccp_socket
+				(name_connect)))))
+
+	(block dccp_bind_all_ports_blk
+		(blockabstract dccp_bind_all_ports_blk)
+		(macro dccp_bind_all_ports ((type ARG1))
+			(allow ARG1 port_obj_type_attribute (dccp_socket
+				(name_bind)))))
+
+	(block dccp_bind_port_blk
+		(blockabstract dccp_bind_port_blk)
+		(macro dccp_bind_port ((type ARG1))
+			(allow ARG1 port (dccp_socket (name_bind)))))
+
+	(block dccp_bind_reserved_port_blk
+		(blockabstract dccp_bind_reserved_port_blk)
+		(macro dccp_bind_reserved_port ((type ARG1))
+			(allow ARG1 self (capability (net_bind_service)))
+			(allow ARG1 port (dccp_socket (name_bind)))))
+
 	(block tcp_connect_port_blk
 		(blockabstract tcp_connect_port_blk)
 		(macro tcp_connect_port ((type ARG1))
@@ -222,6 +250,31 @@
 		(call port_obj_type (ARG1))
 		(typeattributeset unreserved_port_obj_type_attribute ARG1))
 
+	(macro dccp_bind_all_unreserved_ports ((type ARG1))
+		(allow ARG1 unreserved_port_obj_type_attribute (dccp_socket
+			(name_bind))))
+
+	(macro dccp_bind_generic_node ((type ARG1))
+		(allow ARG1 node.node (dccp_socket (node_bind))))
+
+	(macro dccp_connect_all_ports ((type ARG1))
+		(allow ARG1 port_obj_type_attribute (dccp_socket
+			(name_connect))))
+
+	(macro dccp_connect_all_ephemeral_ports ((type ARG1))
+		(allow ARG1 ephemeral_port_obj_type_attribute (dccp_socket
+			(name_connect))))
+
+	(macro dccp_connect_all_unreserved_ports ((type ARG1))
+		(allow ARG1 unreserved_port_obj_type_attribute (dccp_socket
+			(name_connect))))
+
+	(macro dccp_connect_unreserved_port ((type ARG1))
+		(allow ARG1 unreserved.port (dccp_socket (name_connect))))
+
+	(macro dccp_connect_ephemeral_port ((type ARG1))
+		(allow ARG1 ephemeral.port (dccp_socket (name_connect))))
+
 	(macro tcp_bind_all_unreserved_ports ((type ARG1))
 		(allow ARG1 unreserved_port_obj_type_attribute (tcp_socket
 			(name_bind))))
@@ -241,6 +294,12 @@
 		(allow ARG1 unreserved_port_obj_type_attribute (tcp_socket
 			(name_connect))))
 
+	(macro tcp_connect_unreserved_port ((type ARG1))
+		(allow ARG1 unreserved.port (tcp_socket (name_connect))))
+
+	(macro tcp_connect_ephemeral_port ((type ARG1))
+		(allow ARG1 ephemeral.port (tcp_socket (name_connect))))
+
 	(macro udp_bind_all_unreserved_ports ((type ARG1))
 		(allow ARG1 unreserved_port_obj_type_attribute (udp_socket
 			(name_bind))))
@@ -248,12 +307,6 @@
 	(macro udp_bind_all_ports ((type ARG1))
 		(allow ARG1 self (capability (net_bind_service)))
 		(allow ARG1 port_obj_type_attribute (udp_socket (name_bind))))
-
-	(macro tcp_connect_unreserved_port ((type ARG1))
-		(allow ARG1 unreserved.port (tcp_socket (name_connect))))
-
-	(macro tcp_connect_ephemeral_port ((type ARG1))
-		(allow ARG1 ephemeral.port (tcp_socket (name_connect))))
 
 	(macro udp_bind_generic_node ((type ARG1))
 		(allow ARG1 node.node (udp_socket (node_bind))))
