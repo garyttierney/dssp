@@ -383,6 +383,9 @@
 	(macro use_interactive_fd_subj_type ((type ARG1))
 		(typeattributeset use_interactive_fd_subj_type_attribute ARG1))
 
+	(macro getattr_subj ((type ARG1))
+		(allow ARG1 subj_type_attribute (process (getattr))))
+
 	(macro getattr_common_subj ((type ARG1))
 		(allow ARG1 common_subj_type_attribute (process (getattr))))
 
@@ -404,26 +407,50 @@
 		(allow ARG1 common_subj_type_attribute list_dir_perms)
 		(allow ARG1 common_subj_type_attribute read_lnk_file_perms))
 
+	(macro getpgid_subj ((type ARG1))
+		(allow ARG1 subj_type_attribute (process (getpgid))))
+
 	(macro getpgid_common_subj ((type ARG1))
 		(allow ARG1 common_subj_type_attribute (process (getpgid))))
+
+	(macro getsched_subj ((type ARG1))
+		(allow ARG1 subj_type_attribute (process (getsched))))
 
 	(macro getsched_common_subj ((type ARG1))
 		(allow ARG1 common_subj_type_attribute (process (getsched))))
 
+	(macro getsession_subj ((type ARG1))
+		(allow ARG1 subj_type_attribute (process (getsession))))
+
 	(macro getsession_common_subj ((type ARG1))
 		(allow ARG1 common_subj_type_attribute (process (getsession))))
+
+	(macro setsched_subj ((type ARG1))
+		(allow ARG1 subj_type_attribute (process (setsched))))
 
 	(macro setsched_common_subj ((type ARG1))
 		(allow ARG1 common_subj_type_attribute (process (setsched))))
 
+	(macro send_sigkill_subj ((type ARG1))
+		(allow ARG1 subj_type_attribute (process (sigkill))))
+
 	(macro send_sigkill_common_subj ((type ARG1))
 		(allow ARG1 common_subj_type_attribute (process (sigkill))))
+
+	(macro send_signal_subj ((type ARG1))
+		(allow ARG1 subj_type_attribute (process (signal))))
 
 	(macro send_signal_common_subj ((type ARG1))
 		(allow ARG1 common_subj_type_attribute (process (signal))))
 
+	(macro send_signull_subj ((type ARG1))
+		(allow ARG1 subj_type_attribute (process (signull))))
+
 	(macro send_signull_common_subj ((type ARG1))
 		(allow ARG1 common_subj_type_attribute (process (signull))))
+
+	(macro send_sigstop_subj ((type ARG1))
+		(allow ARG1 subj_type_attribute (process (sigstop))))
 
 	(macro send_sigstop_common_subj ((type ARG1))
 		(allow ARG1 common_subj_type_attribute (process (sigstop))))
