@@ -148,6 +148,7 @@
 (genfscon "bdev" "/" bdev)
 (genfscon "binfmt_misc" "/" binfmt_misc)
 (genfscon "cgroup" "/" cgroup)
+(genfscon "cgroup2" "/" cgroup)
 (genfscon "cifs" "/" cifs)
 (genfscon "configfs" "/" configfs)
 (genfscon "debugfs" "/" debugfs)
