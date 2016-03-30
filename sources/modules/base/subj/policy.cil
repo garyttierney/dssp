@@ -24,7 +24,7 @@
 	(allow subj_type_attribute self list_dir_perms)
 	(allow subj_type_attribute self read_lnk_file_perms)
 
-	(call sys.sys_subj_type (common_subj_type_attribute))
+	(call sys.sys_subj_type (subj_type_attribute))
 
 	(call fs.search_rootfs (subj_type_attribute))
 
