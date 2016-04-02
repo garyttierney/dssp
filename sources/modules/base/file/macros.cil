@@ -4462,7 +4462,7 @@
 	(macro list_config ((type ARG1))
 		(allow ARG1 config.config_file list_dir_perms))
 
-	(macro audit_access_config_dirs ((type ARG1))
+	(macro audit_write_access_config_dirs ((type ARG1))
 		(allow ARG1 config.config_file (dir (write))))
 
 	(macro rw_config_dirs ((type ARG1))
@@ -5486,7 +5486,7 @@
 		(call search_var_tmp (ARG1))
 		(allow ARG1 var_tmp.var_tmp_file read_file_perms))
 
-	(macro audit_access_var_tmp_dirs ((type ARG1))
+	(macro audit_write_access_var_tmp_dirs ((type ARG1))
 		(allow ARG1 var_tmp.var_tmp_file (dir (write))))
 
 	(macro dontaudit_audit_access_var_tmp_dirs ((type ARG1))

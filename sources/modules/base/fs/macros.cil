@@ -638,14 +638,14 @@
 	(macro rw_rootfs_dirs ((type ARG1))
 		(allow ARG1 rootfs.fs rw_dir_perms))
 
-	(macro audit_access_rootfs_dirs ((type ARG1))
-		(allow ARG1 rootfs.fs (dir (write))))
+	(macro dontaudit_audit_access_rootfs_dirs ((type ARG1))
+		(dontaudit ARG1 rootfs.fs (dir (audit_access))))
 
 	(macro search_rootfs ((type ARG1))
 		(allow ARG1 rootfs.fs search_dir_perms))
 
 	(macro audit_write_access_rootfs_dirs ((type ARG1))
-		(dontaudit ARG1 rootfs.fs (dir (write))))
+		(allow ARG1 rootfs.fs (dir (write))))
 
 	(macro dontaudit_list_rootfs ((type ARG1))
 		(dontaudit ARG1 rootfs.fs list_dir_perms))

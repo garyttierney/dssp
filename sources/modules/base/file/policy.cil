@@ -32,6 +32,7 @@
 	(call fs.associate_fs (obj_type_attribute))
 
 	(call fs.associate_tmpfs (runtime_obj_type_attribute))
+	(call fs.associate_tmpfs (runtime_config_obj_type_attribute))
 	(call fs.associate_tmpfs (runtime_lock_obj_type_attribute))
 
 	(call fs.associate_tmpfs (tmpfs_obj_type_attribute))
