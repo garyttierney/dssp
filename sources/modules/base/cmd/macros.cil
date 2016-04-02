@@ -13,9 +13,9 @@
 				(context cmd_file_context (sys.id object_r
 					cmd_file (systemlow systemlow))))))
 
-	(block obj_entry_subj_blk
-		(blockabstract obj_entry_subj_blk)
-		(macro obj_entry_subj ((type ARG1))
+	(block cmd_obj_entry_subj_blk
+		(blockabstract cmd_obj_entry_subj_blk)
+		(macro cmd_obj_entry_subj ((type ARG1))
 			(call subj.entry (ARG1 cmd_file))))
 
 	(block getattr_cmd_files_blk
@@ -59,7 +59,7 @@
 		(allow ARG1 cmd_file read_lnk_file_perms)
 		(allow ARG1 cmd_file list_dir_perms))
 
-	(macro obj_entry_subj ((type ARG1))
+	(macro cmd_obj_entry_subj ((type ARG1))
 		(call subj.entry (ARG1 cmd_file)))
 
 	(macro auto_subj_type_transition ((type ARG1)(type ARG2))
