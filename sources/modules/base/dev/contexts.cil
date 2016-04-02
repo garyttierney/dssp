@@ -177,6 +177,7 @@
 (filecon "/dev/network_throughput" char pm_qos_misc)
 (filecon "/dev/null" char null)
 (filecon "/dev/nvram" char nvram)
+(filecon "/dev/lp([0-9]+)?" char printer)
 (filecon "/dev/parport([0-9]+)?" char printer)
 (filecon "/dev/port" char memory)
 (filecon "/dev/ppp" char ppp)
