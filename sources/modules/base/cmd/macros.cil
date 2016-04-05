@@ -127,11 +127,20 @@
 		(call search_cmd (ARG1))
 		(allow ARG1 shell.cmd_file mmap_file_perms))
 
+	(macro dontaudit_audit_access_all_cmd_files ((type ARG1))
+		(dontaudit ARG1 obj_type_attribute (file (audit_access))))
+
 	(macro audit_exec_access_all_cmd_files ((type ARG1))
 		(allow ARG1 obj_type_attribute (file (execute))))
 
+	(macro dontaudit_audit_access_cmd_files ((type ARG1))
+		(dontaudit ARG1 cmd_file (file (audit_access))))
+
 	(macro audit_exec_access_cmd_files ((type ARG1))
 		(allow ARG1 cmd_file (file (execute))))
+
+	(macro dontaudit_audit_access_shell_files ((type ARG1))
+		(dontaudit ARG1 shell.cmd_file (file (audit_access))))
 
 	(macro audit_exec_access_shell_files ((type ARG1))
 		(allow ARG1 shell.cmd_file (file (execute))))
