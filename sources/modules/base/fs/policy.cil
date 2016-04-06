@@ -196,7 +196,10 @@
 (block dosfs
 	(blockinherit fs.obj_blk)
 
-	(call sys.mountpoint_obj_type (fs)))
+	(call sys.mountpoint_obj_type (fs))
+
+	; hack for /boot/efi on non-efi systems
+	(call fs.associate_fs (fs)))
 
 (block drm
 	(blockinherit fs.obj_blk))
