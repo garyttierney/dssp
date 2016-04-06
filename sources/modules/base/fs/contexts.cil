@@ -120,6 +120,7 @@
 		(context tracefs (sys.id object_r tracefs.fs (systemlow
 			systemlow)))))
 
+(filecon "/boot/efi(/.*)?" any dosfs)
 (filecon "/dev(/.*)?" any ())
 (filecon "/dev" dir devtmpfs)
 (filecon "/" dir rootfs)
