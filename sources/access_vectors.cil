@@ -12,11 +12,14 @@
 	module_request halt reboot status start stop undefined enable disable
 	reload))
 
-(class capability (chown dac_override dac_read_search fowner fsetid kill setgid
+(common capability (chown dac_override dac_read_search fowner fsetid kill setgid
 	setuid setpcap linux_immutable net_bind_service net_broadcast net_admin
 	net_raw ipc_lock ipc_owner sys_module sys_rawio sys_chroot sys_ptrace
 	sys_pacct sys_admin sys_boot sys_nice sys_resource sys_time
 	sys_tty_config mknod lease audit_write audit_control setfcap))
+
+(classcommon capability capability)
+(class capability ())
 
 (class filesystem (mount remount unmount getattr relabelfrom relabelto
 	associate quotamod quotaget))
@@ -138,8 +141,11 @@
 
 (class peer (recv))
 
-(class capability2 (audit_read mac_override mac_admin syslog wake_alarm
+(common capability2 (audit_read mac_override mac_admin syslog wake_alarm
 	block_suspend))
+
+(classcommon capability2 capability2)
+(class capability2 ())
 
 (class kernel_service (use_as_override create_files_as))
 
@@ -175,14 +181,11 @@
 (classcommon netlink_crypto_socket socket)
 (class netlink_crypto_socket ())
 
-(class cap_userns (chown dac_override dac_read_search fowner fsetid kill setgid
-	setuid setpcap linux_immutable net_bind_service net_broadcast net_admin
-	net_raw ipc_lock ipc_owner sys_module sys_rawio sys_chroot sys_ptrace
-	sys_pacct sys_admin sys_boot sys_nice sys_resource sys_time
-	sys_tty_config mknod lease audit_write audit_control setfcap))
+(classcommon cap_userns capability)
+(class cap_userns ())
 
-(class cap2_userns (audit_read mac_override mac_admin syslog wake_alarm
-	block_suspend))
+(classcommon cap2_userns capability2)
+(class cap2_userns ())
 
 (classorder (security process system capability filesystem file dir fd lnk_file
 	chr_file blk_file sock_file fifo_file socket tcp_socket udp_socket
