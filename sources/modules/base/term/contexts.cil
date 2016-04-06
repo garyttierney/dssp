@@ -20,7 +20,7 @@
 
 (filecon "/dev/console" char console)
 (filecon "/dev/hvc[0-9]+" char tty)
-(filecon "/dev/tty.+" char ())
+(filecon "/dev/tty.+" char tty)
 (filecon "/dev/vcs[^/]*" char tty)
 (filecon "/dev/vport[0-9]p[0-9]+" char virtio)
 
