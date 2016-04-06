@@ -133,7 +133,6 @@
 
 (filecon "/.*" any unknown)
 (filecon "/boot(/.*)?" any boot)
-(filecon "/boot/efi(/.*)?" any ())
 (filecon "/boot/\.journal" any ())
 (filecon "/boot/lost\+found/.*" any ())
 (filecon "/boot/lost\+found" dir lost_found)
