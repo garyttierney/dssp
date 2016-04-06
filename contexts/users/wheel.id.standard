@@ -1,5 +1,5 @@
 wheel.role:wheel_sudo.subj wheel.role:wheel.subj
-sys.role:gdm.subj wheel.role:wheel.subj
+sys.role:gdm.subj wheel.role:wheel_gdmuser.subj
 sys.role:login.subj wheel.role:wheel.subj
 sys.role:sd.subj wheel.role:wheel_sduser.subj
 sys.role:sshd.sshd.subj wheel.role:wheel_sshduser.subj

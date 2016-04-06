@@ -1,5 +1,5 @@
 sysadm.role:sysadm_sudo.subj sysadm.role:sysadm.subj
-sys.role:gdm.subj sysadm.role:sysadm.subj
+sys.role:gdm.subj sysadm.role:sysadm_gdmuser.subj
 sys.role:login.subj sysadm.role:sysadm.subj
 sys.role:sd.subj sysadm.role:sysadm_sduser.subj
 sys.role:sshd.sshd.subj sysadm.role:sysadm_sshduser.subj

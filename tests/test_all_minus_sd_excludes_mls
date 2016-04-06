@@ -7,6 +7,8 @@ sources/modules/contrib/roles/wheel_busctl
 sources/modules/contrib/roles/sysadm_busctl
 sources/modules/contrib/roles/wheel_hostnamectl
 sources/modules/contrib/roles/sysadm_hostnamectl
+sources/modules/contrib/roles/wheel_inhibit
+sources/modules/contrib/roles/sysadm_inhibit
 sources/modules/contrib/roles/wheel_journalctl
 sources/modules/contrib/roles/sysadm_journalctl
 sources/modules/contrib/roles/wheel_localectl
