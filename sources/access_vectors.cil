@@ -175,6 +175,15 @@
 (classcommon netlink_crypto_socket socket)
 (class netlink_crypto_socket ())
 
+(class cap_userns (chown dac_override dac_read_search fowner fsetid kill setgid
+	setuid setpcap linux_immutable net_bind_service net_broadcast net_admin
+	net_raw ipc_lock ipc_owner sys_module sys_rawio sys_chroot sys_ptrace
+	sys_pacct sys_admin sys_boot sys_nice sys_resource sys_time
+	sys_tty_config mknod lease audit_write audit_control setfcap))
+
+(class cap2_userns (audit_read mac_override mac_admin syslog wake_alarm
+	block_suspend))
+
 (classorder (security process system capability filesystem file dir fd lnk_file
 	chr_file blk_file sock_file fifo_file socket tcp_socket udp_socket
 	rawip_socket node netif packet_socket key_socket unix_stream_socket
@@ -186,4 +195,4 @@
 	service binder netlink_iscsi_socket netlink_fib_lookup_socket
 	netlink_connector_socket netlink_netfilter_socket
 	netlink_generic_socket netlink_scsitransport_socket netlink_rdma_socket
-	netlink_crypto_socket))
+	netlink_crypto_socket cap_userns cap2_userns))

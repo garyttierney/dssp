@@ -134,6 +134,9 @@
 	(allow unconfined_subj_type_attribute self
 		all_fifo_file_perms_except_mounton_and_execmod)
 
+	(allow unconfined_subj_type_attribute self (cap_userns (all)))
+	(allow unconfined_subj_type_attribute self (cap2_userns (all)))
+
 	(allow unconfined_subj_type_attribute subj_type_attribute
 		all_process_perms_except_transition_dyntransition_setcurrent_execmem_execstack_and_execheap)
 	(allow unconfined_subj_type_attribute subj_type_attribute (file
