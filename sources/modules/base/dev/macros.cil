@@ -106,6 +106,10 @@
 		(call fs.search_devtmpfs (ARG1))
 		(allow ARG1 kvm.dev (chr_file (getattr))))
 
+	(macro getattr_mouse ((type ARG1))
+		(call fs.search_devtmpfs (ARG1))
+		(allow ARG1 mouse.dev (chr_file (getattr))))
+
 	(macro getattr_random ((type ARG1))
 		(call fs.search_devtmpfs (ARG1))
 		(allow ARG1 random.dev (chr_file (getattr))))
@@ -670,6 +674,9 @@
 
 	(macro setattr_kvm ((type ARG1))
 		(allow ARG1 kvm.dev (chr_file (setattr))))
+
+	(macro setattr_mouse ((type ARG1))
+		(allow ARG1 mouse.dev (chr_file (setattr))))
 
 	(macro setattr_null ((type ARG1))
 		(allow ARG1 null.dev (chr_file (setattr))))
