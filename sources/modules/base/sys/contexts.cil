@@ -177,6 +177,7 @@
 (genfscon "proc" "/sys/kernel/poweroff_cmd" usermodehelper)
 (genfscon "proc" "/sys/kernel/randomize_va_space" security)
 (genfscon "proc" "/sys/kernel/usermodehelper" usermodehelper)
+(genfscon "proc" "/sys/kernel/yama" security)
 (genfscon "proc" "/sys/net" net_sysctl)
 (genfscon "proc" "/sys/net/unix" net_unix)
 (genfscon "proc" "/sysrq-trigger" sysrq)
