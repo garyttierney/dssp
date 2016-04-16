@@ -1,9 +1,0 @@
-(block cmd
-	(blockinherit obj_blk)
-
-	(typeattribute obj_type_attribute)
-
-	(call file.file_obj_type (obj_type_attribute)))
-
-(block shell
-	(blockinherit cmd.obj_blk))

@@ -1,3 +1,8 @@
+;;;;;;;;;;;;;;;;;;;;;;;;;;
+;
+; Constraints
+;
+
 (constrain (process (transition dyntransition noatsecure siginh rlimitinh))
 	(or (or (or (eq u1 u2)
 	(and (eq t1 standard.id_change_exemption_subj_type_attribute) (eq t2
@@ -205,3 +210,101 @@
 	(and (eq t1 standard.obj_sys_id_change_exemption_subj_type_attribute)
 		(eq u2 sys.id)))
 	(eq t1 standard.obj_id_change_exemption_subj_type_attribute)))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;
+;
+; Macros
+;
+
+(in standard
+	(macro obj_change_exemption_subj_type ((type ARG1))
+		(call obj_id_change_exemption_subj_type (ARG1))
+
+		(tunableif enable_rbacsep
+			(true
+				(call
+					rbacsep.obj_role_change_exemption_subj_type
+						(ARG1)))))
+
+	(macro obj_id_change_exemption_subj_type ((type ARG1))
+		(typeattributeset obj_id_change_exemption_subj_type_attribute
+			ARG1))
+
+	(macro uncond_exemption_subj_type ((type ARG1))
+		(typeattributeset uncond_exempt_subj_type_attribute ARG1))
+
+	(macro sys_change_exemption_subj_type ((type ARG1))
+		(call sys_id_change_exemption_subj_type (ARG1))
+		(call sys_role_change_exemption_subj_type (ARG1)))
+
+	(macro sys_id_change_exemption_subj_type ((type ARG1))
+		(typeattributeset sys_id_change_exemption_subj_type_attribute
+			ARG1))
+
+	(macro sys_role_change_exemption_subj_type ((type ARG1))
+		(typeattributeset sys_role_change_exemption_subj_type_attribute
+			ARG1))
+
+	(macro obj_sys_change_exemption_subj_type ((type ARG1))
+		(call obj_sys_id_change_exemption_subj_type (ARG1))
+
+		(tunableif enable_rbacsep
+			(true
+				(call
+					rbacsep.obj_sys_role_change_exemption_subj_type
+						(ARG1)))))
+
+	(macro obj_sys_id_change_exemption_subj_type ((type ARG1))
+		(typeattributeset
+			obj_sys_id_change_exemption_subj_type_attribute ARG1))
+
+	(macro change_exemption_subj_type ((type ARG1))
+		(call id_change_exemption_subj_type (ARG1))
+		(call role_change_exemption_subj_type (ARG1)))
+
+	(macro id_change_exemption_subj_type ((type ARG1))
+		(typeattributeset id_change_exemption_subj_type_attribute
+			ARG1))
+
+	(macro role_change_exemption_subj_type ((type ARG1))
+		(typeattributeset role_change_exemption_subj_type_attribute
+			ARG1))
+
+	(macro user_exemption_target_subj_type ((type ARG1))
+		(typeattributeset user_exemption_target_subj_type_attribute
+			ARG1)))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;
+;
+; Policy
+;
+
+(block standard
+	(typeattribute obj_id_change_exemption_subj_type_attribute)
+
+	(typeattribute id_change_exemption_subj_type_attribute)
+	(typeattribute role_change_exemption_subj_type_attribute)
+
+	(typeattribute obj_sys_id_change_exemption_subj_type_attribute)
+
+	(typeattribute sys_id_change_exemption_subj_type_attribute)
+	(typeattribute sys_role_change_exemption_subj_type_attribute)
+
+	(typeattribute user_exemption_target_subj_type_attribute)
+
+	(typeattribute uncond_exempt_subj_type_attribute))
+
+(tunableif (and (not enable_mls) (not enable_mcs))
+	(true
+		(mls false)
+
+		(sensitivity s0)
+		(sensitivityorder (s0))
+
+		(category c0)
+		(categoryorder (c0))
+
+		(sensitivitycategory s0 (c0))
+
+		(level systemlow (s0))
+		(level systemhigh (s0 (c0)))))

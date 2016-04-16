@@ -1,3 +1,197 @@
+;;;;;;;;;;;;;;;;;;;;;;;;;;
+;
+; Contexts
+;
+
+(tunableif enable_rbacsep
+	(true
+		(context aio (sys.id sys.role aio.fs (systemlow systemlow)))
+		(context anon_inodefs (sys.id sys.role anon_inodefs.fs
+			(systemlow systemlow)))
+		(context autofs_fs (sys.id sys.role autofs_fs.fs (systemlow
+			systemlow)))
+		(context bdev (sys.id sys.role bdev.fs (systemlow systemlow)))
+		(context binfmt_misc (sys.id sys.role binfmt_misc.fs
+			(systemlow systemlow)))
+		(context cgroup (sys.id sys.role cgroup.fs (systemlow
+			systemlow)))
+		(context cifs (sys.id sys.role cifs.fs (systemlow systemlow)))
+		(context configfs (sys.id sys.role configfs.fs (systemlow
+			systemlow)))
+		(context debugfs (sys.id sys.role debugfs.fs (systemlow
+			systemlow)))
+		(context devpts (sys.id sys.role devpts.fs (systemlow
+			systemlow)))
+		(context devtmpfs (sys.id sys.role devtmpfs.fs (systemlow
+			systemlow)))
+		(context dosfs (sys.id sys.role dosfs.fs (systemlow
+			systemlow)))
+		(context drm (sys.id sys.role drm.fs (systemlow systemlow)))
+		(context efivarfs (sys.id sys.role efivarfs.fs (systemlow
+			systemlow)))
+		(context fs (sys.id sys.role fs.fs (systemlow systemlow)))
+		(context fs_use_dosfs (sys.id sys.role fs_use_dosfs.bool
+			(systemlow systemlow)))
+		(context fs_use_cifs (sys.id sys.role fs_use_cifs.bool
+			(systemlow systemlow)))
+		(context fs_use_fuse (sys.id sys.role fs_use_fuse.bool
+			(systemlow systemlow)))
+		(context fs_use_iso9660 (sys.id sys.role fs_use_iso9660.bool
+			(systemlow systemlow)))
+		(context fs_use_nfs (sys.id sys.role fs_use_nfs.bool
+			(systemlow systemlow)))
+		(context fs_use_removable (sys.id sys.role
+			fs_use_removable.bool (systemlow systemlow)))
+		(context fuse (sys.id sys.role fuse_fs.fs (systemlow
+			systemlow)))
+		(context hugetlbfs (sys.id sys.role hugetlbfs.fs (systemlow
+			systemlow)))
+		(context iso9660 (sys.id sys.role iso9660.fs (systemlow
+			systemlow)))
+		(context nfs (sys.id sys.role nfs.fs (systemlow systemlow)))
+		(context nfsd (sys.id sys.role nfsd.fs (systemlow systemlow)))
+		(context nsfs (sys.id sys.role nsfs.fs (systemlow systemlow)))
+		(context proc (sys.id sys.role proc.fs (systemlow systemlow)))
+		(context pstore (sys.id sys.role pstore.fs (systemlow
+			systemlow)))
+		(context rootfs (sys.id sys.role rootfs.fs (systemlow
+			systemlow)))
+		(context rpc_pipefs (sys.id sys.role rpc_pipefs.fs (systemlow
+			systemlow)))
+		(context sysfs (sys.id sys.role sysfs.fs (systemlow
+			systemlow)))
+		(context tmpfs (sys.id sys.role tmpfs.fs (systemlow
+			systemlow)))
+		(context tracefs (sys.id sys.role tracefs.fs (systemlow
+			systemlow))))
+	(false
+		(context aio (sys.id object_r aio.fs (systemlow systemlow)))
+		(context anon_inodefs (sys.id object_r anon_inodefs.fs
+			(systemlow systemlow)))
+		(context autofs_fs (sys.id object_r autofs_fs.fs (systemlow
+			systemlow)))
+		(context bdev (sys.id object_r bdev.fs (systemlow systemlow)))
+		(context binfmt_misc (sys.id object_r binfmt_misc.fs
+			(systemlow systemlow)))
+		(context cgroup (sys.id object_r cgroup.fs (systemlow
+			systemlow)))
+		(context cifs (sys.id object_r cifs.fs (systemlow systemlow)))
+		(context configfs (sys.id object_r configfs.fs (systemlow
+			systemlow)))
+		(context debugfs (sys.id object_r debugfs.fs (systemlow
+			systemlow)))
+		(context devpts (sys.id object_r devpts.fs (systemlow
+			systemlow)))
+		(context devtmpfs (sys.id object_r devtmpfs.fs (systemlow
+			systemlow)))
+		(context dosfs (sys.id object_r dosfs.fs (systemlow
+			systemlow)))
+		(context drm (sys.id object_r drm.fs (systemlow systemlow)))
+		(context efivarfs (sys.id object_r efivarfs.fs (systemlow
+			systemlow)))
+		(context fs (sys.id object_r fs.fs (systemlow systemlow)))
+		(context fs_use_dosfs (sys.id object_r fs_use_dosfs.bool
+			(systemlow systemlow)))
+		(context fs_use_cifs (sys.id object_r fs_use_cifs.bool
+			(systemlow systemlow)))
+		(context fs_use_fuse (sys.id object_r fs_use_fuse.bool
+			(systemlow systemlow)))
+		(context fs_use_iso9660 (sys.id object_r fs_use_iso9660.bool
+			(systemlow systemlow)))
+		(context fs_use_nfs (sys.id object_r fs_use_nfs.bool
+			(systemlow systemlow)))
+		(context fs_use_removable (sys.id object_r
+			fs_use_removable.bool (systemlow systemlow)))
+		(context fuse (sys.id object_r fuse_fs.fs (systemlow
+			systemlow)))
+		(context hugetlbfs (sys.id object_r hugetlbfs.fs (systemlow
+			systemlow)))
+		(context iso9660 (sys.id object_r iso9660.fs (systemlow
+			systemlow)))
+		(context nfs (sys.id object_r nfs.fs (systemlow systemlow)))
+		(context nfsd (sys.id object_r nfsd.fs (systemlow systemlow)))
+		(context nsfs (sys.id object_r nsfs.fs (systemlow systemlow)))
+		(context proc (sys.id object_r proc.fs (systemlow systemlow)))
+		(context pstore (sys.id object_r pstore.fs (systemlow
+			systemlow)))
+		(context rootfs (sys.id object_r rootfs.fs (systemlow
+			systemlow)))
+		(context rpc_pipefs (sys.id object_r rpc_pipefs.fs (systemlow
+			systemlow)))
+		(context sysfs (sys.id object_r sysfs.fs (systemlow
+			systemlow)))
+		(context tmpfs (sys.id object_r tmpfs.fs (systemlow
+			systemlow)))
+		(context tracefs (sys.id object_r tracefs.fs (systemlow
+			systemlow)))))
+
+(filecon "/boot/efi(/.*)?" any dosfs)
+(filecon "/dev(/.*)?" any ())
+(filecon "/dev" dir devtmpfs)
+(filecon "/" dir rootfs)
+(filecon "/proc(/.*)?" any ())
+(filecon "/proc" dir proc)
+(filecon "/sys(/.*)?" any ())
+(filecon "/sys" dir sysfs)
+(filecon "/tmp(/.*)?" any ())
+(filecon "/tmp" dir tmpfs)
+(filecon "/var/run/user(/.*)?" any ())
+
+(fsuse task "pipefs" fs)
+(fsuse task "sockfs" fs)
+(fsuse trans "devpts" devpts)
+(fsuse trans "devtmpfs" devtmpfs)
+(fsuse trans "hugetlbfs" hugetlbfs)
+(fsuse trans "mqueue" tmpfs)
+(fsuse trans "tmpfs" tmpfs)
+(fsuse xattr "ext4" fs)
+(fsuse xattr "xfs" fs)
+
+(genfscon "afs" "/" nfs)
+(genfscon "aio" "/" aio)
+(genfscon "anon_inodefs" "/" anon_inodefs)
+(genfscon "autofs" "/" autofs_fs)
+(genfscon "bdev" "/" bdev)
+(genfscon "binfmt_misc" "/" binfmt_misc)
+(genfscon "cgroup" "/" cgroup)
+(genfscon "cgroup2" "/" cgroup)
+(genfscon "cifs" "/" cifs)
+(genfscon "configfs" "/" configfs)
+(genfscon "debugfs" "/" debugfs)
+(genfscon "drm" "/" drm)
+(genfscon "efivarfs" "/" efivarfs)
+(genfscon "fuseblk" "/" fuse)
+(genfscon "fusectl" "/" fuse)
+(genfscon "fuse" "/" fuse)
+(genfscon "iso9660" "/" iso9660)
+(genfscon "lustre" "/" nfs)
+(genfscon "nfs" "/" nfs)
+(genfscon "nfs4" "/" nfs)
+(genfscon "nfsd" "/" nfsd)
+(genfscon "nsfs" "/" nsfs)
+(genfscon "proc" "/" proc)
+(genfscon "proc" "/sysvipc" proc) ; BUG
+(genfscon "pstore" "/" pstore)
+(genfscon "rootfs" "/" rootfs)
+(genfscon "rpc_pipefs" "/" rpc_pipefs)
+(genfscon "selinuxfs" "/booleans/fs_use_dosfs" fs_use_dosfs)
+(genfscon "selinuxfs" "/booleans/fs_use_cifs" fs_use_cifs)
+(genfscon "selinuxfs" "/booleans/fs_use_fuse" fs_use_fuse)
+(genfscon "selinuxfs" "/booleans/fs_use_iso9660" fs_use_iso9660)
+(genfscon "selinuxfs" "/booleans/fs_use_nfs" fs_use_nfs)
+(genfscon "selinuxfs" "/booleans/fs_use_removable" fs_use_removable)
+(genfscon "smbfs" "/" cifs)
+(genfscon "sysfs" "/" sysfs)
+(genfscon "tracefs" "/" tracefs)
+(genfscon "vfat" "/" dosfs)
+
+(sidcontext fs fs)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;
+;
+; Macros
+;
+
 (in fs
 	(block obj_blk
 		(blockabstract obj_blk)
@@ -910,3 +1104,293 @@
 
 	(macro unconfined_subj_type ((type ARG1))
 		(typeattributeset unconfined_subj_type_attribute ARG1)))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;
+;
+; Policy
+;
+
+(boolean fs_use_cifs true)
+(boolean fs_use_dosfs true)
+(boolean fs_use_fuse true)
+(boolean fs_use_nfs true)
+(boolean fs_use_iso9660 true)
+(boolean fs_use_removable true)
+
+(sid fs)
+
+(block fs
+	(blockinherit obj_blk)
+
+	(typeattribute obj_type_attribute)
+
+	(typeattribute unconfined_subj_type_attribute)
+
+	(typeattribute read_cifs_subj_type_attribute)
+	(typeattribute manage_cifs_subj_type_attribute)
+
+	(typeattribute read_dosfs_subj_type_attribute)
+	(typeattribute manage_dosfs_subj_type_attribute)
+
+	(typeattribute read_fuse_subj_type_attribute)
+	(typeattribute manage_fuse_subj_type_attribute)
+
+	(typeattribute read_iso9660_subj_type_attribute)
+
+	(typeattribute read_nfs_subj_type_attribute)
+	(typeattribute manage_nfs_subj_type_attribute)
+
+	(typeattribute read_removable_subj_type_attribute)
+	(typeattribute manage_removable_subj_type_attribute)
+
+	(typeattribute trace_client_subj_type_attribute)
+
+	(call sys.sys_obj_type (obj_type_attribute))
+
+	(allow obj_type_attribute self (filesystem (associate)))
+
+	(call getattr_debugfs_fs (trace_client_subj_type_attribute))
+	(call mount_tracefs_fs (trace_client_subj_type_attribute))
+	(call read_debugfs (trace_client_subj_type_attribute))
+	(call read_tracefs (trace_client_subj_type_attribute))
+
+	(allow unconfined_subj_type_attribute obj_type_attribute
+		all_file_perms_except_mounton_execmod_and_entrypoint)
+	(allow unconfined_subj_type_attribute obj_type_attribute
+		all_dir_perms_except_execmod)
+	(allow unconfined_subj_type_attribute obj_type_attribute
+		all_fifo_file_perms_except_mounton_and_execmod)
+	(allow unconfined_subj_type_attribute obj_type_attribute
+		all_lnk_file_perms_except_mounton_and_execmod)
+	(allow unconfined_subj_type_attribute obj_type_attribute
+		all_sock_file_perms_except_mounton_and_execmod)
+	(allow unconfined_subj_type_attribute obj_type_attribute
+		all_blk_file_perms_except_mounton_and_execmod)
+	(allow unconfined_subj_type_attribute obj_type_attribute
+		all_chr_file_perms_except_mounton_and_execmod)
+
+	(allow unconfined_subj_type_attribute obj_type_attribute (filesystem
+		(mount remount unmount getattr relabelfrom relabelto associate
+			quotamod quotaget))))
+
+(block fs_use_dosfs
+	(blockinherit sec.bool_obj_blk)
+
+	(booleanif fs_use_dosfs
+		(true
+			(call fs.read_dosfs
+				(fs.read_dosfs_subj_type_attribute))
+			(call fs.getattr_dosfs_fs
+				(fs.read_dosfs_subj_type_attribute))
+			(call fs.manage_dosfs
+				(fs.manage_dosfs_subj_type_attribute))
+			(call fs.getattr_dosfs_fs
+				(fs.manage_dosfs_subj_type_attribute)))))
+
+(block fs_use_cifs
+	(blockinherit sec.bool_obj_blk)
+
+	(booleanif fs_use_cifs
+		(true
+			(call fs.read_cifs (fs.read_cifs_subj_type_attribute))
+			(call fs.getattr_cifs_fs
+				(fs.read_cifs_subj_type_attribute))
+			(call fs.manage_cifs
+				(fs.manage_cifs_subj_type_attribute))
+			(call fs.getattr_cifs_fs
+				(fs.manage_cifs_subj_type_attribute)))))
+
+(block fs_use_fuse
+	(blockinherit sec.bool_obj_blk)
+
+	(booleanif fs_use_fuse
+		(true
+			(call fs.read_fuse (fs.read_fuse_subj_type_attribute))
+			(call fs.getattr_fuse_fs
+				(fs.read_fuse_subj_type_attribute))
+			(call fs.manage_fuse
+				(fs.manage_fuse_subj_type_attribute))
+			(call fs.getattr_fuse_fs
+				(fs.manage_fuse_subj_type_attribute)))))
+
+(block fs_use_iso9660
+	(blockinherit sec.bool_obj_blk)
+
+	(booleanif fs_use_iso9660
+		(true
+			(call fs.read_iso9660
+				(fs.read_iso9660_subj_type_attribute))
+			(call fs.getattr_iso9660_fs
+				(fs.read_iso9660_subj_type_attribute)))))
+
+(block fs_use_nfs
+	(blockinherit sec.bool_obj_blk)
+
+	(booleanif fs_use_nfs
+		(true
+			(call fs.read_nfs (fs.read_nfs_subj_type_attribute))
+			(call fs.getattr_nfs_fs
+				(fs.read_nfs_subj_type_attribute))
+			(call fs.manage_nfs
+				(fs.manage_nfs_subj_type_attribute))
+			(call fs.getattr_nfs_fs
+				(fs.manage_nfs_subj_type_attribute)))))
+
+(block fs_use_removable
+	(blockinherit sec.bool_obj_blk)
+
+	(booleanif fs_use_removable
+		(true
+			(call fs.read_removable
+				(fs.read_removable_subj_type_attribute))
+			(call fs.getattr_removable_fs
+				(fs.read_removable_subj_type_attribute))
+			(call fs.manage_removable
+				(fs.manage_removable_subj_type_attribute))
+			(call fs.getattr_removable_fs
+				(fs.manage_removable_subj_type_attribute)))))
+
+(block aio
+	(blockinherit fs.obj_blk))
+
+(block anon_inodefs
+	(blockinherit fs.obj_blk)
+
+	(call mls.trusted_obj_type (fs)))
+
+(block autofs_fs
+	(blockinherit fs.obj_blk)
+
+	(call sys.mountpoint_obj_type (fs)))
+
+(block bdev
+	(blockinherit fs.obj_blk))
+
+(block binfmt_misc
+	(blockinherit fs.obj_blk)
+
+	(call sys.mountpoint_obj_type (fs)))
+
+(block cifs
+	(blockinherit fs.obj_blk)
+
+	(call sys.mountpoint_obj_type (fs)))
+
+(block cgroup
+	(blockinherit fs.obj_blk)
+
+	(call sys.mountpoint_obj_type (fs)))
+
+(block configfs
+	(blockinherit fs.obj_blk)
+
+	(call sys.mountpoint_obj_type (fs)))
+
+(block debugfs
+	(blockinherit fs.obj_blk)
+
+	(call sys.mountpoint_obj_type (fs)))
+
+(block devpts
+	(blockinherit fs.obj_blk)
+
+	(call sys.mountpoint_obj_type (fs)))
+
+(block devtmpfs
+	(blockinherit fs.obj_blk)
+
+	(call sys.mountpoint_obj_type (fs))
+
+	(call mls.trusted_obj_type (fs))
+
+	(call fs.associate_fs (fs)))
+
+(block dosfs
+	(blockinherit fs.obj_blk)
+
+	(call sys.mountpoint_obj_type (fs))
+
+	; hack for /boot/efi on non-efi systems
+	(call fs.associate_fs (fs)))
+
+(block drm
+	(blockinherit fs.obj_blk))
+
+(block efivarfs
+	(blockinherit fs.obj_blk)
+
+	(call sys.mountpoint_obj_type (fs)))
+
+(block fuse_fs
+	(blockinherit fs.obj_blk)
+
+	(call sys.mountpoint_obj_type (fs)))
+
+(block hugetlbfs
+	(blockinherit fs.obj_blk)
+
+	(call sys.mountpoint_obj_type (fs)))
+
+(block iso9660
+	(blockinherit fs.obj_blk)
+
+	(call sys.mountpoint_obj_type (fs)))
+
+(block nfs
+	(blockinherit fs.obj_blk)
+
+	(call sys.mountpoint_obj_type (fs)))
+
+(block nfsd
+	(blockinherit fs.obj_blk)
+
+	(call sys.mountpoint_obj_type (fs)))
+
+(block nsfs
+	(blockinherit fs.obj_blk))
+
+(block proc
+	(blockinherit fs.obj_blk)
+
+	(call sys.mountpoint_obj_type (fs))
+
+	(call fs.associate_fs (fs)))
+
+(block pstore
+	(blockinherit fs.obj_blk)
+
+	(call sys.mountpoint_obj_type (fs)))
+
+(block removable_fs
+	(blockinherit fs.obj_blk))
+
+(block rootfs
+	(blockinherit fs.obj_blk)
+
+	(call sys.mountpoint_obj_type (fs))
+
+	(call fs.associate_fs (fs)))
+
+(block rpc_pipefs
+	(blockinherit fs.obj_blk)
+
+	(call sys.mountpoint_obj_type (fs)))
+
+(block sysfs
+	(blockinherit fs.obj_blk)
+
+	(call sys.mountpoint_obj_type (fs))
+
+	(call fs.associate_fs (fs)))
+
+(block tmpfs
+	(blockinherit fs.obj_blk)
+
+	(call sys.mountpoint_obj_type (fs))
+
+	(call fs.associate_fs (fs)))
+
+(block tracefs
+	(blockinherit fs.obj_blk)
+
+	(call sys.mountpoint_obj_type (fs)))

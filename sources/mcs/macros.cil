@@ -1,3 +1,0 @@
-(in mcs
-	(macro constrained_subj_type ((type ARG1))
-		(typeattributeset constrained_subj_type_attribute ARG1)))

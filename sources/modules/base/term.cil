@@ -1,3 +1,41 @@
+;;;;;;;;;;;;;;;;;;;;;;;;;;
+;
+; Contexts
+;
+
+(tunableif enable_rbacsep
+	(true
+		(context console (sys.id sys.role console.dev (systemlow
+			systemlow)))
+		(context term_console_login (sys.id sys.role
+			term_console_login.bool (systemlow systemlow)))
+		(context tty (sys.id sys.role tty.serial_dev (systemlow
+			systemlow)))
+		(context virtio (sys.id sys.role virtio.serial_dev (systemlow
+			systemlow))))
+	(false
+		(context console (sys.id object_r console.dev (systemlow
+			systemlow)))
+		(context term_console_login (sys.id object_r
+			term_console_login.bool (systemlow systemlow)))
+		(context tty (sys.id object_r tty.serial_dev (systemlow
+			systemlow)))
+		(context virtio (sys.id object_r virtio.serial_dev (systemlow
+			systemlow)))))
+
+(filecon "/dev/console" char console)
+(filecon "/dev/hvc[0-9]+" char tty)
+(filecon "/dev/tty.+" char tty)
+(filecon "/dev/vcs[^/]*" char tty)
+(filecon "/dev/vport[0-9]p[0-9]+" char virtio)
+
+(genfscon "selinuxfs" "/booleans/term_console_login" term_console_login)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;
+;
+; Macros
+;
+
 (in term
 	(block pty_obj_blk
 		(blockabstract pty_obj_blk)
@@ -218,3 +256,30 @@
 		(call sec.set_spec_boolean (ARG1 term_console_login.bool))
 		(optional term_set_console_login_boolean_optional_seutil
 			(call setsebool.exec (ARG1)))))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;
+;
+; Policy
+;
+
+(boolean term_console_login false)
+
+(block term
+	(typeattribute pty_obj_type_attribute)
+	(typeattribute serial_obj_type_attribute)
+	(typeattribute server_pty_obj_type_attribute)
+	(typeattribute tty_obj_type_attribute)
+
+	(call fs.associate_devpts (pty_obj_type_attribute)))
+
+(block term_console_login
+	(blockinherit sec.bool_obj_blk))
+
+(block console
+	(blockinherit dev.obj_blk))
+
+(block tty
+	(blockinherit term.serial_obj_blk))
+
+(block virtio
+	(blockinherit term.serial_obj_blk))

@@ -1,3 +1,40 @@
+;;;;;;;;;;;;;;;;;;;;;;;;;;
+;
+; Contexts
+;
+
+(tunableif enable_rbacsep
+	(true
+		(context cmd (sys.id sys.role cmd.cmd_file (systemlow
+			systemlow)))
+		(context shell (sys.id sys.role shell.cmd_file (systemlow
+			systemlow))))
+	(false
+		(context cmd (sys.id object_r cmd.cmd_file (systemlow
+			systemlow)))
+		(context shell (sys.id object_r shell.cmd_file (systemlow
+			systemlow)))))
+
+(filecon "/etc/kernel/postinst\.d(/.*)?" file cmd)
+(filecon "/etc/profile\.d(/.*)?" file cmd)
+(filecon "/etc/rc\.d/init\.d(/.*)?" file cmd)
+(filecon "/etc/rc\.d/rc\.local" file cmd)
+(filecon "/etc/sysconfig/network-scripts/ifdown-.*" file cmd)
+(filecon "/etc/sysconfig/network-scripts/ifup-.*" file cmd)
+(filecon "/etc/sysconfig/network-scripts/init\.ipv6-global" file cmd)
+(filecon "/usr/bin(/.*)?" any cmd)
+(filecon "/usr/bin/bash" file shell)
+(filecon "/usr/bin" symlink cmd)
+(filecon "/usr/libexec(/.*)?" any cmd)
+(filecon "/usr/sbin(/.*)?" any cmd)
+(filecon "/usr/sbin/nologin" file shell)
+(filecon "/usr/sbin" symlink cmd)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;
+;
+; Macros
+;
+
 (in cmd
 	(block obj_blk
 		(blockabstract obj_blk)
@@ -150,3 +187,18 @@
 
 	(macro audit_read_access_shell_files ((type ARG1))
 		(allow ARG1 shell.cmd_file (file (read)))))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;
+;
+; Policy
+;
+
+(block cmd
+	(blockinherit obj_blk)
+
+	(typeattribute obj_type_attribute)
+
+	(call file.file_obj_type (obj_type_attribute)))
+
+(block shell
+	(blockinherit cmd.obj_blk))

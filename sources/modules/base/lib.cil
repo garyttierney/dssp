@@ -1,3 +1,37 @@
+;;;;;;;;;;;;;;;;;;;;;;;;;;
+;
+; Contexts
+;
+
+(tunableif enable_rbacsep
+	(true
+		(context ld_so_cache (sys.id sys.role ld_so_cache.file
+			(systemlow systemlow)))
+		(context ld_so (sys.id sys.role ld_so.file (systemlow
+			systemlow)))
+		(context lib (sys.id sys.role lib.lib_file (systemlow
+			systemlow))))
+	(false
+		(context ld_so_cache (sys.id object_r ld_so_cache.file
+			(systemlow systemlow)))
+		(context ld_so (sys.id object_r ld_so.file (systemlow
+			systemlow)))
+		(context lib (sys.id object_r lib.lib_file (systemlow
+			systemlow)))))
+
+(filecon "/etc/ld\.so\.cache.*" file ld_so_cache)
+(filecon "/etc/ld\.so\.preload.*" file ld_so_cache)
+
+(filecon "/usr/lib(/.*)?" any lib)
+(filecon "/usr/libexec/sudo/.*" any lib)
+(filecon "/usr/lib/ld-[^/]*\.so(\.[^/]*)*" file ld_so)
+(filecon "/usr/lib" symlink lib)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;
+;
+; Macros
+;
+
 (in lib
 	(block obj_blk
 		(blockabstract obj_blk)
@@ -109,3 +143,24 @@
 	(macro manage_lib_files ((type ARG1))
 		(call rw_lib_dirs (ARG1))
 		(allow ARG1 lib_file manage_file_perms)))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;
+;
+; Policy
+;
+
+(block lib
+	(blockinherit obj_blk)
+
+	(typeattribute obj_type_attribute)
+
+	(call file.file_obj_type (obj_type_attribute)))
+
+(block textrel
+	(blockinherit lib.obj_blk))
+
+(block ld_so
+	(blockinherit file.obj_blk))
+
+(block ld_so_cache
+	(blockinherit file.obj_blk))

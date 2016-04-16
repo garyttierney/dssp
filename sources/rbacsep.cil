@@ -1,3 +1,8 @@
+;;;;;;;;;;;;;;;;;;;;;;;;;;
+;
+; Constraints
+;
+
 (tunableif enable_rbacsep
 	(true
 		(constrain (fd (use))
@@ -568,3 +573,63 @@
 				(eq r2 rbacsep.exempt_role_attribute))
 				(eq t1 rbacsep.exempt_subj_type_attribute))
 				(eq t2 rbacsep.exempt_subj_type_attribute)))))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;
+;
+; Macros
+;
+
+(in rbacsep
+	(macro exempt_role ((role ARG1))
+		(roleattributeset exempt_role_attribute ARG1))
+
+	(macro read_state_source_subj_type ((type ARG1))
+		(typeattributeset read_state_source_subj_type_attribute ARG1))
+
+	(macro read_state_target_subj_type ((type ARG1))
+		(typeattributeset read_state_target_subj_type_attribute ARG1))
+
+	(macro exempt_obj_type ((type ARG1))
+		(typeattributeset exempt_obj_type_attribute ARG1))
+
+	(macro exempt_subj_type ((type ARG1))
+		(typeattributeset exempt_subj_type_attribute ARG1))
+
+	(macro obj_role_change_exemption_subj_type ((type ARG1))
+		(typeattributeset obj_role_change_exemption_subj_type_attribute
+			ARG1))
+
+	(macro obj_sys_role_change_exemption_subj_type ((type ARG1))
+		(typeattributeset
+			obj_sys_role_change_exemption_subj_type_attribute
+				ARG1)))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;
+;
+; Policy
+;
+
+(block rbacsep
+	(roleattribute exempt_role_attribute)
+
+	(typeattribute read_state_source_subj_type_attribute)
+	(typeattribute read_state_target_subj_type_attribute)
+
+	(typeattribute exempt_obj_type_attribute)
+	(typeattribute exempt_subj_type_attribute)
+
+	(typeattribute obj_role_change_exemption_subj_type_attribute)
+	(typeattribute obj_sys_role_change_exemption_subj_type_attribute))
+
+(tunableif enable_rbacsep
+	(true
+		(defaultrole file source)
+		(defaultrole dir source)
+		(defaultrole lnk_file source)
+		(defaultrole chr_file source)
+		(defaultrole blk_file source)
+		(defaultrole sock_file source)
+		(defaultrole fifo_file source))
+	(false
+		(role object_r)
+		(call sys.sys_role (object_r))))

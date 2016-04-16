@@ -1,3 +1,230 @@
+;;;;;;;;;;;;;;;;;;;;;;;;;;
+;
+; Contexts
+;
+
+(tunableif enable_rbacsep
+	(true
+		(context boot (sys.id sys.role boot.boot_file (systemlow
+			systemlow)))
+		(context config (sys.id sys.role config.config_file (systemlow
+			systemlow)))
+		(context data (sys.id sys.role data.data_file (systemlow
+			systemlow)))
+		(context file_execmod_all_except (sys.id sys.role
+			file_execmod_all_except.bool (systemlow systemlow)))
+		(context home_low (sys.id sys.role home.file (systemlow
+			systemlow)))
+		(context mnt (sys.id sys.role mnt.file (systemlow systemlow)))
+		(context runtime_config (sys.id sys.role
+			runtime_config.runtime_config_file (systemlow
+				systemlow)))
+		(context runtime_lock (sys.id sys.role
+			runtime_lock.runtime_lock_file (systemlow systemlow)))
+		(context runtime (sys.id sys.role runtime.runtime_file
+			(systemlow systemlow)))
+		(context unknown (sys.id sys.role unknown.file (systemlow
+			systemlow)))
+		(context var_cache (sys.id sys.role var_cache.var_cache_file
+			(systemlow systemlow)))
+		(context var_db (sys.id sys.role var_db.var_db_file (systemlow
+			systemlow)))
+		(context var_lib (sys.id sys.role var_lib.var_lib_file
+			(systemlow systemlow)))
+		(context var_spool (sys.id sys.role var_spool.var_spool_file
+			(systemlow systemlow)))
+		(context var_tmp_low (sys.id sys.role var_tmp.var_tmp_file
+			(systemlow systemlow)))
+		(context var (sys.id sys.role var.var_file (systemlow
+			systemlow))))
+	(false
+		(context boot (sys.id object_r boot.boot_file (systemlow
+			systemlow)))
+		(context config (sys.id object_r config.config_file (systemlow
+			systemlow)))
+		(context data (sys.id object_r data.data_file (systemlow
+			systemlow)))
+		(context file_execmod_all_except (sys.id object_r
+			file_execmod_all_except.bool (systemlow systemlow)))
+		(context home_low (sys.id object_r home.file (systemlow
+			systemlow)))
+		(context mnt (sys.id object_r mnt.file (systemlow systemlow)))
+		(context runtime_config (sys.id object_r
+			runtime_config.runtime_config_file (systemlow
+				systemlow)))
+		(context runtime_lock (sys.id object_r
+			runtime_lock.runtime_lock_file (systemlow systemlow)))
+		(context runtime (sys.id object_r runtime.runtime_file
+			(systemlow systemlow)))
+		(context unknown (sys.id object_r unknown.file (systemlow
+			systemlow)))
+		(context var_cache (sys.id object_r var_cache.var_cache_file
+			(systemlow systemlow)))
+		(context var_db (sys.id object_r var_db.var_db_file (systemlow
+			systemlow)))
+		(context var_lib (sys.id object_r var_lib.var_lib_file
+			(systemlow systemlow)))
+		(context var_spool (sys.id object_r var_spool.var_spool_file
+			(systemlow systemlow)))
+		(context var_tmp_low (sys.id object_r var_tmp.var_tmp_file
+			(systemlow systemlow)))
+		(context var (sys.id object_r var.var_file (systemlow
+			systemlow)))))
+
+(tunableif enable_mls
+	(true
+		(tunableif enable_rbacsep
+			(true
+				(context home (sys.id sys.role home.file
+					(systemlow systemhigh)))
+				(context lost_found (sys.id sys.role
+					lost_found.file (systemhigh
+						systemhigh)))
+				(context runtime_user (sys.id sys.role
+					runtime_user.runtime_file (systemlow
+						systemhigh)))
+				(context var_log (sys.id sys.role
+					var_log.var_log_file (systemlow
+						systemhigh)))
+				(context var_tmp (sys.id sys.role
+					var_tmp.var_tmp_file (systemlow
+						systemhigh))))
+			(false
+				(context home (sys.id object_r home.file
+					(systemlow systemhigh)))
+				(context lost_found (sys.id object_r
+					lost_found.file (systemhigh
+						systemhigh)))
+				(context runtime_user (sys.id object_r
+					runtime_user.runtime_file (systemlow
+						systemhigh)))
+				(context var_log (sys.id object_r
+					var_log.var_log_file (systemlow
+						systemhigh)))
+				(context var_tmp (sys.id object_r
+					var_tmp.var_tmp_file (systemlow
+						systemhigh))))))
+
+	(false
+		(tunableif enable_rbacsep
+			(true
+				(context home (sys.id sys.role home.file
+					(systemlow systemlow)))
+				(context lost_found (sys.id sys.role
+					lost_found.file (systemlow systemlow)))
+				(context runtime_user (sys.id sys.role
+					runtime_user.runtime_file (systemlow
+						systemlow)))
+				(context var_log (sys.id sys.role
+					var_log.var_log_file (systemlow
+						systemlow)))
+				(context var_tmp (sys.id sys.role
+					var_tmp.var_tmp_file (systemlow
+						systemlow))))
+			(false
+				(context home (sys.id object_r home.file
+					(systemlow systemlow)))
+				(context lost_found (sys.id object_r
+					lost_found.file (systemlow systemlow)))
+				(context runtime_user (sys.id object_r
+					runtime_user.runtime_file (systemlow
+						systemlow)))
+				(context var_log (sys.id object_r
+					var_log.var_log_file (systemlow
+						systemlow)))
+				(context var_tmp (sys.id object_r
+					var_tmp.var_tmp_file (systemlow
+						systemlow)))))))
+
+(filecon "/.*" any unknown)
+(filecon "/boot(/.*)?" any boot)
+(filecon "/boot/\.journal" any ())
+(filecon "/boot/lost\+found/.*" any ())
+(filecon "/boot/lost\+found" dir lost_found)
+(filecon "/etc(/.*)?" any config)
+(filecon "/etc/\.journal" any ())
+(filecon "/etc/lost\+found/.*" any ())
+(filecon "/etc/lost\+found" dir lost_found)
+(filecon "/etc/rc\.d/init\.d/functions" file config)
+(filecon "/etc/rc\.d/init\.d/README" file config)
+(filecon "/etc/sysconfig/network-scripts/network-functions.*" file config)
+(filecon "/home" dir home)
+(filecon "/home(/.*)?" any home)
+(filecon "/home/\.journal" any ())
+(filecon "/home/lost\+found/.*" any ())
+(filecon "/home/lost\+found" dir lost_found)
+(filecon "/home" symlink home_low)
+(filecon "/\.journal" any ())
+(filecon "/lost\+found/.*" any ())
+(filecon "/lost\+found" dir lost_found)
+(filecon "/media/[^/]*/.*" any ())
+(filecon "/media(/[^/]*)?" dir mnt)
+(filecon "/media(/[^/]*)?" symlink mnt)
+(filecon "/mnt/[^/]*/.*" any ())
+(filecon "/mnt(/[^/]*)?" dir mnt)
+(filecon "/mnt(/[^/]*)?" symlink mnt)
+(filecon "/opt(/.*)?" any data)
+(filecon "/opt/\.journal" any ())
+(filecon "/opt/lost\+found/.*" any ())
+(filecon "/opt/lost\+found" dir lost_found)
+(filecon "/srv(/.*)?" any var)
+(filecon "/srv/\.journal" any ())
+(filecon "/srv/lost\+found/.*" any ())
+(filecon "/srv/lost\+found" dir lost_found)
+(filecon "/usr(/.*)?" any data)
+(filecon "/usr/\.journal" any ())
+(filecon "/usr/lost\+found/.*" any ())
+(filecon "/usr/lost\+found" dir lost_found)
+(filecon "/usr/tmp" symlink var_tmp_low)
+(filecon "/var(/.*)?" any var)
+(filecon "/var/cache(/.*)?" any var_cache)
+(filecon "/var/cache/\.journal" any ())
+(filecon "/var/cache/lost\+found/.*" any ())
+(filecon "/var/cache/lost\+found" dir lost_found)
+(filecon "/var/db(/.*)?" any var_db)
+(filecon "/var/db/\.journal" any ())
+(filecon "/var/db/lost\+found/.*" any ())
+(filecon "/var/db/lost\+found" dir lost_found)
+(filecon "/var/\.journal" any ())
+(filecon "/var/lib(/.*)?" any var_lib)
+(filecon "/var/lib/\.journal" any ())
+(filecon "/var/lib/lost\+found/.*" any ())
+(filecon "/var/lib/lost\+found" dir lost_found)
+(filecon "/var/lock" symlink runtime_lock)
+(filecon "/var/log(/.*)?" any var_log)
+(filecon "/var/log/\.journal" any ())
+(filecon "/var/log/lost\+found/.*" any ())
+(filecon "/var/log/lost\+found" dir lost_found)
+(filecon "/var/lost\+found/.*" any ())
+(filecon "/var/lost\+found" dir lost_found)
+(filecon "/var/mail" symlink var_spool)
+(filecon "/var/run(/.*)?" any runtime)
+(filecon "/var/run/lock(/.*)?" any runtime_lock)
+(filecon "/var/run/lock" symlink runtime_lock)
+(filecon "/var/run" symlink runtime)
+(filecon "/var/run/media/[^/]*/.*" any ())
+(filecon "/var/run/media(/[^/]*)?" dir mnt)
+(filecon "/var/run/sysconfig(/.*)?" any runtime_config)
+(filecon "/var/run/user/.*" any ())
+(filecon "/var/run/user" dir runtime_user)
+(filecon "/var/spool(/.*)?" any var_spool)
+(filecon "/var/spool/\.journal" any ())
+(filecon "/var/spool/lost\+found/.*" any ())
+(filecon "/var/spool/lost\+found" dir lost_found)
+(filecon "/var/tmp/.*" any ())
+(filecon "/var/tmp" dir var_tmp)
+(filecon "/var/tmp/\.journal" any ())
+(filecon "/var/tmp/lost\+found/.*" any ())
+(filecon "/var/tmp/lost\+found" dir lost_found)
+
+(genfscon "selinuxfs" "/booleans/file_execmod_all_except"
+	file_execmod_all_except)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;
+;
+; Macros
+;
+
 (in file
 	(block obj_blk
 		(blockabstract obj_blk)
@@ -5955,3 +6182,163 @@
 
 	(macro unconfined_subj_type ((type ARG1))
 		(typeattributeset unconfined_subj_type_attribute ARG1)))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;
+;
+; Policy
+;
+
+(boolean file_execmod_all_except false)
+
+(block file
+	(typeattribute obj_type_attribute)
+
+	(typeattribute auth_obj_type_attribute)
+	(typeattribute non_auth_obj_type_attribute)
+
+	(typeattribute sec_obj_type_attribute)
+	(typeattribute non_sec_obj_type_attribute)
+
+	(typeattribute boot_obj_type_attribute)
+	(typeattribute boot_flag_obj_type_attribute)
+	(typeattribute config_obj_type_attribute)
+	(typeattribute data_obj_type_attribute)
+	(typeattribute runtime_obj_type_attribute)
+	(typeattribute runtime_config_obj_type_attribute)
+	(typeattribute runtime_lock_obj_type_attribute)
+	(typeattribute var_obj_type_attribute)
+	(typeattribute var_cache_obj_type_attribute)
+	(typeattribute var_db_obj_type_attribute)
+	(typeattribute var_lib_obj_type_attribute)
+	(typeattribute var_log_obj_type_attribute)
+	(typeattribute var_spool_obj_type_attribute)
+	(typeattribute var_tmp_obj_type_attribute)
+	(typeattribute tmpfs_obj_type_attribute)
+
+	(typeattribute unconfined_subj_type_attribute)
+
+	(call sys.sys_obj_type (obj_type_attribute))
+
+	(call fs.associate_fs (obj_type_attribute))
+
+	(call fs.associate_tmpfs (runtime_obj_type_attribute))
+	(call fs.associate_tmpfs (runtime_config_obj_type_attribute))
+	(call fs.associate_tmpfs (runtime_lock_obj_type_attribute))
+
+	(call fs.associate_tmpfs (tmpfs_obj_type_attribute))
+
+	(typeattribute except_obj_type_attribute)
+	(typeattribute exception_obj_type_attribute)
+
+	(typeattributeset except_obj_type_attribute (and (obj_type_attribute)
+		(not (auth_obj_type_attribute sec_obj_type_attribute
+			exception_obj_type_attribute))))
+
+	(allow unconfined_subj_type_attribute except_obj_type_attribute
+		all_file_perms_except_mounton_execmod_and_entrypoint)
+	(allow unconfined_subj_type_attribute except_obj_type_attribute
+		all_dir_perms_except_execmod)
+	(allow unconfined_subj_type_attribute except_obj_type_attribute
+		all_fifo_file_perms_except_mounton_and_execmod)
+	(allow unconfined_subj_type_attribute except_obj_type_attribute
+		all_lnk_file_perms_except_mounton_and_execmod)
+	(allow unconfined_subj_type_attribute except_obj_type_attribute
+		all_sock_file_perms_except_mounton_and_execmod)
+	(allow unconfined_subj_type_attribute except_obj_type_attribute
+		all_blk_file_perms_except_mounton_and_execmod)
+	(allow unconfined_subj_type_attribute except_obj_type_attribute
+		all_chr_file_perms_except_mounton_and_execmod)
+
+	(call rootfs_obj_type_transition_unknown
+		(unconfined_subj_type_attribute))
+
+	(call execmod_all_except_subj_type (unconfined_subj_type_attribute)))
+
+(block boot
+	(blockinherit file.boot_obj_blk)
+
+	(call sys.mountpoint_obj_type (boot_file)))
+
+(block config
+	(blockinherit file.config_obj_blk)
+
+	(call sys.mountpoint_obj_type (config_file)))
+
+(block data
+	(blockinherit file.data_obj_blk)
+
+	(call sys.mountpoint_obj_type (data_file)))
+
+(block home
+	(blockinherit file.obj_blk)
+
+	(call sys.mountpoint_obj_type (file)))
+
+(block lost_found
+	(blockinherit file.obj_blk))
+
+(block mnt
+	(blockinherit file.obj_blk)
+
+	(call sys.mountpoint_obj_type (file))
+
+	(call fs.associate_tmpfs (file)))
+
+(block runtime
+	(blockinherit file.runtime_obj_blk)
+
+	(call sys.mountpoint_obj_type (runtime_file)))
+
+(block runtime_config
+	(blockinherit file.runtime_config_obj_blk))
+
+(block runtime_lock
+	(blockinherit file.runtime_lock_obj_blk)
+
+	(call sys.mountpoint_obj_type (runtime_lock_file)))
+
+(block runtime_user
+	(blockinherit file.runtime_obj_blk)
+
+	(call sys.mountpoint_obj_type (runtime_file)))
+
+(block unknown
+	(blockinherit file.obj_blk))
+
+(block var
+	(blockinherit file.var_obj_blk)
+
+	(call sys.mountpoint_obj_type (var_file)))
+
+(block var_cache
+	(blockinherit file.var_cache_obj_blk)
+
+	(call sys.mountpoint_obj_type (var_cache_file)))
+
+(block var_db
+	(blockinherit file.var_db_obj_blk)
+
+	(call sys.mountpoint_obj_type (var_db_file)))
+
+(block var_lib
+	(blockinherit file.var_lib_obj_blk)
+
+	(call sys.mountpoint_obj_type (var_lib_file)))
+
+(block var_log
+	(blockinherit file.var_log_obj_blk)
+
+	(call sys.mountpoint_obj_type (var_log_file)))
+
+(block var_spool
+	(blockinherit file.var_spool_obj_blk)
+
+	(call sys.mountpoint_obj_type (var_spool_file)))
+
+(block var_tmp
+	(blockinherit file.var_tmp_obj_blk)
+
+	(call sys.mountpoint_obj_type (var_tmp_file)))
+
+(block file_execmod_all_except
+	(blockinherit sec.bool_obj_blk))
