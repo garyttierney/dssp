@@ -1,5 +1,0 @@
-(selinuxuserdefault user.id (systemlow systemhigh))
-(selinuxuser sys.id sys.id (systemlow systemhigh))
-(selinuxuser gdm gdm.id (systemlow systemhigh))
-(selinuxuser root sysadm.id (systemlow systemhigh))
-(selinuxuser %wheel wheel.id (systemlow systemhigh))

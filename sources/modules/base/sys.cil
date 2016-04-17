@@ -1,5 +1,12 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;
+; Config
+;
+
+(selinuxuser sys.id sys.id (systemlow systemhigh))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;
+;
 ; Contexts
 ;
 
