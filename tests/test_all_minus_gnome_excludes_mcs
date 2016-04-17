@@ -1,7 +1,7 @@
 sources/modules/contrib/gnome
-sources/modules/contrib/roles/wheel_gnome
-sources/modules/contrib/roles/user_gnome
-sources/modules/contrib/roles/sysadm_gnome
+sources/modules/contrib/roles/wheel/wheel_gnome
+sources/modules/contrib/roles/user/user_gnome
+sources/modules/contrib/roles/sysadm/sysadm_gnome
 sources.d
 sources/global_tunables.cil
 tests/tunables/mcs_plus_rbacsep.cil
