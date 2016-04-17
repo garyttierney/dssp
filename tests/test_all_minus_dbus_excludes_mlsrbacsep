@@ -1,10 +1,10 @@
 sources/modules/contrib/applications/sessbus_launch.cil
-sources/modules/contrib/roles/user_sessbus_launch.cil
-sources/modules/contrib/roles/wheel_sessbus_launch.cil
-sources/modules/contrib/roles/sysadm_sessbus_launch.cil
-sources/modules/contrib/roles/user_sessbus.cil
-sources/modules/contrib/roles/wheel_sessbus.cil
-sources/modules/contrib/roles/sysadm_sessbus.cil
+sources/modules/contrib/roles/user/user_sessbus_launch.cil
+sources/modules/contrib/roles/wheel/wheel_sessbus_launch.cil
+sources/modules/contrib/roles/sysadm/sysadm_sessbus_launch.cil
+sources/modules/contrib/roles/user/user_sessbus.cil
+sources/modules/contrib/roles/wheel/wheel_sessbus.cil
+sources/modules/contrib/roles/sysadm/sysadm_sessbus.cil
 sources/modules/contrib/services/sessbus.cil
 sources/modules/contrib/services/sysbus.cil
 sources.d
