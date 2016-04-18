@@ -558,14 +558,16 @@
 		(allow ARG1 fs_sysctl.sysctl search_dir_perms)
 		(allow ARG1 kernel.sysctl search_dir_perms)
 		(allow ARG1 vm.sysctl search_dir_perms)
-		(allow ARG1 security.sysctl read_file_perms))
+		(call read_files_pattern (ARG1 security.sysctl
+			security.sysctl)))
 
 	(macro rw_security_sysctl_files ((type ARG1))
 		(call search_sysctl (ARG1))
 		(allow ARG1 fs_sysctl.sysctl search_dir_perms)
 		(allow ARG1 kernel.sysctl search_dir_perms)
 		(allow ARG1 vm.sysctl search_dir_perms)
-		(allow ARG1 security.sysctl rw_file_perms)
+		(call rw_files_pattern (ARG1 security.sysctl
+			security.sysctl))
 		(typeattributeset
 			write_security_and_usermodehelper_sysctl_subj_type_attribute
 				ARG1))
