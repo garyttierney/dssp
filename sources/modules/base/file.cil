@@ -6225,6 +6225,7 @@
 	(call fs.associate_tmpfs (runtime_config_obj_type_attribute))
 	(call fs.associate_tmpfs (runtime_lock_obj_type_attribute))
 
+	(call fs.associate_tmpfs (var_tmp_obj_type_attribute))
 	(call fs.associate_tmpfs (tmpfs_obj_type_attribute))
 
 	(typeattribute except_obj_type_attribute)
