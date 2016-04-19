@@ -45,7 +45,7 @@
 (filecon "/dev/bsg/.+" char scsi_generic)
 (filecon "/dev/dm-[0-9]+" block fixed_disk)
 (filecon "/dev/fuse" char fuse_storage)
-(filecon "/dev/loop.+" char fixed_disk)
+(filecon "/dev/loop.+" block fixed_disk)
 (filecon "/dev/mmcblk.+" block removable_storage)
 (filecon "/dev/mspblk.+" block removable_storage)
 (filecon "/dev/raw/.+" char fixed_disk)
@@ -563,7 +563,47 @@
 		(call fs.devtmpfs_obj_type_transition (ARG1
 			fixed_disk.storage_dev blk_file "loop2p8"))
 		(call fs.devtmpfs_obj_type_transition (ARG1
-			fixed_disk.storage_dev blk_file "loop2p9")))
+			fixed_disk.storage_dev blk_file "loop2p9"))
+		(call fs.devtmpfs_obj_type_transition (ARG1
+			fixed_disk.storage_dev blk_file "loop3"))
+		(call fs.devtmpfs_obj_type_transition (ARG1
+			fixed_disk.storage_dev blk_file "loop3p1"))
+		(call fs.devtmpfs_obj_type_transition (ARG1
+			fixed_disk.storage_dev blk_file "loop3p2"))
+		(call fs.devtmpfs_obj_type_transition (ARG1
+			fixed_disk.storage_dev blk_file "loop3p3"))
+		(call fs.devtmpfs_obj_type_transition (ARG1
+			fixed_disk.storage_dev blk_file "loop3p4"))
+		(call fs.devtmpfs_obj_type_transition (ARG1
+			fixed_disk.storage_dev blk_file "loop3p5"))
+		(call fs.devtmpfs_obj_type_transition (ARG1
+			fixed_disk.storage_dev blk_file "loop3p6"))
+		(call fs.devtmpfs_obj_type_transition (ARG1
+			fixed_disk.storage_dev blk_file "loop3p7"))
+		(call fs.devtmpfs_obj_type_transition (ARG1
+			fixed_disk.storage_dev blk_file "loop3p8"))
+		(call fs.devtmpfs_obj_type_transition (ARG1
+			fixed_disk.storage_dev blk_file "loop3p9"))
+		(call fs.devtmpfs_obj_type_transition (ARG1
+			fixed_disk.storage_dev blk_file "loop4"))
+		(call fs.devtmpfs_obj_type_transition (ARG1
+			fixed_disk.storage_dev blk_file "loop4p1"))
+		(call fs.devtmpfs_obj_type_transition (ARG1
+			fixed_disk.storage_dev blk_file "loop4p2"))
+		(call fs.devtmpfs_obj_type_transition (ARG1
+			fixed_disk.storage_dev blk_file "loop4p3"))
+		(call fs.devtmpfs_obj_type_transition (ARG1
+			fixed_disk.storage_dev blk_file "loop4p4"))
+		(call fs.devtmpfs_obj_type_transition (ARG1
+			fixed_disk.storage_dev blk_file "loop4p5"))
+		(call fs.devtmpfs_obj_type_transition (ARG1
+			fixed_disk.storage_dev blk_file "loop4p6"))
+		(call fs.devtmpfs_obj_type_transition (ARG1
+			fixed_disk.storage_dev blk_file "loop4p7"))
+		(call fs.devtmpfs_obj_type_transition (ARG1
+			fixed_disk.storage_dev blk_file "loop4p8"))
+		(call fs.devtmpfs_obj_type_transition (ARG1
+			fixed_disk.storage_dev blk_file "loop4p9")))
 
 	(macro devtmpfs_obj_type_transition_removable ((type ARG1))
 		(call fs.devtmpfs_obj_type_transition (ARG1
