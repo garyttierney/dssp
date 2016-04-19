@@ -211,6 +211,7 @@
 (filecon "/var/spool/\.journal" any ())
 (filecon "/var/spool/lost\+found/.*" any ())
 (filecon "/var/spool/lost\+found" dir lost_found)
+(filecon "/var/spool/mail/.*" file ())
 (filecon "/var/tmp/.*" any ())
 (filecon "/var/tmp" dir var_tmp)
 (filecon "/var/tmp/\.journal" any ())
