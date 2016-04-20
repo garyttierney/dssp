@@ -4808,6 +4808,14 @@
 		(allow ARG1 data.data_file manage_sock_file_perms)
 		(allow ARG1 data.data_file manage_lnk_file_perms))
 
+	(macro relabel_data ((type ARG1))
+		(call file.search_data (ARG1))
+		(allow ARG1 data.data_file relabel_file_perms)
+		(allow ARG1 data.data_file relabel_dir_perms)
+		(allow ARG1 data.data_file relabel_fifo_file_perms)
+		(allow ARG1 data.data_file relabel_sock_file_perms)
+		(allow ARG1 data.data_file relabel_lnk_file_perms))
+
 	(macro rw_data_dirs ((type ARG1))
 		(allow ARG1 data.data_file rw_dir_perms))
 
