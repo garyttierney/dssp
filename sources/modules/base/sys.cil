@@ -888,6 +888,9 @@
 	(macro search_unlabeled ((type ARG1))
 		(allow ARG1 unlabeled.isid search_dir_perms))
 
+	(macro dontaudit_audit_access_unlabeled_dirs ((type ARG1))
+		(dontaudit ARG1 unlabeled.isid (dir (audit_access))))
+
 	(macro relabelfrom_unlabeled_dirs ((type ARG1))
 		(allow ARG1 unlabeled.isid relabelfrom_dir_perms))
 

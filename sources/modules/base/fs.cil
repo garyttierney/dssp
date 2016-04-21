@@ -599,6 +599,11 @@
 		(allow ARG1 dosfs.fs manage_dir_perms)
 		(allow ARG1 dosfs.fs manage_lnk_file_perms))
 
+	(macro relabel_dosfs ((type ARG1))
+		(allow ARG1 dosfs.fs relabel_file_perms)
+		(allow ARG1 dosfs.fs relabel_dir_perms)
+		(allow ARG1 dosfs.fs relabel_lnk_file_perms))
+
 	(macro remount_dosfs_fs ((type ARG1))
 		(allow ARG1 dosfs.fs (filesystem (remount))))
 
@@ -710,6 +715,9 @@
 
 	(macro list_iso9660 ((type ARG1))
 		(allow ARG1 iso9660.fs list_dir_perms))
+
+	(macro getattr_iso9660_files ((type ARG1))
+		(allow ARG1 iso9660.fs (file (getattr))))
 
 	(macro read_iso9660_files ((type ARG1))
 		(call read_files_pattern (ARG1 iso9660.fs iso9660.fs)))
@@ -997,6 +1005,9 @@
 	(macro rw_tmpfs_dirs ((type ARG1))
 		(call search_devtmpfs (ARG1))
 		(allow ARG1 tmpfs.fs rw_dir_perms))
+
+	(macro write_inherited_tmpfs_files ((type ARG1))
+		(allow ARG1 tmpfs.fs write_inherited_file_perms))
 
 	(macro setattr_tmpfs_dirs ((type ARG1))
 		(allow ARG1 tmpfs.fs (dir (setattr))))
