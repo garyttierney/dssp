@@ -362,6 +362,9 @@
 	(macro search_mountpoints ((type ARG1))
 		(allow ARG1 mountpoint_obj_type_attribute search_dir_perms))
 
+	(macro relabel_mountpoint_dirs ((type ARG1))
+		(allow ARG1 mountpoint_obj_type_attribute relabel_dir_perms))
+
 	(macro mounton_mountpoint_dirs ((type ARG1))
 		(allow ARG1 mountpoint_obj_type_attribute (dir (mounton))))
 
@@ -882,12 +885,24 @@
 	(macro search_unlabeled ((type ARG1))
 		(allow ARG1 unlabeled.isid search_dir_perms))
 
+	(macro relabelfrom_unlabeled_dirs ((type ARG1))
+		(allow ARG1 unlabeled.isid relabelfrom_dir_perms))
+
 	(macro list_unlabeled ((type ARG1))
 		(allow ARG1 unlabeled.isid list_dir_perms))
 
 	(macro read_unlabeled_lnk_files ((type ARG1))
 		(call read_lnk_files_pattern (ARG1 unlabeled.isid
 			unlabeled.isid)))
+
+	(macro read_unlabeled ((type ARG1))
+		(allow ARG1 unlabeled.isid read_file_perms)
+		(allow ARG1 unlabeled.isid list_dir_perms)
+		(allow ARG1 unlabeled.isid read_fifo_file_perms)
+		(allow ARG1 unlabeled.isid read_lnk_file_perms)
+		(allow ARG1 unlabeled.isid read_sock_file_perms)
+		(allow ARG1 unlabeled.isid read_blk_file_perms)
+		(allow ARG1 unlabeled.isid read_chr_file_perms))
 
 	(macro relabelfrom_unlabeled ((type ARG1))
 		(allow ARG1 unlabeled.isid relabelfrom_file_perms)

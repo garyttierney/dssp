@@ -6146,6 +6146,15 @@
 		(allow ARG1 except_obj_type_attribute read_blk_file_perms)
 		(allow ARG1 except_obj_type_attribute read_chr_file_perms))
 
+	(macro manage_all_except ((type ARG1))
+		(allow ARG1 except_obj_type_attribute manage_file_perms)
+		(allow ARG1 except_obj_type_attribute manage_dir_perms)
+		(allow ARG1 except_obj_type_attribute manage_fifo_file_perms)
+		(allow ARG1 except_obj_type_attribute manage_lnk_file_perms)
+		(allow ARG1 except_obj_type_attribute manage_sock_file_perms)
+		(allow ARG1 except_obj_type_attribute manage_blk_file_perms)
+		(allow ARG1 except_obj_type_attribute manage_chr_file_perms))
+
 	(macro relabel_all_except ((type ARG1))
 		(allow ARG1 except_obj_type_attribute relabel_file_perms)
 		(allow ARG1 except_obj_type_attribute relabel_dir_perms)
