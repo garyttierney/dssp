@@ -916,6 +916,15 @@
 		(allow ARG1 unlabeled.isid read_blk_file_perms)
 		(allow ARG1 unlabeled.isid read_chr_file_perms))
 
+	(macro manage_unlabeled ((type ARG1))
+		(allow ARG1 unlabeled.isid manage_file_perms)
+		(allow ARG1 unlabeled.isid manage_dir_perms)
+		(allow ARG1 unlabeled.isid manage_fifo_file_perms)
+		(allow ARG1 unlabeled.isid manage_lnk_file_perms)
+		(allow ARG1 unlabeled.isid manage_sock_file_perms)
+		(allow ARG1 unlabeled.isid manage_blk_file_perms)
+		(allow ARG1 unlabeled.isid manage_chr_file_perms))
+
 	(macro relabelfrom_unlabeled ((type ARG1))
 		(allow ARG1 unlabeled.isid relabelfrom_file_perms)
 		(allow ARG1 unlabeled.isid relabelfrom_dir_perms)
@@ -924,6 +933,9 @@
 		(allow ARG1 unlabeled.isid relabelfrom_sock_file_perms)
 		(allow ARG1 unlabeled.isid relabelfrom_blk_file_perms)
 		(allow ARG1 unlabeled.isid relabelfrom_chr_file_perms))
+
+	(macro mounton_unlabeled_dirs ((type ARG1))
+		(allow ARG1 unlabeled.isid (dir (mounton))))
 
 	(macro recvfrom_unlabeled_tcp_sockets ((type ARG1))
 		(allow ARG1 unlabeled.isid (tcp_socket (recvfrom))))
