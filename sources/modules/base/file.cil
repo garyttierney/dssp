@@ -4603,6 +4603,10 @@
 	(macro list_boot ((type ARG1))
 		(allow ARG1 boot.boot_file list_dir_perms))
 
+	(macro create_boot_dirs ((type ARG1))
+		(call create_dirs_pattern (ARG1 boot.boot_file
+			boot.boot_file)))
+
 	(macro read_boot_files ((type ARG1))
 		(call read_files_pattern (ARG1 boot.boot_file boot.boot_file)))
 

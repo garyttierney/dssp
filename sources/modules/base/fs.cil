@@ -826,9 +826,6 @@
 	(macro getattr_rootfs_fs ((type ARG1))
 		(allow ARG1 rootfs.fs (filesystem (getattr))))
 
-	(macro setattr_rootfs_dirs ((type ARG1))
-		(allow ARG1 rootfs.fs (dir (setattr))))
-
 	(macro rw_rootfs_dirs ((type ARG1))
 		(allow ARG1 rootfs.fs rw_dir_perms))
 
@@ -846,6 +843,24 @@
 
 	(macro list_rootfs ((type ARG1))
 		(allow ARG1 rootfs.fs list_dir_perms))
+
+	(macro relabelfrom_rootfs_dirs ((type ARG1))
+		(call relabelfrom_dirs_pattern (ARG1 rootfs.fs rootfs.fs)))
+
+	(macro setattr_rootfs_dirs ((type ARG1))
+		(allow ARG1 rootfs.fs (dir (setattr))))
+
+	(macro relabelfrom_rootfs_lnk_files ((type ARG1))
+		(call relabelfrom_lnk_files_pattern (ARG1 rootfs.fs rootfs.fs)))
+
+	(macro create_rootfs_dirs ((type ARG1))
+		(call create_dirs_pattern (ARG1 rootfs.fs rootfs.fs)))
+
+	(macro setattr_rootfs_lnk_files ((type ARG1))
+		(allow ARG1 rootfs.fs (lnk_file (setattr))))
+
+	(macro create_rootfs_lnk_files ((type ARG1))
+		(call create_lnk_files_pattern (ARG1 rootfs.fs rootfs.fs)))
 
 	(macro mounton_rootfs_dirs ((type ARG1))
 		(allow ARG1 rootfs.fs (dir (mounton))))

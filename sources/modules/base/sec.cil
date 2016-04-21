@@ -279,6 +279,8 @@
 (block securityfs
 	(blockinherit fs.obj_blk)
 
+	(call sys.mountpoint_obj_type (fs))
+
 	(call sec.bool_obj_type (fs)))
 
 (block sec_load_policy
