@@ -1299,6 +1299,8 @@
 	(allow isid self list_dir_perms)
 	(allow isid self read_lnk_file_perms)
 
+	(allow isid isid (filesystem (associate)))
+
 	(call sys.mountpoint_obj_type (isid))
 
 	(call fs.associate_fs (isid))

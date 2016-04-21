@@ -1019,6 +1019,7 @@
 
 	(call mls.trusted_obj_type (dev))
 
+	(call fs.associate_fs (dev))
 	(call fs.associate_tmpfs (dev)))
 
 (block dri
@@ -1058,6 +1059,7 @@
 
 	(call mls.trusted_obj_type (dev))
 
+	(call fs.associate_fs (dev))
 	(call fs.associate_tmpfs (dev)))
 
 (block nvram
@@ -1075,11 +1077,14 @@
 (block ptmx
 	(blockinherit dev.obj_blk)
 
+	(call fs.associate_fs (dev))
+
 	(call mls.trusted_obj_type (dev)))
 
 (block random
 	(blockinherit dev.obj_blk)
 
+	(call fs.associate_fs (dev))
 	(call fs.associate_tmpfs (dev)))
 
 (block sound
@@ -1097,6 +1102,7 @@
 (block urandom
 	(blockinherit dev.obj_blk)
 
+	(call fs.associate_fs (dev))
 	(call fs.associate_tmpfs (dev)))
 
 (block usb
@@ -1130,4 +1136,5 @@
 
 	(call mls.trusted_obj_type (dev))
 
+	(call fs.associate_fs (dev))
 	(call fs.associate_tmpfs (dev)))

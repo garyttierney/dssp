@@ -2,7 +2,7 @@
 (classpermissionset all_security_perms_except_load_policy_and_setenforce
 	(security (compute_av compute_create compute_member check_context
 		compute_relabel compute_user setbool setsecparam
-			setcheckreqprot read_policy)))
+			setcheckreqprot read_policy validate_trans)))
 
 (classpermission
 	all_process_perms_except_transition_dyntransition_setcurrent_execmem_execstack_and_execheap)

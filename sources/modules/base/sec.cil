@@ -82,6 +82,9 @@
 	(macro remount_fs ((type ARG1))
 		(allow ARG1 securityfs.fs (filesystem (remount))))
 
+	(macro mounton_fs_files ((type ARG1))
+		(allow ARG1 securityfs.fs (file (mounton))))
+
 	(macro dontaudit_write_securityfs_files ((type ARG1))
 		(dontaudit ARG1 securityfs.fs write_file_perms))
 
