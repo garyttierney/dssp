@@ -111,6 +111,14 @@
 		(allow ARG1 lib_file manage_dir_perms)
 		(allow ARG1 lib_file manage_lnk_file_perms))
 
+	(macro relabel_lib ((type ARG1))
+		(call file.search_data (ARG1))
+		(call file.read_config_lnk_files (ARG1))
+		(allow ARG1 lib_file relabel_file_perms)
+		(allow ARG1 lib_file relabel_dir_perms)
+		(allow ARG1 lib_file relabel_lnk_file_perms))
+
+
 	(macro exec_ld_so_files ((type ARG1))
 		(call list_lib (ARG1))
 		(allow ARG1 ld_so.file exec_file_perms))
