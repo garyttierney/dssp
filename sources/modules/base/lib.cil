@@ -89,6 +89,9 @@
 		(call search_lib (ARG1))
 		(allow ARG1 lib_file rw_dir_perms))
 
+	(macro setattr_lib_dirs ((type ARG1))
+		(allow ARG1 lib_file (dir (setattr))))
+
 	(macro add_entry_lib ((type ARG1))
 		(call search_lib (ARG1))
 		(allow ARG1 lib_file add_entry_dir_perms))
