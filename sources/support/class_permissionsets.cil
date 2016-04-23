@@ -339,6 +339,7 @@
 (classpermission connected_tcp_socket_perms)
 (classpermission connected_tcp_stream_socket_perms)
 (classpermission rw_udp_socket_perms)
+(classpermission rw_inherited_udp_socket_perms)
 (classpermission create_udp_socket_perms)
 (classpermission rw_rawip_socket_perms)
 (classpermission create_rawip_socket_perms)
@@ -544,6 +545,8 @@
 		(classpermissionset rw_udp_socket_perms (udp_socket (read
 			getattr write setattr append bind connect getopt setopt
 				shutdown)))
+		(classpermissionset rw_inherited_udp_socket_perms (udp_socket
+			(read getattr write)))
 		(classpermissionset create_udp_socket_perms (udp_socket (create
 			read getattr write setattr append bind connect getopt
 				setopt shutdown)))
@@ -892,6 +895,8 @@
 		(classpermissionset rw_udp_socket_perms (udp_socket (ioctl read
 			getattr write setattr append bind connect getopt setopt
 				shutdown)))
+		(classpermissionset rw_inherited_udp_socket_perms (udp_socket
+			(ioctl read getattr write)))
 		(classpermissionset create_udp_socket_perms (udp_socket (create
 			ioctl read getattr write setattr append bind connect
 				getopt setopt shutdown)))
