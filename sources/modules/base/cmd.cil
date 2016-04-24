@@ -130,6 +130,10 @@
 		(call search_cmd (ARG1))
 		(allow ARG1 obj_type_attribute read_file_perms))
 
+	(macro manage_all_cmd_files ((type ARG1))
+		(call manage_files_pattern (ARG1 cmd_file
+			obj_type_attribute)))
+
 	(macro getattr_cmd_files ((type ARG1))
 		(call search_cmd (ARG1))
 		(allow ARG1 cmd_file (file (getattr))))
@@ -140,6 +144,14 @@
 	(macro getattr_all_cmd_files ((type ARG1))
 		(call search_cmd (ARG1))
 		(allow ARG1 obj_type_attribute (file (getattr))))
+
+	(macro setattr_all_cmd_files ((type ARG1))
+		(call search_cmd (ARG1))
+		(allow ARG1 obj_type_attribute (file (setattr))))
+
+	(macro relabel_all_cmd_files ((type ARG1))
+		(call search_cmd (ARG1))
+		(allow ARG1 obj_type_attribute relabel_file_perms))
 
 	(macro shell_obj_entry_subj ((type ARG1))
 		(call subj.entry (ARG1 shell.cmd_file)))

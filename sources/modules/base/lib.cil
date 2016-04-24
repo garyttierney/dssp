@@ -64,6 +64,17 @@
 		(call search_lib (ARG1))
 		(allow ARG1 lib_file read_file_perms))
 
+	(macro manage_all_lib_files ((type ARG1))
+		(call manage_files_pattern (ARG1 lib_file obj_type_attribute)))
+
+	(macro relabel_all_lib_files ((type ARG1))
+		(call search_lib (ARG1))
+		(allow ARG1 obj_type_attribute relabel_file_perms))
+
+	(macro setattr_all_lib_files ((type ARG1))
+		(call search_lib (ARG1))
+		(allow ARG1 obj_type_attribute (file (setattr))))
+
 	(macro delete_lib_files ((type ARG1))
 		(call del_entry_lib (ARG1))
 		(allow ARG1 lib_file delete_file_perms))
