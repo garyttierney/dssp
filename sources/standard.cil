@@ -9,7 +9,7 @@
 		standard.user_exemption_target_subj_type_attribute)))
 	(and (eq t1 standard.sys_id_change_exemption_subj_type_attribute) (eq
 		u2 sys.id)))
-	(eq t1 standard.uncond_exempt_subj_type_attribute)))
+	(eq t1 standard.uncond_exemption_subj_type_attribute)))
 
 (constrain (process (transition dyntransition noatsecure siginh rlimitinh))
 	(or (or (or (eq r1 r2)
@@ -17,7 +17,7 @@
 		(eq t2 standard.user_exemption_target_subj_type_attribute)))
 	(and (eq t1 standard.sys_role_change_exemption_subj_type_attribute)
 		(eq r2 sys.role)))
-	(eq t1 standard.uncond_exempt_subj_type_attribute)))
+	(eq t1 standard.uncond_exemption_subj_type_attribute)))
 
 (constrain (file (create relabelto relabelfrom))
 	(or (or (eq u1 u2)
@@ -231,7 +231,7 @@
 			ARG1))
 
 	(macro uncond_exemption_subj_type ((type ARG1))
-		(typeattributeset uncond_exempt_subj_type_attribute ARG1))
+		(typeattributeset uncond_exemption_subj_type_attribute ARG1))
 
 	(macro sys_change_exemption_subj_type ((type ARG1))
 		(call sys_id_change_exemption_subj_type (ARG1))
@@ -292,7 +292,7 @@
 
 	(typeattribute user_exemption_target_subj_type_attribute)
 
-	(typeattribute uncond_exempt_subj_type_attribute))
+	(typeattribute uncond_exemption_subj_type_attribute))
 
 (tunableif (and (not enable_mls) (not enable_mcs))
 	(true
