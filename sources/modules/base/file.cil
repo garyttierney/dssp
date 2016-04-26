@@ -4708,6 +4708,10 @@
 		(call relabel_files_pattern (ARG1 config.config_file
 			config.config_file)))
 
+	(macro relabel_config_lnk_files ((type ARG1))
+		(call relabel_lnk_files_pattern (ARG1 config.config_file
+			config.config_file)))
+
 	(macro read_config_lnk_files ((type ARG1))
 		(call read_lnk_files_pattern (ARG1 config.config_file
 			config.config_file)))
