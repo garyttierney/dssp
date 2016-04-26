@@ -978,6 +978,9 @@
 	(macro relabelfrom_tmpfs_fs ((type ARG1))
 		(allow ARG1 tmpfs.fs (filesystem (relabelfrom))))
 
+	(macro getattr_tmpfs_dirs ((type ARG1))
+		(allow ARG1 tmpfs.fs (dir (getattr))))
+
 	(macro relabel_tmpfs_dirs ((type ARG1))
 		(call search_devtmpfs (ARG1))
 		(call relabel_dirs_pattern (ARG1 tmpfs.fs tmpfs.fs)))
