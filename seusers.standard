@@ -1,4 +1,3 @@
-sys.id:sys.id
 gdm:gdm.id
 root:sysadm.id
 __default__:user.id
