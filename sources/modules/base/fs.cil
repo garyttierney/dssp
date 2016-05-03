@@ -656,6 +656,9 @@
 	(macro dontaudit_search_fuse ((type ARG1))
 		(dontaudit ARG1 fuse_fs.fs search_dir_perms))
 
+	(macro search_fuse ((type ARG1))
+		(allow ARG1 fuse_fs.fs search_dir_perms))
+
 	(macro dontaudit_setattr_fuse_dirs ((type ARG1))
 		(dontaudit ARG1 fuse_fs.fs (dir (setattr))))
 

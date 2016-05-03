@@ -115,14 +115,14 @@
 		(call search_cmd (ARG1))
 		(allow ARG1 cmd_file mmap_file_perms))
 
-	(macro exec_all ((type ARG1))
+	(macro exec_all_cmd_files ((type ARG1))
 		(call search_cmd (ARG1))
 		(allow ARG1 obj_type_attribute exec_file_perms))
 
-	(macro dontaudit_mmap_all ((type ARG1))
+	(macro dontaudit_mmap_all_cmd_files ((type ARG1))
 		(dontaudit ARG1 obj_type_attribute mmap_file_perms))
 
-	(macro mmap_all ((type ARG1))
+	(macro mmap_all_cmd_files ((type ARG1))
 		(call search_cmd (ARG1))
 		(allow ARG1 obj_type_attribute mmap_file_perms))
 
