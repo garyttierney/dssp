@@ -426,6 +426,10 @@
 	(macro getattr_subj ((type ARG1))
 		(allow ARG1 subj_type_attribute (process (getattr))))
 
+	(macro dontaudit_getattr_common_subj ((type ARG1))
+		(dontaudit ARG1 common_subj_type_attribute (process
+			(getattr))))
+
 	(macro getattr_common_subj ((type ARG1))
 		(allow ARG1 common_subj_type_attribute (process (getattr))))
 
