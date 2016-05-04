@@ -259,10 +259,6 @@
 (classpermission link_key_perms)
 (classpermissionset link_key_perms (key (search link)))
 
-(classpermission manage_key_perms)
-(classpermissionset manage_key_perms (key (view read create search link setattr
-	write)))
-
 (classpermission read_key_perms)
 (classpermissionset read_key_perms (key (view read search link)))
 
