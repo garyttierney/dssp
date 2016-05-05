@@ -1,3 +1,4 @@
+sys.role:cockpitsess.subj:s0 exempt.role:exempt.subj:s0
 sys.role:gdm.subj:s0 exempt.role:exempt.subj:s0
 sys.role:login.subj:s0 exempt.role:exempt.subj:s0
 sys.role:sd.subj:s0 exempt.role:exempt.subj:s0
