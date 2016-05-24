@@ -2,4 +2,4 @@ sys.role:gdm.subj user.role:user_gdmuser.subj
 sys.role:login.subj user.role:user.subj
 sys.role:sd.subj user.role:user_sduser.subj
 sys.role:sshd.sshd.subj user.role:user_sshduser.subj
-sys.role:xrdpsesman.subj user.role:user.subj
+sys.role:xrdpsesman.subj user.role:user_xrdpuser.subj
