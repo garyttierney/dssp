@@ -45,7 +45,7 @@
 				(eq t2 rbacsep.exempt_subj_type_attribute)))
 
 		(constrain (process (ptrace sigchld sigkill sigstop signull
-			noatsecure siginh rlimitinh))
+			signal noatsecure siginh rlimitinh))
 			(or (or (or (or (eq r1 r2)
 				(eq r1 rbacsep.exempt_role_attribute))
 				(eq r2 rbacsep.exempt_role_attribute))
