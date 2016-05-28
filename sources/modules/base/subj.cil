@@ -490,6 +490,10 @@
 	(macro send_signull_subj ((type ARG1))
 		(allow ARG1 subj_type_attribute (process (signull))))
 
+	(macro dontaudit_send_signull_common_subj ((type ARG1))
+		(dontaudit ARG1 common_subj_type_attribute (process
+			(signull))))
+
 	(macro send_signull_common_subj ((type ARG1))
 		(allow ARG1 common_subj_type_attribute (process (signull))))
 
