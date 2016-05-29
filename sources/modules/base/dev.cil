@@ -319,6 +319,10 @@
 		(call fs.search_devtmpfs (ARG1))
 		(allow ARG1 dri.dev (chr_file (getattr))))
 
+	(macro getattr_framebuf ((type ARG1))
+		(call fs.search_devtmpfs (ARG1))
+		(allow ARG1 framebuf.dev (chr_file (getattr))))
+
 	(macro getattr_kvm ((type ARG1))
 		(call fs.search_devtmpfs (ARG1))
 		(allow ARG1 kvm.dev (chr_file (getattr))))
@@ -888,6 +892,9 @@
 
 	(macro setattr_dri ((type ARG1))
 		(allow ARG1 dri.dev (chr_file (setattr))))
+
+	(macro setattr_framebuf ((type ARG1))
+		(allow ARG1 framebuf.dev (chr_file (setattr))))
 
 	(macro setattr_kvm ((type ARG1))
 		(allow ARG1 kvm.dev (chr_file (setattr))))
