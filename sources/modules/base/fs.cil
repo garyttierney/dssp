@@ -146,6 +146,7 @@
 (fsuse trans "tmpfs" tmpfs)
 (fsuse xattr "ext4" fs)
 (fsuse xattr "xfs" fs)
+(fsuse xattr "btrfs" fs)
 
 (genfscon "afs" "/" nfs)
 (genfscon "aio" "/" aio)
